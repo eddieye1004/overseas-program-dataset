@@ -6,12 +6,19 @@ on:
     paths:
       - 'data/**'
       - 'scripts/**'
+      - 'docs/**'
       - '.github/workflows/validate.yml'
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'CHANGELOG.md'
   pull_request:
     branches: [main, master]
     paths:
       - 'data/**'
       - 'scripts/**'
+      - 'docs/**'
+      - 'README.md'
+      - 'CONTRIBUTING.md'
   schedule:
     # 每周一 UTC 01:00 自动运行（北京时间 09:00）
     # 用于发现官方链接失效、数据过期等问题
