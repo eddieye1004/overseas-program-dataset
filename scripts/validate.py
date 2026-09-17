@@ -100,6 +100,114 @@ VALID_TAGS = {
     "english_required", "no_english_required", "residency_required",
 }
 
+# ---------------------------------------------------------------------------
+# 来源可信度分级
+#
+# 本项目的核心承诺是「每条数据可追溯到官方来源」。如果 sources 里混入百科、
+# 自媒体、商业博客，这个承诺就自我瓦解了。因此在 CI 层面强制拦截。
+#
+#   A = 官方一手来源（政府/使领馆/移民局/官方法规库）
+#   B = 项目本体国际组织官网（IAESTE / AIESEC 等）
+#   C = 高校官方部门、国际组织、其他可核验机构
+#   D = 百科/自媒体/商业博客/来源不明 —— 禁止作为 source 出现
+# ---------------------------------------------------------------------------
+
+# D 级：出现即报错，必须删除或替换为官方来源
+FORBIDDEN_SOURCE_DOMAINS = {
+    "baike.baidu.com", "baike.so.com", "zh.wikipedia.org", "en.wikipedia.org",
+    "wikipedia.org", "zhihu.com", "xiaohongshu.com", "douban.com",
+    "sohu.com", "sina.com.cn", "sina.com", "163.com", "qq.com",
+    "toutiao.com", "csdn.net", "jianshu.com", "medium.com", "quora.com",
+    "expatmoney.com", "nomadlist.com", "internations.org",
+}
+
+# A 级：政府/使领馆/移民局官方域名片段
+OFFICIAL_GOV_FRAGMENTS = (
+    ".gov", ".govt", ".gob.", ".gouv.", ".gov.uk", ".go.jp", ".go.kr",
+    "europa.eu", "un.org", "oecd.org", "imo.org",
+    "canada.ca", "gov.uk", "irishimmigration.ie",
+    "homeaffairs.gov.au", "immigration.govt.nz",
+    "make-it-in-germany.com", "verwaltung.bund.de", "diplo.de",
+    "j1visa.state.gov", "state.gov",
+)
+
+# B 级：项目本体国际组织官网
+OFFICIAL_ORG_FRAGMENTS = (
+    "iaeste.org", "iaeste.at", "iaeste.de",
+    "aiesec.org",
+)
+
+# 非法/需要标注 "publisher" 的模糊来源名
+VAGUE_PUBLISHERS = {
+    "公开资料", "网络资料", "互联网", "综合", "不详", "未知",
+    "public sources", "various", "unknown", "n/a",
+}
+
+
+def classify_source(url):
+    """把来源 URL 分级为 A / B / C / D。
+
+    D 级：百科、自媒体、商业博客、来源不明 —— 不允许作为 source。
+    """
+    if not isinstance(url, str):
+        return "D"
+    u = url.lower()
+    for bad in FORBIDDEN_SOURCE_DOMAINS:
+        if bad in u:
+            return "D"
+    for frag in OFFICIAL_GOV_FRAGMENTS:
+        if frag in u:
+            return "A"
+    for frag in OFFICIAL_ORG_FRAGMENTS:
+        if frag in u:
+            return "B"
+    return "C"
+
+
+def _check_sources_quality(rep, fname, doc):
+    """来源质量检查：拦截 D 级来源，并确保每个 program 至少有一条 A/B 级来源。"""
+    sources = doc.get("sources")
+    if not isinstance(sources, list) or not sources:
+        return
+
+    grades = []
+    for i, src in enumerate(sources):
+        if not isinstance(src, dict):
+            continue
+        url = src.get("url", "")
+        publisher = (src.get("publisher") or "").strip()
+        g = classify_source(url)
+        grades.append(g)
+
+        # D 级来源 —— 直接报错
+        if g == "D":
+            rep.error(
+                fname, f"sources[{i}].url",
+                f"来源不可信（D 级）：{url} —— 本项目承诺「可追溯至官方来源」，"
+                f"禁止使用百科/自媒体/商业博客作为数据来源。请替换为官方页面。"
+            )
+
+        # publisher 含糊 —— 报错
+        if publisher.lower() in VAGUE_PUBLISHERS:
+            rep.error(
+                fname, f"sources[{i}].publisher",
+                f"来源出版方含糊（'{publisher}'），须填写具体机构名称（如 Ministry of Foreign Affairs of Japan）"
+            )
+
+        # 声称 primary 却不是 A 级 —— 告警
+        if src.get("type") == "primary" and g not in ("A", "B"):
+            rep.warn(
+                fname, f"sources[{i}].type",
+                f"标注为 primary 但域名可信度为 {g} 级：{url} —— 确认这是否真的是官方一手来源"
+            )
+
+    # 至少要有一条 A 或 B 级来源，否则该 program 的资格断言无官方支撑
+    if grades and not any(g in ("A", "B") for g in grades):
+        rep.error(
+            fname, "sources",
+            "缺少 A/B 级官方来源：每个项目的资格断言必须至少有一条政府或项目本体官方来源支撑"
+        )
+
 
 # ---------------------------------------------------------------------------
 # 报告容器
@@ -470,6 +578,9 @@ def validate_program(rep, fname, doc):
         if not has_primary:
             rep.error(p, "sources",
                       "至少需要 1 条 primary（官方一手）来源。二手来源不能作为唯一依据。")
+
+        # 来源可信度分级检查（拦截百科/自媒体/商业博客）
+        _check_sources_quality(rep, p, doc)
 
     # --- 跨字段一致性 ---
     _check_consistency(rep, p, doc)

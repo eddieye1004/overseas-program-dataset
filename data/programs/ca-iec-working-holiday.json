@@ -161,13 +161,13 @@
       "claim": "IEC 仅对与加拿大签订青年流动协议的国家/地区开放；中国大陆不在协议名单内"
     },
     {
-      "type": "secondary",
-      "name": "工作假期签证（百度百科）",
-      "url": "https://baike.baidu.com/item/%E5%B7%A5%E4%BD%9C%E5%81%87%E6%9C%9F%E7%AD%BE%E8%AF%81/2127444",
-      "publisher": "百度百科",
+      "type": "primary",
+      "name": "IEC 参与国家/地区名单（Who can apply）",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility.html",
+      "publisher": "Immigration, Refugees and Citizenship Canada",
       "last_verified": "2026-09-17",
       "verified_by": "eddieye1004",
-      "claim": "中国台湾护照可申请加拿大工作假期签证；未列出中国大陆"
+      "claim": "IEC 参与方为与加拿大签订青年流动协议（YMA）的国家/地区；官方名单含 Hong Kong 与 Taiwan，不含 China（中国大陆）"
     }
   ],
 

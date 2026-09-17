@@ -75,7 +75,7 @@
       {
         "type": "no_prior_visa",
         "required": true,
-        "note": "此前未曾取得过日本打工度假签证（原则上每人限一次；部分国家 2024 年起放宽至两次）"
+        "note": "此前未曾取得过日本打工度假签证。原则上每人限一次；部分协议方已放宽至两次（详见签证放宽说明）。"
       },
       {
         "type": "residency_requirement",
@@ -182,7 +182,7 @@
     },
     {
       "level": "warning",
-      "description": "一生原则仅一次，部分国家自 2024 年起放宽至两次，但适用国家不含中国大陆。"
+      "description": "一生原则仅一次。日本自 2024-12 起陆续对加拿大/英国/新西兰/丹麦/奥地利/德国/爱尔兰/斯洛伐克/韩国放宽至两次，2026-02-01 起中国台湾亦可参与两次，但以上放宽均不适用于中国大陆护照。"
     },
     {
       "level": "info",
@@ -202,12 +202,12 @@
     },
     {
       "type": "primary",
-      "name": "在留資格認定証明書（COE）处理时长",
+      "name": "The Working Holiday Programmes in Japan（签证放宽说明见 [NB2]）",
       "url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
-      "publisher": "日本法务省出入国在留管理厅",
+      "publisher": "Ministry of Foreign Affairs of Japan",
       "last_verified": "2026-09-17",
       "verified_by": "eddieye1004",
-      "claim": "签证审理时长参考"
+      "claim": "一生一次的放宽安排：2024-12-01 起（加拿大/英国/新西兰/丹麦/奥地利）、2025-01-01 起（德国/爱尔兰/斯洛伐克）、2025-10-01 起（韩国）、2026-02-01 起（中国台湾）可参与两次；中国大陆不在任何放宽名单内"
     }
   ],
 

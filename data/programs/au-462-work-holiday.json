@@ -246,12 +246,21 @@
     },
     {
       "type": "primary",
-      "name": "Working Holiday Visa FAQ",
-      "url": "https://www.australia.com/en/youth-travel/working-holiday-visa/faq.html",
-      "publisher": "Tourism Australia",
+      "name": "Work and Holiday visa (subclass 462) — 适用国家/地区与资格",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
+      "publisher": "Australian Department of Home Affairs",
       "last_verified": "2026-09-17",
       "verified_by": "eddieye1004",
-      "claim": "462 类别适用国家清单（含中国）、417 类别适用国家清单（含中国香港、中国台湾）、资金要求 AUD 5,000"
+      "claim": "462 类别适用国家/地区（含中国）、417 类别适用国家/地区（含中国香港、中国台湾）、资金要求 AUD 5,000；中国申请人须参与抽签（ballot）"
+    },
+    {
+      "type": "secondary",
+      "name": "Working Holiday Visa FAQ（澳大利亚旅游局）",
+      "url": "https://www.australia.com/en/youth-travel/working-holiday-visa/faq.html",
+      "publisher": "Tourism Australia（澳大利亚旅游局）",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "旅游推广性质的 462 / 417 类别说明与常见问题（非移民局官方页，仅作辅证）"
     },
     {
       "type": "primary",

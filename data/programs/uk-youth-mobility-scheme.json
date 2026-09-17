@@ -167,13 +167,13 @@
       "claim": "YMS 参与国家/地区名单、年龄要求、资金要求 GBP 2,530、停留期 24 个月、费用结构"
     },
     {
-      "type": "secondary",
-      "name": "工作假期签证（百度百科）",
-      "url": "https://baike.baidu.com/item/%E5%B7%A5%E4%BD%9C%E5%81%87%E6%9C%9F%E7%AD%BE%E8%AF%81/2127444",
-      "publisher": "百度百科",
+      "type": "primary",
+      "name": "Youth Mobility Scheme visa: eligible countries and territories",
+      "url": "https://www.gov.uk/youth-mobility/eligibility",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
       "last_verified": "2026-09-17",
       "verified_by": "eddieye1004",
-      "claim": "中国香港及中国台湾护照可申请英国工作假期签证；未列出中国大陆"
+      "claim": "YMS 参与国家/地区名单含 Hong Kong 与 Taiwan，不含 China（中国大陆）；中国大陆护照持有人不在可申请范围内"
     }
   ],
 
