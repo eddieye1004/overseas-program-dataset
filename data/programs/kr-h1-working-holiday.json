@@ -1,0 +1,224 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "kr-h1-working-holiday",
+    "name": "韩国 H-1 打工度假签证",
+    "name_en": "Korea Working Holiday Visa (H-1)",
+    "country": "韩国",
+    "country_code": "KR",
+    "region": "asia",
+    "program_type": "working_holiday",
+    "visa_code": "H-1",
+    "official_url": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91",
+    "authority": "韩国法务部 / 韩国外交部（MOFA）",
+    "summary": "韩国与 29 个国家和地区签订的青年旅游就业协议，允许 18-30 岁青年在韩停留 12 个月并以兼职补充旅费。⚠️ 韩国官方协议名单中未明确包含中国大陆，实际安排需以韩国驻华使领馆当年公告为准。",
+    "tags": [
+      "once_in_lifetime",
+      "no_agency_needed"
+    ],
+    "active": false
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "conditional",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "⚠️ 韩国 H-1 签约国家/地区名单包括中国台湾、中国香港、日本、澳大利亚、加拿大、英国、美国、法国、德国、新西兰、爱尔兰、意大利等 29 个。中国大陆未在公开名单中明确列出，须以韩国驻华使领馆当年公告为准。切勿依据网上攻略盲目准备。"
+    },
+    "age": {
+      "min": 18,
+      "max": 30,
+      "note": "申请时 18-30 周岁。（2026-09-01 起，部分国家如澳大利亚、英国放宽至 18-35 岁）"
+    },
+    "education": {
+      "minimum_level": "vocational",
+      "major_restriction": [],
+      "note": "一般要求大专及以上学历，或提供在读证明/最终学历证明"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "无强制语言考试要求"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 3000000,
+        "currency": "KRW",
+        "cny_estimate": 15500,
+        "note": "约 300 万韩元（约 2,000 欧元）存款证明，须在申请前 1 周内开具"
+      },
+      "note": "账户持有人须与签证申请人一致。"
+    },
+    "other_requirements": [
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "部分使领馆要求提供健康诊断书（含 HIV、毒品、胸透检查）"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "无犯罪记录证明，须在申请前 6 个月内开具，无需公证"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "须购买在韩有效的保险，覆盖遣返、医疗、住院，保额不低于 4,000 万韩元（约 3 万欧元）"
+      },
+      {
+        "type": "no_dependents",
+        "required": true,
+        "note": "不可携带家属"
+      },
+      {
+        "type": "return_ticket",
+        "required": true,
+        "note": "须提供往返机票，或等额机票款的存款证明"
+      },
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "此前未申请过韩国打工度假签证（一生仅一次）"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "appointment",
+    "quota": null,
+    "quota_note": "各国配额不同。中国台湾、中国香港为配额制。中国大陆未在公开名单中，须向使领馆确认。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "unknown",
+        "note": "中国大陆申请人须向韩国驻华使领馆确认当年是否开放及名额。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费",
+        "amount": { "local_amount": 60, "currency": "USD", "cny_estimate": 430, "note": "各国不同，约 60-90 美元" },
+        "refundable": false
+      }
+    ],
+    "processing_time": "约 7 个工作日（部分情况 4 天至 1 个月）"
+  },
+
+  "documents": [
+    { "name": "签证申请表", "required": true, "note": "韩国标准表格（Form no. 17），请勿双面打印", "prepare_days": 7 },
+    { "name": "有效护照", "required": true, "note": "剩余有效期须超过 6 个月（部分使领馆要求 1 年以上）", "prepare_days": 30 },
+    { "name": "照片", "required": true, "note": "3.5cm × 4.5cm，6 个月内拍摄，贴于申请表", "prepare_days": 7 },
+    { "name": "往返机票或等额存款证明", "required": true, "note": "", "prepare_days": 14 },
+    { "name": "银行存款证明", "required": true, "note": "约 300 万韩元，1 周内开具", "prepare_days": 14 },
+    { "name": "无犯罪记录证明", "required": true, "note": "6 个月内开具", "prepare_days": 30 },
+    { "name": "保险计划书", "required": true, "note": "覆盖遣返、医疗、住院，保额 ≥ 4,000 万韩元", "prepare_days": 14 },
+    { "name": "在读证明或最终学历证明", "required": true, "note": "", "prepare_days": 14 },
+    { "name": "打工度假活动计划书", "required": true, "note": "A4 纸最多 2 页，建议韩文，可用英文", "prepare_days": 7 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认当年是否接受申请（中国大陆申请人必做）",
+      "description": "韩国 H-1 公开签约名单中未明确包含中国大陆。第一步必须联系韩国驻华使领馆，确认当年是否接受申请及具体流程。",
+      "duration": "1-2 周",
+      "official_link": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91"
+    },
+    {
+      "step_no": 2,
+      "title": "准备申请材料",
+      "description": "准备申请表、护照、照片、存款证明、无犯罪记录、保险、学历证明、活动计划书等。",
+      "duration": "2-4 周",
+      "official_link": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91"
+    },
+    {
+      "step_no": 3,
+      "title": "向韩国驻华使领馆递交申请",
+      "description": "H-1 签证必须在本国使领馆直接申请，**不可通过签证发放认定书（사증발급인정서）申请，也不可在韩国境内转换身份**。部分使领馆接受在线预约。",
+      "duration": "1 天",
+      "official_link": "https://overseas.mofa.go.kr/"
+    },
+    {
+      "step_no": 4,
+      "title": "等待审核并领取签证",
+      "description": "审理期约 7 个工作日（部分情况 4 天至 1 个月）。签证有效期 1 年，须在签发后 1 年内入境韩国。",
+      "duration": "约 7 个工作日",
+      "official_link": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91"
+    },
+    {
+      "step_no": 5,
+      "title": "入境韩国并办理外国人登录",
+      "description": "入境后 90 天内到当地出入境管理事务所办理外国人登录证（ARC）。可通过 HiKorea 网站查询详情。",
+      "duration": "入境后 90 天内",
+      "official_link": "https://www.hikorea.go.kr"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 6,
+    "max_study_months": 4,
+    "renewable": false,
+    "renewal_condition": "不可续签。",
+    "restricted_occupations": [
+      "娱乐场所的接待员、舞者、歌手、乐手、杂技演员",
+      "需特定资格的专业职业（医生、律师、教授、飞行员、外语讲师等）",
+      "新闻或政治活动"
+    ],
+    "note": "每周最多工作 25 小时，全年上限 1,300 小时。语言学习最多 4 个月。禁止从事专业领域及娱乐场所工作。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "⚠️ 韩国官方公开的 29 个签约国家/地区名单中未明确包含中国大陆。网上'韩国打工度假对中国开放'的说法需谨慎核实，必须以韩国驻华使领馆当年公告为准。"
+    },
+    {
+      "level": "warning",
+      "description": "必须在本国使领馆申请，不可在韩国境内转换身份（不同于部分国家可在境内转换）。"
+    },
+    {
+      "level": "warning",
+      "description": "一生仅一次，不可重复申请。"
+    },
+    {
+      "level": "info",
+      "description": "优势：年龄上限部分国家放宽至 35 岁、可从事的岗位含中文教师/翻译支持等。中国台湾、中国香港护照持有人申请更为顺畅。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Working Holiday Information Center (WHIC)",
+      "url": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91",
+      "publisher": "Ministry of Foreign Affairs, Republic of Korea",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "H-1 签证资格（18-30 岁）、材料清单、申请规则（须在本国申请、一生一次、不可境内转换）"
+    },
+    {
+      "type": "primary",
+      "name": "H-1 visa (Working Holiday) — 韩国驻悉尼总领事馆",
+      "url": "https://overseas.mofa.go.kr/au-sydney-en/brd/m_2367/view.do?seq=760608&page=1",
+      "publisher": "Consulate General of the Republic of Korea in Sydney",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "H-1 签证年龄要求（2026-09-01 起部分国家放宽至 18-35 岁）、工作限制（同一雇主不超过 6 个月）、禁止职业清单、材料清单"
+    },
+    {
+      "type": "secondary",
+      "name": "South Korea's Working Holiday Visa 概述",
+      "url": "https://expatmoney.com/blog/south-koreas-digital-nomad-visa",
+      "publisher": "公开资料",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "29 个签约国家/地区名单（含中国台湾、中国香港，未列中国大陆）"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

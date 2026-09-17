@@ -1,0 +1,40 @@
+# 通用忽略规则
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 虚拟环境（本项目使用 managed python）
+.env
+.venv*
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 校验脚本输出
+validate-report.json
+validate-report.txt
+.last-validation
+
+# 临时文件
+*.tmp
+*.log

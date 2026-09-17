@@ -1,0 +1,256 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "nz-china-whv",
+    "name": "新西兰打工度假签证（中国名额）",
+    "name_en": "China Working Holiday Visa",
+    "country": "新西兰",
+    "country_code": "NZ",
+    "region": "oceania",
+    "program_type": "working_holiday",
+    "visa_code": "WHS",
+    "official_url": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
+    "authority": "Immigration New Zealand（新西兰移民局）",
+    "summary": "新西兰自 2008 年 10 月起对中国大陆开放打工度假签证，每年 1,000 个名额，先到先得。允许在新西兰停留 12 个月并合法工作。名额极其抢手，历史上一经开放即在 10-30 分钟内抢完。一生只能申请一次。",
+    "tags": [
+      "first_come_first_served",
+      "once_in_lifetime",
+      "high_demand",
+      "no_agency_needed",
+      "high_wage"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "中国大陆、中国香港、中国台湾均为独立名额，开放日期与配额不同（2026 年中国大陆 7 月 2 日开放 1,000 个；中国香港 3 月 19 日开放 400 个；中国台湾 5 月 28 日开放 600 个）。申请人须常驻其护照所属地区。"
+    },
+    "age": {
+      "min": 18,
+      "max": 30,
+      "note": "申请当天必须年满 18 岁且未满 31 岁。"
+    },
+    "education": {
+      "minimum_level": "high_school",
+      "major_restriction": [],
+      "note": "高中毕业及以上学历。需提供学历中英文公证认证。这是所有打工度假签证中学历门槛最低的项目之一。"
+    },
+    "language": {
+      "required": true,
+      "tests": [
+        { "test": "IELTS", "min_score": 5.5, "validity_months": 24 },
+        { "test": "TOEFL_iBT", "min_score": 46, "validity_months": 24 },
+        { "test": "PTE", "min_score": 42, "validity_months": 24 },
+        { "test": "Cambridge", "min_score": 162, "validity_months": 24 }
+      ],
+      "note": "以上任一项达标即可。成绩须在 2 年内有效。注意：新西兰的雅思门槛（5.5）高于澳大利亚（4.5）。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 4200,
+        "currency": "NZD",
+        "cny_estimate": 18000,
+        "note": "约 4,200 纽币存款证明或旅行支票等银行证明，用于覆盖来回机票和前期生活费。"
+      },
+      "note": "无需冻结资金。"
+    },
+    "other_requirements": [
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "胸部 X 光检查，需证明无肺结核等传染病"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "无犯罪记录证明（由移民局决定是否需要）"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "必须购买医疗保险和旅行保险，覆盖全程"
+      },
+      {
+        "type": "no_dependents",
+        "required": true,
+        "note": "不可携带子女。伴侣同行需各自申请。"
+      },
+      {
+        "type": "return_ticket",
+        "required": true,
+        "note": "需有回程机票或足够购买机票的资金"
+      },
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "未曾持有过新西兰 WHV 签证。此签证一生只能申请一次。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "申请时须居住且常驻中国"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "first_come_first_served",
+    "quota": 1000,
+    "quota_note": "中国大陆年度名额 1,000 个。名额开放后先到先得，满额即关闭。若上一年度有剩余名额，将继续开放直至满额，然后重置为新年度的 1,000 个。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "closed",
+        "open_date": "2026-07-02",
+        "note": "2026-07-02 上午 10:00（新西兰时间）= 北京时间 06:00 开放。名额极少，历史上 10 分钟至 30 分钟内抢完。"
+      },
+      {
+        "year": 2025,
+        "status": "closed",
+        "open_date": "2025-07-02",
+        "note": "历史参考：2024 年 10 分钟内满额；2025 年不到 30 分钟满额。开放时间通常在每年 7 月初。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证审理费",
+        "amount": { "local_amount": 670, "currency": "NZD", "cny_estimate": 2900 },
+        "refundable": false
+      },
+      {
+        "item": "入境旅游税（IVL）",
+        "amount": { "local_amount": 100, "currency": "NZD", "cny_estimate": 430 },
+        "refundable": false
+      }
+    ],
+    "processing_time": "2-6 周"
+  },
+
+  "documents": [
+    { "name": "有效护照", "required": true, "note": "入境时剩余有效期须 ≥ 15 个月", "prepare_days": 30 },
+    { "name": "高中/大专/本科毕业证", "required": true, "note": "需中英文公证件", "prepare_days": 30 },
+    { "name": "英语成绩单", "required": true, "note": "雅思 5.5 / 托福 46 / PTE 42，2 年内有效", "prepare_days": 60 },
+    { "name": "银行存款流水", "required": true, "note": "约 4,200 纽币等值", "prepare_days": 14 },
+    { "name": "无犯罪记录公证", "required": true, "note": "需英文翻译", "prepare_days": 30 },
+    { "name": "体检报告", "required": true, "note": "胸部 X 光，移民局指定体检机构", "prepare_days": 21 },
+    { "name": "全年境外医疗保险保单", "required": true, "note": "覆盖 12 个月停留期", "prepare_days": 14 },
+    { "name": "白底电子证件照", "required": true, "note": "符合新西兰签证规格", "prepare_days": 7 },
+    { "name": "往返机票或购票资金证明", "required": true, "note": "", "prepare_days": 14 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "提前 3 个月备齐全部材料",
+      "description": "语言成绩、学历公证、存款证明、保险必须提前办好。抢名额当天无法临时补交材料，材料不齐会导致申请失败。",
+      "duration": "3 个月",
+      "official_link": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/"
+    },
+    {
+      "step_no": 2,
+      "title": "注册 Immigration New Zealand 账号",
+      "description": "提前在官网注册账号并熟悉申请流程，开放前测试网络环境。建议使用 Chrome 浏览器并提前登录。",
+      "duration": "1 小时",
+      "official_link": "https://onlineservices.immigration.govt.nz/?WHS"
+    },
+    {
+      "step_no": 3,
+      "title": "开放当天抢名额",
+      "description": "在新西兰时间指定开放时刻（通常为 7 月初某日上午 10:00）登录在线系统，填写申请表并提交。由于名额仅 1,000 个且申请人众多，网页极可能拥堵，流程耗时久，对网速要求高。完成所有步骤并付款成功即为抢位成功。",
+      "duration": "数分钟至数小时",
+      "official_link": "https://onlineservices.immigration.govt.nz/?WHS"
+    },
+    {
+      "step_no": 4,
+      "title": "缴纳签证费并等待确认信",
+      "description": "支付 NZD 670 审理费 + NZD 100 入境旅游税，共约 NZD 770。可用 Visa、MasterCard 或中国银联信用卡/借记卡支付。成功后邮箱会收到预约确认信，内含递签材料说明。",
+      "duration": "即时",
+      "official_link": "https://onlineservices.immigration.govt.nz/?WHS"
+    },
+    {
+      "step_no": 5,
+      "title": "递交补充材料",
+      "description": "收到确认信后，15 天内递交体检材料，60 天内将其他证明材料扫描件发送到指定邮箱。无需线下邮寄。",
+      "duration": "15-60 天",
+      "official_link": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/"
+    },
+    {
+      "step_no": 6,
+      "title": "等待审理并获签",
+      "description": "审理周期约 2-6 周。获批后必须在签证签发之日起 12 个月内入境新西兰。入境后才开始计算 12 个月停留期。",
+      "duration": "2-6 周",
+      "official_link": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 6,
+    "max_study_months": 6,
+    "renewable": false,
+    "renewal_condition": "不可续签。但若在葡萄栽培或园艺行业完成 3 个月季节性工作，有机会额外获得 3 个月停留。",
+    "restricted_occupations": [],
+    "note": "可为同一雇主工作不超过 6 个月。学习或培训总计最多 6 个月。持有效签证期间可多次往返新西兰。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "名额仅 1,000 个，先到先得，历史上一经开放即在 10-30 分钟内抢完。需要极强的准备和网络条件。"
+    },
+    {
+      "level": "critical",
+      "description": "一生只能申请一次。错过或失败即永久失去该机会，无二次申请可能。"
+    },
+    {
+      "level": "warning",
+      "description": "抢名额当天网络极易拥堵，流程耗时长。建议提前登录、提前测试网络、使用有线网络。"
+    },
+    {
+      "level": "warning",
+      "description": "签证费不退。若因材料问题被拒，费用不予退还。"
+    },
+    {
+      "level": "info",
+      "description": "常见工作类型：农业采摘、农场工作、服务业（餐厅/咖啡店/酒店）、旅游业、滑雪场。避开奥克兰等大城市更容易找到工作。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "China Working Holiday Visa",
+      "url": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
+      "publisher": "Immigration New Zealand",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "中国大陆 WHV 基本资格、名额 1,000、申请流程与材料要求"
+    },
+    {
+      "type": "primary",
+      "name": "2026 opening dates for capped Working Holiday Schemes confirmed",
+      "url": "https://www.immigration.govt.nz/about-us/news-centre/2026-opening-dates-for-capped-working-holiday-schemes-confirmed",
+      "publisher": "Immigration New Zealand",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "2026 年各国家/地区开放日期与配额（中国大陆 2026-07-02 开放 1,000 个；中国香港 03-19 开放 400 个；中国台湾 05-28 开放 600 个）"
+    },
+    {
+      "type": "primary",
+      "name": "English language test results we accept",
+      "url": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
+      "publisher": "Immigration New Zealand",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "认可的语言考试与最低分数（IELTS 5.5 / TOEFL iBT 46 / PTE 42 / Cambridge B2 First 162）"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

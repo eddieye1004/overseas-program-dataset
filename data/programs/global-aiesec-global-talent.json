@@ -1,0 +1,203 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "global-aiesec-global-talent",
+    "name": "AIESEC 全球人才计划（企业实习）",
+    "name_en": "AIESEC Global Talent",
+    "country": "全球（120+ 国家和地区）",
+    "country_code": "GL",
+    "region": "global",
+    "program_type": "paid_internship",
+    "visa_code": "各国实习/工作签证（由 AIESEC 驻在国分会协助）",
+    "official_url": "https://aiesec.org/global-talent",
+    "authority": "AIESEC 国际总会及各国分会",
+    "summary": "AIESEC 的海外企业实习平台，由全球企业合作伙伴发布实习岗位，覆盖商科、技术、市场、工程、金融等领域。实习时长 3-18 个月，可能提供薪资或住宿支持。AIESEC 提供文化准备、签证支持与强制保险。",
+    "tags": [
+      "stem_friendly",
+      "requires_agency",
+      "no_quota_cap",
+      "rolling"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "不限护照类型。但具体岗位的资格取决于各国雇主自设的要求（专业、语言、经验）。"
+    },
+    "age": {
+      "min": 18,
+      "max": 30,
+      "note": "AIESEC 项目整体面向 18-30 岁青年。"
+    },
+    "education": {
+      "minimum_level": "bachelor_in_progress",
+      "major_restriction": [],
+      "note": "两类人符合资格：①**硕士在读**，且整个实习期间保持学籍；②**本科毕业生，毕业不超过 2 个月**。具体岗位可能另设专业要求。经管类、技术类实习通常要求大三及以上且有实习经验；教育类实习面向大二及以上。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "须具备基础英语能力。具体语言要求由各岗位雇主设定。"
+    },
+    "funds": {
+      "required": false,
+      "note": "无官方资金门槛。需自行承担出行成本。"
+    },
+    "other_requirements": [
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "硕士在读需保持学籍；本科毕业生须在毕业 2 个月内"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "AIESEC 强制要求购买生活与健康保险，由 AIESEC 统一安排"
+      },
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "由 AIESEC 合作企业发布岗位并提供"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无统一名额上限。岗位由企业合作伙伴滚动发布，无固定申请周期。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动申请，无固定截止日期。热门岗位或地区可能因申请量足够而提前关闭。每年 2-3 月是各国分会发放录取的高峰期。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "实习项目费",
+        "amount": { "local_amount": 700, "currency": "USD", "cny_estimate": 5000, "note": "仅在接受 offer 后支付；不接受则不付费。各国分会可能略有差异" },
+        "refundable": false
+      }
+    ],
+    "processing_time": "视岗位与签证类型，通常 1-3 个月"
+  },
+
+  "documents": [
+    { "name": "AIESEC 平台档案", "required": true, "note": "含技能、背景、经历、语言、简历（类似 LinkedIn）", "prepare_days": 7 },
+    { "name": "简历（CV）", "required": true, "note": "", "prepare_days": 14 },
+    { "name": "在读证明或毕业证明", "required": true, "note": "证明当前在读或毕业 2 个月内", "prepare_days": 14 },
+    { "name": "有效护照", "required": true, "note": "用于后续签证安排", "prepare_days": 30 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "在 AIESEC 平台创建档案",
+      "description": "注册 AIESEC 账号，完善个人档案（技能、背景、工作经历、教育、语言、简历）。档案完整度直接影响被雇主选中的概率。",
+      "duration": "1-2 天",
+      "official_link": "https://aiesec.org/global-talent"
+    },
+    {
+      "step_no": 2,
+      "title": "按领域与地区搜索并申请岗位",
+      "description": "浏览全球企业发布的实习岗位（覆盖商科、技术、市场、工程、金融）。可同时申请多个岗位，无数量限制。",
+      "duration": "持续",
+      "official_link": "https://aiesec.org/global-talent"
+    },
+    {
+      "step_no": 3,
+      "title": "通过雇主的选拔流程",
+      "description": "档案匹配后，由 AIESEC 驻在国分会及企业进行面试。部分岗位可能有额外评估环节。",
+      "duration": "2-6 周",
+      "official_link": "https://aiesec.org/global-talent"
+    },
+    {
+      "step_no": 4,
+      "title": "接受 offer 并缴费",
+      "description": "收到录取 offer 并接受后，支付约 700 美元项目费。不接受则不付费。",
+      "duration": "1 周",
+      "official_link": "https://aiesec.org/global-talent"
+    },
+    {
+      "step_no": 5,
+      "title": "签证、保险与文化准备",
+      "description": "AIESEC 协调签证文件、安排强制保险、提供跨文化准备培训。由驻在国分会协助住宿与落地接机。",
+      "duration": "1-3 个月",
+      "official_link": "https://aiesec.org/global-talent"
+    },
+    {
+      "step_no": 6,
+      "title": "赴外实习",
+      "description": "抵达后由驻在国分会安排接机与住宿，开始实习。实习时长视岗位为 3-18 个月。",
+      "duration": "3-18 个月",
+      "official_link": "https://aiesec.org/global-talent"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 18,
+    "max_same_employer_months": 18,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "视岗位与签证类型而定。",
+    "restricted_occupations": [],
+    "note": "补偿形式视岗位而定：可能提供薪资支持或住宿支持。实习通常为带薪（paid）。"
+  },
+
+  "risks": [
+    {
+      "level": "warning",
+      "description": "岗位质量差异极大。AIESEC 是平台性质，具体体验完全取决于所申请的企业与岗位，签约前务必核实雇主真实性。"
+    },
+    {
+      "level": "warning",
+      "description": "本科毕业生须在毕业 2 个月内申请。超出时间窗口即失去资格。硕士在读须确保实习全程保持学籍。"
+    },
+    {
+      "level": "warning",
+      "description": "部分 AIESEC 岗位为**志愿者项目**（Global Volunteer，非带薪），与 Global Talent（实习）不同。申请时务必区分，避免误报。"
+    },
+    {
+      "level": "info",
+      "description": "优势：覆盖 120+ 国家、岗位领域广、企业实习平台化、有签证与保险支持。相比独立申请海外实习，降低了信息与流程门槛。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "AIESEC Global Talent",
+      "url": "https://aiesec.org/global-talent",
+      "publisher": "AIESEC International",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "Global Talent 平台定位、岗位领域、实习时长 3-18 个月、补偿形式"
+    },
+    {
+      "type": "secondary",
+      "name": "AIESEC Global Talent 2026 概述",
+      "url": "https://www.opportunitynest.org/opportunity/aiesec-global-talent-global",
+      "publisher": "Opportunity Nest",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "资格条件（硕士在读或本科毕业 2 个月内）、所需材料、滚动申请无固定截止日、AIESEC 提供文化准备/签证支持/强制保险"
+    },
+    {
+      "type": "secondary",
+      "name": "AIESEC 实习项目类型说明（浙江大学分会）",
+      "url": "https://baike.baidu.com/item/AIESEC%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6%E5%88%86%E4%BC%9A",
+      "publisher": "百度百科",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "实习类型划分（经管类 MT / 技术类 TT / 教育类 ET）、各类型的年级与经验要求、主要实习国家"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

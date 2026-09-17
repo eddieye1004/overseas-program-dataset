@@ -1,0 +1,170 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "ie-working-holiday-authorisation",
+    "name": "爱尔兰打工度假授权",
+    "name_en": "Ireland Working Holiday Authorisation (WHA)",
+    "country": "爱尔兰",
+    "country_code": "IE",
+    "region": "europe",
+    "program_type": "working_holiday",
+    "visa_code": "WHA",
+    "official_url": "https://www.irishimmigration.ie/",
+    "authority": "Immigration Service Delivery, Ireland（爱尔兰移民服务局）",
+    "summary": "爱尔兰与部分国家和地区签订的打工度假协议，允许 18-30 岁青年在爱尔兰停留 12 个月（部分国家 24 个月）并合法工作。⚠️ 中国大陆不在协议名单内，仅限中国香港（200 个名额）、中国台湾（400 个名额）及其他签约国家/地区。",
+    "tags": [
+      "no_agency_needed",
+      "high_wage"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "not_eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "⚠️ 关键信息：爱尔兰 WHA 仅对签约国家/地区开放，包括中国香港（200 名额）、中国台湾（400 名额）、澳大利亚、加拿大、日本、韩国、新西兰、美国等。中国大陆不在名单内。"
+    },
+    "age": {
+      "min": 18,
+      "max": 30,
+      "note": "18-30 周岁（加拿大、澳大利亚等国可放宽至 35 岁）"
+    },
+    "education": {
+      "minimum_level": "any",
+      "major_restriction": [],
+      "note": "无学历硬性要求，但部分签约地区需提供学历证明"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "无强制语言考试要求，但须具备基本英语能力"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 3000,
+        "currency": "EUR",
+        "cny_estimate": 23500,
+        "note": "约 3,000 欧元资金证明（部分来源表述为 2,500 欧元）"
+      },
+      "note": "需证明有足够资金支付返程机票及初期生活费用"
+    },
+    "other_requirements": [
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "须购买私人医疗保险"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "须提供无犯罪记录证明"
+      },
+      {
+        "type": "return_ticket",
+        "required": true,
+        "note": "须提供返程机票或等额资金证明"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "appointment",
+    "quota": null,
+    "quota_note": "中国香港 200 个名额/年、中国台湾 400 个名额/年；中国大陆无配额（不在协议内）。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "unknown",
+        "note": "名额开放时间与具体流程需向爱尔兰驻当地使领馆确认。中国大陆无法申请。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费",
+        "amount": { "local_amount": 150, "currency": "EUR", "cny_estimate": 1200, "note": "具体金额以使领馆公告为准" },
+        "refundable": false
+      }
+    ],
+    "processing_time": "约 8 周"
+  },
+
+  "documents": [
+    { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照", "prepare_days": 30 },
+    { "name": "资金证明", "required": true, "note": "约 3,000 欧元", "prepare_days": 14 },
+    { "name": "医疗保险", "required": true, "note": "覆盖全程停留期", "prepare_days": 14 },
+    { "name": "无犯罪记录证明", "required": true, "note": "", "prepare_days": 30 },
+    { "name": "返程机票或资金证明", "required": true, "note": "", "prepare_days": 14 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认护照资格（第一步，也可能是终点）",
+      "description": "爱尔兰 WHA 仅对签约国家/地区开放。中国大陆不在名单内。若持中国大陆护照，此项目不可申请。",
+      "duration": "5 分钟",
+      "official_link": "https://www.irishimmigration.ie/"
+    },
+    {
+      "step_no": 2,
+      "title": "向爱尔兰驻当地使领馆申请",
+      "description": "（仅限合格护照持有人）确认名额余额后，准备材料并向爱尔兰驻当地使领馆或签证中心递交申请。",
+      "duration": "数周",
+      "official_link": "https://www.irishimmigration.ie/"
+    },
+    {
+      "step_no": 3,
+      "title": "获批后注册居留",
+      "description": "（仅限合格护照持有人）入境爱尔兰后按规定注册居留许可。",
+      "duration": "入境后 90 天内",
+      "official_link": "https://www.irishimmigration.ie/"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 0,
+    "max_study_months": 6,
+    "renewable": false,
+    "renewal_condition": "不可续签。加拿大公民可停留 24 个月。",
+    "restricted_occupations": [],
+    "note": "可为任意雇主工作。持 WHA 期间可自由往来欧盟申根区（需另遵守申根停留规则）。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "⚠️ 中国大陆护照不可申请。这是一个显式排除记录，用于纠正中文互联网上的错误信息。"
+    },
+    {
+      "level": "info",
+      "description": "中国香港（200 名额）、中国台湾（400 名额）护照持有者可申请。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Working Holiday Authorisation",
+      "url": "https://www.irishimmigration.ie/",
+      "publisher": "Immigration Service Delivery, Ireland",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "WHA 签约国家/地区名单、年龄要求、资金要求、停留期"
+    },
+    {
+      "type": "secondary",
+      "name": "爱尔兰工签类型梳理",
+      "url": "https://www.irishimmigration.ie/",
+      "publisher": "公开资料汇编",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "WHA 仅限中国香港（200 名额）、中国台湾（400 名额）及日韩新澳加美等；中国大陆不在协议名单"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

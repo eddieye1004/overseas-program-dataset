@@ -1,0 +1,216 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "jp-working-holiday",
+    "name": "日本打工度假签证",
+    "name_en": "Japan Working Holiday Programme (ワーキングホリデー)",
+    "country": "日本",
+    "country_code": "JP",
+    "region": "asia",
+    "program_type": "working_holiday",
+    "visa_code": "Working Holiday",
+    "official_url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
+    "authority": "日本外务省（MOFA）/ 日本驻华大使馆、总领事馆",
+    "summary": "日本与 32 个国家和地区签订的青年文化交流签证，允许 18-30 岁青年在日本停留 12 个月并合法打工以补充旅费。⚠️ 日本外务省公布的协议名单中未包含中国大陆，对华安排为年度协商制，部分年份开放、部分年份暂停，须以日本驻华使领馆当年公告为准。",
+    "tags": [
+      "once_in_lifetime",
+      "no_agency_needed"
+    ],
+    "active": false
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "conditional",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "⚠️ 日本外务省官方公布的 32 个协议国家/地区名单中，包含中国台湾（10,000 名额）与中国香港（1,500 名额），但不包含中国大陆。中国大陆申请人的安排为年度协商制，须以日本驻华使领馆当年公告为准，且部分年份需通过指定代招渠道。切勿依据网上攻略盲目准备。"
+    },
+    "age": {
+      "min": 18,
+      "max": 30,
+      "note": "申请时 18-30 周岁（含）。部分国家协议可放宽至 35 岁。"
+    },
+    "education": {
+      "minimum_level": "high_school",
+      "major_restriction": [],
+      "note": "高中毕业及以上学历"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "无强制语言考试要求。但部分使领馆可能要求提供基础语言能力证明。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 250000,
+        "currency": "JPY",
+        "cny_estimate": 12000,
+        "note": "约 20-30 万日元存款证明，用于初期生活。具体金额依使领馆要求。"
+      },
+      "note": "需证明有足够资金维持初期停留。"
+    },
+    "other_requirements": [
+      {
+        "type": "health_check",
+        "required": false,
+        "note": "部分使领馆要求健康保险证明"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "部分使领馆要求提供健康/旅行保险证明"
+      },
+      {
+        "type": "no_dependents",
+        "required": true,
+        "note": "不可携带被抚养的子女或不带家属随行"
+      },
+      {
+        "type": "return_ticket",
+        "required": true,
+        "note": "须持有返程机票或足够购买返程机票的资金"
+      },
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "此前未曾取得过日本打工度假签证（原则上每人限一次；部分国家 2024 年起放宽至两次）"
+      },
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "须为协议国家/地区国民，且目前居住于其国籍国/地区"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "annual_negotiation",
+    "quota": null,
+    "quota_note": "各国配额不同。中国台湾 10,000 个、中国香港 1,500 个。中国大陆无名额（不在官方协议名单内），实际安排为年度协商制。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "unknown",
+        "note": "中国大陆申请人须向日本驻华使领馆确认当年是否开放及名额。部分年份全年可申请。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费",
+        "amount": { "local_amount": 3000, "currency": "JPY", "cny_estimate": 150, "note": "单次签证 3,000 日元（2026-07-01 起新标准）；部分国籍免费" },
+        "refundable": false
+      }
+    ],
+    "processing_time": "约 5-15 个工作日"
+  },
+
+  "documents": [
+    { "name": "签证申请表", "required": true, "note": "日本外务省标准表格", "prepare_days": 7 },
+    { "name": "有效护照", "required": true, "note": "有效期须覆盖整个停留期", "prepare_days": 30 },
+    { "name": "照片", "required": true, "note": "白底，4cm × 3cm，3 个月内拍摄", "prepare_days": 7 },
+    { "name": "资金证明", "required": true, "note": "银行存款证明，约 20-30 万日元以上，1 个月内开具", "prepare_days": 14 },
+    { "name": "返程机票或购票资金证明", "required": true, "note": "", "prepare_days": 14 },
+    { "name": "健康保险证明", "required": false, "note": "部分使领馆要求", "prepare_days": 14 },
+    { "name": "履历书（CV）", "required": true, "note": "含学历与职业经历，英文或日文", "prepare_days": 7 },
+    { "name": "理由书", "required": true, "note": "致使领馆，说明赴日目的", "prepare_days": 7 },
+    { "name": "行程计划书", "required": true, "note": "逐月说明停留城市与活动安排", "prepare_days": 14 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认当年是否开放（中国大陆申请人必做）",
+      "description": "日本外务省官方协议名单不含中国大陆，对华安排为年度协商制。第一步必须联系日本驻华使领馆，确认当年是否接受申请及具体名额。",
+      "duration": "1-2 周",
+      "official_link": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html"
+    },
+    {
+      "step_no": 2,
+      "title": "准备申请材料",
+      "description": "准备申请表、护照、照片、资金证明、返程机票、履历书、理由书、行程计划书等。所有文件须为英文或日文，A4 格式。",
+      "duration": "2-4 周",
+      "official_link": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html"
+    },
+    {
+      "step_no": 3,
+      "title": "向日本使领馆递交申请",
+      "description": "在日本驻华大使馆或总领事馆递交申请（不可在日本境内申请）。部分使领馆接受指定旅行社代办。可能需参加简短面试，重点考察赴日目的与资金准备。",
+      "duration": "1 天",
+      "official_link": "https://www.cn.emb-japan.go.jp/"
+    },
+    {
+      "step_no": 4,
+      "title": "等待审核并领取签证",
+      "description": "审核期通常 5-15 个工作日，部分使领馆可当日或次日签发。获批后领取签证。签证有效期通常为 1 年，自入境日起算停留期。",
+      "duration": "5-15 个工作日",
+      "official_link": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html"
+    },
+    {
+      "step_no": 5,
+      "title": "入境日本并登记住址",
+      "description": "入境后可立即开始工作，无需另行办理工作许可。入境后 14 天内到居住地市役所登记住址，领取在留卡（Residence Card）。",
+      "duration": "入境后 14 天内",
+      "official_link": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 0,
+    "max_study_months": 6,
+    "renewable": false,
+    "renewal_condition": "不可续签。若从事特定农业工作满 88 天，可申请'特定活动'签证延长停留。",
+    "restricted_occupations": [
+      "酒吧",
+      "夜总会",
+      "赌博场所",
+      "影响公共道德的其他场所"
+    ],
+    "note": "打工为度假的附带活动，用于补充旅费。可从事任何不违反公共道德的行业。每周工时无硬性上限（区别于留学签证的 28 小时）。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "⚠️ 日本外务省官方公布的 32 个协议国家/地区名单中不含中国大陆。网上'日本打工度假对中国开放'的说法需谨慎核实，必须以日本驻华使领馆当年公告为准。"
+    },
+    {
+      "level": "warning",
+      "description": "中国大陆申请人部分年份需通过指定代招渠道，可能产生额外费用。"
+    },
+    {
+      "level": "warning",
+      "description": "一生原则仅一次，部分国家自 2024 年起放宽至两次，但适用国家不含中国大陆。"
+    },
+    {
+      "level": "info",
+      "description": "常见工作：餐饮、酒店、零售、服务业、农业、滑雪场、旅游业。中国台湾、中国香港护照持有人申请更为顺畅。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "The Working Holiday Programmes in Japan",
+      "url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
+      "publisher": "Ministry of Foreign Affairs of Japan",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "截至 2026-04-01 的 32 个协议国家/地区名单（含中国台湾、中国香港，不含中国大陆）、各国配额、年龄要求 18-30、申请程序、工作限制（禁止酒吧/夜总会/赌博场所）"
+    },
+    {
+      "type": "primary",
+      "name": "在留資格認定証明書（COE）处理时长",
+      "url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
+      "publisher": "日本法务省出入国在留管理厅",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "签证审理时长参考"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

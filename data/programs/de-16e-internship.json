@@ -1,0 +1,237 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "de-16e-internship",
+    "name": "德国与学业相关实习居留许可",
+    "name_en": "Residence Permit for a Study-related Internship (§16e AufenthG)",
+    "country": "德国",
+    "country_code": "DE",
+    "region": "europe",
+    "program_type": "internship_visa",
+    "visa_code": "§16e AufenthG",
+    "official_url": "https://www.make-it-in-germany.com/en/visa/kinds-of-visa/internship/",
+    "authority": "德国联邦政府 / 各地外国人管理局（Ausländerbehörde）",
+    "summary": "面向非欧盟高校在读生（或毕业不超过 2 年）的实习居留许可，允许在德国企业进行最长 6 个月、与所学专业相关的实习。中国大陆在读学生可申请。需先获得德国雇主实习合同。",
+    "tags": [
+      "requires_degree",
+      "stem_friendly",
+      "no_agency_needed"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "面向非欧盟/欧洲经济区（第三国）公民，中国大陆护照持有人适用。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "无年龄上限。未满 18 岁需监护人同意其停留计划。"
+    },
+    "education": {
+      "minimum_level": "bachelor_in_progress",
+      "major_restriction": [],
+      "note": "须满足任一条件：①目前仍在非欧盟国家高校就读；②在申请前 2 年内已取得非欧盟国家高校学历。**实习内容必须在专业和层级上与所学专业/学历相匹配。** 学历可比性依据德国中央外国教育事务办公室（ZAB）的评估建议（anabin 数据库）。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方无强制语言考试要求，但实习单位通常要求英语或德语工作能力。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 752,
+        "currency": "EUR",
+        "cny_estimate": 5900,
+        "note": "**每月**至少 752 欧元。可通过以下任一方式证明：①德国银行阻塞账户（Sperrkonto），每月取款上限 752 欧元；②奖学金证明；③德国当地外国人管理局签署的担保声明（Verpflichtungserklärung）。"
+      },
+      "note": "资金须覆盖整个实习期。"
+    },
+    "other_requirements": [
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "须与德国雇主签订实习合同（Praktikumsvertrag）"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "旅行医疗保险，覆盖全程，最低保额 30,000 欧元"
+      },
+      {
+        "type": "government_support_letter",
+        "required": false,
+        "note": "如适用，需提供德国联邦就业局（Bundesagentur für Arbeit）的预批"
+      },
+      {
+        "type": "blocked_account",
+        "required": true,
+        "note": "通常需开立德国阻塞账户（Sperrkonto）"
+      },
+      {
+        "type": "health_check",
+        "required": false,
+        "note": "视情况而定"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "appointment",
+    "quota": null,
+    "quota_note": "无名额限制。但须先获得德国雇主实习合同。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年可申请，无固定开放窗口。关键前置条件：先拿到德国雇主实习合同。建议在计划出行前 3-4 个月开始准备。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费",
+        "amount": { "local_amount": 75, "currency": "EUR", "cny_estimate": 590 },
+        "refundable": false
+      },
+      {
+        "item": "居留许可签发费",
+        "amount": { "local_amount": 100, "currency": "EUR", "cny_estimate": 790, "note": "特定条件下可减免" },
+        "refundable": false
+      }
+    ],
+    "processing_time": "签证约 1-2 个月"
+  },
+
+  "documents": [
+    { "name": "完整并签署的签证申请表", "required": true, "note": "", "prepare_days": 7 },
+    { "name": "材料真实性声明", "required": true, "note": "Declaration of genuineness", "prepare_days": 3 },
+    { "name": "有效护照", "required": true, "note": "有效期至少 6 个月，10 年内签发，至少 2 页空白页；需复印照片页及签证页", "prepare_days": 30 },
+    { "name": "生物识别照片", "required": true, "note": "3 张近照", "prepare_days": 7 },
+    { "name": "德国雇主实习合同", "required": true, "note": "Praktikumsvertrag", "prepare_days": 90 },
+    { "name": "简历 + 学位证书/在读证明", "required": true, "note": "", "prepare_days": 14 },
+    { "name": "资金证明", "required": true, "note": "阻塞账户每月 ≥ 752 欧元，或奖学金/担保声明", "prepare_days": 30 },
+    { "name": "旅行医疗保险", "required": true, "note": "覆盖全程，保额 ≥ 30,000 欧元", "prepare_days": 14 },
+    { "name": "联邦就业局预批", "required": false, "note": "如适用", "prepare_days": 45 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "获得德国雇主实习合同",
+      "description": "这是最关键的起点。实习内容必须与你的专业/学历相匹配。合同须明确培训计划、期限、工作条件、监督方式与法律关系。",
+      "duration": "1-6 个月",
+      "official_link": "https://www.make-it-in-germany.com/en/visa/kinds-of-visa/internship/"
+    },
+    {
+      "step_no": 2,
+      "title": "开立阻塞账户并购买保险",
+      "description": "在德国银行开立阻塞账户（Sperrkonto），存入每月至少 752 欧元的资金；购买覆盖全期、保额 ≥ 30,000 欧元的旅行医疗保险。",
+      "duration": "2-4 周",
+      "official_link": "https://www.make-it-in-germany.com/en/living-in-germany/finances/blocked-account/"
+    },
+    {
+      "step_no": 3,
+      "title": "向德国驻华使领馆递交签证申请",
+      "description": "准备全套材料（原件 + 2 份复印件）并递交。申请人须具备当地居留身份方可申请。审理周期约 1-2 个月。建议获批后再购买机票。",
+      "duration": "1-2 个月",
+      "official_link": "https://china.diplo.de/"
+    },
+    {
+      "step_no": 4,
+      "title": "获批后入境德国",
+      "description": "签证获批后入境德国。注意：该签证性质为居留许可，须在入境后到当地外国人管理局办理正式居留许可。",
+      "duration": "按计划",
+      "official_link": "https://www.make-it-in-germany.com/en/visa/kinds-of-visa/internship/"
+    },
+    {
+      "step_no": 5,
+      "title": "到外国人管理局申请居留许可",
+      "description": "入境后到居住地所属外国人管理局（Ausländerbehörde）提交申请，可能需现场面谈并采集指纹以制作电子居留卡（eAT）。若有必要，外国人管理局会征询联邦就业局意见。",
+      "duration": "数周",
+      "official_link": "https://verwaltung.bund.de/leistungsverzeichnis/en/leistung/NI/409271867"
+    },
+    {
+      "step_no": 6,
+      "title": "领取电子居留卡（eAT）",
+      "description": "通常几周后可到外国人管理局亲自领取电子居留卡。",
+      "duration": "数周",
+      "official_link": "https://verwaltung.bund.de/leistungsverzeichnis/en/leistung/NI/409271867"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 6,
+    "max_same_employer_months": 6,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "居留许可按实习合同期限签发，最长 6 个月。实习结束后一般可申请变更其他居留身份。",
+    "restricted_occupations": [],
+    "note": "⚠️ 持该居留许可期间**不得从事任何雇佣工作**（This is an internship permit, not a work permit）。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "持该许可期间不得从事其他雇佣工作，仅限实习。若违反可能被撤销居留许可。"
+    },
+    {
+      "level": "warning",
+      "description": "实习内容必须与所学专业相关且层级匹配，否则申请会被拒绝。实习与专业不对口是最常见的拒签原因。"
+    },
+    {
+      "level": "warning",
+      "description": "需先获得德国雇主实习合同才能申请。无合同无法启动流程。实习机会需要自行寻找（可通过 IAESTE、DAAD、企业官网等渠道）。"
+    },
+    {
+      "level": "info",
+      "description": "优势：无名额限制、无年龄上限、中国大陆护照可申请、实习经历对欧洲求职或深造有加分。最长 6 个月，随实习合同期限。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Internship visa — Make it in Germany",
+      "url": "https://www.make-it-in-germany.com/en/visa/kinds-of-visa/internship/",
+      "publisher": "Federal Government of Germany",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "实习签证的基本要求与官方入口"
+    },
+    {
+      "type": "primary",
+      "name": "Apply for a residence permit for a study-related internship EU",
+      "url": "https://verwaltung.bund.de/leistungsverzeichnis/en/leistung/NI/409271867",
+      "publisher": "Bundesportal (Germany)",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "资格条件（非欧盟高校在读或毕业 2 年内）、最长 6 个月、实习须与专业相关、不得从事雇佣工作、法律依据 §16e AufenthG、费用 EUR 100"
+    },
+    {
+      "type": "primary",
+      "name": "Students' Internship Visa — 德国驻香港总领事馆",
+      "url": "https://hongkong.diplo.de/blob/1475188/fbefe8a21616b8939186927e96dceb01/internship-visa-data.pdf",
+      "publisher": "German Consulate General Hong Kong",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "完整材料清单、资金要求 EUR 752/月、保险保额 EUR 30,000、签证费 EUR 75、审理周期 1-2 个月"
+    },
+    {
+      "type": "primary",
+      "name": "Trainee in Germany — EU Immigration Portal",
+      "url": "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/eu-immigration-portal/trainee-germany_en",
+      "publisher": "European Commission",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "Directive (EU) 2016/801 下的培训居留许可条件、培训协议内容要求、最长 6 个月、联邦就业局审批要求"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

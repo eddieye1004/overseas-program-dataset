@@ -1,0 +1,255 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "us-j1-summer-work-travel",
+    "name": "美国 J-1 暑期带薪实习项目",
+    "name_en": "Summer Work Travel (J-1 Exchange Visitor Program)",
+    "country": "美国",
+    "country_code": "US",
+    "region": "north_america",
+    "program_type": "paid_internship",
+    "visa_code": "J-1",
+    "official_url": "https://j1visa.state.gov/programs/summer-work-travel/",
+    "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
+    "summary": "美国国务院官方文化交流项目，允许全球全日制在校大学生持 J-1 签证暑期赴美进行 8-16 周带薪实习，最长停留 4 个月。这是唯一不限名额、面向在校生、无语言硬门槛的海外带薪项目。中国大陆学生须通过指定 Sponsor 及国内合作机构申请。",
+    "tags": [
+      "no_quota_cap",
+      "requires_agency",
+      "cultural_exchange",
+      "engineering_friendly",
+      "rolling"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "不限护照类型，只要符合美国国务院对 J-1 交流访问者的要求即可。中国自 2007-2008 年引入该项目。"
+    },
+    "age": {
+      "min": 18,
+      "max": 28,
+      "note": "通常要求 18-28 周岁的全日制在校本科生、研究生。具体上限以各 Sponsor 机构规定为准。"
+    },
+    "education": {
+      "minimum_level": "bachelor_in_progress",
+      "major_restriction": [],
+      "note": "必须是美国境外经认证的大专院校全日制在读学生，且已完成至少 1 个学期或同等时长的中学后教育。不限专业。"
+    },
+    "language": {
+      "required": true,
+      "tests": [
+        { "test": "none", "min_score": 0, "validity_months": 0 }
+      ],
+      "note": "无需雅思/托福成绩，但必须具备足以在英语工作环境中沟通的能力。须通过项目方英语测试及美方雇主面试。"
+    },
+    "funds": {
+      "required": false,
+      "note": "无官方资金门槛。但由于需要自付项目费、机票、前期食宿，须具备一定经济基础。实习薪水可覆盖在美生活开销。"
+    },
+    "other_requirements": [
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "须提供在读证明及学校放假证明；报名前需征得家长/监护人同意"
+      },
+      {
+        "type": "health_check",
+        "required": false,
+        "note": "无强制体检，但须身心健康、无传染性疾病"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "项目包含美方指定医疗及意外伤害保险（覆盖 DS-2019 表起止日期范围）"
+      },
+      {
+        "type": "criminal_record",
+        "required": false,
+        "note": "需无犯罪记录"
+      },
+      {
+        "type": "return_ticket",
+        "required": false,
+        "note": "项目结束后须在 30 天内离境并返回本国"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无年度名额上限。全球每年约 10 万名大学生参加。但单个 Sponsor 机构的岗位名额有限，建议尽早报名。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "closed",
+        "note": "2026 年暑期项目报名已于 2025 年底至 2026 年初完成。工作时间通常为 6 月中旬至 9 月中旬。"
+      },
+      {
+        "year": 2027,
+        "status": "upcoming",
+        "note": "2027 年暑期项目建议在 2026 年 9 月底前完成报名，早申请早安置。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "报名费",
+        "amount": { "local_amount": 3000, "currency": "CNY", "note": "各机构不同，部分机构在通过英语测试后可退" },
+        "refundable": false
+      },
+      {
+        "item": "项目费",
+        "amount": { "local_amount": 3280, "currency": "USD", "cny_estimate": 23500, "note": "含岗位匹配、DS-2019 表、SEVIS I-901 费、签证辅导、医疗保险、行前培训等" },
+        "refundable": false
+      }
+    ],
+    "processing_time": "签证审理约 2-4 周"
+  },
+
+  "documents": [
+    { "name": "有效护照", "required": true, "note": "有效期覆盖整个停留期", "prepare_days": 30 },
+    { "name": "在读证明", "required": true, "note": "学校出具的全日制在读证明", "prepare_days": 14 },
+    { "name": "假期证明", "required": true, "note": "证明 6-9 月为学校假期，需提前向院系申请", "prepare_days": 30 },
+    { "name": "家长知情同意书", "required": true, "note": "报名前须征得家长/监护人同意", "prepare_days": 7 },
+    { "name": "DS-2019 表", "required": true, "note": "美国国务院授权 Sponsor 机构签发的核心文件，项目方协助办理", "prepare_days": 60 },
+    { "name": "SEVIS I-901 缴费凭证", "required": true, "note": "通常含在项目费中", "prepare_days": 7 },
+    { "name": "Job Offer", "required": true, "note": "美方雇主工作邀请函，通过雇主面试后获得", "prepare_days": 60 },
+    { "name": "签证照片", "required": true, "note": "符合美国签证规格", "prepare_days": 7 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "咨询报名与英语测试",
+      "description": "了解项目详情，提交报名表，缴纳报名费，签订项目参与协议。参加线上英语能力测试，7 个工作日内缴纳项目费尾款。",
+      "duration": "1-2 周",
+      "official_link": "https://j1visa.state.gov/programs/summer-work-travel/"
+    },
+    {
+      "step_no": 2,
+      "title": "岗位匹配与雇主面试",
+      "description": "填写美方申请文件，根据可用工作时间、英语水平和个人意愿匹配岗位。参加美方雇主线上/线下面试（部分机构提供面试培训）。",
+      "duration": "2-8 周",
+      "official_link": "https://j1visa.state.gov/programs/summer-work-travel/"
+    },
+    {
+      "step_no": 3,
+      "title": "获得 Job Offer 与 DS-2019 表",
+      "description": "通过雇主面试后获得 Job Offer，缴纳项目费尾款，由 Sponsor 机构签发 DS-2019 表（申请 J-1 签证的核心文件）。",
+      "duration": "2-4 周",
+      "official_link": "https://j1visa.state.gov/programs/summer-work-travel/"
+    },
+    {
+      "step_no": 4,
+      "title": "缴纳 SEVIS 费并预约面签",
+      "description": "缴纳 SEVIS I-901 费，填写 DS-160 表，预约美国使领馆 J-1 签证面签。参加签证辅导。",
+      "duration": "2-4 周",
+      "official_link": "https://ceac.state.gov/genniv/"
+    },
+    {
+      "step_no": 5,
+      "title": "赴美使领馆面签",
+      "description": "按预约时间前往美国使领馆参加面签。J-1 签证通过率相对较高。",
+      "duration": "1 天",
+      "official_link": "https://www.ustraveldocs.com/cn_zh/"
+    },
+    {
+      "step_no": 6,
+      "title": "行前准备与出发",
+      "description": "签证通过后购买往返机票，参加行前培训（美国企业文化、项目规范、跨文化适应、法律安全、应急联络）。",
+      "duration": "2-4 周",
+      "official_link": "https://j1visa.state.gov/programs/summer-work-travel/"
+    },
+    {
+      "step_no": 7,
+      "title": "赴美实习与旅行",
+      "description": "入境美国后办理社会安全号（SSN），入住上岗。工作结束后享有最长 30 天合法旅行期。须在项目起始日前返回本国。",
+      "duration": "8-16 周",
+      "official_link": "https://j1visa.state.gov/programs/summer-work-travel/"
+    },
+    {
+      "step_no": 8,
+      "title": "回国销签与退税",
+      "description": "回国后返校报到，提交登机牌办理销签。于回国次年按美国税务机关要求提交材料办理退税。",
+      "duration": "次年",
+      "official_link": "https://www.irs.gov/"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 4,
+    "max_same_employer_months": 4,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "可多次参加该项目（须每次满足在校生身份要求）。",
+    "restricted_occupations": [
+      "销售需自行购入存货的岗位",
+      "私人住宅内的家政工作（育儿、养老、园艺、司机）",
+      "三轮车或轮椅驾驶",
+      "任何需驾驶执照的车辆或船只操作",
+      "涉及患者接触的临床护理岗位",
+      "成人娱乐相关岗位"
+    ],
+    "note": "岗位均为非专业性基础服务类，每周工作 32-40 小时，超时按州法支付加班费。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "必须通过美国国务院授权 Sponsor 及国内中介机构申请，无法自主申请。中介质量参差不齐，存在'皮包公司'。"
+    },
+    {
+      "level": "critical",
+      "description": "历史上存在系统性问题：房租被中介指定且高于当地市场 2-3 倍；岗位差、工资低；部分其他国家项目费含机票但中国大陆学生不含。"
+    },
+    {
+      "level": "warning",
+      "description": "岗位安置后不得任意更改实习起止时间，否则将导致岗位取消、丧失赴美机会。"
+    },
+    {
+      "level": "warning",
+      "description": "J-1 身份与特定雇主绑定，若擅自辞职另找工作，在美留居身份将变为非法，人身安全与权益得不到法律保障。"
+    },
+    {
+      "level": "info",
+      "description": "优势：不限名额、无语言硬门槛、门槛低；J-1 签证记录对未来赴美留学签证有正向参考。实习薪资可覆盖在美基本开销。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Summer Work Travel Program",
+      "url": "https://j1visa.state.gov/programs/summer-work-travel/",
+      "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "项目定位（美国境外全日制大专院校学生）、参加资格、项目最长期限 4 个月、岗位排除清单、可多次参加"
+    },
+    {
+      "type": "primary",
+      "name": "BridgeUSA - Summer Work Travel",
+      "url": "https://j1visa.state.gov/programs/summer-work-travel/",
+      "publisher": "U.S. Department of State",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "须为美国境外认证高校全日制在读生、须完成至少 1 个学期、需提前安置岗位"
+    },
+    {
+      "type": "primary",
+      "name": "SWT 项目宣讲通知（西安理工大学国际处）",
+      "url": "https://oice.xaut.edu.cn/info/1146/2290.htm",
+      "publisher": "西安理工大学国际合作与交流处",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "中国高校引进该项目的具体资格条件（18-28 周岁全日制在校本科生/研究生）、费用结构、申请流程、工作时间 6月15日-9月15日"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

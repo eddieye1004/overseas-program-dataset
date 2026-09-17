@@ -1,0 +1,182 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "uk-youth-mobility-scheme",
+    "name": "英国青年流动计划",
+    "name_en": "UK Youth Mobility Scheme (YMS) — Tier 5",
+    "country": "英国",
+    "country_code": "GB",
+    "region": "europe",
+    "program_type": "working_holiday",
+    "visa_code": "Tier 5 / YMS",
+    "official_url": "https://www.gov.uk/youth-mobility",
+    "authority": "UK Visas and Immigration（英国签证与移民局）",
+    "summary": "英国与部分国家和地区签订的青年流动计划，允许 18-30 岁（部分 18-35 岁）青年在英国生活工作 24 个月。⚠️ 中国大陆不在 YMS 协议名单内，中国大陆护照持有人无法通过此计划申请。中国香港、中国台湾在名单内。",
+    "tags": [
+      "no_agency_needed",
+      "high_wage"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "not_eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "⚠️ 关键信息：英国 YMS 采用双边协议 + 抽签制，参与国家/地区包括澳大利亚、加拿大、中国香港、中国台湾、日本、韩国、新西兰、摩纳哥、圣马力诺等。中国大陆不在名单内。"
+    },
+    "age": {
+      "min": 18,
+      "max": 30,
+      "note": "18-30 周岁（部分签约地区可放宽至 35 岁）"
+    },
+    "education": {
+      "minimum_level": "any",
+      "major_restriction": [],
+      "note": "无学历硬性要求"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "YMS 不要求提供英语考试成绩"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 2530,
+        "currency": "GBP",
+        "cny_estimate": 23000,
+        "note": "约 2,530 英镑资金证明（用于支付初期生活费用）"
+      },
+      "note": "需在申请前连续持有 28 天以上"
+    },
+    "other_requirements": [
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "需缴纳移民健康附加费（IHS），用于使用 NHS 医疗服务"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "需提供无犯罪记录证明"
+      },
+      {
+        "type": "no_dependents",
+        "required": true,
+        "note": "不可携带子女"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "ballot",
+    "quota": null,
+    "quota_note": "中国台湾 1,000 个/年、中国香港有独立配额；中国大陆不在名单内，无配额。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "unknown",
+        "note": "YMS 采用抽签制，每年分批开放。中国大陆无法申请。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费",
+        "amount": { "local_amount": 298, "currency": "GBP", "cny_estimate": 2700 },
+        "refundable": false
+      },
+      {
+        "item": "移民健康附加费（IHS）",
+        "amount": { "local_amount": 776, "currency": "GBP", "cny_estimate": 7000, "note": "按年计，2 年约 GBP 1,552" },
+        "refundable": false
+      },
+      {
+        "item": "生物识别信息采集费",
+        "amount": { "local_amount": 19, "currency": "GBP", "cny_estimate": 170 },
+        "refundable": false
+      }
+    ],
+    "processing_time": "约 3 周"
+  },
+
+  "documents": [
+    { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照", "prepare_days": 30 },
+    { "name": "资金证明", "required": true, "note": "约 2,530 英镑，连续持有 28 天以上", "prepare_days": 45 },
+    { "name": "无犯罪记录证明", "required": true, "note": "", "prepare_days": 30 },
+    { "name": "生物识别信息", "required": true, "note": "在签证申请中心采集", "prepare_days": 14 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认护照资格（第一步，也可能是终点）",
+      "description": "英国 YMS 仅对签约国家/地区开放。中国大陆不在名单内。若持中国大陆护照，此项目不可申请。",
+      "duration": "5 分钟",
+      "official_link": "https://www.gov.uk/youth-mobility"
+    },
+    {
+      "step_no": 2,
+      "title": "等待抽签开放并注册",
+      "description": "（仅限合格护照持有人）YMS 对高需求地区采用抽签制或配额制，须在开放时提交申请。",
+      "duration": "不定",
+      "official_link": "https://www.gov.uk/youth-mobility"
+    },
+    {
+      "step_no": 3,
+      "title": "递交申请并缴费",
+      "description": "（仅限合格护照持有人）在线递交申请，缴纳签证费、IHS 及生物识别费。",
+      "duration": "1 天",
+      "official_link": "https://www.gov.uk/youth-mobility"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 0,
+    "max_study_months": 6,
+    "renewable": false,
+    "renewal_condition": "不可续签，不可转为其他签证类别在英境内。",
+    "restricted_occupations": [
+      "职业运动员",
+      "体育教练"
+    ],
+    "note": "可为任意雇主工作，无需雇主担保。可自雇（部分限制）。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "⚠️ 中国大陆护照不可申请。这是一个显式排除记录，用于纠正中文互联网上的错误信息。"
+    },
+    {
+      "level": "info",
+      "description": "中国台湾、中国香港护照持有者可申请。若用户持中国大陆护照但符合港澳台身份，需按对应护照规则申请。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Youth Mobility Scheme visa",
+      "url": "https://www.gov.uk/youth-mobility",
+      "publisher": "UK Visas and Immigration",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "YMS 参与国家/地区名单、年龄要求、资金要求 GBP 2,530、停留期 24 个月、费用结构"
+    },
+    {
+      "type": "secondary",
+      "name": "工作假期签证（百度百科）",
+      "url": "https://baike.baidu.com/item/%E5%B7%A5%E4%BD%9C%E5%81%87%E6%9C%9F%E7%AD%BE%E8%AF%81/2127444",
+      "publisher": "百度百科",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "中国香港及中国台湾护照可申请英国工作假期签证；未列出中国大陆"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

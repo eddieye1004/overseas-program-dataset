@@ -1,0 +1,76 @@
+name: Validate Dataset
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+      - '.github/workflows/validate.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+  schedule:
+    # 每周一 UTC 01:00 自动运行（北京时间 09:00）
+    # 用于发现官方链接失效、数据过期等问题
+    - cron: '0 1 * * 1'
+  workflow_dispatch:  # 允许手动触发
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: 数据校验
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 校验数据完整性（离线）
+        run: python scripts/validate.py
+
+      - name: 检查官方链接存活
+        # 链接检查涉及网络请求，可能因目标站点反爬或临时故障产生误报，
+        # 因此设置为 continue-on-error，不阻断 CI，但会在日志中报告。
+        continue-on-error: true
+        run: python scripts/validate.py --check-links --timeout 20
+
+      - name: 生成 JSON 报告（供归档）
+        if: always()
+        run: python scripts/validate.py --json > validate-report.json || true
+
+      - name: 上传校验报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validate-report
+          path: validate-report.json
+          retention-days: 30
+
+      - name: 检查是否有数据文件遗失来源标注
+        run: |
+          python - <<'PY'
+          import json, glob, sys
+          missing = []
+          for path in sorted(glob.glob('data/programs/*.json')):
+              with open(path, encoding='utf-8') as fh:
+                  doc = json.load(fh)
+              srcs = doc.get('sources', [])
+              if not any(s.get('type') == 'primary' for s in srcs if isinstance(s, dict)):
+                  missing.append(path)
+          if missing:
+              print('以下文件缺少 primary 官方来源：')
+              for m in missing:
+                  print('  -', m)
+              sys.exit(1)
+          print('全部 %d 个项目均有 primary 官方来源' % len(glob.glob('data/programs/*.json')))
+          PY

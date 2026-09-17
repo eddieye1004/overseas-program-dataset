@@ -1,0 +1,269 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "au-462-work-holiday",
+    "name": "澳大利亚打工与度假签证（462类别）",
+    "name_en": "Work and Holiday Visa (Subclass 462)",
+    "country": "澳大利亚",
+    "country_code": "AU",
+    "region": "oceania",
+    "program_type": "working_holiday",
+    "visa_code": "462",
+    "official_url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
+    "authority": "Australian Department of Home Affairs（澳大利亚内政部）",
+    "summary": "面向 18-30 岁年轻人的打工度假签证，允许在澳合法工作 12 个月，可续签至最长 3 年。中国大陆护照持有人适用 462 类别，需先通过预申请抽签（ballot）获得递交资格。年度名额 5,000 个。",
+    "tags": [
+      "ballot_required",
+      "high_wage",
+      "renewable",
+      "requires_degree",
+      "farm_work_available",
+      "high_demand"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "not_eligible",
+      "taiwan_china": "not_eligible",
+      "note": "中国大陆护照适用 462（Work and Holiday）；中国香港、中国台湾护照适用 417（Working Holiday），两者为不同签证类别，条件与名额不同。请勿混淆。"
+    },
+    "age": {
+      "min": 18,
+      "max": 30,
+      "note": "递交申请时必须年满 18 岁且未满 31 岁（即 30 周岁含）。抽签注册时亦须在此年龄范围内。"
+    },
+    "education": {
+      "minimum_level": "bachelor_in_progress",
+      "years_completed": 2,
+      "major_restriction": [],
+      "note": "满足以下任一条件即可：①持有大学、学院或培训中心颁发的高等教育学历（学位、研究生证书、文凭等）；②已完成至少 2 年的本科学习。在读可申请，需提供在读证明。学历需学信网可查。"
+    },
+    "language": {
+      "required": true,
+      "tests": [
+        { "test": "IELTS", "min_score": 4.5, "validity_months": 12 },
+        { "test": "PTE", "min_score": 30, "validity_months": 12 },
+        { "test": "TOEFL_iBT", "min_score": 32, "validity_months": 12 },
+        { "test": "Cambridge", "min_score": 147, "validity_months": 12 }
+      ],
+      "note": "以上任一项达标即可。成绩须在递交前 12 个月内考取。雅思 A 类或 G 类均可。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 5000,
+        "currency": "AUD",
+        "cny_estimate": 23500,
+        "note": "约 5,000 澳元存款证明，用于证明初期生活能力。另需证明有足够资金购买返程机票。"
+      },
+      "note": "官方表述为'足够支持初期生活及离境的资金'，5,000 澳元为通行参考值。"
+    },
+    "other_requirements": [
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "需在移民局指定医院完成体检（含胸腔 X 光检查）"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "需提供无犯罪记录证明"
+      },
+      {
+        "type": "insurance",
+        "required": false,
+        "note": "未强制要求，但强烈建议购买医疗保险"
+      },
+      {
+        "type": "no_dependents",
+        "required": true,
+        "note": "不可携带未成年子女一同赴澳"
+      },
+      {
+        "type": "return_ticket",
+        "required": true,
+        "note": "需证明有足够资金购买返程或继续旅行机票"
+      },
+      {
+        "type": "government_support_letter",
+        "required": true,
+        "note": "中国大陆申请人需取得中国政府支持信，由 CICETE（中国国际经济技术交流中心）出具"
+      },
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "未曾以 462 或 417 签证进入过澳大利亚。一生仅可申请一次首个 462 签证。"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "ballot",
+    "quota": 5000,
+    "quota_note": "中国大陆年度名额 5,000 个（对比：印度 1,000、越南 1,500）。需先注册进入抽签池，被随机选中后方可递交正式申请。中签不等于获批。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "closed",
+        "open_date": "2026-06-04",
+        "close_date": "2026-06-25",
+        "draw_period_end": "2027-04-30",
+        "lodgement_window_days": 28,
+        "note": "2026-27 财年注册窗口。注册开放期仅 3 周，抽签选择期长达 10 个月。中签后 28 天内须递交正式申请。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "抽签注册费",
+        "amount": { "local_amount": 25, "currency": "AUD", "cny_estimate": 120 },
+        "refundable": false
+      },
+      {
+        "item": "签证申请费（首次）",
+        "amount": { "local_amount": 840, "currency": "AUD", "cny_estimate": 4000 },
+        "refundable": false
+      },
+      {
+        "item": "签证申请费（第二/三次）",
+        "amount": { "local_amount": 1000, "currency": "AUD", "cny_estimate": 4700 },
+        "refundable": false
+      }
+    ],
+    "processing_time": "约 4-8 周"
+  },
+
+  "documents": [
+    { "name": "有效护照", "required": true, "note": "有效期须超过 6 个月，首页彩色扫描件", "prepare_days": 30 },
+    { "name": "高等教育学历证明 / 在读证明", "required": true, "note": "需学信网中英文认证", "prepare_days": 30 },
+    { "name": "英语成绩单", "required": true, "note": "雅思/PTE/托福/Cambridge，12 个月内有效", "prepare_days": 60 },
+    { "name": "银行存款证明", "required": true, "note": "约 5,000 澳元等值，建议多准备 30%", "prepare_days": 14 },
+    { "name": "无犯罪记录证明", "required": true, "note": "需公证及英文翻译", "prepare_days": 30 },
+    { "name": "体检报告", "required": true, "note": "移民局指定医院出具", "prepare_days": 21 },
+    { "name": "中国政府支持信", "required": true, "note": "由 CICETE 出具，办理周期 2 周至 3 个月", "prepare_days": 90 },
+    { "name": "证件照", "required": true, "note": "符合澳洲签证规格的电子照片", "prepare_days": 7 },
+    { "name": "返程机票资金证明", "required": true, "note": "或等额存款", "prepare_days": 14 },
+    { "name": "1208 号表格（打工与度假签证申请表）", "required": true, "note": "中英文填写", "prepare_days": 7 },
+    { "name": "54 号表格（家庭成员表）", "required": true, "note": "中英文填写", "prepare_days": 7 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "备齐全套材料",
+      "description": "提前 1-2 个月准备学历认证、语言成绩、存款证明、无犯罪记录、政府支持信等。材料不齐将无法在抽签开放期内完成注册。",
+      "duration": "1-2 个月",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462"
+    },
+    {
+      "step_no": 2,
+      "title": "创建 ImmiAccount 并注册抽签",
+      "description": "在澳洲内政部官网创建 ImmiAccount，选择 New application → Visa pre-application registration → Registration - Work and Holiday Visa (462)，填写个人信息（姓名、出生日期、护照号、身份证号），验证邮箱。",
+      "duration": "约 1 小时",
+      "official_link": "https://online.immi.gov.au/lusc/login"
+    },
+    {
+      "step_no": 3,
+      "title": "支付注册费并提交",
+      "description": "支付 AUD 25 抽签注册费。提交后状态从 draft 变为 received，即进入抽签池。注意：注册信息一经提交无法修改。",
+      "duration": "即时",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462"
+    },
+    {
+      "step_no": 4,
+      "title": "等待随机抽签结果",
+      "description": "抽签期长达 10 个月，随时可能中签。中签后状态变为 selected 并收到邮件通知。未中签不会收到通知，状态保持 received 直至抽签期结束。抽签完全随机，无法人为干预。",
+      "duration": "最长 10 个月",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462"
+    },
+    {
+      "step_no": 5,
+      "title": "中签后递交正式签证申请",
+      "description": "收到中签通知后 28 天内，在 ImmiAccount 中递交正式签证申请并支付 AUD 840 签证费。逾期作废。",
+      "duration": "28 天内",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462"
+    },
+    {
+      "step_no": 6,
+      "title": "完成体检",
+      "description": "预约移民局指定医院完成体检（含胸腔 X 光）。体检结果由医院直接提交移民局。",
+      "duration": "1-2 周",
+      "official_link": "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health"
+    },
+    {
+      "step_no": 7,
+      "title": "等待审理结果",
+      "description": "等待签证获批。获批后须在 1 年内入境澳大利亚，入境后才开始计算 12 个月停留期。",
+      "duration": "4-8 周",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 6,
+    "max_study_months": 4,
+    "renewable": true,
+    "renewal_condition": "在首个 462 签证期间，于指定区域完成 3 个月特定工作（通常为农业、旅游业等），可申请第二年签证；在第二个 462 期间完成 6 个月特定工作，可申请第三年签证。",
+    "restricted_occupations": [],
+    "note": "可从事全职、兼职、临时及轮班工作。可为同一雇主工作不超过 6 个月。可学习不超过 4 个月。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "抽签完全随机，年度名额仅 5,000 个，中签率低。中签不等于获批，仍须满足全部资格条件。"
+    },
+    {
+      "level": "warning",
+      "description": "注册信息一经提交无法修改，填写时务必核对护照号等关键信息。"
+    },
+    {
+      "level": "warning",
+      "description": "2026 年 7 月 1 日起签证费从 AUD 670 涨至 AUD 840（涨幅 25%）。费用可能继续调整。"
+    },
+    {
+      "level": "warning",
+      "description": "新法规将年龄标准从 Schedule 2 移至 Schedule 1：若递交时超龄，申请将直接被判无效，且不退还签证费。"
+    },
+    {
+      "level": "info",
+      "description": "出发前总预算建议准备人民币 1.2-1.7 万元（含签证费、机票、保险、落地首月生活）。澳洲最低时薪约 AUD 23-24/小时。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Work and Holiday visa (subclass 462)",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
+      "publisher": "Australian Department of Home Affairs",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "基本资格（18-30岁、指定国家护照、不可携带子女）、停留期 12 个月、签证费 AUD 670、中国/印度/越南需参与抽签"
+    },
+    {
+      "type": "primary",
+      "name": "Working Holiday Visa FAQ",
+      "url": "https://www.australia.com/en/youth-travel/working-holiday-visa/faq.html",
+      "publisher": "Tourism Australia",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "462 类别适用国家清单（含中国）、417 类别适用国家清单（含中国香港、中国台湾）、资金要求 AUD 5,000"
+    },
+    {
+      "type": "primary",
+      "name": "Migration Amendment (Working Holiday Maker Age Criteria) Regulations 2026",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
+      "publisher": "Australian Government",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "2026-07-01 起年龄标准的技术性调整（Schedule 2 → Schedule 1）"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

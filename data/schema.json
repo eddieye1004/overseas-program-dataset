@@ -1,0 +1,368 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/eddieye1004/overseas-program-dataset/data/schema.json",
+  "title": "Overseas Youth Mobility Program Dataset Schema",
+  "description": "带官方来源追溯的海外青年流动项目数据集。每个项目文件为独立的 JSON，本 schema 定义其结构。核心设计：护照优先（passport_types 决定 90% 的资格结果）、来源可追溯（sources 为必填）、时效可验证（last_verified 为必填）。",
+  "version": "0.1.0",
+  "last_updated": "2026-09-17",
+  "type": "object",
+  "required": ["schema_version", "program", "eligibility", "timeline", "documents", "steps", "sources", "last_verified"],
+  "additionalProperties": false,
+
+  "definitions": {
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO 8601 日期，格式 YYYY-MM-DD"
+    },
+
+    "url": {
+      "type": "string",
+      "pattern": "^https?://",
+      "description": "必须以 http:// 或 https:// 开头"
+    },
+
+    "money": {
+      "type": "object",
+      "description": "金额对象。必须提供原币金额与币种，人民币估算为可选。",
+      "required": ["local_amount", "currency"],
+      "additionalProperties": false,
+      "properties": {
+        "local_amount": { "type": "number", "minimum": 0 },
+        "currency": {
+          "type": "string",
+          "enum": ["AUD", "NZD", "JPY", "KRW", "USD", "EUR", "GBP", "CNY", "HKD", "TWD", "SGD", "PLN", "DKK", "SEK", "NOK", "CAD", "CHF", "THB", "MYR", "VND", "IDR", "ILS", "TRY"]
+        },
+        "cny_estimate": { "type": "number", "minimum": 0, "description": "人民币估算值，仅供参考" },
+        "note": { "type": "string", "description": "费用说明，如'不含体检费'" }
+      }
+    },
+
+    "passport_eligibility": {
+      "type": "object",
+      "description": "护照资格。这是最关键字段：决定该护照持有人能否申请。不确定时用 unknown，禁止猜测。",
+      "required": ["mainland_china"],
+      "additionalProperties": false,
+      "properties": {
+        "mainland_china": { "$ref": "#/definitions/eligibility_status" },
+        "hong_kong_china": { "$ref": "#/definitions/eligibility_status" },
+        "taiwan_china": { "$ref": "#/definitions/eligibility_status" },
+        "note": { "type": "string", "description": "护照资格的补充说明" }
+      }
+    },
+
+    "eligibility_status": {
+      "type": "string",
+      "enum": ["eligible", "not_eligible", "conditional", "unknown"],
+      "description": "eligible=可申请；not_eligible=不可申请（用于显式排除记录）；conditional=有条件开放（如年度协商制，需查当年公告）；unknown=尚未核实"
+    },
+
+    "source": {
+      "type": "object",
+      "description": "来源记录。primary 表示官方一手来源。二手来源（中介/公众号/AI）不作为依据。",
+      "required": ["type", "name", "url", "last_verified"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["primary", "secondary"],
+          "description": "primary=官方一手来源（移民局/使领馆/法律文本）；secondary=仅作线索，必须回溯到 primary"
+        },
+        "name": { "type": "string" },
+        "url": { "$ref": "#/definitions/url" },
+        "publisher": { "type": "string", "description": "发布机构，如 'Australian Department of Home Affairs'" },
+        "last_verified": { "$ref": "#/definitions/date" },
+        "verified_by": { "type": "string", "description": "核实人（GitHub 用户名）" },
+        "claim": { "type": "string", "description": "该来源具体佐证了哪条信息" }
+      }
+    }
+  },
+
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1.0"
+    },
+
+    "program": {
+      "type": "object",
+      "description": "项目基本信息",
+      "required": ["id", "name", "name_en", "country", "country_code", "region", "program_type", "official_url"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "唯一标识，小写连字符格式，如 au-462-work-holiday"
+        },
+        "name": { "type": "string", "description": "中文名称" },
+        "name_en": { "type": "string", "description": "英文名称" },
+        "country": { "type": "string", "description": "国家/地区中文名" },
+        "country_code": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 国家代码，如 AU、NZ、JP。全球性项目用 GL"
+        },
+        "region": {
+          "type": "string",
+          "enum": ["oceania", "asia", "europe", "north_america", "south_america", "africa", "global"],
+          "description": "地理区域"
+        },
+        "program_type": {
+          "type": "string",
+          "enum": ["working_holiday", "paid_internship", "internship_visa", "cultural_exchange", "short_term_work"],
+          "description": "项目类型"
+        },
+        "visa_code": { "type": "string", "description": "签证代号，如 462、417、H-1、J-1、§16e" },
+        "official_url": { "$ref": "#/definitions/url" },
+        "authority": { "type": "string", "description": "主管机构" },
+        "summary": { "type": "string", "description": "200 字以内的项目简介" },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "no_quota_cap", "ballot_required", "first_come_first_served", "rolling",
+              "once_in_lifetime", "renewable", "requires_agency", "no_agency_needed",
+              "farm_work_available", "high_wage", "low_cost", "requires_degree",
+              "stem_friendly", "high_demand",
+              "cultural_exchange", "engineering_friendly", "paid", "unpaid",
+              "english_required", "no_english_required", "residency_required"
+            ]
+          }
+        },
+        "active": { "type": "boolean", "description": "当前是否开放" }
+      }
+    },
+
+    "eligibility": {
+      "type": "object",
+      "description": "资格条件。用于匹配引擎的硬性排除。",
+      "required": ["passport_types", "age", "education", "language", "funds", "other_requirements"],
+      "additionalProperties": false,
+      "properties": {
+        "passport_types": { "$ref": "#/definitions/passport_eligibility" },
+
+        "age": {
+          "type": "object",
+          "required": ["min", "max", "note"],
+          "additionalProperties": false,
+          "properties": {
+            "min": { "type": "integer", "minimum": 0, "maximum": 99 },
+            "max": { "type": "integer", "minimum": 0, "maximum": 99 },
+            "note": { "type": "string", "description": "如'递交时须未满31岁'" }
+          }
+        },
+
+        "education": {
+          "type": "object",
+          "required": ["minimum_level", "note"],
+          "additionalProperties": false,
+          "properties": {
+            "minimum_level": {
+              "type": "string",
+              "enum": ["high_school", "vocational", "bachelor_in_progress", "bachelor_completed", "master", "any"]
+            },
+            "years_completed": { "type": "integer", "minimum": 0, "description": "要求已完成的本科/大专年限" },
+            "major_restriction": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "专业限制。空数组表示不限专业。"
+            },
+            "note": { "type": "string" }
+          }
+        },
+
+        "language": {
+          "type": "object",
+          "required": ["required", "note"],
+          "additionalProperties": false,
+          "properties": {
+            "required": { "type": "boolean" },
+            "tests": {
+              "type": "array",
+              "description": "任一通过即可（OR 关系）",
+              "items": {
+                "type": "object",
+                "required": ["test", "min_score", "validity_months"],
+                "additionalProperties": false,
+                "properties": {
+                  "test": {
+                    "type": "string",
+                    "enum": ["IELTS", "TOEFL_iBT", "PTE", "Cambridge", "CEFR", "OET", "none"]
+                  },
+                  "min_score": { "type": "number" },
+                  "validity_months": { "type": "integer", "minimum": 0 }
+                }
+              }
+            },
+            "note": { "type": "string" }
+          }
+        },
+
+        "funds": {
+          "type": "object",
+          "required": ["required", "note"],
+          "additionalProperties": false,
+          "properties": {
+            "required": { "type": "boolean" },
+            "amount": { "$ref": "#/definitions/money" },
+            "note": { "type": "string" }
+          }
+        },
+
+        "other_requirements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "required", "note"],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "health_check", "criminal_record", "insurance",
+                  "no_dependents", "return_ticket", "government_support_letter",
+                  "enrollment_proof", "internship_contract", "blocked_account",
+                  "no_prior_visa", "residency_requirement"
+                ]
+              },
+              "required": { "type": "boolean" },
+              "note": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "timeline": {
+      "type": "object",
+      "description": "时间窗口。用于'当年/次年'筛选与倒计时提醒。",
+      "required": ["mechanism", "quota", "windows"],
+      "additionalProperties": false,
+      "properties": {
+        "mechanism": {
+          "type": "string",
+          "enum": ["ballot", "first_come_first_served", "rolling", "appointment", "annual_negotiation"],
+          "description": "ballot=抽签；first_come_first_served=先到先得；rolling=滚动；appointment=预约制；annual_negotiation=年度协商制"
+        },
+        "quota": {
+          "type": ["integer", "null"],
+          "description": "年度名额。null 表示无名额上限。"
+        },
+        "quota_note": { "type": "string" },
+        "windows": {
+          "type": "array",
+          "description": "申请窗口，按年份列出。已知历史窗口也应记录，便于推算规律。",
+          "items": {
+            "type": "object",
+            "required": ["year", "status", "note"],
+            "additionalProperties": false,
+            "properties": {
+              "year": { "type": "integer", "minimum": 2020, "maximum": 2100 },
+              "status": {
+                "type": "string",
+                "enum": ["upcoming", "open", "closed", "unknown"]
+              },
+              "open_date": { "$ref": "#/definitions/date" },
+              "close_date": { "$ref": "#/definitions/date" },
+              "draw_period_end": { "$ref": "#/definitions/date", "description": "抽签制项目的抽签期结束日" },
+              "lodgement_window_days": { "type": "integer", "description": "中签后递交窗口（天）" },
+              "note": { "type": "string" }
+            }
+          }
+        },
+        "fees": {
+          "type": "array",
+          "description": "费用明细",
+          "items": {
+            "type": "object",
+            "required": ["item", "amount"],
+            "additionalProperties": false,
+            "properties": {
+              "item": { "type": "string", "description": "费用项，如'签证费'、'抽签注册费'" },
+              "amount": { "$ref": "#/definitions/money" },
+              "refundable": { "type": "boolean" }
+            }
+          }
+        },
+        "processing_time": { "type": "string", "description": "审理时长，如'4-8 周'" }
+      }
+    },
+
+    "documents": {
+      "type": "array",
+      "description": "所需材料清单",
+      "items": {
+        "type": "object",
+        "required": ["name", "required"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "required": { "type": "boolean" },
+          "note": { "type": "string", "description": "如'需公证'、'需英文翻译'" },
+          "prepare_days": { "type": "integer", "minimum": 0, "description": "建议提前准备天数" }
+        }
+      }
+    },
+
+    "steps": {
+      "type": "array",
+      "description": "申请流程步骤",
+      "items": {
+        "type": "object",
+        "required": ["step_no", "title", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "step_no": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "duration": { "type": "string" },
+          "official_link": { "$ref": "#/definitions/url" }
+        }
+      }
+    },
+
+    "work_conditions": {
+      "type": "object",
+      "description": "持证后的工作与学习限制",
+      "additionalProperties": false,
+      "properties": {
+        "max_stay_months": { "type": "integer" },
+        "max_same_employer_months": { "type": "integer" },
+        "max_study_months": { "type": "integer" },
+        "renewable": { "type": "boolean" },
+        "renewal_condition": { "type": "string" },
+        "restricted_occupations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "note": { "type": "string" }
+      }
+    },
+
+    "risks": {
+      "type": "array",
+      "description": "风险提示。帮助用户避坑。",
+      "items": {
+        "type": "object",
+        "required": ["level", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "level": { "type": "string", "enum": ["info", "warning", "critical"] },
+          "description": { "type": "string" }
+        }
+      }
+    },
+
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "description": "来源列表。至少 1 条 primary。",
+      "items": { "$ref": "#/definitions/source" }
+    },
+
+    "last_verified": { "$ref": "#/definitions/date" },
+    "verified_by": { "type": "string" }
+  }
+}

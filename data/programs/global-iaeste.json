@@ -1,0 +1,263 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "global-iaeste",
+    "name": "IAESTE 国际大学生技术实习交流计划",
+    "name_en": "IAESTE — International Association for the Exchange of Students for Technical Experience",
+    "country": "全球（80+ 成员国）",
+    "country_code": "GL",
+    "region": "global",
+    "program_type": "paid_internship",
+    "visa_code": "各国实习签证（由 IAESTE 驻在国委员会协助办理）",
+    "official_url": "https://www.iaeste.org/",
+    "authority": "IAESTE 国际秘书处及各国国家委员会",
+    "summary": "全球最大的非营利学生交流组织之一，为科学、工程、技术类专业学生提供与课程相关的带薪海外实习。80 多个国家参与，每年约 4,000 名实习生。实习普遍带薪，补贴覆盖当地基本生活成本。中国区由 IAESTE China 运营。",
+    "tags": [
+      "stem_friendly",
+      "requires_degree",
+      "requires_agency",
+      "no_quota_cap"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "不限护照类型，但须为 IAESTE 成员国高校的注册学生。中国区申请通过 IAESTE China 提交。**注意：部分具体岗位有限制，例如比利时某些项目因签证规定仅限欧盟国籍。**"
+    },
+    "age": {
+      "min": 18,
+      "max": 99,
+      "note": "无统一年龄上限，以各国委员会及岗位要求为准。"
+    },
+    "education": {
+      "minimum_level": "bachelor_in_progress",
+      "major_restriction": [
+        "科学（Science）",
+        "工程（Engineering）",
+        "技术（Technology）",
+        "部分生物技术、生物医学专业"
+      ],
+      "note": "**理工科为主**。须为全日制在校生，**且整个实习期间必须保持在校学籍**。大四本科生或即将毕业的研究生可能因失去学籍而不符合资格。实习须与专业相关。部分岗位要求完成至少 3-4 年专业学习。"
+    },
+    "language": {
+      "required": true,
+      "tests": [
+        { "test": "CEFR", "min_score": 6.5, "validity_months": 36 },
+        { "test": "TOEFL_iBT", "min_score": 0, "validity_months": 36 },
+        { "test": "IELTS", "min_score": 0, "validity_months": 36 }
+      ],
+      "note": "英文水平需达到 CEFR C1 或 C2 级。可通过国际认可的语言证书（如 CEF、TOEIC、TOEFL、IELTS）证明，证书有效期 3 年内。IAESTE 各地方委员会也提供**免费口试**作为替代。"
+    },
+    "funds": {
+      "required": false,
+      "note": "无官方资金门槛。但学生需自行承担往返旅费、签证费、医疗保险及首月生活费（用于等待第一笔补贴发放）。实习补贴通常可覆盖当地基本生活成本。"
+    },
+    "other_requirements": [
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "须提供在读证明，且实习全程保持有效学籍"
+      },
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "由 IAESTE 驻在国委员会与海外雇主对接确认"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "须自行购买医疗保险"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无统一名额上限。每年全球约 4,000 名实习生。大部分实习机会在 2 月发布，全年滚动更新。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年可注册与申请。大部分 Offer 在 2 月发布（IAESTE 国际交流会议通常在 1 月、4 月、11 月举行）。建议在国际交流会议前尽早注册，以便被考虑偏好。中国区申请窗口通常为每年 1 月底至 2 月。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "申请费（中国区）",
+        "amount": { "local_amount": 1000, "currency": "CNY", "note": "约 130 欧元，不可退还" },
+        "refundable": false
+      },
+      {
+        "item": "项目费 30%（中国区）",
+        "amount": { "local_amount": 6100, "currency": "CNY", "note": "约 800 欧元；若非主观原因导致申请失败可全额退还" },
+        "refundable": true
+      },
+      {
+        "item": "项目费 70%（中国区）",
+        "amount": { "local_amount": 13900, "currency": "CNY", "note": "约 1,800 欧元，收到正式录取函后支付" },
+        "refundable": false
+      },
+      {
+        "item": "实习担保金（中国区）",
+        "amount": { "local_amount": 3000, "currency": "CNY", "note": "提交实习报告后全额退还" },
+        "refundable": true
+      },
+      {
+        "item": "押金（奥地利等部分国家委员会）",
+        "amount": { "local_amount": 300, "currency": "EUR", "note": "完成实习后返还，用于防止随意取消" },
+        "refundable": true
+      }
+    ],
+    "processing_time": "视岗位与签证类型，通常 1-3 个月"
+  },
+
+  "documents": [
+    { "name": "英文简历（CV）", "required": true, "note": "上传至 IAESTE Exchange Platform", "prepare_days": 14 },
+    { "name": "成绩单（Transcript of Records）", "required": true, "note": "英文版", "prepare_days": 30 },
+    { "name": "在读证明（Confirmation of Enrollment）", "required": true, "note": "英文版", "prepare_days": 14 },
+    { "name": "已完成学位证书", "required": false, "note": "如适用", "prepare_days": 14 },
+    { "name": "英语语言能力证明", "required": true, "note": "CEFR C1/C2 或 IAESTE 免费口试", "prepare_days": 60 },
+    { "name": "其他证书", "required": false, "note": "如适用", "prepare_days": 14 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "在 IAESTE Exchange Platform 注册",
+      "description": "在官方交换平台注册账号并创建个人档案。需上传英文简历、成绩单、在读证明三份必需文件，账号经审核后激活。",
+      "duration": "1-2 周",
+      "official_link": "https://www.iaeste.org/"
+    },
+    {
+      "step_no": 2,
+      "title": "完成英语水平测试",
+      "description": "提供国际认可的英语证书（CEFR C1/C2，3 年内有效），或联系当地 IAESTE 委员会参加免费口试。",
+      "duration": "1-2 周",
+      "official_link": "https://www.iaeste.de/application-process/"
+    },
+    {
+      "step_no": 3,
+      "title": "浏览并申请实习 Offer",
+      "description": "档案验证后浏览所有当前可申请的实习岗位。大部分 Offer 在 2 月发布，全年滚动更新。选择意向后联系所在地方/国家委员会推进。",
+      "duration": "持续",
+      "official_link": "https://www.iaeste.org/"
+    },
+    {
+      "step_no": 4,
+      "title": "通过雇主选拔并获得提名",
+      "description": "由 IAESTE 驻在国委员会将申请转交海外雇主。部分岗位需要雇主视频面试。通过后收到提名与正式录取函。",
+      "duration": "2-8 周",
+      "official_link": "https://www.iaeste.de/application-process/"
+    },
+    {
+      "step_no": 5,
+      "title": "缴纳费用并签署协议",
+      "description": "收到正式录取函后缴纳项目费尾款，签署外方协议。中国区流程分三阶段缴费。",
+      "duration": "1-2 周",
+      "official_link": "http://learngive.cn/iaeste"
+    },
+    {
+      "step_no": 6,
+      "title": "办理签证与行前准备",
+      "description": "IAESTE 驻在国委员会协助签发签证所需的全部文件。学生自行办理签证、购买保险机票、落实住宿。",
+      "duration": "1-3 个月",
+      "official_link": "https://www.iaeste.org/"
+    },
+    {
+      "step_no": 7,
+      "title": "赴外实习",
+      "description": "所在国 IAESTE 委员会安排当地志愿者接机、熟悉环境、提供生活协助，并组织跨文化活动。",
+      "duration": "4 周 - 12 个月（视岗位）",
+      "official_link": "https://www.iaeste.org/"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 12,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "视岗位而定。实习时长通常为 4 周至 12 个月不等。",
+    "restricted_occupations": [],
+    "note": "实习普遍带薪。IAESTE 的目标是让实习补贴足以覆盖实习国当地的基本生存成本（不含旅费与娱乐开销）。薪资水平因国家生活标准差异而不同。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "⚠️ 整个实习期间必须保持在校学籍。大四本科生或已完成答辩的研究生可能因失去学籍被终止实习资格。申请前务必确认学籍状态。"
+    },
+    {
+      "level": "warning",
+      "description": "部分岗位有国籍限制。例如比利时某些长期项目（如 Bio Base Europe）因签证规定仅限欧盟国籍（含欧洲经济区、瑞士）或双重欧盟国籍申请人。申请前务必核对岗位要求。"
+    },
+    {
+      "level": "warning",
+      "description": "中国区需支付申请费（约 130 欧元，不可退）+ 项目费（合计约 2,600 欧元）+ 担保金（3,000 元，可退）。总成本较高，需评估性价比。"
+    },
+    {
+      "level": "warning",
+      "description": "IAESTE 部分国家委员会由学生志愿运营，流程响应速度可能不稳定。建议预留充足时间。"
+    },
+    {
+      "level": "info",
+      "description": "优势：理工科专属、岗位与专业相关、普遍带薪、有当地委员会全程协助落地（接机、住宿、跨文化活动）。对简历和海外经历有实质加分。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "IAESTE — International Association for the Exchange of Students for Technical Experience",
+      "url": "https://www.iaeste.org/",
+      "publisher": "IAESTE International",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "组织性质（80+ 成员国、每年 4,000+ 实习生）、理工科定位、实习带薪"
+    },
+    {
+      "type": "primary",
+      "name": "Application process — IAESTE Germany",
+      "url": "https://www.iaeste.de/application-process/",
+      "publisher": "IAESTE Germany",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "申请流程（Exchange Platform 注册、三份必需文件、账号验证）、英语证书要求（3 年内有效）、Offer 发布节奏（11月/1月/4月国际交流会议）"
+    },
+    {
+      "type": "primary",
+      "name": "Outgoing Trainee — IAESTE Austria",
+      "url": "https://www.iaeste.at?p=1254/",
+      "publisher": "IAESTE Austria",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "申请三步流程、必需材料（CV/成绩单/在读证明）、免费语言测试、押金 EUR 300、实习带薪且覆盖当地生存成本"
+    },
+    {
+      "type": "primary",
+      "name": "IAESTE 实习交流计划 — 澳门大学全球事务部",
+      "url": "https://gao.um.edu.mo?lang=zh-hant&p=7735/",
+      "publisher": "University of Macau",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "申请资格（全日制在校生、成绩卓越、良好英语）、无申请费、每年 1 月底至 2 月接受申请、大四学生学籍风险提示"
+    },
+    {
+      "type": "primary",
+      "name": "IAESTE China 申请流程",
+      "url": "http://learngive.cn/iaeste",
+      "publisher": "IAESTE China",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "中国区六步申请流程、费用结构（申请费 130 欧元 / 项目费 800+1800 欧元 / 担保金 3,000 元）、退款政策"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}

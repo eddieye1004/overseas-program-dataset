@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "ca-iec-working-holiday",
+    "name": "加拿大国际经验计划（IEC 打工度假）",
+    "name_en": "International Experience Canada (IEC) — Working Holiday",
+    "country": "加拿大",
+    "country_code": "CA",
+    "region": "north_america",
+    "program_type": "working_holiday",
+    "visa_code": "IEC-WH",
+    "official_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html",
+    "authority": "Immigration, Refugees and Citizenship Canada（加拿大移民、难民及公民部）",
+    "summary": "加拿大与 30 多个国家和地区签订的青年流动协议，允许 18-35 岁青年在加工作 12-24 个月。⚠️ 中国大陆不在协议名单内，中国大陆护照持有人无法申请此项目。中文互联网上大量'加拿大打工度假'信息实为雇主担保工签，与 IEC 性质完全不同。",
+    "tags": [
+      "no_agency_needed",
+      "high_wage"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "not_eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "⚠️ 关键信息：加拿大 IEC 通过双边青年流动协议运作，中国香港与中国台湾在协议名单内，但中国大陆不在。中国大陆护照持有人无法申请 Working Holiday 类别。网上流传的'中国大陆可申请加拿大打工度假'是错误信息。"
+    },
+    "age": {
+      "min": 18,
+      "max": 35,
+      "note": "18-35 周岁（具体上限因签约国家/地区而异）"
+    },
+    "education": {
+      "minimum_level": "any",
+      "major_restriction": [],
+      "note": "无学历硬性要求（依各签约地区协议而定）"
+    },
+    "language": {
+      "required": true,
+      "tests": [
+        { "test": "IELTS", "min_score": 0, "validity_months": 24 }
+      ],
+      "note": "需证明语言能力，具体要求依签约地区协议而定"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 2500,
+        "currency": "CAD",
+        "cny_estimate": 13000,
+        "note": "约 2,500 加元资金证明"
+      },
+      "note": "具体金额依签约地区协议而定"
+    },
+    "other_requirements": [
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "须购买医疗保险"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "须提供无犯罪记录证明"
+      },
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "须完成体检"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "ballot",
+    "quota": null,
+    "quota_note": "中国香港、中国台湾有年度配额；中国大陆无配额（不在协议内）。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "unknown",
+        "note": "各签约地区开放时间不同。中国大陆无法申请，无相关窗口。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "开放式工签申请费",
+        "amount": { "local_amount": 100, "currency": "CAD", "cny_estimate": 520, "note": "另需生物识别费 CAD 85" },
+        "refundable": false
+      }
+    ],
+    "processing_time": "数周至数月"
+  },
+
+  "documents": [
+    { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照", "prepare_days": 30 },
+    { "name": "资金证明", "required": true, "note": "约 2,500 加元", "prepare_days": 14 },
+    { "name": "医疗保险", "required": true, "note": "覆盖全程", "prepare_days": 14 },
+    { "name": "无犯罪记录证明", "required": true, "note": "", "prepare_days": 30 },
+    { "name": "语言成绩证明", "required": true, "note": "", "prepare_days": 60 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认护照资格（第一步，也可能是终点）",
+      "description": "加拿大 IEC 仅对签约国家/地区护照开放。中国大陆护照不在名单内。若持中国大陆护照，此项目不可申请，无需继续后续步骤。",
+      "duration": "5 分钟",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility.html"
+    },
+    {
+      "step_no": 2,
+      "title": "创建 IRCC 账号并进入候选人池",
+      "description": "（仅限合格护照持有人）在 IRCC 官网创建账号，提交候选人档案进入抽签池。",
+      "duration": "1-2 小时",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html"
+    },
+    {
+      "step_no": 3,
+      "title": "等待邀请（ITA）",
+      "description": "（仅限合格护照持有人）被抽中后收到申请邀请（Invitation to Apply），在规定期限内提交完整申请。",
+      "duration": "不定",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 0,
+    "max_study_months": 6,
+    "renewable": false,
+    "renewal_condition": "不可续签。部分国家/地区可参加两次。",
+    "restricted_occupations": [],
+    "note": "开放式工签，可为任意雇主工作，无需雇主担保。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "⚠️ 中国大陆护照不可申请。这是一个显式排除记录，用于纠正中文互联网上广泛流传的错误信息。"
+    },
+    {
+      "level": "critical",
+      "description": "大量中介把'加拿大雇主担保工签'包装成'加拿大打工度假'进行推广。两者性质完全不同：IEC 是开放式工签（无需雇主），雇主担保工签需雇主配合且门槛高得多。"
+    },
+    {
+      "level": "info",
+      "description": "本记录的存在价值：帮助中国大陆学生快速排除一个不可行的选项，避免浪费时间和金钱。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "International Experience Canada",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html",
+      "publisher": "Immigration, Refugees and Citizenship Canada",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "IEC 仅对与加拿大签订青年流动协议的国家/地区开放；中国大陆不在协议名单内"
+    },
+    {
+      "type": "secondary",
+      "name": "工作假期签证（百度百科）",
+      "url": "https://baike.baidu.com/item/%E5%B7%A5%E4%BD%9C%E5%81%87%E6%9C%9F%E7%AD%BE%E8%AF%81/2127444",
+      "publisher": "百度百科",
+      "last_verified": "2026-09-17",
+      "verified_by": "eddieye1004",
+      "claim": "中国台湾护照可申请加拿大工作假期签证；未列出中国大陆"
+    }
+  ],
+
+  "last_verified": "2026-09-17",
+  "verified_by": "eddieye1004"
+}
