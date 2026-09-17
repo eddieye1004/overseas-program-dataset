@@ -1,107 +1,143 @@
-# 推送到 GitHub —— 3 步操作说明
+# 关于「给自己装 GitHub 写权限」的说明
 
-> 状态：本地仓库已初始化并完成首次提交（commit `00abc98`，26 个文件 / 4,652 行）。
-> 只差「在 GitHub 上建一个空仓库」+「git push」两步。
-
----
-
-## 第 1 步：在 GitHub 建空仓库（约 30 秒）
-
-1. 打开 https://github.com/new
-2. **Repository name** 填：
-
-   ```
-   overseas-program-dataset
-   ```
-
-3. **Description** 填（可直接复制）：
-
-   ```
-   Open dataset of overseas work / working-holiday / internship programs for Chinese students. Passport-first eligibility, official sources, weekly link validation.
-   ```
-
-4. 可见性选 **Public**（公开才有简历价值）
-5. **不要**勾选 "Add a README file"、"Add .gitignore"、"Choose a license"
-   —— 本地已经有这些文件，勾了会产生冲突
-6. 点 **Create repository**
+> 结论：**做不到，也不应该做。** 但你的真正目的（让我把项目推上去）有更安全的解法。
 
 ---
 
-## 第 2 步：推送
+## 一、为什么我装不了写权限
 
-建好后 GitHub 会显示一个页面，忽略页面上所有提示，直接打开 **PowerShell**，
-把下面整段粘进去回车（已包含全部命令）：
+GitHub 连接器不是我本地的软件，它的权限由**你授权时选择的范围**决定。
 
-```powershell
-cd "F:\2026-09-17-20-35-22\overseas-program-dataset"
-git remote remove origin 2>$null
-git remote add origin https://github.com/eddieye1004/overseas-program-dataset.git
-git push -u origin main
-```
+- 你在连接器授权页勾选了哪些 scope，我就只有哪些能力。
+- 当前令牌只拿到了**读权限**（`get_me`、`search_repositories` 能跑），没有 `repo` 写权限。
+- 所以 `create_repository` 返回 `403 Resource not accessible by integration`。
 
-### 会弹窗要你登录
-
-推送时会弹出 **Git Credential Manager** 窗口：
-
-- 选 **Sign in with your browser**（用浏览器登录）
-- 浏览器里点 **Authorize**
-- 回到 PowerShell，推送会自动完成
-
-> 只有第一次需要登录，之后不用再登。
+而我**没有任何办法自己改这个**——我无法修改自己的授权，就像一个人不能给自己发驾照。这是设计如此。
 
 ---
 
-## 第 3 步：验证
+## 二、为什么也不该给我装
 
-推送成功后，访问：
+假设技术上可行，我也建议你别给。理由三条：
 
-```
-https://github.com/eddieye1004/overseas-program-dataset
-```
+### 1. 那是把仓库的钥匙交出去
 
-应该能看到 README 首页。然后点顶部 **Actions** 标签页，
-会看到名为 **Validate dataset** 的工作流正在运行（或已完成）。
+`repo` 写权限 = 可以**改你所有仓库的代码、删分支、改 release、发 commit**。
+一旦令牌泄漏或被滥用，损失的是你的开源资产和信誉记录——
 
-- 绿色勾 = 数据校验通过
-- 黄色/红色 = 把日志发我，我来修
+**而你的 GitHub 正在成为你申请材料的证据。** 一个被篡改过的 commit 历史，比没有项目更糟。
+
+### 2. 你的 GitHub 账号价值在增长，攻击面也在增长
+
+你现在的账号还很干净（1 个仓库、0 followers）。但随着项目做起来、
+开始有人 star、你开始把链接写进简历和申请文书——
+**授权给别人写权限的风险，会随你的投入成正比上升。**
+
+### 3. 这种操作几乎没有收益
+
+推代码这件事，**你自己执行只需要 30 秒**（见 `PUSH_TO_GITHUB.md`）。
+为省这 30 秒，永久开一个写权限给第三方，投入产出比是负的。
 
 ---
 
-## 如果推送报错
+## 三、你真正该关心的两件事
 
-| 报错信息 | 原因 | 解决 |
+### 事件 1：网络环境修好了 —— 复验结果
+
+| 指标 | 修复前 | 修复后 |
 |---|---|---|
-| `remote: Repository not found` | 仓库名拼错，或没建成 | 回第 1 步确认仓库名完全一致 |
-| `failed to push some refs` / `rejected` | 建仓库时勾了 README | 执行 `git pull --rebase origin main` 后再 push |
-| `Authentication failed` | 登录失效 | 再执行一次 `git push`，重新走登录弹窗 |
-| `Support for password authentication was removed` | 用了密码而非令牌 | 必须用弹窗的浏览器登录方式，不要手输密码 |
+| GitHub API | 需代理 | **直连，HTTP 200 / 676ms** |
+| 26 条官方链接 | 正常 10 / 失效 0 | **正常 11 / 待确认 15 / 失效 0** |
+| 数据校验 | 0 错误 0 警告 | **0 错误 0 警告** |
+
+**网络没问题了。** 但这次复验意外挖出了一个比网络更严重的问题 —— 看下一节。
+
+### 事件 2：我发现了项目的一个真问题（已修复）
+
+写代码时你问过我：这个项目的护城河是什么？我说是
+**「每条数据都能追溯到官方来源，且有自动化校验」**。
+
+**复验时我发现，这句话我自己没做到。**
+
+审计结果：**4 个项目的来源里混入了 D 级来源**——
+
+| 文件 | 混入的脏来源 | 问题 |
+|---|---|---|
+| `ca-iec-working-holiday` | 百度百科 | 用被污染的中文百科，证明"这是污染信息" |
+| `uk-youth-mobility-scheme` | 百度百科 | 同上 |
+| `global-aiesec-global-talent` | 百度百科 | 同上 |
+| `kr-h1-working-holiday` | `expatmoney.com` | 更糟：URL 指向的是**数字游民签证**文章，与 H-1 打工度假**根本不是一回事**，且 publisher 写"公开资料"掩盖来源 |
+
+**这就是自己打自己脸。** 一个以"反信息污染"为卖点的数据集，
+证据链里塞着百科和商业博客——如果被懂行的人看到，整个项目的可信度就崩了。
 
 ---
 
-## 备选：完全不用命令行
+## 四、已完成的修复
 
-如果不想碰终端，也可以在**纯浏览器**里上传：
+### 4 条脏来源，全部换成官方源
 
-1. 建好空仓库后，在仓库页点 **uploading an existing file**
-2. 把 `overseas-program-dataset` 文件夹里的内容拖进去
+| 项目 | 新来源（全部 A 级） |
+|---|---|
+| `ca-iec-working-holiday` | IRCC 官方 `Who can apply` 页 |
+| `uk-youth-mobility-scheme` | GOV.UK `Youth Mobility Scheme` 资格页 |
+| `kr-h1-working-holiday` | 韩国官方 WHIC 逐国/地区说明页 |
+| `global-aiesec-global-talent` | AIESEC 官方 Global Talent 项目页 |
 
-**但这条路的代价很大**：浏览器上传会**忽略 `.github` 文件夹**，
-导致 CI 自动校验工作流、3 个 Issue 模板、PR 模板**全部丢失**——
-而这些恰好是你这个项目"来源可追溯 + 自动化校验"卖点的一半。
-所以更推荐上面的命令行方式。
+### 顺手修正的 5 处精度问题
+
+- **日本**：补上官方 2026-02-01 起**中国台湾可参与两次**的放宽说明（原来漏了）；修正一处 publisher 与 URL 不符
+- **澳大利亚**：旅游局页面从 `primary` 降为 `secondary`（它不是移民局）
+- **美国**：合并 2 条重复来源；高校来源从 `primary` 降为 `secondary`
+- **IAESTE**：修正中国大陆合作机构标注 —— Archibucks 与 HLG 是 **Co-operating Institution（合作机构）**，**不是** National Committee（国家委员会）。这个区别在 IAESTE 体系里是实质性的。
+
+### 最关键的一步：把教训变成自动防线
+
+光改数据没用 —— 下次还会有人（包括我）再犯。所以我在 `validate.py` 里加了**来源可信度分级器**：
+
+```
+出现 D 级域名（百科/知乎/商业博客）  → 校验失败，阻断合并
+publisher 写"公开资料"等含糊表述     → 校验失败
+项目全部来源都不到 A/B 级            → 校验失败
+标 primary 但域名可信度只有 C 级     → 告警
+```
+
+**反向测试：注入 3 类违规 → 3/3 全部捕获，退出码 1。恢复后重新通过，退出码 0。**
+
+这行现在会跑在每次 push 和 PR 上。**护城河从"我的自觉"变成了"CI 的强制"。**
 
 ---
 
-## 推送成功后立刻做的一件事
-
-改 GitHub Bio（当前是 `ee student at TGU`，没有任何技术标签）。
-
-访问 https://github.com/settings/profile ，把 **Bio** 改成：
+## 五、现在的提交历史
 
 ```
-EE student @ TGU · building open datasets for Chinese students
+5095668  fix(sources): remove non-official sources, enforce source-quality gate in CI
+aed6fe9  feat: initial release v0.1.0
 ```
 
-理由：别人（招生的老师、面试官、路过的开发者）点进你的主页只有约 15 秒耐心，
-这 15 秒里他需要立刻知道"这个人在做什么"。`ee student at TGU` 只说明了身份，
-没有说明**你在生产什么**。加上后半句，你的项目和你的人设就连起来了。
+两个提交，工作区干净，可以直接推送。
+
+---
+
+## 六、你要做的事（不变，还是那两步）
+
+1. **建空仓库**：https://github.com/new → 名字 `overseas-program-dataset` → **Public** → **三个初始化选项都不勾**
+2. **推送**：
+   ```powershell
+   cd "F:\2026-09-17-20-35-22\overseas-program-dataset"
+   git remote add origin https://github.com/eddieye1004/overseas-program-dataset.git
+   git push -u origin main
+   ```
+
+推完在 Actions 页面能看到 `Validate dataset` 工作流 —— 它会用 GitHub 的国外网络再跑一遍链接检查，
+**那个结果比我本地准。如果报 `fail`，把日志发我。**
+
+---
+
+## 附：这件事对你有额外价值
+
+如果你以后要写申请文书或面试聊这个项目，**"我发现自己的数据源有污染，于是把它变成了自动化规则"** ——
+这句话本身就比"我做了一个数据集"有力得多。
+
+它证明的不是你会写代码，而是你**会审自己的东西，并把它固化成机制**。
+这是研究者和工程师的核心素质，也是申请材料里最难伪造的部分。
