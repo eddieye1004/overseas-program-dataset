@@ -1,0 +1,38 @@
+# 依赖更新自动化。
+#
+# 为什么用 Dependabot 而不是 Renovate：
+#   Dependabot 是仓库内置能力，只需本文件即可生效，无需任何第三方授权；
+#   Renovate 需要在 GitHub 上安装 App 并授予仓库权限。本项目此前的
+#   .github/renovate.json 从未被安装过（历史 PR 数 = 0），是死配置。
+#   本仓库的依赖面只有 GitHub Actions 一类，两者能力没有实质差别。
+#
+# 与 SHA 固定策略的配合：
+#   validate.yml 里的 action 按 commit SHA 固定并带 `# vX.Y.Z` 注释。
+#   Dependabot 会识别该注释，升级时同时改写 SHA 与注释 —— 供应链安全与
+#   自动化更新不冲突（前提是注释必须保留，删掉注释就再也收不到更新了）。
+#
+# 不需要 pip 生态：scripts/validate.py 与 tests/ 均只用 Python 标准库，
+# 没有 requirements.txt / pyproject.toml，故无第三方依赖可升。
+
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "ci"
+    groups:
+      # 三个 action 合并成一个 PR，避免每周开三个内容几乎相同的 PR
+      github-actions:
+        patterns:
+          - "*"
