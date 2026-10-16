@@ -113,6 +113,11 @@
         "draw_period_end": "2027-04-30",
         "lodgement_window_days": 28,
         "note": "2026-27 财年注册窗口。注册开放期仅 3 周，抽签选择期长达 10 个月。中签后 28 天内须递交正式申请。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "2027-28 财年注册窗口的具体开放日期截至核实日尚未公布（2026-27 随机选签持续至 2027-04-30）。参照 2026-27 安排在 6 月上旬开放、为期约 3 周，建议在 2027 年 5 月前完成 ImmiAccount 注册与材料准备，并以澳大利亚内政部公告为准。"
       }
     ],
     "fees": [
@@ -132,7 +137,7 @@
         "refundable": false
       }
     ],
-    "processing_time": "约 4-8 周"
+    "processing_time": "官方预计约 3 个月（2026 年起为管理 WHM 项目高需求而延长处理时长）"
   },
 
   "documents": [
@@ -240,7 +245,7 @@
       "name": "Work and Holiday visa (subclass 462)",
       "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
       "publisher": "Australian Department of Home Affairs",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "基本资格（18-30岁、指定国家护照、不可携带子女）、停留期 12 个月、签证费 AUD 670、中国/印度/越南需参与抽签"
     },
@@ -249,7 +254,7 @@
       "name": "Work and Holiday visa (subclass 462) — 适用国家/地区与资格",
       "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
       "publisher": "Australian Department of Home Affairs",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "462 类别适用国家/地区（含中国）、417 类别适用国家/地区（含中国香港、中国台湾）、资金要求 AUD 5,000；中国申请人须参与抽签（ballot）"
     },
@@ -258,7 +263,7 @@
       "name": "Working Holiday Visa FAQ（澳大利亚旅游局）",
       "url": "https://www.australia.com/en/youth-travel/working-holiday-visa/faq.html",
       "publisher": "Tourism Australia（澳大利亚旅游局）",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "旅游推广性质的 462 / 417 类别说明与常见问题（非移民局官方页，仅作辅证）"
     },
@@ -267,12 +272,12 @@
       "name": "Migration Amendment (Working Holiday Maker Age Criteria) Regulations 2026",
       "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
       "publisher": "Australian Government",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "2026-07-01 起年龄标准的技术性调整（Schedule 2 → Schedule 1）"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-17",
   "verified_by": "eddieye1004"
 }

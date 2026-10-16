@@ -21,10 +21,10 @@
 
   "eligibility": {
     "passport_types": {
-      "mainland_china": "conditional",
+      "mainland_china": "not_eligible",
       "hong_kong_china": "eligible",
       "taiwan_china": "eligible",
-      "note": "⚠️ 日本外务省官方公布的 32 个协议国家/地区名单中，包含中国台湾（10,000 名额）与中国香港（1,500 名额），但不包含中国大陆。中国大陆申请人的安排为年度协商制，须以日本驻华使领馆当年公告为准，且部分年份需通过指定代招渠道。切勿依据网上攻略盲目准备。"
+      "note": "⚠️ 关键信息：日本外务省官方公布的 32 个协议国家/地区名单（截至 2026-04-01）中，包含中国台湾（10,000 名额）与中国香港（1,500 名额），但不包含中国大陆。中日之间未签订打工度假协议，中国大陆护照持有人无法申请。网传'中国大陆可申请日本打工度假'为错误信息。"
     },
     "age": {
       "min": 18,
@@ -121,8 +121,8 @@
   "steps": [
     {
       "step_no": 1,
-      "title": "确认当年是否开放（中国大陆申请人必做）",
-      "description": "日本外务省官方协议名单不含中国大陆，对华安排为年度协商制。第一步必须联系日本驻华使领馆，确认当年是否接受申请及具体名额。",
+      "title": "确认护照资格（中国大陆护照不适用）",
+      "description": "日本外务省官方协议名单（32 个国家/地区）不含中国大陆，中日之间未签订打工度假协议，不存在'年度协商开放'安排。中国大陆护照持有人无法申请本项目，无需向任何机构确认。中国香港、中国台湾护照持有人按各自名额申请。",
       "duration": "1-2 周",
       "official_link": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html"
     },
@@ -136,9 +136,9 @@
     {
       "step_no": 3,
       "title": "向日本使领馆递交申请",
-      "description": "在日本驻华大使馆或总领事馆递交申请（不可在日本境内申请）。部分使领馆接受指定旅行社代办。可能需参加简短面试，重点考察赴日目的与资金准备。",
+      "description": "向日本驻香港总领事馆（中国香港护照）或日本台湾交流协会台北/高雄事务所（中国台湾护照）递交申请，不可在日本境内申请。可能需参加简短面试，重点考察赴日目的与资金准备。",
       "duration": "1 天",
-      "official_link": "https://www.cn.emb-japan.go.jp/"
+      "official_link": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html"
     },
     {
       "step_no": 4,
@@ -174,11 +174,11 @@
   "risks": [
     {
       "level": "critical",
-      "description": "⚠️ 日本外务省官方公布的 32 个协议国家/地区名单中不含中国大陆。网上'日本打工度假对中国开放'的说法需谨慎核实，必须以日本驻华使领馆当年公告为准。"
+      "description": "⚠️ 关键信息：日本外务省官方公布的 32 个协议国家/地区名单（截至 2026-04-01）不含中国大陆，中日之间未签订打工度假协议。中国大陆护照持有人无法申请，不存在'年度协商开放'或'指定代招渠道'。网传'中国大陆可申请日本打工度假'为错误信息。"
     },
     {
       "level": "warning",
-      "description": "中国大陆申请人部分年份需通过指定代招渠道，可能产生额外费用。"
+      "description": "日本外务省明确声明：日本国内没有任何与其合作运营打工度假制度的团体（含社团法人）。任何声称可代办日本打工度假的机构均属欺诈，务必警惕。"
     },
     {
       "level": "warning",
@@ -196,21 +196,21 @@
       "name": "The Working Holiday Programmes in Japan",
       "url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
       "publisher": "Ministry of Foreign Affairs of Japan",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
-      "claim": "截至 2026-04-01 的 32 个协议国家/地区名单（含中国台湾、中国香港，不含中国大陆）、各国配额、年龄要求 18-30、申请程序、工作限制（禁止酒吧/夜总会/赌博场所）"
+      "claim": "截至 2026-04-01 的 32 个协议国家/地区名单（含中国台湾 10,000、中国香港 1,500，不含中国大陆）、各国配额、年龄要求 18-30、申请程序、工作限制（禁止酒吧/夜总会/赌博场所）；名单不含中国大陆，中日之间未签订打工度假协议"
     },
     {
       "type": "primary",
       "name": "The Working Holiday Programmes in Japan（签证放宽说明见 [NB2]）",
       "url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
       "publisher": "Ministry of Foreign Affairs of Japan",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "一生一次的放宽安排：2024-12-01 起（加拿大/英国/新西兰/丹麦/奥地利）、2025-01-01 起（德国/爱尔兰/斯洛伐克）、2025-10-01 起（韩国）、2026-02-01 起（中国台湾）可参与两次；中国大陆不在任何放宽名单内"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-17",
   "verified_by": "eddieye1004"
 }

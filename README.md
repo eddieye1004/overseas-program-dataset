@@ -47,8 +47,8 @@
 |---|---|---|---|
 | Work and Holiday Visa (462) | 澳大利亚 | 打工度假 | ✅ |
 | China Working Holiday Visa | 新西兰 | 打工度假 | ✅ |
-| Working Holiday Programme | 日本 | 打工度假 | ⚠️ 需查当年协议 |
-| H-1 Working Holiday Visa | 韩国 | 打工度假 | ⚠️ 需查当年协议 |
+| Working Holiday Programme | 日本 | 打工度假 | ❌ 不可申请 |
+| H-1 Working Holiday Visa | 韩国 | 打工度假 | ❌ 不可申请 |
 | Summer Work Travel (J-1) | 美国 | 带薪实习 | ✅ |
 | Study-related Internship (§16e) | 德国 | 实习 | ✅ |
 | IAESTE 国际实习 | 全球 80+ 国 | 技术实习 | ✅ |

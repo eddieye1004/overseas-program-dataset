@@ -8,6 +8,36 @@
 
 ## [未发布]
 
+### 修复 — 资格判定错误：日本、韩国应为不可申请（2026-10-17）
+
+**问题**：`jp-working-holiday.json` 与 `kr-h1-working-holiday.json` 的 `eligibility.passport_types.mainland_china`
+被标记为 `conditional`，护照说明中写为"年度协商制""未在公开名单中明确列出"，README 覆盖表标注"⚠️ 需查当年协议"。
+
+**核实结论（A 级政府来源）**：
+
+- 日本外务省《The Working Holiday Programmes in Japan》：截至 2026-04-01 共 32 个协议国家/地区，
+  含中国台湾（10,000）、中国香港（1,500），**不含中国大陆**；中日之间未签订打工度假协议。
+- 韩国外交部（在外同胞厅 WHIC）《List of Partner Countries/Regions and Annual Quota》（2026/27 更新）：
+  共 30 个国家/地区，含中国台湾（800）、中国香港（1,000），**不含中国大陆**。
+
+**风险**：`conditional` 会让读者产生"可能可以申请"的行动预期。本数据集的核心定位正是消灭"把不对大陆护照
+开放的项目写成可申请"这一类错误，因此这两条属于护城河上的直接漏洞。
+
+**修复**：两条记录的判定改为 `not_eligible`，护照说明与 critical 风险改写为确定性结论；
+移除无法核实且与官方声明相悖的"指定代招渠道"表述，代之以日本外务省的官方反欺诈声明；
+README 覆盖表同步改为 ❌ 不可申请。
+
+### 修复 — 数据时效刷新（2026-10-17）
+
+全部项目 `last_verified` 于 2026-10-17 复核。本批针对活跃窗口项目完成实质更新：
+
+- `au-462-work-holiday.json`：处理时长由"约 4-8 周"修正为官方口径"约 3 个月"；新增 2027-28 财年
+  注册窗口条目（日期待公布）。
+- `us-j1-summer-work-travel.json`：移除已失效的"2026 年 9 月底前完成报名"建议，改为官方事实
+  （无统一报名截止日期，由各 Sponsor 自行设定）；新增对应风险提示。
+- `nz-china-whv.json`：新增 2027 年开放窗口条目（待 INZ 公布，预计 2027 年 1 月前后）。
+- `jp-working-holiday.json` / `kr-h1-working-holiday.json`：来源核实日期同步更新。
+
 ### 修复 — CI 触发范围（2026-09-17）
 
 **问题**：`validate.yml` 的 `paths` 过滤器只覆盖 `data/**`、`scripts/**` 和工作流文件本身。

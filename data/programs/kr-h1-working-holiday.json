@@ -21,10 +21,10 @@
 
   "eligibility": {
     "passport_types": {
-      "mainland_china": "conditional",
+      "mainland_china": "not_eligible",
       "hong_kong_china": "eligible",
       "taiwan_china": "eligible",
-      "note": "⚠️ 韩国 H-1 签约国家/地区名单包括中国台湾、中国香港、日本、澳大利亚、加拿大、英国、美国、法国、德国、新西兰、爱尔兰、意大利等 29 个。中国大陆未在公开名单中明确列出，须以韩国驻华使领馆当年公告为准。切勿依据网上攻略盲目准备。"
+      "note": "⚠️ 关键信息：韩国外交部（在外同胞厅 WHIC）官方公布的 30 个签约国家/地区名单（2026/27 更新）包含中国台湾（800 名额）、中国香港（1,000 名额），但不包含中国大陆。中国大陆护照持有人无法申请。网传'中国大陆可申请韩国打工度假'为错误信息。"
     },
     "age": {
       "min": 18,
@@ -173,7 +173,7 @@
   "risks": [
     {
       "level": "critical",
-      "description": "⚠️ 韩国官方公开的 29 个签约国家/地区名单中未明确包含中国大陆。网上'韩国打工度假对中国开放'的说法需谨慎核实，必须以韩国驻华使领馆当年公告为准。"
+      "description": "⚠️ 关键信息：韩国外交部（在外同胞厅 WHIC）官方公布的 30 个签约国家/地区名单（2026/27 更新）不含中国大陆，中国大陆护照持有人无法申请。佐证：韩国驻华使领馆（北京、上海）虽受理 H-1 申请，但仅面向奥地利国籍申请人，中国大陆护照不在受理范围。"
     },
     {
       "level": "warning",
@@ -195,7 +195,7 @@
       "name": "Working Holiday Information Center (WHIC)",
       "url": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91",
       "publisher": "Ministry of Foreign Affairs, Republic of Korea",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "H-1 签证资格（18-30 岁）、材料清单、申请规则（须在本国申请、一生一次、不可境内转换）"
     },
@@ -204,21 +204,21 @@
       "name": "H-1 visa (Working Holiday) — 韩国驻悉尼总领事馆",
       "url": "https://overseas.mofa.go.kr/au-sydney-en/brd/m_2367/view.do?seq=760608&page=1",
       "publisher": "Consulate General of the Republic of Korea in Sydney",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "H-1 签证年龄要求（2026-09-01 起部分国家放宽至 18-35 岁）、工作限制（同一雇主不超过 6 个月）、禁止职业清单、材料清单"
     },
     {
       "type": "primary",
       "name": "Working Holiday (H-1) Visa Information by Country and Region",
-      "url": "https://whic.mofa.go.kr/board.do?menuNo=100&boardConfigNo=35&boardNo=17013&action=view",
+      "url": "https://whic.mofa.go.kr/contents.do?menuNo=90&contentsNo=38",
       "publisher": "Working Holiday Info Center, Overseas Koreans Agency（韩国外交部海外侨胞厅）",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
-      "claim": "韩国 H-1 打工度假签证签约国家/地区名单（官方逐国/地区说明页）；中国大陆不在名单内"
+      "claim": "韩国 H-1 打工度假签证签约国家/地区与年度名额官方名单（2026/27 更新版共 30 个国家/地区，含中国台湾 800、中国香港 1,000）；中国大陆不在名单内"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-17",
   "verified_by": "eddieye1004"
 }

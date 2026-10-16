@@ -92,7 +92,7 @@
       {
         "year": 2027,
         "status": "upcoming",
-        "note": "2027 年暑期项目建议在 2026 年 9 月底前完成报名，早申请早安置。"
+        "note": "2027 年暑期项目报名自 2026 年秋季起由各 Sponsor 机构陆续开放；美国国务院 BridgeUSA 官方页面不设统一报名截止日期，报名与岗位安置日历由各 Sponsor 自行设定。岗位先到先得，建议在 2026 年秋冬季完成 Sponsor 报名并尽早进入岗位匹配。"
       }
     ],
     "fees": [
@@ -215,6 +215,10 @@
       "description": "J-1 身份与特定雇主绑定，若擅自辞职另找工作，在美留居身份将变为非法，人身安全与权益得不到法律保障。"
     },
     {
+      "level": "warning",
+      "description": "美国国务院 BridgeUSA 官方页面未设统一报名截止日期，亦不公布统一截止时间；各 Sponsor 机构的报名窗口与岗位安置日历不同。'某月前必须报名'一类说法多来自中介，应以 Sponsor 官方公告为准。"
+    },
+    {
       "level": "info",
       "description": "优势：不限名额、无语言硬门槛、门槛低；J-1 签证记录对未来赴美留学签证有正向参考。实习薪资可覆盖在美基本开销。"
     }
@@ -226,7 +230,7 @@
       "name": "Summer Work Travel Program",
       "url": "https://j1visa.state.gov/programs/summer-work-travel/",
       "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "项目定位（美国境外全日制大专院校学生）、参加资格、项目最长期限 4 个月、岗位排除清单、可多次参加"
     },
@@ -235,7 +239,7 @@
       "name": "BridgeUSA — Summer Work Travel 项目资格页",
       "url": "https://j1visa.state.gov/programs/summer-work-travel/",
       "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "项目定位（美国境外全日制大专院校学生）、参加资格、须为美国境外认证高校全日制在读生、须完成至少 1 个学期、需提前安置岗位、项目最长期限 4 个月、岗位排除清单、可多次参加"
     },
@@ -244,12 +248,12 @@
       "name": "SWT 项目宣讲通知（西安理工大学国际合作与交流处）",
       "url": "https://oice.xaut.edu.cn/info/1146/2290.htm",
       "publisher": "西安理工大学国际合作与交流处",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-17",
       "verified_by": "eddieye1004",
       "claim": "中国高校引进该项目的落地口径（18-28 周岁全日制在校本科生/研究生）、费用结构、申请流程、工作时间 6月15日-9月15日（高校官方部门来源，反映中方实际操作）"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-17",
   "verified_by": "eddieye1004"
 }
