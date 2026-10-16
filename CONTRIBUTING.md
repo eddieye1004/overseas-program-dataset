@@ -48,6 +48,10 @@
    ```bash
    python scripts/validate.py
    ```
+   如果改动涉及 `scripts/` 或数据结构，再跑一次测试：
+   ```bash
+   python -m unittest discover -s tests -v
+   ```
 6. 提交 Pull Request，并说明：
    - 你新增了什么
    - 你的信息来源
@@ -115,8 +119,9 @@
 提交前请确认：
 
 - [ ] 每个新增/修改的字段都有官方来源支撑
-- [ ] `last_verified` 已更新为今天
-- [ ] 本地运行 `python scripts/validate.py` 通过
+- [ ] `last_verified` 已更新（**按 UTC 日期填**，CI 运行在 UTC；本地比 UTC 快 1 天以内不会报错）
+- [ ] 本地运行 `python scripts/validate.py` 通过，且**零告警**（`--strict` 也应通过）
+- [ ] 改动 `scripts/` 时，`python -m unittest discover -s tests` 通过
 - [ ] 没有使用二手来源作为依据
 - [ ] 护照类型（`passport_types`）填写准确，不猜测
 - [ ] PR 描述中说明了修改原因和来源
