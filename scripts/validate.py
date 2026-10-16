@@ -46,6 +46,11 @@ URL_RE = re.compile(r"^https?://")
 # 来源新鲜度阈值（天）——超过则告警
 STALE_DAYS = 180
 
+# 时区容错（天）——CI runner 使用 UTC，维护者可能按本地时区（如 GMT+8）记录核实日期，
+# 两者最多相差约 1 天。超前该阈值以内视为正常的本地/UTC 偏移，不作错误处理；
+# 超前更多才判为「核实日期在未来」。
+FUTURE_TOLERANCE_DAYS = 1
+
 VALID_REGIONS = {
     "oceania", "asia", "europe", "north_america",
     "south_america", "africa", "global",
@@ -605,7 +610,12 @@ def _check_money(rep, fname, field, amt):
 
 
 def _check_staleness(rep, fname, field, date_str):
-    """检查数据是否过旧"""
+    """检查数据是否过旧
+
+    容错：CI runner 以 UTC 计算 ``date.today()``，而维护者常按本地时区记录
+    ``last_verified``。两者在 GMT+8 深夜相差一天，会导致合法的核实日期被误判为
+    「在未来」。故超前 ``FUTURE_TOLERANCE_DAYS`` 天以内不作处理。
+    """
     try:
         d = datetime.strptime(date_str, "%Y-%m-%d").date()
     except (ValueError, TypeError):
@@ -614,8 +624,9 @@ def _check_staleness(rep, fname, field, date_str):
     if age > STALE_DAYS:
         rep.warn(fname, field,
                  f"数据距今已 {age} 天（>{STALE_DAYS} 天），建议重新核实官方来源")
-    elif age < 0:
-        rep.error(fname, field, f"核实日期在未来（{date_str}），可能填写错误")
+    elif age < -FUTURE_TOLERANCE_DAYS:
+        rep.error(fname, field,
+                  f"核实日期在未来（{date_str}，超前 {-age} 天），可能填写错误")
 
 
 def _check_consistency(rep, fname, doc):
