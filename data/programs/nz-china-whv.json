@@ -106,7 +106,7 @@
       {
         "year": 2027,
         "status": "unknown",
-        "note": "2027 年开放日期截至核实日尚未公布。INZ 每年 1 月前后公布当年各打工度假计划（含中国）的开放日期与名额表；2026 年中国开放日为 07-02、名额 1,000。截至 2026-10-17，中国 WHV 官方页面状态为 closed（2026 年名额已用尽）。建议在 2027 年 1 月复核 INZ 公布的开放日期表。"
+        "note": "2027 年开放日期截至核实日尚未公布。INZ 每年 1 月前后公布当年各打工度假计划（含中国）的开放日期与名额表；2026 年中国开放日为 07-02、名额 1,000。截至 2026-10-16，中国 WHV 官方页面状态为 closed（2026 年名额已用尽）。建议在 2027 年 1 月复核 INZ 公布的开放日期表。"
       },
       {
         "year": 2026,
@@ -232,7 +232,7 @@
       "name": "China Working Holiday Visa",
       "url": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
       "publisher": "Immigration New Zealand",
-      "last_verified": "2026-10-17",
+      "last_verified": "2026-10-16",
       "verified_by": "eddieye1004",
       "claim": "中国大陆 WHV 基本资格、名额 1,000、申请流程与材料要求"
     },
@@ -241,7 +241,7 @@
       "name": "2026 opening dates for capped Working Holiday Schemes confirmed",
       "url": "https://www.immigration.govt.nz/about-us/news-centre/2026-opening-dates-for-capped-working-holiday-schemes-confirmed",
       "publisher": "Immigration New Zealand",
-      "last_verified": "2026-10-17",
+      "last_verified": "2026-10-16",
       "verified_by": "eddieye1004",
       "claim": "2026 年各国家/地区开放日期与配额（中国大陆 2026-07-02 开放 1,000 个；中国香港 03-19 开放 400 个；中国台湾 05-28 开放 600 个）"
     },
@@ -250,12 +250,12 @@
       "name": "English language test results we accept",
       "url": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
       "publisher": "Immigration New Zealand",
-      "last_verified": "2026-10-17",
+      "last_verified": "2026-10-16",
       "verified_by": "eddieye1004",
       "claim": "认可的语言考试与最低分数（IELTS 5.5 / TOEFL iBT 46 / PTE 42 / Cambridge B2 First 162）"
     }
   ],
 
-  "last_verified": "2026-10-17",
+  "last_verified": "2026-10-16",
   "verified_by": "eddieye1004"
 }
