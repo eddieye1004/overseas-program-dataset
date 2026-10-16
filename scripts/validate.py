@@ -756,10 +756,19 @@ def collect_urls(rep, doc, fname):
 # 输出
 # ---------------------------------------------------------------------------
 
-def print_report(rep, as_json=False):
+def print_report(rep, as_json=False, strict=False):
+    """输出报告。
+
+    ``strict`` 必须与 ``main()`` 的退出码判定保持一致：--strict 下存在告警
+    同样是失败。否则 CI 会打红，而日志正文却写着「结果: 通过」，互相矛盾。
+    """
+    failed = (not rep.ok) or (strict and bool(rep.warnings))
+
     if as_json:
         out = {
             "ok": rep.ok,
+            "strict": strict,
+            "failed": failed,
             "files_checked": rep.files_checked,
             "programs_checked": rep.programs_checked,
             "summary": {
@@ -839,11 +848,13 @@ def print_report(rep, as_json=False):
         print()
 
     print(line)
-    status = "通过" if rep.ok else "失败"
+    status = "失败" if failed else "通过"
     print(f"  结果: {status}")
     print(f"  检查文件: {rep.files_checked} 个")
     print(f"  检查项目: {rep.programs_checked} 个")
     print(f"  错误 {len(rep.errors)} / 警告 {len(rep.warnings)}")
+    if strict and rep.warnings and rep.ok:
+        print("  说明: --strict 已启用，上述告警同样计为失败")
     print(line)
 
 
@@ -870,7 +881,7 @@ def main():
     # 检查目录存在
     if not os.path.isdir(PROGRAMS_DIR):
         rep.error("data/programs/", "-", f"目录不存在：{PROGRAMS_DIR}")
-        print_report(rep, args.json)
+        print_report(rep, args.json, args.strict)
         sys.exit(1)
 
     # 检查 schema 本身可解析
@@ -957,7 +968,7 @@ def main():
 
         rep.link_results.sort(key=lambda r: (r[0], r[1]))
 
-    print_report(rep, args.json)
+    print_report(rep, args.json, args.strict)
 
     if not rep.ok:
         sys.exit(1)

@@ -412,6 +412,35 @@ class TestCliOnTempData(unittest.TestCase):
         code, out = self.run_main("--strict")
         self.assertEqual(code, 1, out)
 
+    def _warning_only_doc(self):
+        """只有告警、没有错误的数据：用于区分 --strict 的两条路径。"""
+        doc = copy.deepcopy(self.base)
+        doc["sources"][0]["url"] = "https://www.some-uni.edu.cn/international/"
+        return doc
+
+    def test_report_body_agrees_with_exit_code_under_strict(self):
+        """报告正文的结论必须与退出码一致 —— 否则 CI 红了、日志却写「通过」。"""
+        self.write(FIXTURE_NAME, self._warning_only_doc())
+        code, out = self.run_main("--strict")
+        self.assertEqual(code, 1)
+        self.assertIn("结果: 失败", out)
+        self.assertIn("--strict 已启用", out)
+
+    def test_report_body_says_pass_without_strict(self):
+        self.write(FIXTURE_NAME, self._warning_only_doc())
+        code, out = self.run_main()
+        self.assertEqual(code, 0, out)
+        self.assertIn("结果: 通过", out)
+
+    def test_json_report_exposes_strict_and_failed(self):
+        self.write(FIXTURE_NAME, self._warning_only_doc())
+        code, out = self.run_main("--json", "--strict")
+        self.assertEqual(code, 1)
+        payload = json.loads(out)
+        self.assertTrue(payload["ok"], "本例不应产生 error")
+        self.assertTrue(payload["strict"])
+        self.assertTrue(payload["failed"], "有告警且启用 strict 时 failed 必须为真")
+
 
 # ---------------------------------------------------------------------------
 # 7. 真实数据集的新鲜度（每次 push 都会跑，比每周定时任务更早发现问题）
