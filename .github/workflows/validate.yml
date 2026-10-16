@@ -42,8 +42,23 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: 运行单元测试
+        # 先验证校验器自身行为正确，再拿它的结论去判定数据 ——
+        # 否则一旦校验器坏了，它的「通过」毫无意义。
+        run: python -m unittest discover -s tests -v
+
       - name: 校验数据完整性（离线）
-        run: python scripts/validate.py
+        # 定时任务（cron）加 --strict：validate.py 的 --strict 是「有告警即退出码 1」，
+        # 于是「数据距今超过 STALE_DAYS」这类告警会真正把构建打红，逼出需要重新核实的项目。
+        # push / pull_request 不加：数据变旧属于维护节奏问题，不该挡住一次与数据无关的文档修改。
+        env:
+          STRICT_ON_SCHEDULE: ${{ github.event_name == 'schedule' }}
+        run: |
+          if [ "$STRICT_ON_SCHEDULE" = "true" ]; then
+            python scripts/validate.py --strict
+          else
+            python scripts/validate.py
+          fi
 
       - name: 检查官方链接存活
         # 链接检查涉及网络请求，可能因目标站点反爬或临时故障产生误报，
