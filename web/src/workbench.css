@@ -1,0 +1,647 @@
+
+/* ============================================================
+   工作台外壳：左侧固定导航 + 右侧内容区
+   形态参考营地类工作台（CampPilot 那类）。目的不是好看，
+   而是让「项目库 / 匹配 / 申请 / 收藏 / 对比 / 数据说明」六个入口
+   一直可见，用户不用靠返回键找路。
+   ============================================================ */
+
+.app--shell {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.sidebar {
+  flex: 0 0 216px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 12px 24px;
+  background: var(--surface-dark);
+  color: var(--on-dark);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 6px 4px;
+  color: var(--on-dark);
+  min-width: 0;
+}
+.sidebar__brand:hover {
+  text-decoration: none;
+  color: var(--on-dark);
+}
+.sidebar__mark {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-sm);
+  background: linear-gradient(135deg, var(--accent-on-dark), var(--accent));
+}
+.sidebar__name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.sidebar__name strong {
+  font-size: var(--fs-md);
+  line-height: 1.25;
+}
+.sidebar__name small {
+  font-size: var(--fs-2xs);
+  color: var(--on-dark-muted);
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 10px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--on-dark-muted);
+  font: inherit;
+  font-size: var(--fs-sm);
+  text-align: left;
+  cursor: pointer;
+}
+.sidebar__item:hover {
+  background: var(--surface-dark-elev);
+  color: var(--on-dark);
+}
+.sidebar__item--on {
+  background: var(--surface-dark-active);
+  color: var(--on-dark);
+  font-weight: 600;
+}
+.sidebar__icon {
+  flex: 0 0 16px;
+  text-align: center;
+  opacity: 0.85;
+}
+.sidebar__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sidebar__count {
+  flex: 0 0 auto;
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: var(--r-md);
+  background: var(--accent-on-dark);
+  color: var(--surface-dark);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  text-align: center;
+  line-height: 18px;
+}
+
+.sidebar__foot {
+  margin: auto 0 0;
+  padding: 0 6px;
+  font-size: var(--fs-2xs);
+  line-height: 1.5;
+  color: var(--on-dark-faint);
+}
+
+.shell {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell__bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px clamp(14px, 3vw, 26px);
+  padding-top: max(11px, env(safe-area-inset-top));
+  background: var(--canvas-glass);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(8px);
+}
+.shell__crumb {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app--shell .main {
+  max-width: 1080px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page__head {
+  margin: 0 0 14px;
+}
+.page__title {
+  margin: 0;
+  font-size: var(--fs-xl);
+  letter-spacing: -0.01em;
+}
+.page__intro {
+  margin: 6px 0 0;
+  max-width: 62ch;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- 卡片新增部件：收藏按钮、匹配分、理由列表 ---------- */
+
+/* 整卡可点：链接的伪元素铺满卡片，按钮靠 z-index 浮上来抢回点击 */
+.card__link {
+  color: inherit;
+}
+.card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+.card__link:hover {
+  text-decoration: none;
+}
+
+.card__topright {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.score {
+  display: inline-block;
+  min-width: 30px;
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.score--best {
+  background: var(--brand);
+  color: var(--on-dark);
+}
+
+.card__reasons {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rsn {
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+  color: var(--ink-2);
+  padding-left: 13px;
+  position: relative;
+}
+.rsn::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.rsn--pass::before {
+  content: '\2713';
+  color: var(--ok);
+}
+.rsn--fail::before {
+  content: '\00d7';
+  color: var(--no);
+  font-weight: 700;
+}
+.rsn--warn::before {
+  content: '?';
+  color: var(--maybe);
+}
+
+.card__save {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-3);
+  font-size: var(--fs-body);
+  line-height: 1;
+  cursor: pointer;
+}
+.card__save:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+.card__save--on {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+/* ---------- 列表工具栏 ---------- */
+
+.listbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0 0;
+  flex-wrap: wrap;
+}
+.listbar__count {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+.listbar__sort {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  /* 排序标签在窄容器里会被挤成竖排单字，锁死不换行 */
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.input--sm {
+  padding: 5px 8px;
+  font-size: var(--fs-sm);
+}
+
+.filters__toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--line-2);
+}
+
+/* ---------- 智能匹配页 ---------- */
+
+.match__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  align-self: start;
+}
+.profile__title {
+  margin: 0;
+  font-size: var(--fs-body);
+}
+.profile__desc {
+  margin: -4px 0 2px;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+.profile__saved {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ok);
+}
+.pfield {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pfield__label {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+.pcheck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+.pcheck input {
+  accent-color: var(--brand);
+}
+
+.match__results {
+  min-width: 0;
+}
+.match__hint {
+  margin: 0 0 4px;
+  font-size: var(--fs-sm);
+}
+.grid--match {
+  margin-top: 10px;
+}
+
+/* ---------- 统计条 ---------- */
+
+.statbar {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.stat__num {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+.stat__label {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+.stat--offer .stat__num {
+  color: var(--ok);
+}
+.stat--rejected .stat__num {
+  color: var(--no);
+}
+.stat--warn .stat__num {
+  color: var(--maybe);
+}
+
+/* ---------- 申请进度列表 ---------- */
+
+.tracklist {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.trackrow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.trackrow__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.trackrow__title {
+  font-weight: 600;
+  font-size: var(--fs-md);
+  color: var(--ink);
+}
+.trackrow__meta {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+.trackrow__side {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.trackrow__note {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.btn--sm {
+  padding: 5px 10px;
+  font-size: var(--fs-sm);
+}
+.btn--on {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+.btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- 对比表：grid 而非 table，窄屏自动堆叠 ---------- */
+
+.cmp {
+  --cols: 2;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  margin-bottom: 14px;
+}
+.cmp__head,
+.cmp__row {
+  display: grid;
+  grid-template-columns: minmax(96px, 128px) repeat(var(--cols), minmax(0, 1fr));
+}
+.cmp__row + .cmp__row,
+.cmp__head + .cmp__row {
+  border-top: 1px solid var(--line-2);
+}
+.cmp__cell {
+  padding: 9px 11px;
+  font-size: var(--fs-sm);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.cmp__cell--label {
+  background: var(--bg);
+  color: var(--ink-2);
+  font-size: var(--fs-xs);
+  display: flex;
+  align-items: center;
+}
+.cmp__title {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+
+/* ---------- 数据说明表 ---------- */
+
+.dtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.dtable th,
+.dtable td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--line-2);
+  vertical-align: top;
+}
+.dtable th {
+  background: var(--bg);
+  font-weight: 600;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.dtable tr:last-child td {
+  border-bottom: 0;
+}
+.dtable__stale {
+  color: var(--maybe);
+}
+
+/* 资格判定与日期都是短标记，断成两行反而难扫读，锁死不换行 */
+.dtable td:nth-child(3),
+.dtable td:last-child {
+  white-space: nowrap;
+}
+
+.detail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.detail__cmpnote {
+  margin: 6px 0 0;
+  font-size: var(--fs-xs);
+}
+
+/* ---------- 工作台响应式：手机上侧栏变顶部横滑条 ---------- */
+
+@media (max-width: 719px) {
+  .app--shell {
+    flex-direction: column;
+  }
+  .sidebar {
+    flex: 0 0 auto;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    height: auto;
+    padding: max(8px, env(safe-area-inset-top)) 10px 8px;
+    gap: 8px;
+  }
+  .sidebar__brand {
+    padding: 0 4px;
+  }
+  .sidebar__foot {
+    display: none;
+  }
+  .sidebar__nav {
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .sidebar__nav::-webkit-scrollbar {
+    display: none;
+  }
+  .sidebar__item {
+    width: auto;
+    flex: 0 0 auto;
+    padding: 7px 11px;
+    font-size: var(--fs-sm);
+    white-space: nowrap;
+  }
+  .shell__bar {
+    position: static;
+  }
+  /* 对比表在窄屏改成每列一块，避免横向滚动 */
+  .cmp__head,
+  .cmp__row {
+    grid-template-columns: 1fr;
+  }
+  .cmp__cell--label {
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-weight: 600;
+  }
+  .dtable thead {
+    display: none;
+  }
+  .dtable,
+  .dtable tbody,
+  .dtable tr,
+  .dtable td {
+    display: block;
+    width: 100%;
+  }
+  .dtable tr {
+    border-bottom: 1px solid var(--line);
+    padding: 6px 0;
+  }
+}
+
+@media (min-width: 720px) {
+  .statbar {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .match__grid {
+    grid-template-columns: 268px minmax(0, 1fr);
+    align-items: start;
+  }
+  .profile {
+    position: sticky;
+    top: 64px;
+  }
+  .grid--match {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

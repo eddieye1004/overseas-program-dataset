@@ -1,0 +1,6 @@
+# web 子项目的忽略规则（根 .gitignore 已忽略 dist/，这里补齐其余）
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+i18n-src/merged.json

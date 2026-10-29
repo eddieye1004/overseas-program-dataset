@@ -1,0 +1,151 @@
+/* src/tokens.css
+   ────────────────────────────────────────────────────────────────
+   设计令牌唯一定义处。改色改字改间距只改这里，不要在组件里写死值。
+
+   视觉方向：Claude 式暖中性。奶油纸底 + 陶土强调 + 细边框 + 充足留白。
+   参考：Anthropic Claude 设计分析（claude-DESIGN.md, v-alpha）：
+     奶油画布 #faf9f5 / 陶土 #cc785c / 深色 surface #181715 / 石板衬线标题
+
+   与参考的差异（必须保留，属本项目自身约束）：
+   - 强调色由 #cc785c 压深到 #8f4630。原因：实测 #cc785c 在 #faf9f5 上
+     对比度仅 3.11:1，作为正文链接与小号字不合格；#8f4630 为 6.46:1。
+   - 不引入商业字体（Copernicus / StyreneB 需授权），改用系统衬线栈。
+   - 不引外部字体文件，保持零网络依赖、零费用。
+
+   对比度全部为实测值（WCAG 2.1 相对亮度公式，2026-10-29 计算）：
+     ink       17.50 on canvas / 15.26 on card
+     ink-2     10.34 on canvas
+     ink-3      6.55 on canvas /  5.71 on card   ← 小号文字下限
+     accent     6.46 on canvas /  6.80 白字压其上
+     ok         5.83 / no 6.65 / warn 6.35
+     on-dark    7.21（次于正文的侧栏文字）
+   ──────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── 画布（暖中性，从浅到深四级） ── */
+  --canvas: #faf9f5; /* 页面底色，奶油纸 */
+  --canvas-soft: #f5f0e8; /* 分区/凹陷区 */
+  --canvas-card: #ffffff; /* 卡片：纯白压在奶油底上才立得住 */
+  --canvas-sunken: #efe9de; /* 表头、代码块等更低一层 */
+
+  /* ── 墨色（四级，全部满足 4.5:1） ── */
+  --ink: #141413; /* 标题 */
+  --ink-2: #3d3d3a; /* 正文 */
+  --ink-3: #5c5a54; /* 次要文字、标签、元信息 */
+  --ink-4: #6b6862; /* 更弱的辅助文字，仍过 4.5:1 */
+
+  /* ── 强调（陶土，压深版） ── */
+  --accent: #8f4630;
+  --accent-hover: #7a3a27;
+  --accent-soft: #f4e7e0;
+  --accent-line: #e3c9bb;
+  --on-accent: #ffffff;
+
+  /* ── 语义（资格状态、风险级别） ── */
+  --ok: #3f6b4d;
+  --ok-soft: #e9f0eb;
+  --ok-line: #c3d6c8;
+  --no: #a03232;
+  --no-soft: #f8e8e8;
+  --no-line: #e2c4c4;
+  --warn: #7a5518;
+  --warn-soft: #f7eedb;
+  --warn-line: #dfcba0;
+  --info: #4a5a6b;
+  --info-soft: #eceff2;
+
+  /* ── 线（三级，越往下越实） ── */
+  --line: #e6dfd8; /* 默认分隔线 */
+  --line-soft: #efe9de; /* 卡片内细分隔 */
+  --line-strong: #cfc5b4; /* 需要明确边界时（输入框、表格） */
+
+  /* ── 深色区（侧栏 / 深色卡片） ── */
+  --surface-dark: #181715;
+  --surface-dark-elev: #252320;
+  --surface-dark-active: #2f2c26;
+  --on-dark: #faf9f5; /* 17.00 on surface-dark */
+  --on-dark-muted: #a8a49c; /* 7.21 */
+  --on-dark-faint: #8a867e; /* 4.94，仅用于非关键装饰 */
+  --accent-on-dark: #d9a066; /* 7.82，深底上的强调 */
+
+  /* ── 圆角（四级 + 胶囊） ── */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-pill: 999px;
+
+  /* ── 间距（4 基数，七级） ── */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+
+  /* ── 字号阶梯（八级，替代原先 12 个零散值） ── */
+  --fs-2xs: 11px; /* 微标签、表格 dt */
+  --fs-xs: 12px; /* 元信息、徽标 */
+  --fs-sm: 13px; /* 次要正文、卡片摘要 */
+  --fs-md: 14px; /* 按钮、表单控件 */
+  --fs-body: 15px; /* 正文 */
+  --fs-lg: 16px; /* 正文强调 */
+  --fs-xl: 20px; /* 区块标题 h2 */
+  --fs-display: clamp(26px, 4vw, 34px); /* 页面标题 h1 */
+
+  --lh-tight: 1.25;
+  --lh-normal: 1.6;
+
+  /* ── 字族 ── */
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Noto Sans SC', sans-serif;
+  /* 标题用系统衬线，模拟参考里的石板衬线气质；无衬线的机器上优雅回退 */
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Songti SC', 'Source Han Serif SC', 'Noto Serif SC', serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* ── 半透明玻璃层（sticky 头部背景：画布色 92% + backdrop-filter） ──
+     单独设令牌而不是在规则里写 rgb()，否则「颜色只在 tokens.css 出现」这条就破了。
+     值等于 --canvas 加 92% 不透明度，滚动时下层内容微微透出。 */
+  --canvas-glass: rgb(250 249 245 / 92%);
+
+  /* ── 阴影（暖灰、双点，不用纯黑） ── */
+  --shadow-sm: 0 1px 2px rgb(20 20 19 / 5%);
+  --shadow-md: 0 1px 2px rgb(20 20 19 / 5%), 0 6px 16px rgb(20 20 19 / 6%);
+  --shadow-lg: 0 2px 4px rgb(20 20 19 / 6%), 0 16px 32px rgb(20 20 19 / 8%);
+
+  /* ── 焦点环（浅底 / 深底两套，都用双环保证在任意底色上可见） ── */
+  --focus-color: var(--accent);
+  --focus-on-dark: var(--accent-on-dark);
+  --focus-ring: 0 0 0 2px var(--canvas), 0 0 0 4px var(--focus-color);
+  --focus-ring-dark: 0 0 0 2px var(--surface-dark), 0 0 0 4px var(--focus-on-dark);
+
+  /* ── 布局 ── */
+  --maxw: 1120px;
+  --tap: 44px; /* 触控目标下限 */
+
+  /* ════════════════════════════════════════════════════════════
+     兼容别名 —— 旧变量名继续可用，值统一指向上面这套令牌。
+     这样 1494 行存量 CSS 一次性吃到新色板，不必逐条改写。
+     新写代码直接用上面的语义名，不要再用这一组。
+     ════════════════════════════════════════════════════════════ */
+  --bg: var(--canvas);
+  --surface: var(--canvas-card);
+  --line-2: var(--line-soft);
+  --brand: var(--accent);
+  --brand-soft: var(--accent-soft);
+  --maybe: var(--warn);
+  --maybe-soft: var(--warn-soft);
+  --radius: var(--r-lg);
+  --radius-sm: var(--r-sm);
+  --shadow: var(--shadow-sm);
+  --sans: var(--font-sans);
+}
+
+/* 减少动效偏好下的全局降级（原 styles.css 里是逐条 @media，这里收口一次） */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion: 0ms;
+  }
+}

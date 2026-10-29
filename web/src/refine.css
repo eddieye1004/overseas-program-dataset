@@ -1,0 +1,248 @@
+/* src/refine.css
+ * 视觉收敛层：只做「令牌化之后仍缺的三件事」，不重复定义任何已存在的组件样式。
+ *   1) 统一焦点环——浏览器默认的 auto 1px 黑环在深色侧栏上等于没有
+ *   2) 触控目标补到 44px——原筹码 34px、收藏按钮 30px、复选 17px 都不达标
+ *   3) 新增部件的排版——来源域名、来源汇总、卡片可信度条、放宽条件筹码
+ * 所有取值一律走 tokens.css 的变量；本文件不应出现十六进制色值。
+ */
+
+/* ---------- 1. 焦点可见性 ---------- */
+
+/* 只在键盘操作时画环：鼠标点击不留下难看的框，Tab 走查时又必须看得见 */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-sm);
+}
+
+/* 深色侧栏里的环要用亮色，陶土色压深底只有 2.63:1 */
+.sidebar :focus-visible,
+.sidebar__item:focus-visible,
+.sidebar__brand:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-dark);
+}
+
+/* 输入框原本自带 outline，改成同一套令牌，避免两种焦点样式并存 */
+.input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+}
+
+/* ---------- 2. 触控目标 ---------- */
+
+.chip {
+  min-height: var(--tap);
+}
+
+.btn {
+  min-height: var(--tap);
+}
+
+/* 卡片右下角收藏键：视觉尺寸保持克制，命中区补到 44px */
+.card__save {
+  width: var(--tap);
+  height: var(--tap);
+  right: 6px;
+  bottom: 6px;
+}
+
+/* 复选/单选的原生控件只有 17px，靠 label 撑开命中区 */
+.pcheck,
+.switch {
+  min-height: var(--tap);
+  align-items: center;
+}
+
+/* 侧栏导航项：桌面端 39px 是舒适的鼠标目标，但触屏上偏小。
+   只在粗指针设备或窄屏上补到 44px，桌面视觉密度不动。
+   注意 headless 里 pointer:coarse 不一定生效，所以窄屏这条不能省。 */
+@media (pointer: coarse), (max-width: 719px) {
+  .sidebar__item,
+  .sidebar__brand,
+  .langswitch {
+    min-height: var(--tap);
+  }
+}
+
+/* 年龄输入框 42px，差 2px 到下限 */
+.input--age {
+  min-height: var(--tap);
+}
+
+/* 标题里的链接本身只有一行高，但整卡可点靠 ::after 铺满，这里只补观感 */
+.card__title .card__link {
+  display: inline-block;
+  padding-block: 2px;
+}
+
+/* 列表项里的操作链接也补到可点高度 */
+.trackrow__side .btn,
+.detail__actions .btn {
+  min-height: var(--tap);
+}
+
+/* ---------- 3. 标题字阶 ---------- */
+
+/* 展示级标题用衬线，正文保持无衬线——这是参考里最值得抄的一条：
+   衬线只在「读标题」时出现，正文换成衬线会拖慢扫读。 */
+.page__title,
+.detail__title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: var(--lh-tight);
+}
+
+.page__title {
+  font-size: var(--fs-display);
+}
+
+.detail__title {
+  font-size: var(--fs-display);
+}
+
+.sec__title {
+  letter-spacing: -0.005em;
+}
+
+/* ---------- 4. 来源可视化 ---------- */
+
+/* 汇总行：几条、几条官方，一眼看完 */
+.srcsum {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  margin: 0 0 var(--s-3);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.srcsum__item strong {
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  color: var(--ink);
+}
+
+.srcsum__item--p strong {
+  color: var(--ok);
+}
+
+/* 来源列表：机构名占主行，域名另起一行等宽显示 */
+.ul--src > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-2);
+}
+
+.srcurl {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  background: var(--canvas-sunken);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-xs);
+  padding: 1px 6px;
+  word-break: break-all;
+}
+
+/* ---------- 5. 卡片可信度条 ---------- */
+
+.card__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
+  margin: var(--s-3) 0 0;
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--line-soft);
+  font-size: var(--fs-xs);
+  color: var(--ink-4);
+}
+
+.card__trust__src {
+  font-family: var(--font-mono);
+}
+
+.card__trust__p {
+  color: var(--ok);
+}
+
+.card__trust__date {
+  font-family: var(--font-mono);
+}
+
+/* ---------- 6. 空结果时的「放宽」筹码 ---------- */
+
+.relax__hint {
+  margin: var(--s-4) 0 var(--s-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.relax {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s-2);
+  margin: 0 0 var(--s-4);
+  padding: 0;
+  list-style: none;
+}
+
+.relax__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: 0 var(--s-3);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--canvas-card);
+  color: var(--ink-2);
+  font: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.relax__chip:hover {
+  border-style: solid;
+  border-color: var(--no);
+  color: var(--no);
+}
+
+.relax__x {
+  font-size: var(--fs-body);
+  line-height: 1;
+}
+
+/* ---------- 7. 跳到主内容（键盘用户第一个 Tab 位） ---------- */
+
+.skiplink {
+  position: absolute;
+  left: var(--s-4);
+  top: -60px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: var(--s-2) var(--s-4);
+  border-radius: var(--r-sm);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  transition: top 120ms ease;
+}
+
+.skiplink:focus-visible {
+  top: var(--s-3);
+  box-shadow: var(--focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skiplink {
+    transition: none;
+  }
+}

@@ -1,0 +1,71 @@
+name: Deploy web
+
+# 只发布 web 这一层：数据仓库本体（validate.yml）继续独立跑，两者互不阻塞。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'data/programs/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Pages 同一时间只能有一个发布在跑；新的推送顶掉排队中的旧任务，但不打断进行中的。
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Sync data from repo JSON
+        run: pnpm run sync:data
+
+      - name: Typecheck
+        run: pnpm exec tsc -b --force
+
+      - name: Unit checks
+        run: node scripts/smoke-test.mjs
+
+      - name: Build
+        run: pnpm exec vite build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
