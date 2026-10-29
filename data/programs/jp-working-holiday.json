@@ -11,7 +11,7 @@
     "visa_code": "Working Holiday",
     "official_url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
     "authority": "日本外务省（MOFA）/ 日本驻华大使馆、总领事馆",
-    "summary": "日本与 32 个国家和地区签订的青年文化交流签证，允许 18-30 岁青年在日本停留 12 个月并合法打工以补充旅费。⚠️ 日本外务省公布的协议名单中未包含中国大陆，对华安排为年度协商制，部分年份开放、部分年份暂停，须以日本驻华使领馆当年公告为准。",
+    "summary": "日本与 32 个国家和地区签订的青年文化交流签证，允许 18-30 岁青年在日本停留最长 1 年并合法打工以补充旅费。⚠️ 日本外务省公布的协议名单中未包含中国大陆，中日之间未签订打工度假协议，中国大陆护照持有人无法申请。",
     "tags": [
       "once_in_lifetime",
       "no_agency_needed"
@@ -29,38 +29,32 @@
     "age": {
       "min": 18,
       "max": 30,
-      "note": "申请时 18-30 周岁（含）。部分国家协议可放宽至 35 岁。"
+      "note": "申请时 18-30 周岁（含）。官方原文 Being between 18 and 30 years of age both inclusive at the time of application for the visa。另注：澳大利亚、加拿大、韩国、爱尔兰为 18-25 周岁，除非对方主管机关与日本另行约定放宽至 30 周岁。官方全文不存在放宽至 35 岁的表述，原记录「可放宽至 35 岁」无依据已更正。"
     },
     "education": {
-      "minimum_level": "high_school",
+      "minimum_level": "any",
       "major_restriction": [],
-      "note": "高中毕业及以上学历"
+      "note": "MOFA 主源资格条件未列学历要求（educat / high school 命中均为 0），原记录 high_school（高中毕业及以上）无官方依据，已改为 any。个别使领馆是否另有要求，未能核实。"
     },
     "language": {
       "required": false,
       "tests": [],
-      "note": "无强制语言考试要求。但部分使领馆可能要求提供基础语言能力证明。"
+      "note": "无强制语言考试要求（MOFA 主源页面未列任何语言考试或语言能力门槛）。个别使领馆是否另要求语言证明，未能核实。"
     },
     "funds": {
       "required": true,
-      "amount": {
-        "local_amount": 250000,
-        "currency": "JPY",
-        "cny_estimate": 12000,
-        "note": "约 20-30 万日元存款证明，用于初期生活。具体金额依使领馆要求。"
-      },
-      "note": "需证明有足够资金维持初期停留。"
+      "note": "须证明有合理资金维持初期停留（官方原文 Possessing reasonable funds for the maintenance of his/her stay during the initial period of stay in Japan），并持有返程机票或足够购买返程机票的资金。官方主源未公布具体金额，数额由各使领馆判断；原记录 amount=250000 JPY（约 20-30 万日元）无官方来源，未能核实，已移除 amount 字段。"
     },
     "other_requirements": [
       {
         "type": "health_check",
         "required": false,
-        "note": "部分使领馆要求健康保险证明"
+        "note": "官方资格条件为 Being in good health（身体健康），非体检报告要求；原记录描述有误已更正。"
       },
       {
         "type": "insurance",
-        "required": true,
-        "note": "部分使领馆要求提供健康/旅行保险证明"
+        "required": false,
+        "note": "MOFA 主源全文 insurance 命中 0，未列医疗保险为资格条件。个别使领馆是否另要求，未能核实。"
       },
       {
         "type": "no_dependents",
@@ -86,36 +80,36 @@
   },
 
   "timeline": {
-    "mechanism": "annual_negotiation",
+    "mechanism": "rolling",
     "quota": null,
-    "quota_note": "各国配额不同。中国台湾 10,000 个、中国香港 1,500 个。中国大陆无名额（不在官方协议名单内），实际安排为年度协商制。",
+    "quota_note": "各国年度签发上限不同（官方原文 Maximum number of visas issued per year）：中国台湾 10,000、中国香港 1,500、韩国 10,000、加拿大 6,283、英国 6,000、法国 1,800、爱尔兰 800；澳大利亚、新西兰、德国、丹麦等为 no limit。中国大陆不在协议名单内，无名额；原记录「实际安排为年度协商制」与官方名单矛盾，已删除。",
     "windows": [
       {
         "year": 2026,
         "status": "unknown",
-        "note": "中国大陆申请人须向日本驻华使领馆确认当年是否开放及名额。部分年份全年可申请。"
+        "note": "MOFA 主源未公布申请窗口或批次时间表，申请由各地日本使领馆/日本台湾交流协会受理，受理时间以各馆公告为准（未能核实）。中国大陆不适用：不在 32 个协议国家/地区名单内。"
       }
     ],
     "fees": [
       {
         "item": "签证申请费",
-        "amount": { "local_amount": 3000, "currency": "JPY", "cny_estimate": 150, "note": "单次签证 3,000 日元（2026-07-01 起新标准）；部分国籍免费" },
+        "amount": { "local_amount": 15000, "currency": "JPY", "cny_estimate": 720, "note": "官方公告（令和8年6月24日）：令和8年7月1日起施行，同日以后在外公馆受理的申请，一次有效签证约 15,000 日元、数次有效签证约 30,000 日元（邦货换算）。渡航目的及国籍不同可能免收或金额不同。原记录 3,000 日元为旧标准金额却标注 2026-07-01 新标准生效日，已更正。" },
         "refundable": false
       }
     ],
-    "processing_time": "约 5-15 个工作日"
+    "processing_time": "MOFA 主源未公布审理时长（未能核实）；原记录「约 5-15 个工作日」无官方来源。"
   },
 
   "documents": [
     { "name": "签证申请表", "required": true, "note": "日本外务省标准表格", "prepare_days": 7 },
     { "name": "有效护照", "required": true, "note": "有效期须覆盖整个停留期", "prepare_days": 30 },
-    { "name": "照片", "required": true, "note": "白底，4cm × 3cm，3 个月内拍摄", "prepare_days": 7 },
-    { "name": "资金证明", "required": true, "note": "银行存款证明，约 20-30 万日元以上，1 个月内开具", "prepare_days": 14 },
+    { "name": "照片", "required": true, "note": "白底，4cm × 3cm，3 个月内拍摄（尺寸与底色属各使领馆规定，未在 MOFA 主源页面列出，未能核实）", "prepare_days": 7 },
+    { "name": "资金证明", "required": true, "note": "银行存款证明（官方只要求 reasonable funds，未给具体数额；原「约 20-30 万日元以上」无官方来源，未能核实）", "prepare_days": 14 },
     { "name": "返程机票或购票资金证明", "required": true, "note": "", "prepare_days": 14 },
-    { "name": "健康保险证明", "required": false, "note": "部分使领馆要求", "prepare_days": 14 },
-    { "name": "履历书（CV）", "required": true, "note": "含学历与职业经历，英文或日文", "prepare_days": 7 },
-    { "name": "理由书", "required": true, "note": "致使领馆，说明赴日目的", "prepare_days": 7 },
-    { "name": "行程计划书", "required": true, "note": "逐月说明停留城市与活动安排", "prepare_days": 14 }
+    { "name": "健康保险证明", "required": false, "note": "部分使领馆要求（未在 MOFA 主源页面列出，未能核实）", "prepare_days": 14 },
+    { "name": "履历书（CV）", "required": true, "note": "含学历与职业经历，英文或日文（属各使领馆规定，未在 MOFA 主源页面列出，未能核实）", "prepare_days": 7 },
+    { "name": "理由书", "required": true, "note": "致日本驻当地使领馆，说明赴日目的（属各使领馆规定，未在 MOFA 主源页面列出，未能核实；原记录「致使领馆」为错字，已更正）", "prepare_days": 7 },
+    { "name": "行程计划书", "required": true, "note": "逐月说明停留城市与活动安排（属各使领馆规定，未在 MOFA 主源页面列出，未能核实）", "prepare_days": 14 }
   ],
 
   "steps": [
@@ -143,8 +137,8 @@
     {
       "step_no": 4,
       "title": "等待审核并领取签证",
-      "description": "审核期通常 5-15 个工作日，部分使领馆可当日或次日签发。获批后领取签证。签证有效期通常为 1 年，自入境日起算停留期。",
-      "duration": "5-15 个工作日",
+      "description": "审核时长由各使领馆掌握，MOFA 主源未公布（未能核实；原「5-15 个工作日」无官方来源）。获批后领取签证，停留期自入境日起算。",
+      "duration": "以各使领馆通知为准（未能核实）",
       "official_link": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html"
     },
     {
@@ -159,16 +153,15 @@
   "work_conditions": {
     "max_stay_months": 12,
     "max_same_employer_months": 0,
-    "max_study_months": 6,
     "renewable": false,
-    "renewal_condition": "不可续签。若从事特定农业工作满 88 天，可申请'特定活动'签证延长停留。",
+    "renewal_condition": "不可续签。官方 [NB2] 载明：加拿大、英国为两次连续各一年停留或总计两次不连续一年停留；新西兰、丹麦、奥地利、德国、爱尔兰、斯洛伐克、韩国、中国台湾为总计两次不连续一年停留。中国大陆不在任何放宽名单内。原记录「从事特定农业工作满 88 天可申请特定活动签证延长」在官方主源全文 88 / agricultur 命中 0，无依据已删除。",
     "restricted_occupations": [
       "酒吧",
       "夜总会",
       "赌博场所",
       "影响公共道德的其他场所"
     ],
-    "note": "打工为度假的附带活动，用于补充旅费。可从事任何不违反公共道德的行业。每周工时无硬性上限（区别于留学签证的 28 小时）。"
+    "note": "打工为度假的附带活动，用于补充旅费（官方原文 engage in employment as an incidental activity of their holidays for the purpose of supplementing their travel funds）。MOFA 主源全文 hours / week 命中 0，未表述每周工时上限；「无硬性上限」属推断，非官方明文。违反禁业限制者按入管法处理并可能被强制遣返。"
   },
 
   "risks": [
@@ -182,7 +175,11 @@
     },
     {
       "level": "warning",
-      "description": "一生原则仅一次。日本自 2024-12 起陆续对加拿大/英国/新西兰/丹麦/奥地利/德国/爱尔兰/斯洛伐克/韩国放宽至两次，2026-02-01 起中国台湾亦可参与两次，但以上放宽均不适用于中国大陆护照。"
+      "description": "一生原则仅一次。日本自 2024-12-01 起对加拿大/英国/新西兰/丹麦/奥地利、2025-01-01 起对德国/爱尔兰/斯洛伐克、2025-10-01 起对韩国、2026-02-01 起对中国台湾放宽至两次，但以上放宽均不适用于中国大陆护照。"
+    },
+    {
+      "level": "warning",
+      "description": "本记录多个字段原无官方来源，已于 2026-10-29 复核后删除或标注「未能核实」：资金数额（原 250000 日元）、审理时长（原 5-15 个工作日）、学习时长上限（原 6 个月）、农业 88 天延期（原 renewal_condition）、每周工时无上限（原 work_conditions.note）、年龄放宽至 35 岁（原 age.note）。引用这些数值前须另找官方依据。"
     },
     {
       "level": "info",
@@ -196,21 +193,21 @@
       "name": "The Working Holiday Programmes in Japan",
       "url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
       "publisher": "Ministry of Foreign Affairs of Japan",
-      "last_verified": "2026-10-16",
+      "last_verified": "2026-10-29",
       "verified_by": "eddieye1004",
-      "claim": "截至 2026-04-01 的 32 个协议国家/地区名单（含中国台湾 10,000、中国香港 1,500，不含中国大陆）、各国配额、年龄要求 18-30、申请程序、工作限制（禁止酒吧/夜总会/赌博场所）；名单不含中国大陆，中日之间未签订打工度假协议"
+      "claim": "截至 2026-04-01 的 32 个协议国家/地区名单（含中国台湾 10,000、中国香港 1,500，不含中国大陆）、各国年度签发上限、年龄 18-30（澳加韩爱为 18-25，可另议放宽至 30）、资金与返程机票要求、身体健康、未曾取得过日本打工度假签证、申请程序、工作限制（禁止酒吧/夜总会/赌博场所及影响公共道德场所）；[NB2] 两次参与放宽：2024-12-01 加拿大/英国/新西兰/丹麦/奥地利、2025-01-01 德国/爱尔兰/斯洛伐克、2025-10-01 韩国、2026-02-01 中国台湾；中国大陆不在任何放宽名单内"
     },
     {
       "type": "primary",
-      "name": "The Working Holiday Programmes in Japan（签证放宽说明见 [NB2]）",
-      "url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
+      "name": "査証手数料（日本签证手续费，令和8年6月24日公告）",
+      "url": "https://www.mofa.go.jp/mofaj/toko/visa/tetsuzuki/pagew_000001_02672.html",
       "publisher": "Ministry of Foreign Affairs of Japan",
-      "last_verified": "2026-10-16",
+      "last_verified": "2026-10-29",
       "verified_by": "eddieye1004",
-      "claim": "一生一次的放宽安排：2024-12-01 起（加拿大/英国/新西兰/丹麦/奥地利）、2025-01-01 起（德国/爱尔兰/斯洛伐克）、2025-10-01 起（韩国）、2026-02-01 起（中国台湾）可参与两次；中国大陆不在任何放宽名单内"
+      "claim": "「領事官の徴収する手数料に関する政令」改正自令和8年7月1日施行；同日以后在外公馆受理的申请，一次有效签证约 15,000 日元、数次有效签证约 30,000 日元（邦货换算）；渡航目的与国籍不同可能免收或金额不同"
     }
   ],
 
-  "last_verified": "2026-10-16",
+  "last_verified": "2026-10-29",
   "verified_by": "eddieye1004"
 }
