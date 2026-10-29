@@ -38,3 +38,6 @@ validate-report.txt
 # 临时文件
 *.tmp
 *.log
+
+# 截图是可直接重生成的验收产物（node web/scripts/shots.mjs），不入库
+shots/
