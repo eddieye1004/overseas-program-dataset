@@ -245,9 +245,10 @@ impeccable.cmd detect --json src dist/index.html                 # AI 痕迹检�
 
 ### 部署到 GitHub Pages
 
-1. 工作流已在 `.github/workflows/pages.yml`。它带 `enablement: true`，首次运行会自动把仓库 Settings → Pages → Source 设成 **GitHub Actions**，不需要手工点。
-2. push 到 `main`，工作流依次跑：install → sync:data → tsc → smoke-test → build → 上传 → 发布。
-3. 站点地址 `https://eddieye1004.github.io/overseas-program-dataset/`。`base: './'` 让子路径和根路径都能用，不用改代码。
+1. 站点已上线：`https://eddieye1004.github.io/overseas-program-dataset/`（Pages 的 `build_type` 为 `workflow`）。
+2. 工作流在 `.github/workflows/pages.yml`，push 到 `main` 且改动落在 `web/**` 或 `data/programs/**` 时自动跑：install → sync:data → tsc → smoke-test → build → 上传 → 发布。
+3. 新建仓库时要注意：`configure-pages` 的 `enablement: true` 在首次运行里**会失败**——实测报 `Create Pages site failed. Resource not accessible by integration`，`GITHUB_TOKEN` 建不了 Pages 站点。解决方式是用有 `pages:write` 权限的个人 token 调一次 `POST /repos/{owner}/{repo}/pages`，body `{"build_type":"workflow"}`，之后工作流就能正常发布。这一步只做一次。
+4. `base: './'` 让子路径和根路径都能用，不用改代码。
 
 ### 部署到 Cloudflare Pages（可选，免备案、国内更快）
 
