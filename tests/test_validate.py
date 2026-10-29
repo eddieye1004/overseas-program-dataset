@@ -317,9 +317,14 @@ class TestCliContract(unittest.TestCase):
     """退出码是 CI 唯一的判据，必须单独锁死。"""
 
     def run_cli(self, *args, cwd=ROOT):
+        # 子进程 stdout 的编码跟随控制台代码页（中文 Windows 上是 GBK），
+        # 这里却按 utf-8 解码：子进程一输出中文就 UnicodeDecodeError，
+        # stdout 变成 None，下一行 proc.stdout + proc.stderr 直接 TypeError。
+        # 显式给子进程 PYTHONIOENCODING=utf-8，让「按 utf-8 解码」这个前提成立。
+        env = dict(os.environ, PYTHONIOENCODING="utf-8")
         return subprocess.run(
             [sys.executable, SCRIPT, *args],
-            cwd=cwd, capture_output=True, text=True, encoding="utf-8",
+            cwd=cwd, capture_output=True, text=True, encoding="utf-8", env=env,
         )
 
     def test_real_dataset_exits_zero(self):
