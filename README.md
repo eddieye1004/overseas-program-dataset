@@ -157,8 +157,10 @@ python scripts/validate.py --json
 
 ## 许可
 
-- **数据**（`data/` 目录）：[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — 可自由使用，需署名
-- **代码**（`scripts/`）：[MIT](LICENSE)
+- **数据**（`data/` 目录）：[CC BY 4.0](LICENSE-DATA) — 可自由使用，需署名
+- **代码**（`scripts/`、`tests/`）：[MIT](LICENSE)
+
+仓库采用 SPDX 标准的多许可布局：根目录 `LICENSE` 只放 MIT 全文（GitHub 据此识别代码许可），数据许可全文单独放在 [`LICENSE-DATA`](LICENSE-DATA)。第三方复用数据时请引用本仓库 URL 与 `last_verified` 日期。
 
 ---
 
