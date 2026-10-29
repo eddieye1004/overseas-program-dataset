@@ -38,7 +38,6 @@ web/
 │   ├─ e2e-check.mjs          84 条真实浏览器断言（CDP，无需 playwright）
 │   ├─ shots.mjs              一次跑完 13 张页面截图 + 横向溢出检测
 │   └─ screenshot.mjs         单页截图工具（真实手机视口）
-├─ deploy/pages.yml           GitHub Pages 工作流，需要时手动拷到 .github/workflows/
 └─ src/
    ├─ main.tsx                StrictMode > I18nProvider > App
    ├─ App.tsx                 侧边栏外壳 + 路由分发 + 四个本地状态 hook
@@ -246,10 +245,9 @@ impeccable.cmd detect --json src dist/index.html                 # AI 痕迹检�
 
 ### 部署到 GitHub Pages
 
-1. 把 `web/deploy/pages.yml` 拷到仓库根 `.github/workflows/pages.yml`（现在放在 web 里是为了不越界改 `.github/`）。
-2. 仓库 Settings → Pages → Source 选 **GitHub Actions**。
-3. push 到 `main`，工作流依次跑：install → sync:data → tsc → smoke-test → build → 上传 → 发布。
-4. 站点地址 `https://<用户名>.github.io/overseas-program-dataset/`。`base: './'` 让子路径和根路径都能用，不用改代码。
+1. 工作流已在 `.github/workflows/pages.yml`。它带 `enablement: true`，首次运行会自动把仓库 Settings → Pages → Source 设成 **GitHub Actions**，不需要手工点。
+2. push 到 `main`，工作流依次跑：install → sync:data → tsc → smoke-test → build → 上传 → 发布。
+3. 站点地址 `https://eddieye1004.github.io/overseas-program-dataset/`。`base: './'` 让子路径和根路径都能用，不用改代码。
 
 ### 部署到 Cloudflare Pages（可选，免备案、国内更快）
 
