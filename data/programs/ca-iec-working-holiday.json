@@ -11,7 +11,7 @@
     "visa_code": "IEC-WH",
     "official_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html",
     "authority": "Immigration, Refugees and Citizenship Canada（加拿大移民、难民及公民部）",
-    "summary": "加拿大与 30 多个国家和地区签订的青年流动协议，允许 18-35 岁青年在加工作 12-24 个月。⚠️ 中国大陆不在协议名单内，中国大陆护照持有人无法申请此项目。中文互联网上大量'加拿大打工度假'信息实为雇主担保工签，与 IEC 性质完全不同。",
+    "summary": "加拿大与 30 多个国家和地区签订的青年流动协议，允许 18-35 岁青年在加工作，单次停留最长 12 个月（中国香港、中国台湾均为 12 个月，部分签约国可达 24 个月）。⚠️ 中国大陆不在协议名单内，中国大陆护照持有人无法申请此项目。中文互联网上大量'加拿大打工度假'信息实为雇主担保工签，与 IEC 性质完全不同。",
     "tags": [
       "no_agency_needed",
       "high_wage"
@@ -29,7 +29,7 @@
     "age": {
       "min": 18,
       "max": 35,
-      "note": "18-35 周岁（具体上限因签约国家/地区而异）"
+      "note": "18-35 周岁（官方总述 \"18 to 35 (18 to 30 in some countries)\"）。中国香港为 18-30，中国台湾为 18-35，其余签约国多为 18-35"
     },
     "education": {
       "minimum_level": "any",
@@ -37,11 +37,9 @@
       "note": "无学历硬性要求（依各签约地区协议而定）"
     },
     "language": {
-      "required": true,
-      "tests": [
-        { "test": "IELTS", "min_score": 0, "validity_months": 24 }
-      ],
-      "note": "需证明语言能力，具体要求依签约地区协议而定"
+      "required": false,
+      "tests": [],
+      "note": "官方三个主源页面（iec.html、eligibility.html、eligibility-by-country.html）均未列语言考试要求（IELTS / language test 命中 0）。原记录 IELTS 24 个月无官方依据已移除；是否另有语言要求未能核实。"
     },
     "funds": {
       "required": true,
@@ -57,17 +55,7 @@
       {
         "type": "insurance",
         "required": true,
-        "note": "须购买医疗保险"
-      },
-      {
-        "type": "criminal_record",
-        "required": true,
-        "note": "须提供无犯罪记录证明"
-      },
-      {
-        "type": "health_check",
-        "required": true,
-        "note": "须完成体检"
+        "note": "官方要求在整个停留期间持有医疗保险（have health insurance for the duration of your stay）"
       }
     ]
   },
@@ -75,30 +63,28 @@
   "timeline": {
     "mechanism": "ballot",
     "quota": null,
-    "quota_note": "中国香港、中国台湾有年度配额；中国大陆无配额（不在协议内）。",
+    "quota_note": "中国大陆不在协议内，无配额。官方主源未公布中国香港、中国台湾的年度配额数字（未能核实）。",
     "windows": [
       {
         "year": 2026,
-        "status": "unknown",
-        "note": "各签约地区开放时间不同。中国大陆无法申请，无相关窗口。"
+        "status": "closed",
+        "note": "官方原文：2026 IEC season is closed / The pools for the 2026 season are closed. 已获 ITA 者仍可提交工签申请；未获 ITA 者档案被移出池，官方称可在 2027 赛季重新开放时创建新档案。中国大陆无法申请，无相关窗口。"
       }
     ],
     "fees": [
       {
         "item": "开放式工签申请费",
-        "amount": { "local_amount": 100, "currency": "CAD", "cny_estimate": 520, "note": "另需生物识别费 CAD 85" },
+        "amount": { "local_amount": 184.75, "currency": "CAD", "cny_estimate": 960, "note": "官方原文 Processing fees CAN $184.75；官方注「Additional fees may apply.」，生物识别等其他费用另计、未含在内" },
         "refundable": false
       }
     ],
-    "processing_time": "数周至数月"
+    "processing_time": "约 6 周（官方：Current processing time 6 weeks after you submit all documents and give biometrics）"
   },
 
   "documents": [
     { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照", "prepare_days": 30 },
     { "name": "资金证明", "required": true, "note": "约 2,500 加元", "prepare_days": 14 },
-    { "name": "医疗保险", "required": true, "note": "覆盖全程", "prepare_days": 14 },
-    { "name": "无犯罪记录证明", "required": true, "note": "", "prepare_days": 30 },
-    { "name": "语言成绩证明", "required": true, "note": "", "prepare_days": 60 }
+    { "name": "医疗保险", "required": true, "note": "覆盖全程", "prepare_days": 14 }
   ],
 
   "steps": [
@@ -126,13 +112,12 @@
   ],
 
   "work_conditions": {
-    "max_stay_months": 24,
+    "max_stay_months": 12,
     "max_same_employer_months": 0,
-    "max_study_months": 6,
     "renewable": false,
-    "renewal_condition": "不可续签。部分国家/地区可参加两次。",
+    "renewal_condition": "不可续签。中国香港护照持有人「may participate in IEC only once」、中国台湾护照持有人「only once」，两类合格护照均只能参加一次。",
     "restricted_occupations": [],
-    "note": "开放式工签，可为任意雇主工作，无需雇主担保。"
+    "note": "开放式工签，可为任意雇主工作，无需雇主担保。停留期 12 个月为中国香港、中国台湾两类合格护照的官方上限（up to 12 months），其他签约国可达 24 个月。官方三页未提及学习时长上限（study 仅见 TEER 学历语境），原 max_study_months=6 无依据已删除（未能核实）。"
   },
 
   "risks": [
@@ -147,6 +132,10 @@
     {
       "level": "info",
       "description": "本记录的存在价值：帮助中国大陆学生快速排除一个不可行的选项，避免浪费时间和金钱。"
+    },
+    {
+      "level": "info",
+      "description": "无犯罪记录证明、体检、语言考试三项已从资格条件中移除：官方三个主源页面检索 criminal / police / medical exam / IELTS 命中均为 0，同类表述只有「not be inadmissible to Canada」这一准入性条件。移除依据是反向证据，不等于官方明示无需提供，个案审理仍可能要求（未能核实）。"
     }
   ],
 
@@ -156,21 +145,30 @@
       "name": "International Experience Canada",
       "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html",
       "publisher": "Immigration, Refugees and Citizenship Canada",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-29",
       "verified_by": "eddieye1004",
-      "claim": "IEC 仅对与加拿大签订青年流动协议的国家/地区开放；中国大陆不在协议名单内"
+      "claim": "IEC 仅对与加拿大签订青年流动协议的国家/地区开放；中国大陆不在协议名单内；2026 IEC season is closed（pools closed）；Processing fees CAN $184.75；Current processing time 6 weeks after you submit all documents and give biometrics"
     },
     {
       "type": "primary",
       "name": "IEC 参与国家/地区名单（Who can apply）",
       "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility.html",
       "publisher": "Immigration, Refugees and Citizenship Canada",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-29",
       "verified_by": "eddieye1004",
-      "claim": "IEC 参与方为与加拿大签订青年流动协议（YMA）的国家/地区；官方名单含 Hong Kong 与 Taiwan，不含 China（中国大陆）"
+      "claim": "IEC 参与方为与加拿大签订青年流动协议（YMA）的国家/地区；资格条件（护照、年龄 18-35、资金、保险、返程机票、不可带家属）"
+    },
+    {
+      "type": "primary",
+      "name": "IEC eligibility by country（各国 Working Holiday 条款与年龄上限）",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility/eligibility-by-country.html",
+      "publisher": "Immigration, Refugees and Citizenship Canada",
+      "last_verified": "2026-10-29",
+      "verified_by": "eddieye1004",
+      "claim": "官方名单含 Hong Kong 与 Taiwan，不含 China（中国大陆）；Hong Kong—Working Holiday 为 up to 12 months / 18-30 岁 / CAN$2,500 / 只能参加一次；Taiwan—Working Holiday 为 up to 12 months / 18-35 岁 / CAN$2,500 / 只能参加一次；全表 36 个条目中 China 命中 0"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-29",
   "verified_by": "eddieye1004"
 }
