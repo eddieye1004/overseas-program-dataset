@@ -5,6 +5,9 @@
 [![Validate Dataset](https://github.com/eddieye1004/overseas-program-dataset/actions/workflows/validate.yml/badge.svg)](https://github.com/eddieye1004/overseas-program-dataset/actions/workflows/validate.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/Data-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![License: MIT](https://img.shields.io/badge/Code-MIT-blue.svg)](LICENSE)
+[![Live](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%B5%8F%E8%A7%88-Live%20Site-8f4630.svg)](https://eddieye1004.github.io/overseas-program-dataset/)
+
+**在线浏览：<https://eddieye1004.github.io/overseas-program-dataset/>** —— 中英双语，手机上能直接筛。不想读 JSON 就从这里进。
 
 ---
 
@@ -51,7 +54,7 @@
 | H-1 Working Holiday Visa | 韩国 | 打工度假 | ❌ 不可申请 |
 | Summer Work Travel (J-1) | 美国 | 带薪实习 | ✅ |
 | Study-related Internship (§16e) | 德国 | 实习 | ✅ |
-| IAESTE 国际实习 | 全球 80+ 国 | 技术实习 | ✅ |
+| IAESTE 国际实习 | 全球 100+ 国 | 技术实习 | ✅ |
 | AIESEC Global Talent | 全球 120+ 国 | 企业实习 | ✅ |
 | IEC Working Holiday | 加拿大 | 打工度假 | ❌ 不可申请 |
 | Youth Mobility Scheme | 英国 | 打工度假 | ❌ 不可申请 |
@@ -78,8 +81,15 @@ overseas-program-dataset/
 │       └── ...
 ├── scripts/
 │   └── validate.py              # 数据完整性 + 官方链接存活校验
+├── tests/
+│   └── test_validate.py         # 校验器自身的测试（62 例）
+├── web/                         # 中英双语静态站（React + Vite）
+│   ├── src/                     # 页面、筛选、智能匹配、i18n
+│   ├── scripts/sync-data.mjs    # 数据集 -> 前端 JSON
+│   └── scripts/e2e-check.mjs    # 真实浏览器端到端断言
 └── .github/
-    ├── workflows/validate.yml   # 每周自动校验
+    ├── workflows/validate.yml   # 每次 push + 每周自动校验
+    ├── workflows/pages.yml      # 构建并部署网页
     └── ISSUE_TEMPLATE/          # 数据纠错 / 新增项目模板
 ```
 
@@ -100,6 +110,19 @@ git clone https://github.com/eddieye1004/overseas-program-dataset.git
 ```
 
 数据文件为 JSON 格式，结构定义见 [`data/schema.json`](data/schema.json)。
+
+只想看数据、不想用网页的，`data/programs/*.json` 就是全部内容。
+
+### 跑网页
+
+```bash
+cd web
+pnpm install
+pnpm dev          # 本地开发
+pnpm build        # 产出静态站到 web/dist
+```
+
+`pnpm dev` 前会先跑 `scripts/sync-data.mjs`，把 `data/programs/*.json` 合并成前端加载的三个 JSON。改完数据重跑一次即可，不用碰前端代码。
 
 ### 本地校验
 
