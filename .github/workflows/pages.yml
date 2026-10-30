@@ -48,7 +48,11 @@ jobs:
       # 分享图是二进制产物，入库；这一步只校验它没被误删，
       # 避免每次 CI 都要起浏览器截图（本地 npm run og 可重生）
       - name: Check social share image
-        run: test -f public/og.png || (echo "public/og.png missing — run: node scripts/og-image.mjs" && exit 1)
+        run: |
+          if [ ! -f public/og.png ]; then
+            echo "public/og.png is missing. Regenerate it locally with: node scripts/og-image.mjs"
+            exit 1
+          fi
 
       - name: Typecheck
         run: pnpm exec tsc -b --force
