@@ -40,7 +40,7 @@
         "技术（Technology）",
         "部分生物技术、生物医学专业"
       ],
-      "note": "**理工科为主**（官方原文：The vast majority of our internships are in science, engineering and applied arts fields, but we do sometimes have internships relevant to other fields）。须就读于与所申请实习领域相关的学位课程；部分接收国要求完成 2 年学业（官方原文：Some IAESTE countries require you to have completed 2 years of your course）。「实习全程必须保持在校学籍」「大四可能不符合资格」为推断，官方未明文规定。"
+      "note": "**理工科为主**（官方原文：The vast majority of our internships are in science, engineering and applied arts fields (architecture/design) but we do sometimes have internships relevant to other fields (business, marketing etc.)）。学籍门槛为官方明文：To undertake an IAESTE internship you must be enrolled in a degree course relating to the study field of the internship you wish to apply for；部分接收国另要求读完 2 年：Some IAESTE countries require you to have completed 2 years of your course before undertaking an IAESTE internship。以上三段原文均出自 Student FAQs 页（https://iaeste.org/student-faqs，2026-10-30 复核）。「大四可能不符合资格」仍是推断，官方只写须在相关学位课程注册在读。"
     },
     "language": {
       "required": true,
@@ -206,12 +206,21 @@
   "sources": [
     {
       "type": "primary",
-      "name": "IAESTE — International Association for the Exchange of Students for Technical Experience",
+      "name": "Student FAQs — IAESTE",
+      "url": "https://iaeste.org/student-faqs",
+      "publisher": "IAESTE International",
+      "last_verified": "2026-10-30",
+      "verified_by": "eddieye1004",
+      "claim": "学历与学籍官方原文（2026-10-30 复核）：To undertake an IAESTE internship you must be enrolled in a degree course relating to the study field of the internship you wish to apply for. Some IAESTE countries require you to have completed 2 years of your course before undertaking an IAESTE internship；学科范围：The vast majority of our internships are in science, engineering and applied arts fields (architecture/design) but we do sometimes have internships relevant to other fields (business, marketing etc.)；时长 six weeks to a year"
+    },
+    {
+      "type": "primary",
+      "name": "IAESTE — International Association for the Exchange of Students for Technical Experience（组织介绍页）",
       "url": "https://www.iaeste.org/",
       "publisher": "IAESTE International",
       "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "组织性质（80+ 成员国、每年 4,000+ 实习生）、理工科定位、实习带薪"
+      "claim": "组织性质与规模：100+ 国家/地区、1948 年至今累计派出 374,000+ 名学生、2,500+ 志愿者、3,000+ 接收机构；实习带薪（cost of living allowance 至少覆盖住宿、餐饮与本地交通）"
     },
     {
       "type": "primary",
