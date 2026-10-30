@@ -277,16 +277,28 @@ console.log('\n[10] 对比清单（上限 4）');
 const cmpIds = ['au-462-work-holiday', 'ca-iec-working-holiday', 'jp-working-holiday', 'nz-china-whv'];
 for (const pid of cmpIds) {
   await goto('#/p/' + pid);
+  // 详情页在数据 fetch 完成前只渲染 .state，此时按钮不存在。
+  // 公网上 fetch 慢，硬 sleep 会导致点击落空（本地 8099 却刚好够），必须轮询。
+  for (let i = 0; i < 40; i++) {
+    const ready = await evalJs(`!!document.querySelector('.detail__actions button')`);
+    if (ready) break;
+    await sleep(200);
+  }
   await evalJs(
     `[...document.querySelectorAll('.detail__actions button')].find(b => /对比/.test(b.textContent))?.click()`,
   );
-  await sleep(300);
+  await sleep(400);
 }
 ok(
   '四个项目已加入对比',
   (await evalJs(`(JSON.parse(localStorage.getItem('opd.compare')||'[]')).length`)) === 4,
 );
 await goto('#/p/uk-youth-mobility-scheme');
+for (let i = 0; i < 40; i++) {
+  const ready = await evalJs(`!!document.querySelector('.detail__actions button')`);
+  if (ready) break;
+  await sleep(200);
+}
 ok(
   '第 5 个时对比按钮禁用（上限生效）',
   await evalJs(
