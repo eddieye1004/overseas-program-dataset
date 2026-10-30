@@ -107,6 +107,16 @@ function ok(name, cond, detail = '') {
 async function goto(hash) {
   await send('Page.navigate', { url: base + hash });
   await sleep(1400);
+  // 公网站点时首次导航可能还在 about:blank / 未完成加载，此时 localStorage 会抛
+  // SecurityError: Access is denied for this document。轮询到文档真正就绪再继续。
+  for (let i = 0; i < 40; i++) {
+    const st = await evalJs(
+      `({ ready: document.readyState, href: location.href, hasRoot: !!document.querySelector('#root') })`,
+    ).catch(() => null);
+    if (st?.ready === 'complete' && st.href.startsWith(base) && st.hasRoot) return;
+    await sleep(250);
+  }
+  throw new Error(`goto(${hash}) timed out; last location: ${await evalJs('location.href').catch(() => '?')}`);
 }
 
 /** 按可见文本点元素，比 nth-child 稳：布局改动不会让断言挂 */
