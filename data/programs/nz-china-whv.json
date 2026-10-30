@@ -41,13 +41,8 @@
     },
     "language": {
       "required": true,
-      "tests": [
-        { "test": "IELTS", "min_score": 5.5, "validity_months": 24 },
-        { "test": "TOEFL_iBT", "min_score": 46, "validity_months": 24 },
-        { "test": "PTE", "min_score": 42, "validity_months": 24 },
-        { "test": "Cambridge", "min_score": 162, "validity_months": 24 }
-      ],
-      "note": "⚠️ 官方 WHV 页面（2026-10-30 复核）只写三件事：须能说并理解英语、递交后会被要求提供 acceptable English language test result、成绩不得超过 2 年。**具体分数线（IELTS 5.5 / TOEFL 46 / PTE 42 / Cambridge 162）未能在官方页面核实**，来自此前记录；这些数字与他国 WHV 门槛一致，但需向 INZ 或签证中心确认后再作为硬门槛使用。"
+      "tests": [],
+      "note": "⚠️ 未核实。官方 WHV 页面（2026-10-30 复核）只写三件事：须能说并理解英语、递交后会被要求提供 acceptable English language test result、成绩不得超过 2 年。**未列任何具体分数线**，因此不再保留「IELTS 5.5 / TOEFL 46 / PTE 42 / Cambridge 162」这组无官方依据的数字（原为旧记录，与澳加等国门槛量级一致但与本文不符）。递交前须向 INZ 或签证申请中心确认当年接受的考试与分数。"
     },
     "funds": {
       "required": true,
@@ -234,7 +229,7 @@
       "publisher": "Immigration New Zealand",
       "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "中国大陆 WHV 全部硬条件：年龄 18-30、须为中国公民且常驻中国、申请时须在中国境内、未持过 NZ WHV、高中毕业学历、英语能力、资金 NZD 4,200、全程医疗保险、离境机票或等额资金、品行与健康要求；每年 1,000 个名额；费用 From NZD $770；审理 80% within 2 weeks；停留 12 个月；同一雇主不超过 6 个月；学习或培训合计不超过 6 个月；页面当前状态为 The China Working Holiday Visa is closed。语言部分官方只写：须能说并理解英语、递交后会被要求提供 acceptable English language test result、成绩不得超过 2 年 —— **未列具体分数线**。"
+      "claim": "中国大陆 WHV 全部硬条件：年龄 18-30、须为中国公民且常驻中国、申请时须在中国境内、未持过 NZ WHV、高中毕业学历、英语能力、资金 NZD 4,200、全程医疗保险、离境机票或等额资金、品行与健康要求；每年 1,000 个名额；费用 From NZD $770；审理 80% within 2 weeks；停留 12 个月；同一雇主不超过 6 个月；学习或培训合计不超过 6 个月；页面当前状态为 The China Working Holiday Visa is closed。语言部分官方只写：须能说并理解英语、递交后会被要求提供 acceptable English language test result、成绩不得超过 2 年 —— **未列具体分数线，故数据里记为未核实**。"
     },
     {
       "type": "primary",
