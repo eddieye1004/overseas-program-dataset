@@ -130,9 +130,10 @@ FORBIDDEN_SOURCE_DOMAINS = {
 OFFICIAL_GOV_FRAGMENTS = (
     ".gov", ".govt", ".gob.", ".gouv.", ".gov.uk", ".go.jp", ".go.kr",
     "europa.eu", "un.org", "oecd.org", "imo.org",
-    "canada.ca", "gov.uk", "irishimmigration.ie",
+    "canada.ca", "gov.uk", "irishimmigration.ie", "ireland.ie",
     "homeaffairs.gov.au", "immigration.govt.nz",
     "make-it-in-germany.com", "verwaltung.bund.de", "diplo.de",
+    "gesetze-im-internet.de",
     "j1visa.state.gov", "state.gov",
 )
 

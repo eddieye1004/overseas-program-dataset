@@ -28,8 +28,8 @@
     },
     "age": {
       "min": 18,
-      "max": 30,
-      "note": "18-30 周岁（部分签约地区可放宽至 35 岁）"
+      "max": 35,
+      "note": "官方原文：18 至 35 岁（限澳大利亚、加拿大、新西兰、韩国）；其余签约国家/地区为 18 至 30 岁，含中国香港、中国台湾、日本、安道尔、冰岛、摩纳哥、圣马力诺、乌拉圭。判定以「签证生效时满 18 岁、递交申请时不超过上限」为准。max 取全体上限 35；中国香港/中国台湾申请人实际上限为 30。"
     },
     "education": {
       "minimum_level": "any",
@@ -59,8 +59,8 @@
       },
       {
         "type": "criminal_record",
-        "required": true,
-        "note": "需提供无犯罪记录证明"
+        "required": false,
+        "note": "官方仅对部分国籍要求无犯罪记录证明：安道尔、冰岛（须为申请前 6 个月内签发）、圣马力诺（外交部 suitability 函）。中国香港、中国台湾申请人不需要无犯罪记录证明，但须提供内政部确认抽签中签的邮件。"
       },
       {
         "type": "no_dependents",
@@ -84,7 +84,7 @@
     "fees": [
       {
         "item": "签证申请费",
-        "amount": { "local_amount": 298, "currency": "GBP", "cny_estimate": 2700 },
+        "amount": { "local_amount": 340, "currency": "GBP", "cny_estimate": 3100, "note": "官方原文：The application fee is £340." },
         "refundable": false
       },
       {
@@ -104,7 +104,7 @@
   "documents": [
     { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照", "prepare_days": 30 },
     { "name": "资金证明", "required": true, "note": "约 2,530 英镑，连续持有 28 天以上", "prepare_days": 45 },
-    { "name": "无犯罪记录证明", "required": true, "note": "", "prepare_days": 30 },
+    { "name": "无犯罪记录证明", "required": false, "note": "仅安道尔、冰岛、圣马力诺国籍申请人需要；中国香港/中国台湾申请人改提供抽签中签的官方邮件", "prepare_days": 30 },
     { "name": "生物识别信息", "required": true, "note": "在签证申请中心采集", "prepare_days": 14 }
   ],
 
@@ -137,7 +137,7 @@
     "max_same_employer_months": 0,
     "max_study_months": 6,
     "renewable": false,
-    "renewal_condition": "不可续签，不可转为其他签证类别在英境内。",
+    "renewal_condition": "不可续签，不可转为其他签证类别在英境内。唯一例外：澳大利亚、加拿大、新西兰国籍申请人可在 2 年期满后再延长 1 年（官方原文：If you're from Australia, Canada or New Zealand, you'll be able to extend your visa by one year after the 2-year period ends）。",
     "restricted_occupations": [
       "职业运动员",
       "体育教练"
@@ -162,7 +162,7 @@
       "name": "Youth Mobility Scheme visa",
       "url": "https://www.gov.uk/youth-mobility",
       "publisher": "UK Visas and Immigration",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
       "claim": "YMS 参与国家/地区名单、年龄要求、资金要求 GBP 2,530、停留期 24 个月、费用结构"
     },
@@ -171,12 +171,21 @@
       "name": "Youth Mobility Scheme visa: eligible countries and territories",
       "url": "https://www.gov.uk/youth-mobility/eligibility",
       "publisher": "UK Visas and Immigration (GOV.UK)",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
       "claim": "YMS 参与国家/地区名单含 Hong Kong 与 Taiwan，不含 China（中国大陆）；中国大陆护照持有人不在可申请范围内"
+    },
+    {
+      "type": "primary",
+      "name": "Youth Mobility Scheme visa: Documents you must provide",
+      "url": "https://www.gov.uk/youth-mobility/documents-you-must-provide",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
+      "last_verified": "2026-10-30",
+      "verified_by": "eddieye1004",
+      "claim": "无犯罪记录证明仅对安道尔、冰岛、圣马力诺国籍要求；中国香港/中国台湾申请人须提供内政部抽签中签邮件；签证申请费 £340 载于 Overview 页"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

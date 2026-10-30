@@ -4,14 +4,14 @@
     "id": "global-iaeste",
     "name": "IAESTE 国际大学生技术实习交流计划",
     "name_en": "IAESTE — International Association for the Exchange of Students for Technical Experience",
-    "country": "全球（80+ 成员国）",
+    "country": "全球（100+ 国家/地区）",
     "country_code": "GL",
     "region": "global",
     "program_type": "paid_internship",
     "visa_code": "各国实习签证（由 IAESTE 驻在国委员会协助办理）",
     "official_url": "https://www.iaeste.org/",
     "authority": "IAESTE 国际秘书处及各国国家委员会",
-    "summary": "全球最大的非营利学生交流组织之一，为科学、工程、技术类专业学生提供与课程相关的带薪海外实习。80 多个国家参与，每年约 4,000 名实习生。实习普遍带薪，补贴覆盖当地基本生活成本。中国区由 IAESTE China 运营。",
+    "summary": "全球最大的非营利学生交流组织之一，为科学、工程、技术类专业学生提供与课程相关的带薪海外实习。官方口径为 100+ 国家/地区、1948 年至今累计派出 374,000+ 名学生。实习全部为带薪（官方原文：All IAESTE on-site internships are paid a cost of living allowance which as a minimum will cover your accommodation, foods and local travel）。中国区由 IAESTE China 运营。",
     "tags": [
       "stem_friendly",
       "requires_degree",
@@ -41,16 +41,18 @@
         "技术（Technology）",
         "部分生物技术、生物医学专业"
       ],
-      "note": "**理工科为主**。须为全日制在校生，**且整个实习期间必须保持在校学籍**。大四本科生或即将毕业的研究生可能因失去学籍而不符合资格。实习须与专业相关。部分岗位要求完成至少 3-4 年专业学习。"
+      "note": "**理工科为主**（官方原文：The vast majority of our internships are in science, engineering and applied arts fields, but we do sometimes have internships relevant to other fields）。须就读于与所申请实习领域相关的学位课程；部分接收国要求完成 2 年学业（官方原文：Some IAESTE countries require you to have completed 2 years of your course）。「实习全程必须保持在校学籍」「大四可能不符合资格」为推断，官方未明文规定。"
     },
     "language": {
       "required": true,
       "tests": [
-        { "test": "CEFR", "min_score": 6.5, "validity_months": 36 },
+        { "test": "IELTS", "min_score": 0, "validity_months": 36 },
         { "test": "TOEFL_iBT", "min_score": 0, "validity_months": 36 },
-        { "test": "IELTS", "min_score": 0, "validity_months": 36 }
+        { "test": "Cambridge", "min_score": 0, "validity_months": 36 },
+        { "test": "PTE", "min_score": 0, "validity_months": 36 },
+        { "test": "none", "min_score": 0, "validity_months": 36 }
       ],
-      "note": "英文水平需达到 CEFR C1 或 C2 级。可通过国际认可的语言证书（如 CEF、TOEIC、TOEFL、IELTS）证明，证书有效期 3 年内。IAESTE 各地方委员会也提供**免费口试**作为替代。"
+      "note": "要求因国家委员会而异。IAESTE Germany 明文要求英语水平证明且不得超过 3 年，认可清单为 UNIcert、Cambridge、IELTS、ISE、TOEFL、TOEIC、PTE Academic、onSET、OLS、Duolingo，或「至少 2 个完整学期全英文授课」；美国、加拿大（魁北克除外）、英国、爱尔兰、新西兰、澳大利亚申请人免交。中国区是否同样要求未在官方页核实（应为「需向 IAESTE China 确认」）。**此前记录的「需 CEFR C1 或 C2 级」未能核实，官方清单不设等级门槛。**"
     },
     "funds": {
       "required": false,
@@ -69,8 +71,8 @@
       },
       {
         "type": "insurance",
-        "required": true,
-        "note": "须自行购买医疗保险"
+        "required": false,
+        "note": "官方 FAQ 用 recommend 而非 require（原文：IAESTE recommends to be covered during your trip/internship），并推荐 Swisscare 保险但非强制。此前写「须自行购买」为过强表述。"
       }
     ]
   },
@@ -78,39 +80,19 @@
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
-    "quota_note": "无统一名额上限。每年全球约 4,000 名实习生。大部分实习机会在 2 月发布，全年滚动更新。",
+    "quota_note": "无统一名额上限。官方口径为 1948 年至今累计派出 374,000+ 名学生、2,500+ 志愿者、3,000+ 接收机构；按年派出量官方未公布（「每年约 4,000 名」为旧记录，未能核实）。",
     "windows": [
       {
         "year": 2026,
         "status": "open",
-        "note": "全年可注册与申请。大部分 Offer 在 2 月发布（IAESTE 国际交流会议通常在 1 月、4 月、11 月举行）。建议在国际交流会议前尽早注册，以便被考虑偏好。中国区申请窗口通常为每年 1 月底至 2 月。"
+        "note": "全年可注册与申请，实习集中在暑期但全年都有岗位。官方明确部分国家委员会要求完成 2 年学业后方可申请。中国区具体窗口未在 iaeste.org 公布，需向 IAESTE China 确认。"
       }
     ],
     "fees": [
       {
-        "item": "申请费（中国区）",
-        "amount": { "local_amount": 1000, "currency": "CNY", "note": "约 130 欧元，不可退还" },
+        "item": "注册费 / 参与费（各国自定）",
+        "amount": { "local_amount": 0, "currency": "CNY", "note": "⚠️ 官方 FAQ 原文：There is usually a registration and/or a participation fee. Each country will have its own fee arrangements. 即费率由各国委员会自定、官方不公布统一金额。此前记录的「申请费 1,000 CNY / 项目费 30% 6,100 CNY / 70% 13,900 CNY / 担保金 3,000 CNY」全部**未能从官方来源核实**，金额已置 0，仅保留条目结构提示「要交费」。报名前必须向 IAESTE China 索取当季收费表。" },
         "refundable": false
-      },
-      {
-        "item": "项目费 30%（中国区）",
-        "amount": { "local_amount": 6100, "currency": "CNY", "note": "约 800 欧元；若非主观原因导致申请失败可全额退还" },
-        "refundable": true
-      },
-      {
-        "item": "项目费 70%（中国区）",
-        "amount": { "local_amount": 13900, "currency": "CNY", "note": "约 1,800 欧元，收到正式录取函后支付" },
-        "refundable": false
-      },
-      {
-        "item": "实习担保金（中国区）",
-        "amount": { "local_amount": 3000, "currency": "CNY", "note": "提交实习报告后全额退还" },
-        "refundable": true
-      },
-      {
-        "item": "押金（奥地利等部分国家委员会）",
-        "amount": { "local_amount": 300, "currency": "EUR", "note": "完成实习后返还，用于防止随意取消" },
-        "refundable": true
       }
     ],
     "processing_time": "视岗位与签证类型，通常 1-3 个月"

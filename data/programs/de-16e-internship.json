@@ -195,20 +195,21 @@
 
   "sources": [
     {
-      "type": "primary",
+      "type": "secondary",
       "name": "Internship visa — Make it in Germany",
       "url": "https://www.make-it-in-germany.com/en/visa/kinds-of-visa/internship/",
       "publisher": "Federal Government of Germany",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "实习签证的基本要求与官方入口"
+      "claim": "实习签证的基本要求与官方入口",
+      "note": "2026-10-30 复核未能读到正文：该站启用 Radware 人机验证（HTTP 200，返回 `Secure access verification` + hCaptcha 页面，正文不可得）。因此降为 secondary，本条目所有具体数值改由另外三条来源支撑。"
     },
     {
       "type": "primary",
       "name": "Apply for a residence permit for a study-related internship EU",
       "url": "https://verwaltung.bund.de/leistungsverzeichnis/en/leistung/NI/409271867",
       "publisher": "Bundesportal (Germany)",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
       "claim": "资格条件（非欧盟高校在读或毕业 2 年内）、最长 6 个月、实习须与专业相关、不得从事雇佣工作、法律依据 §16e AufenthG、费用 EUR 100"
     },
@@ -217,7 +218,7 @@
       "name": "Students' Internship Visa — 德国驻香港总领事馆",
       "url": "https://hongkong.diplo.de/blob/1475188/fbefe8a21616b8939186927e96dceb01/internship-visa-data.pdf",
       "publisher": "German Consulate General Hong Kong",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
       "claim": "完整材料清单、资金要求 EUR 752/月、保险保额 EUR 30,000、签证费 EUR 75、审理周期 1-2 个月"
     },
@@ -226,12 +227,21 @@
       "name": "Trainee in Germany — EU Immigration Portal",
       "url": "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/eu-immigration-portal/trainee-germany_en",
       "publisher": "European Commission",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "Directive (EU) 2016/801 下的培训居留许可条件、培训协议内容要求、最长 6 个月、联邦就业局审批要求"
+      "claim": "Directive (EU) 2016/801 下的培训居留许可条件、培训协议内容要求、最长 6 个月、联邦就业局审批要求、未满 18 岁需监护人同意"
+    },
+    {
+      "type": "primary",
+      "name": "§16e AufenthG — Studienbezogenes Praktikum EU（法条原文）",
+      "url": "https://www.gesetze-im-internet.de/aufenthg_2004/__16e.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部）",
+      "last_verified": "2026-10-30",
+      "verified_by": "eddieye1004",
+      "claim": "§16e(2)：居留许可按实习协议期限签发，最长六个月（höchstens jedoch für sechs Monate）；第 3 项：须为申请前两年内取得高校学历，或正在攻读可获高校学历的学业"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

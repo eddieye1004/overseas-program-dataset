@@ -31,12 +31,12 @@
     "age": {
       "min": 18,
       "max": 30,
-      "note": "AIESEC 项目整体面向 18-30 岁青年。"
+      "note": "⚠️ 官方页 aiesec.org/global-talent（2026-10-30 复核）全文未出现任何年龄限制表述（`18` 命中 0 次）。18-30 岁来自第三方概述页，属二手说法，**未能核实**。报名前须向 AIESEC 中国分会确认。"
     },
     "education": {
       "minimum_level": "bachelor_in_progress",
       "major_restriction": [],
-      "note": "两类人符合资格：①**硕士在读**，且整个实习期间保持学籍；②**本科毕业生，毕业不超过 2 个月**。具体岗位可能另设专业要求。经管类、技术类实习通常要求大三及以上且有实习经验；教育类实习面向大二及以上。"
+      "note": "⚠️ 官方页未公布学历门槛。本条「硕士在读，或本科毕业 2 个月内」来自第三方概述页（Opportunity Nest），**未能核实**；官方页只说明岗位按领域分类（商管、IT、市场、工程、金融等），具体资格由各岗位自行设定。"
     },
     "language": {
       "required": true,
@@ -50,13 +50,13 @@
     "other_requirements": [
       {
         "type": "enrollment_proof",
-        "required": true,
-        "note": "硕士在读需保持学籍；本科毕业生须在毕业 2 个月内"
+        "required": false,
+        "note": "⚠️ 官方页未提及在读/毕业时间要求；「硕士在读需保持学籍、本科毕业 2 个月内」来自第三方概述页，未能核实。"
       },
       {
         "type": "insurance",
-        "required": true,
-        "note": "AIESEC 强制要求购买生活与健康保险，由 AIESEC 统一安排"
+        "required": false,
+        "note": "⚠️ 官方页未提及强制保险；「AIESEC 强制购买」来自第三方概述页，未能核实。"
       },
       {
         "type": "internship_contract",
@@ -80,11 +80,11 @@
     "fees": [
       {
         "item": "实习项目费",
-        "amount": { "local_amount": 700, "currency": "USD", "cny_estimate": 5000, "note": "仅在接受 offer 后支付；不接受则不付费。各国分会可能略有差异" },
+        "amount": { "local_amount": 700, "currency": "USD", "cny_estimate": 5200, "note": "⚠️ 官方页未公布任何费用数字。700 USD 来自第三方概述页，**未能核实**；各国分会收费标准不一，报名前须向具体分会确认。" },
         "refundable": false
       }
     ],
-    "processing_time": "视岗位与签证类型，通常 1-3 个月"
+    "processing_time": "⚠️ 官方页未公布审理时长（未能核实）。"
   },
 
   "documents": [
@@ -171,33 +171,24 @@
   "sources": [
     {
       "type": "primary",
-      "name": "AIESEC Global Talent",
+      "name": "AIESEC Global Talent（官方项目页）",
       "url": "https://aiesec.org/global-talent",
       "publisher": "AIESEC International",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "Global Talent 平台定位、岗位领域、实习时长 3-18 个月、补偿形式"
+      "claim": "Global Talent 平台定位、岗位领域划分与在招数量（67 个国家/地区、2,000+ 实习岗位）、4 步申请流程、提供签证与落地支持。该页**未**公布年龄、学历、费用、保险要求。"
     },
     {
       "type": "secondary",
       "name": "AIESEC Global Talent 2026 概述",
       "url": "https://www.opportunitynest.org/opportunity/aiesec-global-talent-global",
       "publisher": "Opportunity Nest",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "资格条件（硕士在读或本科毕业 2 个月内）、所需材料、滚动申请无固定截止日、AIESEC 提供文化准备/签证支持/强制保险"
-    },
-    {
-      "type": "primary",
-      "name": "AIESEC Global Talent — 官方项目页",
-      "url": "https://aiesec.org/global-talent",
-      "publisher": "AIESEC International",
-      "last_verified": "2026-09-17",
-      "verified_by": "eddieye1004",
-      "claim": "Global Talent 项目定位、实习类型划分、资格条件与申请入口（官方一手来源，取代此前的第三方转述）"
+      "claim": "资格条件（硕士在读或本科毕业 2 个月内）、700 USD 项目费、强制保险、滚动申请。**仅为二手来源，官方页无法印证，相关字段已标注未能核实。**"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

@@ -100,6 +100,9 @@ class TestSourceGrading(unittest.TestCase):
         "https://j1visa.state.gov/programs/summer-work-travel/",
         "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
         "https://www.canada.ca/en/immigration-refugees-citizenship.html",
+        "https://www.irishimmigration.ie/coming-to-work-in-ireland/",
+        "https://www.ireland.ie/en/dfa/visas-for-ireland/working-holiday-authorisation/",
+        "https://www.gesetze-im-internet.de/aufenthg_2004/__16e.html",
     ]
     B_URLS = ["https://www.iaeste.org/", "https://aiesec.org/global-talent"]
     D_URLS = [

@@ -9,9 +9,9 @@
     "region": "europe",
     "program_type": "working_holiday",
     "visa_code": "WHA",
-    "official_url": "https://www.irishimmigration.ie/",
+    "official_url": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/working-holidays-in-ireland/",
     "authority": "Immigration Service Delivery, Ireland（爱尔兰移民服务局）",
-    "summary": "爱尔兰与部分国家和地区签订的打工度假协议，允许 18-30 岁青年在爱尔兰停留 12 个月（部分国家 24 个月）并合法工作。⚠️ 中国大陆不在协议名单内，仅限中国香港（200 个名额）、中国台湾（400 个名额）及其他签约国家/地区。",
+    "summary": "爱尔兰与部分国家和地区签订的打工度假协议，允许 18-30 岁青年在爱尔兰停留最长 12 个月（加拿大公民 24 个月）并合法工作。⚠️ 中国大陆不在协议名单内，仅限中国香港、中国台湾及其他签约国家/地区。官方原文：Places are limited and you cannot apply if you are already in Ireland。",
     "tags": [
       "no_agency_needed",
       "high_wage"
@@ -24,7 +24,7 @@
       "mainland_china": "not_eligible",
       "hong_kong_china": "eligible",
       "taiwan_china": "eligible",
-      "note": "⚠️ 关键信息：爱尔兰 WHA 仅对签约国家/地区开放，包括中国香港（200 名额）、中国台湾（400 名额）、澳大利亚、加拿大、日本、韩国、新西兰、美国等。中国大陆不在名单内。"
+      "note": "⚠️ 关键信息：爱尔兰 WHA 仅对签约国家/地区开放，官方名单为安道尔、阿根廷、澳大利亚、加拿大、智利、中国香港、日本、新西兰、韩国、美国、中国台湾。中国大陆不在名单内。中国香港名额数未能核实（ISD 页面只写 Places are limited，未公布具体数字）；中国台湾为每年 400 个名额（ISD 页面原文：an annual quota of 400 WHAs）。"
     },
     "age": {
       "min": 18,
@@ -44,12 +44,12 @@
     "funds": {
       "required": true,
       "amount": {
-        "local_amount": 3000,
+        "local_amount": 4000,
         "currency": "EUR",
-        "cny_estimate": 23500,
-        "note": "约 3,000 欧元资金证明（部分来源表述为 2,500 欧元）"
+        "cny_estimate": 31000,
+        "note": "官方两种口径（2026 申请表 Section 5 + 2026 台湾申请指南）：①持有有效返程/续程机票 + 至少 2,500 欧元生活费；②不持机票 + 至少 4,000 欧元（覆盖生活费与离境机票）。本字段取较严格的 4,000。"
       },
-      "note": "需证明有足够资金支付返程机票及初期生活费用"
+      "note": "需提供本人名下近期银行流水原件，非英文需附翻译。"
     },
     "other_requirements": [
       {
@@ -59,8 +59,8 @@
       },
       {
         "type": "criminal_record",
-        "required": true,
-        "note": "须提供无犯罪记录证明"
+        "required": false,
+        "note": "2026 申请表以问句形式采集（Have you any criminal convictions in any country?），未列为必备随附材料。官方必备材料清单只有：护照全页复印件、4 张护照照片、本人名下银行流水、医疗保险证明、机票。"
       },
       {
         "type": "return_ticket",
@@ -73,51 +73,58 @@
   "timeline": {
     "mechanism": "appointment",
     "quota": null,
-    "quota_note": "中国香港 200 个名额/年、中国台湾 400 个名额/年；中国大陆无配额（不在协议内）。",
+    "quota_note": "中国台湾 400 个名额/年（ISD 原文：an annual quota of 400 WHAs，2026 年度于 2025-11-01 09:00 台北时间开放，按收件先后受理，前 400 份合格申请获批）。中国香港等其他国家/地区名额数官方只写 Places are limited，未公布数字。中国大陆无配额（不在协议内）。",
     "windows": [
       {
         "year": 2026,
-        "status": "unknown",
-        "note": "名额开放时间与具体流程需向爱尔兰驻当地使领馆确认。中国大陆无法申请。"
+        "status": "open",
+        "note": "中国台湾 2026 年度申请窗口已于 2025-11-01 09:00（台北时间）开放，2025 年底一次性批量审理。其他国家/地区须向对应的爱尔兰使领馆申请，窗口未能在官方页面核实。中国大陆无法申请。"
       }
     ],
     "fees": [
       {
-        "item": "签证申请费",
-        "amount": { "local_amount": 150, "currency": "EUR", "cny_estimate": 1200, "note": "具体金额以使领馆公告为准" },
+        "item": "代理手续费（中国台湾，NT$）",
+        "amount": { "local_amount": 3200, "currency": "TWD", "cny_estimate": 720, "note": "2026 申请表原文：the non-refundable agent's handling fee of NT$3,200" },
         "refundable": false
       }
     ],
-    "processing_time": "约 8 周"
+    "processing_time": "中国台湾 2026 年度：2025 年底一次性批量审理，2026 年初签发（官方原文 processed in one batch at the end of 2025）。其他国家/地区未在官方页面公布。"
   },
 
   "documents": [
-    { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照", "prepare_days": 30 },
-    { "name": "资金证明", "required": true, "note": "约 3,000 欧元", "prepare_days": 14 },
-    { "name": "医疗保险", "required": true, "note": "覆盖全程停留期", "prepare_days": 14 },
-    { "name": "无犯罪记录证明", "required": true, "note": "", "prepare_days": 30 },
-    { "name": "返程机票或资金证明", "required": true, "note": "", "prepare_days": 14 }
+    { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照；另需护照全部页面（含空白页）的完整复印件，护照在行程结束后仍有效 6 个月以上", "prepare_days": 30 },
+    { "name": "护照照片", "required": true, "note": "4 张近期同版照片，背面写上姓名", "prepare_days": 7 },
+    { "name": "资金证明", "required": true, "note": "本人名下近期银行流水原件，2,500 欧元（含机票）或 4,000 欧元（不含机票）", "prepare_days": 14 },
+    { "name": "医疗保险", "required": true, "note": "须覆盖入境日起 12 个月", "prepare_days": 14 },
+    { "name": "机票或资金证明", "required": true, "note": "返程或续程机票，或在 4,000 欧元资金中已包含离境机票费用", "prepare_days": 14 }
   ],
 
   "steps": [
     {
       "step_no": 1,
       "title": "确认护照资格（第一步，也可能是终点）",
-      "description": "爱尔兰 WHA 仅对签约国家/地区开放。中国大陆不在名单内。若持中国大陆护照，此项目不可申请。",
+      "description": "爱尔兰 WHA 仅对签约国家/地区开放，官方名单为安道尔、阿根廷、澳大利亚、加拿大、智利、中国香港、日本、新西兰、韩国、美国、中国台湾。中国大陆不在名单内。若持中国大陆护照，此项目不可申请。",
       "duration": "5 分钟",
-      "official_link": "https://www.irishimmigration.ie/"
+      "official_link": "https://www.ireland.ie/en/dfa/visas-for-ireland/working-holiday-authorisation/"
     },
     {
       "step_no": 2,
-      "title": "向爱尔兰驻当地使领馆申请",
-      "description": "（仅限合格护照持有人）确认名额余额后，准备材料并向爱尔兰驻当地使领馆或签证中心递交申请。",
-      "duration": "数周",
-      "official_link": "https://www.irishimmigration.ie/"
+      "title": "按护照类型选对递交口",
+      "description": "（仅限合格护照持有人）中国台湾申请人向爱尔兰移民局（ISD）指定的台北代理递交；其余国家/地区申请人向外交部（DFA）对应的爱尔兰使领馆申请。走错口会被退件。",
+      "duration": "30 分钟",
+      "official_link": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/working-holidays-in-ireland/"
     },
     {
       "step_no": 3,
+      "title": "准备材料并递交",
+      "description": "（仅限合格护照持有人）护照全页复印件、4 张照片、银行流水、医疗保险、机票。中国台湾申请人另付 NT$3,200 代理手续费（不退还）。获批前不要订机票。",
+      "duration": "数周",
+      "official_link": "https://www.irishimmigration.ie/wp-content/uploads/2025/10/WHA-2026-Application-Form-2.pdf"
+    },
+    {
+      "step_no": 4,
       "title": "获批后注册居留",
-      "description": "（仅限合格护照持有人）入境爱尔兰后按规定注册居留许可。",
+      "description": "（仅限合格护照持有人）入境爱尔兰后按规定向移民局注册。授权有效期最长 12 个月，自首次入境日起算，不予延期。",
       "duration": "入境后 90 天内",
       "official_link": "https://www.irishimmigration.ie/"
     }
@@ -140,31 +147,49 @@
     },
     {
       "level": "info",
-      "description": "中国香港（200 名额）、中国台湾（400 名额）护照持有者可申请。"
+      "description": "中国台湾（400 名额/年）、中国香港护照持有者可申请。香港名额数官方未公布具体数字。"
     }
   ],
 
   "sources": [
     {
       "type": "primary",
-      "name": "Working Holiday Authorisation",
-      "url": "https://www.irishimmigration.ie/",
+      "name": "Working holidays in Ireland — Immigration Service Delivery",
+      "url": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/working-holidays-in-ireland/",
       "publisher": "Immigration Service Delivery, Ireland",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "WHA 签约国家/地区名单、年龄要求、资金要求、停留期"
+      "claim": "WHA 签约国家/地区官方名单、停留期最长 1 年（加拿大 2 年）、Places are limited、中国台湾 400 名额/年、2026 年度申请窗口与审理方式"
     },
     {
-      "type": "secondary",
-      "name": "爱尔兰工签类型梳理",
-      "url": "https://www.irishimmigration.ie/",
-      "publisher": "公开资料汇编",
-      "last_verified": "2026-09-17",
+      "type": "primary",
+      "name": "Working Holiday Authorisation — Department of Foreign Affairs",
+      "url": "https://www.ireland.ie/en/dfa/visas-for-ireland/working-holiday-authorisation/",
+      "publisher": "Department of Foreign Affairs, Ireland",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "WHA 仅限中国香港（200 名额）、中国台湾（400 名额）及日韩新澳加美等；中国大陆不在协议名单"
+      "claim": "按国籍分流的递交口径：11 个签约国家/地区各自对应的受理机构（中国香港→驻港总领事馆，中国台湾→ISD，美国→驻美使领馆等）"
+    },
+    {
+      "type": "primary",
+      "name": "Working Holiday Authorisation Application 2026（WHAA1 申请表）",
+      "url": "https://www.irishimmigration.ie/wp-content/uploads/2025/10/WHA-2026-Application-Form-2.pdf",
+      "publisher": "Immigration Service Delivery, Ireland",
+      "last_verified": "2026-10-30",
+      "verified_by": "eddieye1004",
+      "claim": "必备材料清单（护照全页复印件、4 张照片、≥4,000 欧元银行流水、12 个月医疗保险、机票）、NT$3,200 代理手续费、12 个月不可延期、无犯罪记录仅以问卷形式采集"
+    },
+    {
+      "type": "primary",
+      "name": "How to make an application — Working Holiday Programme Ireland–Taiwan 2026",
+      "url": "https://www.irishimmigration.ie/wp-content/uploads/2025/10/WHP-Taiwan-How-to-make-an-application-English-2026.pdf",
+      "publisher": "Immigration Service Delivery, Ireland",
+      "last_verified": "2026-10-30",
+      "verified_by": "eddieye1004",
+      "claim": "年龄 18 至 30 岁（含）、资金双口径（2,500 欧元含机票 / 4,000 欧元不含机票）、须持私人医疗保险"
     }
   ],
 
-  "last_verified": "2026-09-17",
+  "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }
