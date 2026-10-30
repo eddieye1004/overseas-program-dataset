@@ -120,9 +120,11 @@ export function matches(
   }
 
   // 年龄：只有用户填了年龄才生效；缺失年龄信息的项目默认保留（不因数据缺失隐藏）
+  // 0–99 是「官方没公布年龄限制」的占位区间，等同缺失，不做上下限比较。
   if (f.ageOnly && f.age != null) {
-    if (p.age_min != null && f.age < p.age_min) return false;
-    if (p.age_max != null && f.age > p.age_max) return false;
+    const ageUnknown = p.age_min === 0 && p.age_max === 99;
+    if (!ageUnknown && p.age_min != null && f.age < p.age_min) return false;
+    if (!ageUnknown && p.age_max != null && f.age > p.age_max) return false;
   }
 
   // 收藏视图：只留收藏过的

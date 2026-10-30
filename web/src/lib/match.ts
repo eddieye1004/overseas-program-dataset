@@ -91,11 +91,13 @@ export function scoreOne(p: ProgramIndexEntry, pr: Profile): MatchResult {
 
   // 2) 年龄
   if (pr.age != null) {
-    if (p.age_min != null && pr.age < p.age_min) {
+    // 0–99 是「官方没公布年龄限制」的占位区间，不能当成「你符合」，只能算未知
+    const ageUnknown = p.age_min === 0 && p.age_max === 99;
+    if (!ageUnknown && p.age_min != null && pr.age < p.age_min) {
       reasons.push({ kind: 'fail', code: 'm.ageLow', value: String(p.age_min) });
-    } else if (p.age_max != null && pr.age > p.age_max) {
+    } else if (!ageUnknown && p.age_max != null && pr.age > p.age_max) {
       reasons.push({ kind: 'fail', code: 'm.ageHigh', value: String(p.age_max) });
-    } else if (p.age_min == null && p.age_max == null) {
+    } else if (ageUnknown || (p.age_min == null && p.age_max == null)) {
       reasons.push({ kind: 'warn', code: 'm.ageUnknown' });
       score += W.age / 2;
     } else {

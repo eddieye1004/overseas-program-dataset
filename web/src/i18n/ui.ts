@@ -145,7 +145,10 @@ export type UiKey =
   | 'relaxHint'
   | 'relaxRemove'
   | 'clearAll'
-  | 'pageTitleSuffix';
+  | 'pageTitleSuffix'
+  // —— 未核实值（2026-10-30：官方没写的一律留空，不拿二手数字充数）——
+  | 'notVerified'
+  | 'notVerifiedHint';
 
 export const UI: Record<Lang, Record<UiKey, string>> = {
   zh: {
@@ -291,6 +294,8 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     relaxHint: '条件过严，放宽一项看看：',
     relaxRemove: '移除',
     clearAll: '清空全部条件',
+    notVerified: '未核实',
+    notVerifiedHint: '官方页面未公布此项',
     pageTitleSuffix: '海外项目数据库',
   },
   en: {
@@ -440,6 +445,8 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     relaxHint: 'Too narrow. Relax one condition:',
     relaxRemove: 'Remove',
     clearAll: 'Clear all filters',
+    notVerified: 'Not verified',
+    notVerifiedHint: 'Not published on the official page',
     pageTitleSuffix: 'Overseas Program Database',
   },
 };

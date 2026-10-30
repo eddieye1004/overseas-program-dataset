@@ -33,14 +33,18 @@ export function Card({ p, saved, onToggleSave, score, best, reasons }: Props) {
   const title = lang === 'en' ? p.name_en || p.name : p.name;
   const sub = lang === 'en' ? p.name : p.name_en;
 
+  // 0–99 是「官方没写年龄限制」在 schema 里的占位区间（min/max 不允许 null），
+  // 直接显示会被读成一条真实规定，所以按未核实处理。
   const ageText =
-    p.age_min != null && p.age_max != null
-      ? `${p.age_min}–${p.age_max}`
-      : p.age_min != null
-        ? `${p.age_min}+`
-        : '—';
+    p.age_min === 0 && p.age_max === 99
+      ? t('notVerified')
+      : p.age_min != null && p.age_max != null
+        ? `${p.age_min}–${p.age_max}`
+        : p.age_min != null
+          ? `${p.age_min}+`
+          : t('notVerified');
 
-  const stayText = p.max_stay_months != null ? `${p.max_stay_months} ${t('monthsUnit')}` : '—';
+  const stayText = p.max_stay_months != null ? `${p.max_stay_months} ${t('monthsUnit')}` : t('notVerified');
 
   return (
     <article

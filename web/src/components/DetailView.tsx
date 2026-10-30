@@ -40,6 +40,14 @@ function KV({ k, v }: { k: string; v: React.ReactNode }) {
   );
 }
 
+/**
+ * 0–99 是「官方页面没写年龄限制」在 schema 里的占位区间（schema 的 min/max 不允许 null）。
+ * 直接渲染成「0–99 岁」会被读成一条真实规定，所以这里识别出来改显示「未核实」。
+ */
+function isAgeUnknown(min?: number, max?: number): boolean {
+  return min === 0 && max === 99;
+}
+
 function money(
   m: { local_amount?: number; currency?: string; cny_estimate?: number } | undefined,
   td: (s: string) => string,
@@ -187,8 +195,11 @@ export function DetailView({
             k={t('ageRequirement')}
             v={
               el.age
-                ? `${el.age.min ?? '—'}–${el.age.max ?? '—'}${el.age.note ? ` · ${td(el.age.note)}` : ''}`
-                : null
+                ? // 0–99 是「官方未设年龄限制」的占位写法，直接显示会像是真的区间
+                  `${isAgeUnknown(el.age.min, el.age.max) ? t('notVerified') : `${el.age.min ?? '—'}–${el.age.max ?? '—'}`}${
+                    el.age.note ? ` · ${td(el.age.note)}` : ''
+                  }`
+                : t('notVerified')
             }
           />
           <KV k={t('education')} v={te(el.education?.minimum_level)} />
@@ -273,7 +284,10 @@ export function DetailView({
                     </li>
                   ))}
                 </ul>
-              ) : null
+              ) : (
+                // 官方没公布金额时数据里 fees 是空数组，不渲染假数字，但要明说未核实
+                <span className="muted">{t('notVerifiedHint')}</span>
+              )
             }
           />
           <KV k={t('processingTime')} v={td(tl.processing_time)} />

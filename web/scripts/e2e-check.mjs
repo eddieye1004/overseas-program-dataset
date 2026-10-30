@@ -588,6 +588,27 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
   ok('JSON-LD @type 为 Dataset', probe.ldType === 'Dataset', probe.ldType);
 }
 
+console.log('\n[24] 未核实值不显示为假数字');
+{
+  // 官方没公布年龄的项目（AIESEC）在数据里是 0–99 占位，卡片必须显示「未核实」而不是「0–99」
+  await goto('#/p/global-aiesec-global-talent');
+  await sleep(900);
+  const ageRow = await evalJs(`(() => {
+    const rows = [...document.querySelectorAll('.kv')];
+    const hit = rows.find((r) => (r.querySelector('dt')?.textContent ?? '').includes('年龄'));
+    return hit ? hit.querySelector('dd').textContent : '';
+  })()`);
+  ok('未公布年龄的项目显示「未核实」', ageRow.includes('未核实'), ageRow);
+  ok('不再出现裸露的 0–99 区间', !/0\s*[–-]\s*99/.test(ageRow), ageRow);
+
+  const feeRow = await evalJs(`(() => {
+    const rows = [...document.querySelectorAll('.kv')];
+    const hit = rows.find((r) => (r.querySelector('dt')?.textContent ?? '').includes('费用'));
+    return hit ? hit.querySelector('dd').textContent : '';
+  })()`);
+  ok('费用为空时明说官方未公布', feeRow.includes('官方页面未公布'), feeRow);
+}
+
 ws.close();
 proc.kill();
 

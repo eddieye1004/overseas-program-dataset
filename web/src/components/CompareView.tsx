@@ -55,7 +55,13 @@ export function CompareView({ compareIds, onRemove, onClear }: Props) {
     },
     {
       label: t('age'),
-      render: (p) => (p.age_min != null ? `${p.age_min}–${p.age_max ?? '—'}` : '—'),
+      // 0–99 是「官方没写年龄限制」的占位区间，对比表里同样按未核实显示
+      render: (p) =>
+        p.age_min === 0 && p.age_max === 99
+          ? t('notVerified')
+          : p.age_min != null
+            ? `${p.age_min}–${p.age_max ?? '—'}`
+            : '—',
     },
     {
       label: t('stay'),
