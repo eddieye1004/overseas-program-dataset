@@ -11,7 +11,7 @@
     "visa_code": "H-1",
     "official_url": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91",
     "authority": "韩国法务部 / 韩国外交部（MOFA）",
-    "summary": "韩国与 29 个国家和地区签订的青年旅游就业协议，允许 18-30 岁青年在韩停留 12 个月并以兼职补充旅费。⚠️ 韩国官方协议名单中未明确包含中国大陆，实际安排需以韩国驻华使领馆当年公告为准。",
+    "summary": "韩国与 30 个国家和地区签订打工度假协议，允许青年在韩停留 12 个月并以兼职补充旅费。年龄上限按国别不同（中国台湾 18-34、中国香港 18-30）。⚠️ 官方协议名单不含中国大陆。",
     "tags": [
       "once_in_lifetime",
       "no_agency_needed"
@@ -28,13 +28,13 @@
     },
     "age": {
       "min": 18,
-      "max": 30,
-      "note": "申请时 18-30 周岁。（2026-09-01 起，部分国家如澳大利亚、英国放宽至 18-35 岁）"
+      "max": 34,
+      "note": "官方总则写 18-30 周岁（含），但同页按国别另表：中国台湾 18-34、中国香港 18-30、日本 18-25、加拿大/芬兰/法国/卢森堡/英国 18-35、阿根廷/巴西/智利/丹麦/德国/爱尔兰/拉脱维亚/葡萄牙 18-34。此处取已核到的两个合格护照类型中较宽的一档（台湾 34），中国香港实际仍为 30。"
     },
     "education": {
-      "minimum_level": "vocational",
+      "minimum_level": "any",
       "major_restriction": [],
-      "note": "一般要求大专及以上学历，或提供在读证明/最终学历证明"
+      "note": "官方未设学历门槛，只把「在读证明或最高学历证明」（Proof of student status or highest academic qualifications）列为申请材料。是否另设学历要求由各使领馆决定，未能核实。"
     },
     "language": {
       "required": false,
@@ -47,25 +47,25 @@
         "local_amount": 3000000,
         "currency": "KRW",
         "cny_estimate": 15500,
-        "note": "约 300 万韩元（约 2,000 欧元）存款证明，须在申请前 1 周内开具"
+        "note": "官方原文：sufficient funds to support yourself for the initial period of your holiday (KRW 3,000,000 minimum)。旧记录里「申请前 1 周内开具」无官方来源，已删除。"
       },
-      "note": "账户持有人须与签证申请人一致。"
+      "note": "官方未规定存款证明的开具时限、账户持有人或流水时长；此类细节由各使领馆决定，未能核实。"
     },
     "other_requirements": [
       {
         "type": "health_check",
         "required": true,
-        "note": "部分使领馆要求提供健康诊断书（含 HIV、毒品、胸透检查）"
+        "note": "官方申请材料列有 Medical certificate（健康诊断书）。旧记录里「含 HIV、毒品、胸透检查」的具体项目无官方来源，已删除；实际检查项目由各使领馆指定，未能核实。"
       },
       {
         "type": "criminal_record",
         "required": true,
-        "note": "无犯罪记录证明，须在申请前 6 个月内开具，无需公证"
+        "note": "官方资格条件写 Not have criminal record，申请材料列 Criminal record check。旧记录里「6 个月内开具、无需公证」无官方来源，已删除；开具时限由各使领馆决定，未能核实。"
       },
       {
         "type": "insurance",
         "required": true,
-        "note": "须购买在韩有效的保险，覆盖遣返、医疗、住院，保额不低于 4,000 万韩元（约 3 万欧元）"
+        "note": "官方原文：Health Insurance which remains valid throughout your stay in Korea (Coverage: KRW 40,000,000 minimum)，即保额不低于 4,000 万韩元。旧记录里附带的欧元折算已删除，不臆测汇率。"
       },
       {
         "type": "no_dependents",
@@ -88,7 +88,7 @@
   "timeline": {
     "mechanism": "appointment",
     "quota": null,
-    "quota_note": "各国配额不同。中国台湾、中国香港为配额制。中国大陆未在公开名单中，须向使领馆确认。",
+    "quota_note": "官方 2026/27 表按国别列出年度名额：中国台湾 800、中国香港 1000、加拿大 12000、英国 5000、日本 10000、美国 2000、法国 2000、新西兰 3000；澳大利亚、丹麦、德国、瑞典为 Unlimited。中国大陆不在 30 个签约国家/地区名单内。",
     "windows": [
       {
         "year": 2026,
@@ -96,26 +96,20 @@
         "note": "中国大陆申请人须向韩国驻华使领馆确认当年是否开放及名额。"
       }
     ],
-    "fees": [
-      {
-        "item": "签证申请费",
-        "amount": { "local_amount": 60, "currency": "USD", "cny_estimate": 430, "note": "各国不同，约 60-90 美元" },
-        "refundable": false
-      }
-    ],
-    "processing_time": "约 7 个工作日（部分情况 4 天至 1 个月）"
+    "fees": [],
+    "processing_time": "⚠️ 未核实。官方主源（WHIC 总则页与 2026-2027 手册）均未公布 H-1 签证的审理时长，只写请向辖区使领馆/KVAC 确认。旧记录「约 7 个工作日」无官方来源，已删除。"
   },
 
   "documents": [
-    { "name": "签证申请表", "required": true, "note": "韩国标准表格（Form no. 17），请勿双面打印", "prepare_days": 7 },
-    { "name": "有效护照", "required": true, "note": "剩余有效期须超过 6 个月（部分使领馆要求 1 年以上）", "prepare_days": 30 },
+    { "name": "签证申请表", "required": true, "note": "官方材料清单第一项；具体表格版本与打印要求由各使领馆指定，未能核实。", "prepare_days": 7 },
+    { "name": "有效护照", "required": true, "note": "官方原文：hold a valid passport issued by one of our partner countries or regions that is valid for at least a year，即有效期至少 1 年；同时须附 1 张 3.5cm × 4.5cm 照片。", "prepare_days": 30 },
     { "name": "照片", "required": true, "note": "3.5cm × 4.5cm，6 个月内拍摄，贴于申请表", "prepare_days": 7 },
     { "name": "往返机票或等额存款证明", "required": true, "note": "", "prepare_days": 14 },
     { "name": "银行存款证明", "required": true, "note": "约 300 万韩元，1 周内开具", "prepare_days": 14 },
-    { "name": "无犯罪记录证明", "required": true, "note": "6 个月内开具", "prepare_days": 30 },
-    { "name": "保险计划书", "required": true, "note": "覆盖遣返、医疗、住院，保额 ≥ 4,000 万韩元", "prepare_days": 14 },
+    { "name": "无犯罪记录证明", "required": true, "note": "官方材料清单列 Criminal record check；开具时限由各使领馆决定，未能核实。", "prepare_days": 30 },
+    { "name": "健康保险", "required": true, "note": "须覆盖整个停留期，保额不低于 4,000 万韩元（KRW 40,000,000 minimum）", "prepare_days": 14 },
     { "name": "在读证明或最终学历证明", "required": true, "note": "", "prepare_days": 14 },
-    { "name": "打工度假活动计划书", "required": true, "note": "A4 纸最多 2 页，建议韩文，可用英文", "prepare_days": 7 }
+    { "name": "旅行计划（Travel plans）", "required": true, "note": "官方材料清单项；格式与语言要求由各使领馆指定，未能核实。", "prepare_days": 7 }
   ],
 
   "steps": [
@@ -159,21 +153,19 @@
   "work_conditions": {
     "max_stay_months": 12,
     "max_same_employer_months": 6,
-    "max_study_months": 4,
+    "max_study_months": 6,
     "renewable": false,
-    "renewal_condition": "不可续签。",
+    "renewal_condition": "对已核到的中国香港与中国台湾护照持有人，官方未公布延长条款，按不可续签处理。例外：美国籍可延长至多 6 个月，英国籍可延长至多 1 年，加拿大籍可参与两次（每次最长 24 个月）。",
     "restricted_occupations": [
-      "娱乐场所的接待员、舞者、歌手、乐手、杂技演员",
-      "需特定资格的专业职业（医生、律师、教授、飞行员、外语讲师等）",
-      "新闻或政治活动"
+      "需特定资格的专业职业（医生、外语讲师、运动员、演艺人员等）"
     ],
-    "note": "每周最多工作 25 小时，全年上限 1,300 小时。语言学习最多 4 个月。禁止从事专业领域及娱乐场所工作。"
+    "note": "每周最多工作 25 小时（官方原文：maximum working hours: 25 hours/week）；加拿大籍豁免该限制，可每周 40 小时、每年 2,080 小时。同一雇主与学习期上限按国别不同：中国香港为各 6 个月，中国台湾两者均无限制，澳大利亚为同雇主 6 个月、学习 4 个月。旧记录里「全年上限 1,300 小时」是按 25×52 推算所得，非官方表述，已删除。"
   },
 
   "risks": [
     {
       "level": "critical",
-      "description": "⚠️ 关键信息：韩国外交部（在外同胞厅 WHIC）官方公布的 30 个签约国家/地区名单（2026/27 更新）不含中国大陆，中国大陆护照持有人无法申请。佐证：韩国驻华使领馆（北京、上海）虽受理 H-1 申请，但仅面向奥地利国籍申请人，中国大陆护照不在受理范围。"
+      "description": "⚠️ 关键信息：韩国外交部（在外同胞厅 WHIC）官方公布的 30 个签约国家/地区名单（2026/27 更新）不含中国大陆，中国大陆护照持有人无法申请。旧记录里「韩国驻华使领馆仅面向奥地利国籍」一句已删除：该判断源自把澳洲悉尼使馆的网址前缀 au-sydney-en 误读为奥地利（au = Australia），属误判，且与本节结论无关。"
     },
     {
       "level": "warning",
@@ -195,7 +187,7 @@
       "name": "Working Holiday Information Center (WHIC)",
       "url": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91",
       "publisher": "Ministry of Foreign Affairs, Republic of Korea",
-      "last_verified": "2026-10-16",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
       "claim": "H-1 签证资格（18-30 岁）、材料清单、申请规则（须在本国申请、一生一次、不可境内转换）"
     },
@@ -204,7 +196,7 @@
       "name": "H-1 visa (Working Holiday) — 韩国驻悉尼总领事馆",
       "url": "https://overseas.mofa.go.kr/au-sydney-en/brd/m_2367/view.do?seq=760608&page=1",
       "publisher": "Consulate General of the Republic of Korea in Sydney",
-      "last_verified": "2026-10-16",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
       "claim": "H-1 签证年龄要求（2026-09-01 起部分国家放宽至 18-35 岁）、工作限制（同一雇主不超过 6 个月）、禁止职业清单、材料清单"
     },
@@ -213,12 +205,21 @@
       "name": "Working Holiday (H-1) Visa Information by Country and Region",
       "url": "https://whic.mofa.go.kr/contents.do?menuNo=90&contentsNo=38",
       "publisher": "Working Holiday Info Center, Overseas Koreans Agency（韩国外交部海外侨胞厅）",
-      "last_verified": "2026-10-16",
+      "last_verified": "2026-10-30"
+    },
+    {
+      "type": "primary",
+      "name": "韩国打工度假官方手册（2026-2027，在外同胞厅 Working Holiday Info Center）",
+      "url": "https://whic.mofa.go.kr/upload/temp/kr_workingholiday_english.pdf",
+      "publisher": "Overseas Koreans Agency, Republic of Korea",
+      "last_verified": "2026-10-30",
+      "verified_by": "eddieye1004",
+      "claim": "年龄 18-30（含）但按国籍可变；资金下限 KRW 3,000,000；保险保额 KRW 40,000,000；每周最多 25 小时；加拿大籍豁免工时限制（40 小时/周、2,080 小时/年）；美国籍可延长 6 个月、英国籍 1 年；签证费仅写 fees may vary depending on nationality，未给金额。",
       "verified_by": "eddieye1004",
       "claim": "韩国 H-1 打工度假签证签约国家/地区与年度名额官方名单（2026/27 更新版共 30 个国家/地区，含中国台湾 800、中国香港 1,000）；中国大陆不在名单内"
     }
   ],
 
-  "last_verified": "2026-10-16",
+  "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }
