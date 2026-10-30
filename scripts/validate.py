@@ -20,9 +20,11 @@ overseas-program-dataset 数据校验脚本
 """
 
 import argparse
+import http.cookiejar
 import json
 import os
 import re
+import ssl
 import sys
 import urllib.error
 import urllib.request
@@ -716,15 +718,24 @@ def check_link(program_id, url, timeout=15, insecure_fallback=True):
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
             "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/120.0.0.0 Safari/537.36"
+            # Chrome/120 会被 iaeste.de 与 irishimmigration.ie 的 WAF 判为过期客户端
+            # 直接 403；141 实测放行。版本号要跟着升，否则会凭空长出假告警。
+            "Chrome/141.0.0.0 Safari/537.36"
         ),
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8",
     }
 
+    # 每次检查用独立 cookie jar：overseas.mofa.go.kr 的首页会先下发
+    # TMOSHCooKie 再 307 回自身，不带 cookie 就是无限重定向（实测 23 跳后超时），
+    # 带上 cookie 一次 200。这不是链接失效，是检查器没按浏览器的行为走。
     def _attempt(context):
+        handlers = [urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar())]
+        if context is not None:
+            handlers.append(urllib.request.HTTPSHandler(context=context))
+        opener = urllib.request.build_opener(*handlers)
         req = urllib.request.Request(url, method="GET", headers=headers)
-        return urllib.request.urlopen(req, timeout=timeout, context=context)
+        return opener.open(req, timeout=timeout)
 
     # 第一次：正常校验证书
     try:
@@ -746,10 +757,9 @@ def check_link(program_id, url, timeout=15, insecure_fallback=True):
             # 证书链问题：尝试跳过校验重试
             if insecure_fallback:
                 try:
-                    import ssl as _ssl
-                    ctx = _ssl.create_default_context()
+                    ctx = ssl.create_default_context()
                     ctx.check_hostname = False
-                    ctx.verify_mode = _ssl.CERT_NONE
+                    ctx.verify_mode = ssl.CERT_NONE
                     with _attempt(ctx) as resp:
                         code = resp.getcode()
                         if 200 <= code < 400:

@@ -17,10 +17,13 @@ import datetime
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
 import unittest
+import urllib.error
+import urllib.request
 from contextlib import redirect_stdout
 from datetime import date
 
@@ -547,6 +550,127 @@ class TestCollectUrls(unittest.TestCase):
             found += sum(1 for _, _, f in validate.collect_urls(validate.Report(), doc, name)
                          if f.startswith("steps["))
         self.assertGreaterEqual(found, 10, f"只在真实数据里找到 {found} 条 steps 链接")
+
+
+# ---------------------------------------------------------------------------
+# 7. 链接检查的行为约定（不发真实请求，用替身拦截 opener）
+# ---------------------------------------------------------------------------
+
+class _FakeResp:
+    def __init__(self, code):
+        self._code = code
+
+    def getcode(self):
+        return self._code
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+class _FakeHTTPError(urllib.error.HTTPError):
+    """构造一个「服务器返回错误码」的替身。
+
+    HTTPError 继承自 addinfourl，gc 时会因为 fp 未显式关闭而打 ResourceWarning。
+    这些对象是为测试捏造的，没有真实连接要关，所以把 __del__ 换成空操作；
+    真实网络路径上 HTTPError 由 urllib 自己收尾，不受这里影响。
+    """
+
+    def __init__(self, url, code, msg):
+        super().__init__(url, code, msg, {}, io.BytesIO(b""))
+
+    def close(self):
+        pass
+
+    def __del__(self):
+        pass
+
+
+class TestCheckLinkBehaviour(unittest.TestCase):
+    """check_link 的两条修正必须钉住，否则假告警会悄悄长回来。
+
+    1. UA 停在 Chrome/120 时，iaeste.de 与 irishimmigration.ie 的 WAF 直接 403；
+       这两个域名本身没有任何问题，纯粹是客户端版本被判过期。
+    2. overseas.mofa.go.kr 先下发 cookie 再 307 回自身，不带 cookie 会无限重定向。
+       检查器必须像浏览器一样保存 cookie。
+    """
+
+    def setUp(self):
+        self._real = urllib.request.build_opener
+        self.seen = []
+        self.handlers = []
+        self.behaviour = lambda req: 200
+
+    def tearDown(self):
+        urllib.request.build_opener = self._real
+
+    def install(self):
+        seen, handlers = self.seen, self.handlers
+        behaviour = self.behaviour
+
+        class FakeOpener:
+            def open(self, req, timeout=None):
+                seen.append(req)
+                out = behaviour(req)
+                if isinstance(out, BaseException):
+                    raise out
+                return _FakeResp(out)
+
+        def fake_build(*hs, **kw):
+            handlers.extend(type(h).__name__ for h in hs)
+            return FakeOpener()
+
+        urllib.request.build_opener = fake_build
+
+    def run_check(self, behaviour, url="https://example.org/"):
+        self.behaviour = behaviour
+        self.install()
+        return validate.check_link("p", url, timeout=1)
+
+    def test_user_agent_is_not_pinned_to_an_old_chrome(self):
+        self.run_check(lambda req: 200)
+        ua = self.seen[0].get_header("User-agent") or ""
+        major = re.search(r"Chrome/(\d+)", ua)
+        self.assertIsNotNone(major, ua)
+        self.assertGreaterEqual(
+            int(major.group(1)), 130,
+            "UA 又退回旧版本了，会让 iaeste.de / irishimmigration.ie 假 403",
+        )
+
+    def test_cookie_jar_is_attached_to_the_opener(self):
+        self.run_check(lambda req: 200)
+        self.assertIn(
+            "HTTPCookieProcessor", " ".join(self.handlers),
+            "opener 没挂 cookie jar，overseas.mofa.go.kr 会 307 无限重定向",
+        )
+
+    def test_404_and_410_are_failures(self):
+        for code in (404, 410):
+            status = self.run_check(
+                lambda req, c=code: _FakeHTTPError(req.full_url, c, "gone")
+            )[2]
+            self.assertEqual(status, "fail", f"HTTP {code} 必须判为失效")
+
+    def test_403_is_warn_not_fail(self):
+        status = self.run_check(lambda req: _FakeHTTPError(req.full_url, 403, "no"))[2]
+        self.assertEqual(status, "warn", "反爬 403 不等于链接失效")
+
+    def test_timeout_is_warn(self):
+        status = self.run_check(lambda req: urllib.error.URLError("timed out"))[2]
+        self.assertEqual(status, "warn")
+
+    def test_connection_reset_is_warn(self):
+        status = self.run_check(lambda req: ConnectionResetError(10054, "reset"))[2]
+        self.assertEqual(status, "warn")
+
+    def test_2xx_is_ok(self):
+        self.assertEqual(self.run_check(lambda req: 200)[2], "ok")
+
+    def test_detail_carries_the_status_code(self):
+        detail = self.run_check(lambda req: 200)[3]
+        self.assertIn("200", detail)
 
 
 # ---------------------------------------------------------------------------
