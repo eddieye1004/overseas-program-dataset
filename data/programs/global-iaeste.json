@@ -241,11 +241,11 @@
       "claim": "申请资格（全日制在校生、成绩卓越、良好英语）、无申请费、每年 1 月底至 2 月接受申请、大四学生学籍风险提示（高校官方部门来源）"
     },
     {
-      "type": "secondary",
+      "type": "primary",
       "name": "IAESTE in China, HLG（IAESTE 官网合作机构页）",
       "url": "https://iaeste.org/member-countries/china-hlg",
       "publisher": "IAESTE A.s.b.l.",
-      "last_verified": "2026-09-17",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
       "claim": "中国大陆在 IAESTE 的合作机构（Co-operating Institution）为 Archibucks 与 HLG 两家，非 National Committee（国家委员会）；官方联系域名 iaeste.learngive.cn"
     }
