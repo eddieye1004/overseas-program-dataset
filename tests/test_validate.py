@@ -451,7 +451,77 @@ class TestCliOnTempData(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# 7. 真实数据集的新鲜度（每次 push 都会跑，比每周定时任务更早发现问题）
+# 7. 链接收集范围（--check-links 到底查了哪些 URL）
+# ---------------------------------------------------------------------------
+
+class TestCollectUrls(unittest.TestCase):
+    """collect_urls 必须覆盖 program.official_url、sources[].url 和 steps[].official_link。
+
+    steps[].official_link 曾被整类漏掉：11 个项目共 12 条步骤链接（各使领馆预约页、
+    体检页、材料上传入口）从未进入过存活检查。这个用例把覆盖范围钉住，防止回退。
+    """
+
+    def setUp(self):
+        self.doc = load_fixture()
+        self.rep = validate.Report()
+
+    def fields(self):
+        return [f for _, _, f in validate.collect_urls(self.rep, self.doc, FIXTURE_NAME)]
+
+    def test_official_url_is_collected(self):
+        self.assertIn("program.official_url", self.fields())
+
+    def test_every_source_url_is_collected(self):
+        got = self.fields()
+        for i in range(len(self.doc["sources"])):
+            self.assertIn(f"sources[{i}].url", got)
+
+    def test_every_step_link_is_collected(self):
+        got = self.fields()
+        for i, step in enumerate(self.doc["steps"]):
+            if step.get("official_link"):
+                self.assertIn(f"steps[{i}].official_link", got)
+
+    def test_step_without_link_is_skipped(self):
+        for step in self.doc["steps"]:
+            step.pop("official_link", None)
+        got = self.fields()
+        self.assertFalse([f for f in got if f.startswith("steps[")], got)
+
+    def test_null_step_link_is_skipped(self):
+        self.doc["steps"][0]["official_link"] = None
+        self.assertNotIn("steps[0].official_link", self.fields())
+
+    def test_missing_steps_key_is_not_a_crash(self):
+        self.doc.pop("steps", None)
+        self.doc.pop("sources", None)
+        self.assertEqual(self.fields(), ["program.official_url"])
+
+    def test_program_id_falls_back_to_filename(self):
+        self.doc["program"].pop("id")
+        urls = validate.collect_urls(self.rep, self.doc, "some-file.json")
+        self.assertTrue(urls)
+        self.assertEqual({p for p, _, _ in urls}, {"some-file"})
+
+    def test_urls_are_three_tuples(self):
+        for item in validate.collect_urls(self.rep, self.doc, FIXTURE_NAME):
+            self.assertEqual(len(item), 3, item)
+
+    def test_real_dataset_has_step_links_in_scope(self):
+        """真实数据里必须确实存在 steps 链接，否则本组用例会静默失效。"""
+        found = 0
+        for name in sorted(os.listdir(PROGRAMS)):
+            if not name.endswith(".json"):
+                continue
+            with open(os.path.join(PROGRAMS, name), encoding="utf-8") as fh:
+                doc = json.load(fh)
+            found += sum(1 for _, _, f in validate.collect_urls(validate.Report(), doc, name)
+                         if f.startswith("steps["))
+        self.assertGreaterEqual(found, 10, f"只在真实数据里找到 {found} 条 steps 链接")
+
+
+# ---------------------------------------------------------------------------
+# 8. 真实数据集的新鲜度（每次 push 都会跑，比每周定时任务更早发现问题）
 # ---------------------------------------------------------------------------
 
 class TestRealDataFreshness(unittest.TestCase):

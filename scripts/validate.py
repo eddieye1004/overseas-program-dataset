@@ -224,7 +224,7 @@ class Report:
         self.errors = []      # (file, field, message)
         self.warnings = []    # (file, field, message)
         self.info = []        # (file, field, message)
-        self.link_results = []  # (program_id, url, ok, detail)
+        self.link_results = []  # (program_id, url, status, detail, field)
         self.files_checked = 0
         self.programs_checked = 0
 
@@ -742,14 +742,25 @@ def check_link(program_id, url, timeout=15, insecure_fallback=True):
 
 
 def collect_urls(rep, doc, fname):
+    """收集需要做存活检查的 URL，返回 (program_id, url, 字段路径)。
+
+    第三个元素是字段路径，用于在报告里指明「哪一处的链接坏了」。没有它，
+    同一个站点的链接在报告里只显示域名，改数据时还得自己回去数位置。
+
+    ``steps[].official_link`` 曾被漏掉：11 个项目共 12 条步骤链接（各使领馆
+    预约页、体检页、材料上传入口）从未进入过链接检查，等于长期无人复查。
+    """
     urls = []
     prog = doc.get("program", {})
-    pid = prog.get("id", os.path.splitext(fname)[0])
+    pid = prog.get("id", os.path.splitext(fname)[0]) if isinstance(prog, dict) else os.path.splitext(fname)[0]
     if isinstance(prog, dict) and prog.get("official_url"):
-        urls.append((pid, prog["official_url"]))
-    for s in doc.get("sources", []):
+        urls.append((pid, prog["official_url"], "program.official_url"))
+    for i, s in enumerate(doc.get("sources") or []):
         if isinstance(s, dict) and s.get("url"):
-            urls.append((pid, s["url"]))
+            urls.append((pid, s["url"], f"sources[{i}].url"))
+    for i, s in enumerate(doc.get("steps") or []):
+        if isinstance(s, dict) and s.get("official_link"):
+            urls.append((pid, s["official_link"], f"steps[{i}].official_link"))
     return urls
 
 
@@ -790,8 +801,8 @@ def print_report(rep, as_json=False, strict=False):
                 for f, fld, m in rep.info
             ],
             "links": [
-                {"program": p, "url": u, "status": st, "detail": d}
-                for p, u, st, d in rep.link_results
+                {"program": p, "field": fld, "url": u, "status": st, "detail": d}
+                for p, u, st, d, fld in rep.link_results
             ],
         }
         print(json.dumps(out, ensure_ascii=False, indent=2))
@@ -834,9 +845,9 @@ def print_report(rep, as_json=False, strict=False):
         print(f"[链接检查] 共 {len(rep.link_results)} 条 —— "
               f"正常 {len(oks)} / 待确认 {len(warns)} / 失效 {len(fails)}")
         print("-" * 72)
-        for p, u, st, d in rep.link_results:
+        for p, u, st, d, fld in rep.link_results:
             mark = {"ok": "OK  ", "warn": "WARN", "fail": "FAIL"}[st]
-            print(f"  [{mark}] {p}")
+            print(f"  [{mark}] {p}  [{fld}]")
             print(f"         {u}")
             print(f"         {d}")
         print()
@@ -947,27 +958,28 @@ def main():
 
     # 并行检查链接
     if args.check_links and all_urls:
-        # 去重（同一 URL 可能出现在多个项目中）
+        # 去重（同一 URL 可能出现在多个项目中），保留首次出现的字段路径
         seen = set()
         unique = []
-        for pid, url in all_urls:
+        for pid, url, field in all_urls:
             if url not in seen:
                 seen.add(url)
-                unique.append((pid, url))
+                unique.append((pid, url, field))
 
         with ThreadPoolExecutor(max_workers=8) as pool:
             futures = {
-                pool.submit(check_link, pid, url, args.timeout): (pid, url)
-                for pid, url in unique
+                pool.submit(check_link, pid, url, args.timeout): (pid, url, field)
+                for pid, url, field in unique
             }
             for fut in as_completed(futures):
+                pid, url, field = futures[fut]
                 try:
-                    rep.link_results.append(fut.result())
+                    _pid, _url, status, detail = fut.result()
                 except Exception as e:  # noqa: BLE001
-                    pid, url = futures[fut]
-                    rep.link_results.append((pid, url, False, f"检查器异常：{e}"))
+                    status, detail = "fail", f"检查器异常：{e}"
+                rep.link_results.append((pid, url, status, detail, field))
 
-        rep.link_results.sort(key=lambda r: (r[0], r[1]))
+        rep.link_results.sort(key=lambda r: (r[0], r[4]))
 
     print_report(rep, args.json, args.strict)
 
