@@ -502,6 +502,70 @@ await sleep(900);
   );
 }
 
+console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
+
+{
+  // 这些是爬虫与分享卡片依赖的静态文件，构建漏拷会静默 404，必须实测
+  const probe = await evalJs(`(async () => {
+    const get = async (p) => {
+      try {
+        const r = await fetch(p, { cache: 'no-store' });
+        return { ok: r.ok, status: r.status, text: r.ok ? await r.text() : '' };
+      } catch (e) {
+        return { ok: false, status: 0, text: '' };
+      }
+    };
+    const [robots, sitemap, icon, ogimg] = await Promise.all([
+      get('./robots.txt'),
+      get('./sitemap.xml'),
+      get('./favicon.svg'),
+      get('./og.png'),
+    ]);
+    return {
+      robotsOk: robots.ok,
+      robotsSitemap: /Sitemap:\\s*https:\\/\\//i.test(robots.text),
+      sitemapOk: sitemap.ok,
+      sitemapUrls: (sitemap.text.match(/<loc>/g) || []).length,
+      iconOk: icon.ok && /<svg/i.test(icon.text),
+      // 分享图必须是真 PNG（前 8 字节魔数），不是占位 SVG
+      ogImageOk: ogimg.ok && ogimg.text.startsWith('\\uFFFDPNG'),
+      ogImageTag: document.querySelector('meta[property="og:image"]')?.content ?? '',
+      ogImageSize: (document.querySelector('meta[property="og:image:width"]')?.content ?? '') + 'x' +
+        (document.querySelector('meta[property="og:image:height"]')?.content ?? ''),
+      canonical: document.querySelector('link[rel="canonical"]')?.href ?? '',
+      ogTitle: document.querySelector('meta[property="og:title"]')?.content ?? '',
+      ogDesc: document.querySelector('meta[property="og:description"]')?.content ?? '',
+      ogLocale: document.querySelector('meta[property="og:locale"]')?.content ?? '',
+      twCard: document.querySelector('meta[name="twitter:card"]')?.content ?? '',
+      twImage: document.querySelector('meta[name="twitter:image"]')?.content ?? '',
+      ldType: (() => {
+        try {
+          return JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent)['@type'];
+        } catch (e) { return ''; }
+      })(),
+      iconHref: document.querySelector('link[rel="icon"]')?.getAttribute('href') ?? '',
+    };
+  })()`);
+
+  ok('robots.txt 可访问', probe.robotsOk === true);
+  ok('robots.txt 指向 sitemap', probe.robotsSitemap === true);
+  ok('sitemap.xml 可访问', probe.sitemapOk === true);
+  // 首页 + 11 个项目详情页
+  ok('sitemap 含 12 条 URL', probe.sitemapUrls === 12, `got ${probe.sitemapUrls}`);
+  ok('favicon.svg 是可解析的 SVG', probe.iconOk === true);
+  ok('index.html 用真 favicon 而非空 data URI', probe.iconHref.includes('favicon.svg'), probe.iconHref);
+  ok('canonical 指向站点根', probe.canonical.endsWith('/overseas-program-dataset/'), probe.canonical);
+  ok('og:title 存在', probe.ogTitle.length > 0, probe.ogTitle);
+  ok('og:description 存在', probe.ogDesc.length > 0);
+  ok('og:locale 声明 zh_CN', probe.ogLocale === 'zh_CN', probe.ogLocale);
+  ok('twitter:card 存在', probe.twCard.length > 0, probe.twCard);
+  ok('og:image 指向绝对 URL', /^https:\/\/.*\/og\.png$/.test(probe.ogImageTag), probe.ogImageTag);
+  ok('og:image 尺寸声明 1200x630', probe.ogImageSize === '1200x630', probe.ogImageSize);
+  ok('og.png 是真实 PNG', probe.ogImageOk === true);
+  ok('twitter:image 与 og:image 一致', probe.twImage === probe.ogImageTag);
+  ok('JSON-LD @type 为 Dataset', probe.ldType === 'Dataset', probe.ldType);
+}
+
 ws.close();
 proc.kill();
 

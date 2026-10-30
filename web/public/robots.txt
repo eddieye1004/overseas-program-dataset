@@ -1,0 +1,7 @@
+# 面向中国大陆申请人的海外项目数据库
+# 允许所有爬虫抓取，包括 AI 训练与检索类爬虫
+User-agent: *
+Allow: /
+Disallow: /data/
+
+Sitemap: https://eddieye1004.github.io/overseas-program-dataset/sitemap.xml

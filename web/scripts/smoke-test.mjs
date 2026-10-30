@@ -95,7 +95,14 @@ ok('空筛选返回全部', applyFilters(index, EMPTY_FILTERS).length === 11);
 
 console.log('\n[3] 关键词搜索（中英文双向）');
 const zh = applyFilters(index, { ...EMPTY_FILTERS, q: '加拿大' });
-ok('搜「加拿大」命中 ca-iec', zh.length === 1 && zh[0].id === 'ca-iec-working-holiday', JSON.stringify(zh.map((p) => p.id)));
+// 命中数不写死：只要「加拿大」这串出现在某条 summary/note 里，该条就该被搜出来。
+// （2026-10-30：ie-working-holiday-authorisation 的 summary 提到「加拿大公民 24 个月」，
+//  于是它也被命中。这是搜索行为正确，不是回归。）
+ok(
+  '搜「加拿大」包含 ca-iec',
+  zh.length >= 1 && zh.some((p) => p.id === 'ca-iec-working-holiday'),
+  JSON.stringify(zh.map((p) => p.id)),
+);
 const en = applyFilters(index, { ...EMPTY_FILTERS, q: 'canada' });
 ok('搜「canada」命中同一条（英文名匹配）', en.length >= 1 && en.some((p) => p.id === 'ca-iec-working-holiday'));
 const partial = applyFilters(index, { ...EMPTY_FILTERS, q: 'work' });
