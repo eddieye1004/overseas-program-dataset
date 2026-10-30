@@ -158,6 +158,35 @@ class TestSourceQualityViolations(MutationBase):
         self.assertFalse(rep.ok)
         self.assertIn("含糊", self.errors(rep))
 
+    def test_vague_publisher_with_suffix_is_error(self):
+        """「公开资料汇编」曾绕过精确匹配 —— 加两个字就不是含糊来源了？不可能。"""
+        self.doc["sources"][0]["publisher"] = "公开资料汇编"
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("含糊", self.errors(rep))
+
+    def test_vague_publisher_variants_are_all_caught(self):
+        for name in ("公开资料整理", "网络资料汇总", "综合合集", "Public Sources",
+                     "public sources compilation", "未知 汇编"):
+            self.doc["sources"][0]["publisher"] = name
+            rep = self.validate_doc()
+            self.assertFalse(rep.ok, f"{name!r} 未被判为含糊来源")
+
+    def test_real_org_name_containing_vague_word_is_not_caught(self):
+        """机构名里含「综合」「资料」不代表来源不明，不能误伤。"""
+        for name in ("中国综合开发研究院", "国家统计局资料中心",
+                     "Ministry of Foreign Affairs of Japan"):
+            self.doc["sources"][0]["publisher"] = name
+            rep = self.validate_doc()
+            self.assertNotIn("含糊", self.errors(rep), f"{name!r} 被误判为含糊来源")
+
+    def test_is_vague_publisher_helper(self):
+        self.assertTrue(validate.is_vague_publisher("公开资料汇编"))
+        self.assertTrue(validate.is_vague_publisher("  公开资料  "))
+        self.assertFalse(validate.is_vague_publisher(""))
+        self.assertFalse(validate.is_vague_publisher(None))
+        self.assertFalse(validate.is_vague_publisher("IAESTE A.s.b.l."))
+
     def test_sources_without_any_official_source_is_error(self):
         """全部来源都只有 C 级 → 资格断言没有官方支撑，必须拦截。"""
         for src in self.doc["sources"]:

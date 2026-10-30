@@ -149,6 +149,32 @@ VAGUE_PUBLISHERS = {
     "public sources", "various", "unknown", "n/a",
 }
 
+# 含糊词后面常见的「包装后缀」：公开资料 + 汇编 = 仍然只是「公开资料」。
+# 只认这几个固定后缀，是为了不把「中国综合开发研究院」这类真实机构名误伤成模糊来源。
+_VAGUE_SUFFIXES = ("汇编", "汇总", "整理", "合集", "摘编", "资料", "来源", "compilation", "collection")
+
+
+def is_vague_publisher(publisher):
+    """判断某个 publisher 是否只是「来源不明」的包装说法。
+
+    旧实现是 ``publisher.lower() in VAGUE_PUBLISHERS``，属于精确匹配：
+    ``ie-working-holiday-authorisation`` 的 sources[1] 写的是「公开资料汇编」，
+    多两个字就绕过了拦截。这正是「含糊表述被伪装成正式来源」的典型形态。
+    """
+    if not isinstance(publisher, str):
+        return False
+    # 比较前统一去掉空格与大小写，否则 "Public Sources" 也匹配不上
+    p = publisher.strip().lower().replace(" ", "")
+    if not p:
+        return False
+    for vague in VAGUE_PUBLISHERS:
+        v = vague.replace(" ", "")
+        if p == v:
+            return True
+        if p.startswith(v) and p[len(v):] in _VAGUE_SUFFIXES:
+            return True
+    return False
+
 
 def classify_source(url):
     """把来源 URL 分级为 A / B / C / D。
@@ -194,7 +220,7 @@ def _check_sources_quality(rep, fname, doc):
             )
 
         # publisher 含糊 —— 报错
-        if publisher.lower() in VAGUE_PUBLISHERS:
+        if is_vague_publisher(publisher):
             rep.error(
                 fname, f"sources[{i}].publisher",
                 f"来源出版方含糊（'{publisher}'），须填写具体机构名称（如 Ministry of Foreign Affairs of Japan）"
