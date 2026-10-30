@@ -41,7 +41,7 @@ import validate  # noqa: E402
 class FrozenDate(date):
     """替身类型：让 validate.date.today() 返回可控日期。"""
 
-    _today = date(2026, 10, 16)
+    _today = date(2026, 10, 30)
 
     @classmethod
     def today(cls):
@@ -69,7 +69,7 @@ class MutationBase(unittest.TestCase):
         self.doc = load_fixture()
         self._real_date = validate.date
         validate.date = FrozenDate
-        FrozenDate._today = date(2026, 10, 16)
+        FrozenDate._today = date(2026, 10, 30)
 
     def tearDown(self):
         validate.date = self._real_date

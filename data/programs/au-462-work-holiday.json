@@ -227,11 +227,11 @@
     },
     {
       "level": "warning",
-      "description": "2026 年 7 月 1 日起签证费从 AUD 670 涨至 AUD 840（涨幅 25%）。费用可能继续调整。"
+      "description": "2026-07-01 起签证费由 AUD 670 涨至 AUD 840。官方页当前展示的是 AUD840.00，且标注「From 1 July 2026」对符合条件的巴布亚新几内亚护照持有人另有更低费用。费用可能继续调整，递交前请用官方 Visa Pricing Estimator 复核。"
     },
     {
       "level": "warning",
-      "description": "新法规将年龄标准从 Schedule 2 移至 Schedule 1：若递交时超龄，申请将直接被判无效，且不退还签证费。"
+      "description": "年龄判定以递交时刻为准：官方原文 You must be 18 to 30 years old (inclusive) when you apply，且必须在满 31 岁前递交（以澳大利亚东部标准时间 AEST 计）。抽签注册时亦须在年龄范围内，超龄递交会被判无效且不退费。"
     },
     {
       "level": "info",
@@ -247,16 +247,25 @@
       "publisher": "Australian Department of Home Affairs",
       "last_verified": "2026-10-16",
       "verified_by": "eddieye1004",
-      "claim": "基本资格（18-30岁、指定国家护照、不可携带子女）、停留期 12 个月、签证费 AUD 670、中国/印度/越南需参与抽签"
+      "claim": "基本资格（18-30 岁含、指定国家护照、不可携带子女）、停留期 12 个月、签证费 AUD 840（官方页 data-svpattribute 渲染值 AUD840.00）、中国/印度/越南护照持有人须先参加 ballot 并被随机抽中；2026-10-30 复核：AUD 670 为 2026-07-01 前旧价，页面已不含该数字"
     },
     {
       "type": "primary",
-      "name": "Work and Holiday visa (subclass 462) — 适用国家/地区与资格",
-      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
+      "name": "Work and Holiday visa (subclass 462) — First Work and Holiday visa",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462/first-work-holiday-462",
       "publisher": "Australian Department of Home Affairs",
-      "last_verified": "2026-10-16",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "462 类别适用国家/地区（含中国）、417 类别适用国家/地区（含中国香港、中国台湾）、资金要求 AUD 5,000；中国申请人须参与抽签（ballot）"
+      "claim": "首次 462 的资格（be 18 to 30 years old inclusive、apply from outside Australia、not be accompanied by dependent children）、停留 12 个月、签证费 AUD840.00、资金 AUD5,000、中国/印度/越南护照持有人须先经 ballot 抽中、平均审理约三个月"
+    },
+    {
+      "type": "primary",
+      "name": "New Work and Holiday (subclass 462) visa pre-application process",
+      "url": "https://immi.homeaffairs.gov.au/what-we-do/whm-program/latest-news/new-work-and-holiday-subclass-462-visa-pre-application-process",
+      "publisher": "Australian Department of Home Affairs",
+      "last_verified": "2026-10-30",
+      "verified_by": "eddieye1004",
+      "claim": "中国、印度、越南护照持有人必须先参加签证预申请（ballot）并被随机抽中，才能递交首次 462 申请；该页 2026-10-19 更新，正文由前端渲染"
     },
     {
       "type": "secondary",
@@ -266,18 +275,9 @@
       "last_verified": "2026-10-16",
       "verified_by": "eddieye1004",
       "claim": "旅游推广性质的 462 / 417 类别说明与常见问题（非移民局官方页，仅作辅证）"
-    },
-    {
-      "type": "primary",
-      "name": "Migration Amendment (Working Holiday Maker Age Criteria) Regulations 2026",
-      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
-      "publisher": "Australian Government",
-      "last_verified": "2026-10-16",
-      "verified_by": "eddieye1004",
-      "claim": "2026-07-01 起年龄标准的技术性调整（Schedule 2 → Schedule 1）"
     }
   ],
 
-  "last_verified": "2026-10-16",
+  "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

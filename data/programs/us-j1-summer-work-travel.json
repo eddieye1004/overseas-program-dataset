@@ -227,21 +227,12 @@
   "sources": [
     {
       "type": "primary",
-      "name": "Summer Work Travel Program",
+      "name": "Summer Work Travel — BridgeUSA（美国国务院）",
       "url": "https://j1visa.state.gov/programs/summer-work-travel/",
       "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
-      "last_verified": "2026-10-16",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "项目定位（美国境外全日制大专院校学生）、参加资格、项目最长期限 4 个月、岗位排除清单、可多次参加"
-    },
-    {
-      "type": "primary",
-      "name": "BridgeUSA — Summer Work Travel 项目资格页",
-      "url": "https://j1visa.state.gov/programs/summer-work-travel/",
-      "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
-      "last_verified": "2026-10-16",
-      "verified_by": "eddieye1004",
-      "claim": "项目定位（美国境外全日制大专院校学生）、参加资格、须为美国境外认证高校全日制在读生、须完成至少 1 个学期、需提前安置岗位、项目最长期限 4 个月、岗位排除清单、可多次参加"
+      "claim": "SWT 项目规则：Sponsor 须为来自非免签国的参与者提供预先安排并已审查的岗位、须在入境前提供项目手册/24 小时紧急热线/联系人、须告知最低工资与加班义务、须每月与参与者保持联系；含 Program Exclusions 岗位排除清单（不得安排进有损项目声誉的岗位、不得进入需自购库存再销售的销售岗等）；官方另发 2024 Program Date Chart。**该页未公布年龄上限、项目费与审理时长**，官方也无独立的资格子页（/eligibility 为 404）。"
     },
     {
       "type": "secondary",
@@ -250,10 +241,11 @@
       "publisher": "西安理工大学国际合作与交流处",
       "last_verified": "2026-10-16",
       "verified_by": "eddieye1004",
-      "claim": "中国高校引进该项目的落地口径（18-28 周岁全日制在校本科生/研究生）、费用结构、申请流程、工作时间 6月15日-9月15日（高校官方部门来源，反映中方实际操作）"
+      "claim": "中国高校引进该项目的落地口径（18-28 周岁全日制在校本科生/研究生）、费用结构、申请流程、工作时间 6月15日-9月15日（高校官方部门来源，反映中方实际操作）",
+      "note": "2026-10-30 未重抓。年龄 18-28 与项目费属于中国落地口径，不是美国国务院规定。"
     }
   ],
 
-  "last_verified": "2026-10-16",
+  "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

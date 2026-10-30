@@ -47,7 +47,7 @@
         { "test": "PTE", "min_score": 42, "validity_months": 24 },
         { "test": "Cambridge", "min_score": 162, "validity_months": 24 }
       ],
-      "note": "以上任一项达标即可。成绩须在 2 年内有效。注意：新西兰的雅思门槛（5.5）高于澳大利亚（4.5）。"
+      "note": "⚠️ 官方 WHV 页面（2026-10-30 复核）只写三件事：须能说并理解英语、递交后会被要求提供 acceptable English language test result、成绩不得超过 2 年。**具体分数线（IELTS 5.5 / TOEFL 46 / PTE 42 / Cambridge 162）未能在官方页面核实**，来自此前记录；这些数字与他国 WHV 门槛一致，但需向 INZ 或签证中心确认后再作为硬门槛使用。"
     },
     "funds": {
       "required": true,
@@ -232,9 +232,9 @@
       "name": "China Working Holiday Visa",
       "url": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
       "publisher": "Immigration New Zealand",
-      "last_verified": "2026-10-16",
+      "last_verified": "2026-10-30",
       "verified_by": "eddieye1004",
-      "claim": "中国大陆 WHV 基本资格、名额 1,000、申请流程与材料要求"
+      "claim": "中国大陆 WHV 全部硬条件：年龄 18-30、须为中国公民且常驻中国、申请时须在中国境内、未持过 NZ WHV、高中毕业学历、英语能力、资金 NZD 4,200、全程医疗保险、离境机票或等额资金、品行与健康要求；每年 1,000 个名额；费用 From NZD $770；审理 80% within 2 weeks；停留 12 个月；同一雇主不超过 6 个月；学习或培训合计不超过 6 个月；页面当前状态为 The China Working Holiday Visa is closed。语言部分官方只写：须能说并理解英语、递交后会被要求提供 acceptable English language test result、成绩不得超过 2 年 —— **未列具体分数线**。"
     },
     {
       "type": "primary",
@@ -243,19 +243,11 @@
       "publisher": "Immigration New Zealand",
       "last_verified": "2026-10-16",
       "verified_by": "eddieye1004",
-      "claim": "2026 年各国家/地区开放日期与配额（中国大陆 2026-07-02 开放 1,000 个；中国香港 03-19 开放 400 个；中国台湾 05-28 开放 600 个）"
-    },
-    {
-      "type": "primary",
-      "name": "English language test results we accept",
-      "url": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
-      "publisher": "Immigration New Zealand",
-      "last_verified": "2026-10-16",
-      "verified_by": "eddieye1004",
-      "claim": "认可的语言考试与最低分数（IELTS 5.5 / TOEFL iBT 46 / PTE 42 / Cambridge B2 First 162）"
+      "claim": "2026 年各国家/地区开放日期与配额（中国大陆 2026-07-02 开放 1,000 个；中国香港 03-19 开放 400 个；中国台湾 05-28 开放 600 个）",
+      "note": "2026-10-30 复核未能读到正文：该站启用 Incapsula 人机验证，curl 返回 Request unsuccessful，无头浏览器需等 20 秒以上且不稳定。2026-10-16 的值保留，但未能在本轮重新确认。"
     }
   ],
 
-  "last_verified": "2026-10-16",
+  "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }
