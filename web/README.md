@@ -260,52 +260,23 @@ impeccable.cmd detect --json src dist/index.html                 # AI 痕迹检�
 
 ## 五、验收清单
 
-逐条可执行。左边是动作，右边是通过标准。
+完整版见 [`ACCEPTANCE.md`](./ACCEPTANCE.md)：按 A 可运行性 / B 双语完整性 / C 筛选与搜索正确性 / D 数据可信度展示 四组展开，每行给出**动作、通过标准、不通过意味着什么、指向哪条自动化断言**，并标注实测数字的取数日期（2026-10-31）。
 
-### A. 可运行性
+三条命令能覆盖大部分回归，日常改完先跑这三条：
 
-| # | 动作 | 通过标准 |
-|---|---|---|
-| A1 | `cd web && pnpm install` | 无 error；`node_modules` 生成 |
-| A2 | `pnpm run sync:data` | 打印 `i18n coverage 100%` / `synced 11 programs`，`public/data/` 下三个 JSON 都在 |
-| A3 | `node node_modules/typescript/bin/tsc -b --force` | 退出码 0，无输出 |
-| A4 | `node node_modules/vite/bin/vite.js build` | `dist/index.html` + `dist/assets/*` 生成，`dist/data/` 三个 JSON 被拷入 |
-| A5 | `python -m http.server 8099 -d dist` 后打开首页 | 11 张卡片渲染，无白屏、无控制台报错 |
-| A6 | 刷新任意页面（包括详情页 `#/p/jp-working-holiday`） | 不 404，内容一致 |
-| A7 | `node scripts/smoke-test.mjs` | `PASS 65 / 65 ALL GREEN` |
-| A8 | `node scripts/e2e-check.mjs http://127.0.0.1:8099/` | `PASS 84 / 84 ALL GREEN` |
-| A9 | `impeccable.cmd detect --json src dist/index.html` | 输出 `[]`（零告警） |
-| A10 | 浏览器跑 `audit.cjs http://127.0.0.1:8099/` | 控制台报错 0、对比度不合格 0、390px 横向溢出 0 |
+```bash
+pnpm run sync:data
+node scripts/smoke-test.mjs                      # PASS 76 / 76
+node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 129 / 129
+```
 
-### B. 双语完整性
+验收清单里写死的条数（11 个项目、可申 6 / 不可申 5、来源 37）跟着数据变，改 `data/programs/*.json` 后需重新取数并更新 `ACCEPTANCE.md`。
 
-| # | 动作 | 通过标准 |
-|---|---|---|
-| B1 | 点右上「中文 / EN」 | 标题、导航、筛选标签、卡片标题、详情页全部切英文；无中文残留（官方机构名等专有名词除外） |
-| B2 | 切到 EN 后刷新 | 仍是英文（`localStorage['opd.lang'] === 'en'`），`<html lang="en">` |
-| B3 | 详情页逐个展开小节 | 中文模式的每个 note 在英文模式都有对应英文；不出现空字符串或 `undefined` |
-| B4 | 看控制台 | 无 `[i18n] missing` 警告（有则说明词典漏词） |
-| B5 | `sync:data` 的输出 | 始终 `i18n coverage 100%`；新增中文字段未翻译时这里会掉到 100% 以下 |
+### 已知限制（不是缺陷）
 
-### C. 筛选与搜索正确性
-
-| # | 动作 | 通过标准 |
-|---|---|---|
-| C1 | 搜 `canada` | 只剩 1 张（ca-iec）；搜 `加拿大` 命中同一条 |
-| C2 | 搜 `work camp`（多词） | 结果同时含两个词，不是任一命中 |
-| C3 | 筛「大陆护照不可申」 | 5 张，`data-status` 全为 `not_eligible` |
-| C4 | 再点同一 chip | 取消筛选，回到 11 张 |
-| C5 | 点「无需中介」再点「高时薪」 | 结果收窄（标签 AND），每张卡都同时含两个标签 |
-| C6 | 勾「只看已收藏」（先收藏 1 个） | 只剩 1 张，URL 出现 `sv=1` |
-| C7 | 勾「只看有致命风险」 | 只剩 10 张，每张卡 `data-risk` 含 `critical` |
-| C8 | 排序切「停留期长」 | URL 出现 `o=stay`，卡片按停留月数降序 |
-| C9 | 复制带筛选的 URL 到新标签页打开 | 筛选条件完整还原 |
-| C10 | 智能匹配填年龄 20 | 出现全部结果并按分数降序；硬性不合格的卡分数 ≤30 且带 `×` 理由 |
-| C11 | 对比加入第 5 个项目 | 按钮禁用，清单仍为 4，不出现第 5 列 |
-
-### D. 已知限制（不在本期范围）
-
-- 收藏/进度不能跨设备同步，也没有导出/导入按钮。
-- hash 路由对 SEO 不友好，详情页无法被搜索引擎单独收录。
-- 只有 11 个项目，样本量小；「智能匹配」的权重是按常识设的，没有真实用户行为校准。
-- 数据更新仍需人工跑 `sync:data` + push；没有定时抓取官方页面的机制。
+- 收藏、对比、申请进度、匹配画像只存 `localStorage`，换设备不同步，也没有导出/导入。
+- hash 路由导致 11 个详情页对爬虫是同一个 URL，SEO 收录价值有限；改 path 路由要动 404 回退与全部 e2e，因此未做。
+- 桌面端侧栏导航与语言切换 39px 高，小于 44px 触控标准——有意保留的鼠标密度；窄屏与 `pointer: coarse` 下补到 44px。
+- 「可申/不可申」左侧竖条未做：状态已由徽标与结论条数字表达，再加色条属重复，且 impeccable 会把 `side-tab` 判为 AI 界面痕迹。
+- 数据更新仍靠人工改 JSON + `sync:data` + push，没有定时抓取官方页的机制。
+- 本机 pnpm 11 下 `pnpm install` 会以 `[ERR_PNPM_IGNORED_BUILDS]` 退出 1（`node_modules` 与构建仍正常）；CI 用 pnpm 9 无此问题。

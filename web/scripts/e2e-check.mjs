@@ -751,7 +751,6 @@ console.log('\\n[26] 详情页判定条 + 来源锚点');
   );
   ok('来源区块有 id=sources', await evalJs(`!!document.querySelector('#sources')`));
   // 锚点必须真能滚过去：位置应在文档中段之后，而不是顶部
-  const beforeY = await evalJs(`scrollY`);
   // 无头环境里 smooth 滚动动画不一定推进（实测同一个页面在独立脚本里滚到 2332px，
   // 在长流程 e2e 里始终停在 0）。所以不去断言动画结果，改为记录 scrollIntoView
   // 的调用参数——这才是产品代码该保证的东西：按钮点了确实去找 #sources。
@@ -778,7 +777,13 @@ console.log('\\n[26] 详情页判定条 + 来源锚点');
     })()`),
   );
   ok('来源区块位于首屏之下且页面可滚', geo.top > 400 && geo.scrollable, JSON.stringify(geo));
-  ok('滚动位置未被测试动作改变（无副作用）', (await evalJs(`scrollY`)) === beforeY);
+  // 不能断言「scrollY 没变」——这个按钮的全部目的就是滚动，滚动了才是对的。
+  // 早前它在无头环境里恰好没推进才通过，属于把环境巧合当成产品契约。
+  // 真正该守的是：滚动没有把详情页卸载掉（本站 hash 路由，改错锚点写法就会掉回列表）。
+  ok(
+    '滚动后仍停在详情页（路由未被破坏）',
+    await evalJs(`location.hash.startsWith('#/p/ca-iec-working-holiday') && !!document.querySelector('.verdict')`),
+  );
 }
 
 ws.close();
