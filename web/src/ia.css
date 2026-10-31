@@ -116,10 +116,21 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* 用 CSS 边框画三角，不用 ▾ 字符：
+   该字符在多数字体里缺字时会被 fallback 渲染成一个几乎不可见的小点。 */
 .filters__more__caret {
   margin-left: auto;
-  color: var(--ink-3);
-  font-size: var(--fs-2xs);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--ink-3);
+  transition: transform 0.15s ease;
+}
+
+.filters__more[aria-expanded='true'] .filters__more__caret,
+.filters__sheetbtn[aria-expanded='true'] .filters__more__caret {
+  transform: rotate(180deg);
 }
 
 .filters__extra {

@@ -102,9 +102,8 @@ export function FilterBar({ filters, facets, onChange, onReset, all }: Props) {
       >
         <span>{t('filtersToggle')}</span>
         {folded > 0 && <span className="filters__more__badge">{folded}</span>}
-        <span className="filters__more__caret" aria-hidden="true">
-          {sheet ? '▴' : '▾'}
-        </span>
+        {/* 三角由 CSS 边框画（见 ia.css），不塞字符：▾ 在部分字体下会掉成小点 */}
+        <span className="filters__more__caret" aria-hidden="true" />
       </button>
 
       <div className="filters__body" id="filters-body">
@@ -150,9 +149,7 @@ export function FilterBar({ filters, facets, onChange, onReset, all }: Props) {
             {t('selectedCount')} {folded}
           </span>
         )}
-        <span className="filters__more__caret" aria-hidden="true">
-          {open ? '▴' : '▾'}
-        </span>
+        <span className="filters__more__caret" aria-hidden="true" />
       </button>
 
       {/* 折叠区始终渲染（用 hidden 收起），这样键盘 Tab 顺序、fieldset 语义都不依赖展开状态 */}
