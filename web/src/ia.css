@@ -1,0 +1,325 @@
+/* src/ia.css
+ * 信息架构改版层（2026-10-31）。
+ *
+ * 只做四件事，都针对实测出来的具体问题：
+ *   1) 首屏结论条 .statsbar —— 原首屏全被筛选面板占掉，访客看不到「你能申什么」
+ *   2) 「我的资格」双栏大按钮 .chips--pair —— 只有 2 项却排在第 3 组，视觉上等于地区
+ *   3) 折叠区 .filters__more / .filters__extra —— 桌面筛选面板 584px（视口 65%）、移动 846px
+ *   4) 卡片压到 220px 以内 —— 原 341px，桌面首屏只露出 21% 的一张
+ *
+ * 取值全部走 tokens.css；本文件不出现十六进制色值。
+ */
+
+/* ---------- 1. 首屏结论条 ---------- */
+
+.statsbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-2) var(--s-5);
+  margin: var(--s-3) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.statsbar__item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 两个数字用 display 字阶，其余用 sm —— 一个字号差就建立了主次，不需要加图标或底色 */
+.statsbar__item strong {
+  font-family: var(--font-serif);
+  font-size: var(--fs-display);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.statsbar__item--ok strong {
+  color: var(--ok);
+}
+
+.statsbar__item--no strong {
+  color: var(--no);
+}
+
+.statsbar__item--muted {
+  color: var(--ink-3);
+  font-size: var(--fs-xs);
+}
+
+/* ---------- 2. 「我的资格」双栏大按钮 ---------- */
+
+/* 只有 2 个选项、且决定后面看什么都靠它，所以给它别的分组没有的待遇：
+   等宽两栏、居中、选中实心。其他分组仍是自动宽度的筹码。 */
+.chips--pair .chips__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-2);
+}
+
+.chips--pair .chip {
+  justify-content: center;
+  min-height: var(--tap);
+  border-radius: var(--r-md);
+  font-size: var(--fs-body);
+}
+
+/* 可申 / 不可申各带自己的语义色，选中时不是一律陶土色 */
+.chips--pair .chip--on:first-child {
+  background: var(--ok);
+  border-color: var(--ok);
+}
+
+.chips--pair .chip--on:last-child {
+  background: var(--no);
+  border-color: var(--no);
+}
+
+/* ---------- 3. 折叠区 ---------- */
+
+.filters__more {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  /* 面板是 column flex，子项默认拉伸到整行宽；
+     整行宽的虚线框 + 右端一个 ▾ 看起来像没渲染完的输入框，
+     所以让它只占内容宽。 */
+  align-self: flex-start;
+  min-height: var(--tap);
+  margin: 0;
+  padding: 0 var(--s-3);
+  border: 1px dashed var(--line);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  text-align: left;
+}
+
+.filters__more:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+/* 折叠区里还有几个条件生效 —— 收起时这是唯一的提示，否则用户找不到自己选了什么 */
+.filters__more__badge {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.filters__more__caret {
+  margin-left: auto;
+  color: var(--ink-3);
+  font-size: var(--fs-2xs);
+}
+
+.filters__extra {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line-soft);
+}
+
+/* 必须显式处理 [hidden]：类选择器的 display:flex 会覆盖 UA 样式表里
+   [hidden] { display: none }，收起状态就失效了。 */
+.filters__extra[hidden] {
+  display: none;
+}
+
+.filters__rest {
+  border: 0;
+}
+
+.filters__rest > summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap);
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.filters__rest > summary:hover {
+  color: var(--ink);
+}
+
+/* ---------- 4. 卡片压缩 ---------- */
+
+/* 摘要截成 1 行：完整版在详情页，卡片上 62px 是单项最大开销 */
+.card__summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+/* facts 与 trust 合成一行，比 4 个 dt/dd 对省 30px，也更像「一句话描述」 */
+.card__factsline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px var(--s-2);
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.card__factsline > span + span::before {
+  content: '·';
+  margin-right: var(--s-2);
+  color: var(--line-strong);
+}
+
+/* 标签只留 2 个：卡片上 4 个标签占 22px，但读者真正在意的维度只有可申性、停留期 */
+.card__tags .tag:nth-child(n + 3) {
+  display: none;
+}
+
+.filters__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+
+/* ---------- 6. 详情页判定条 ---------- */
+
+/* 标题下方的一行判定 + 直达来源的锚点。
+   这个产品的差异点是「每条都挂官方来源」，而来源原本在最底部（需滚 4600px）。 */
+.verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-2) var(--s-3);
+  margin: var(--s-3) 0 0;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-md);
+  background: var(--canvas-sunken);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.verdict strong {
+  font-size: var(--fs-body);
+}
+
+.verdict--ok strong {
+  color: var(--ok);
+}
+
+.verdict--no strong {
+  color: var(--no);
+}
+
+.verdict__why {
+  flex: 1 1 20ch;
+  min-width: 0;
+  color: var(--ink-3);
+}
+
+.verdict__src {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.verdict__src:hover {
+  text-decoration: underline;
+}
+
+/* 锚点跳转后不能被 sticky 顶栏盖住（顶栏高度约 56–64px） */
+#sources {
+  scroll-margin-top: 72px;
+}
+
+/* ---------- 5. 窄屏筛选抽屉 ---------- */
+
+/* ≥720px：桌面常驻面板。抽屉相关的一切都不出现。 */
+.filters__sheetbtn {
+  display: none;
+}
+
+.filters__apply {
+  display: none;
+}
+
+.filters__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+/* <720px：面板整体收成一条 sticky 条，点开才展开。
+   这是列表类页面在窄屏的标准解法——首屏 100% 让给结果。 */
+@media (max-width: 719px) {
+  .filters {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    gap: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    background: var(--canvas-glass, var(--canvas));
+    backdrop-filter: blur(8px);
+  }
+
+  .filters__sheetbtn {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    width: 100%;
+    min-height: var(--tap);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-body);
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .filters__body {
+    display: none;
+    padding-top: var(--s-3);
+  }
+
+  /* data-sheet 是 JS 的真实状态，不能靠 :focus-within 之类伪类模拟 */
+  .filters[data-sheet='true'] .filters__body {
+    display: flex;
+  }
+
+  .filters[data-sheet='true'] {
+    position: static;
+    border-radius: var(--r-md);
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    background: var(--surface);
+    backdrop-filter: none;
+  }
+
+  .filters__apply {
+    display: inline-flex;
+  }
+}

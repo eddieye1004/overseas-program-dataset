@@ -77,7 +77,8 @@ function filtersToHash(f: Filters, sort: SortMode): string {
   if (f.ageOnly && f.age != null) sp.set('a', String(f.age));
   if (f.savedOnly) sp.set('sv', '1');
   if (f.criticalOnly) sp.set('cr', '1');
-  if (sort !== 'default') sp.set('o', sort);
+  // 'eligible' 是默认排序，不写进 URL，保持链接干净
+  if (sort !== 'eligible') sp.set('o', sort);
   const qs = sp.toString();
   return qs ? `#/?${qs}` : '#/';
 }
@@ -85,7 +86,7 @@ function filtersToHash(f: Filters, sort: SortMode): string {
 function hashToState(): { filters: Filters; sort: SortMode } {
   const raw = window.location.hash;
   const i = raw.indexOf('?');
-  if (i < 0) return { filters: EMPTY_FILTERS, sort: 'default' };
+  if (i < 0) return { filters: EMPTY_FILTERS, sort: 'eligible' };
   const sp = new URLSearchParams(raw.slice(i + 1));
   const arr = (k: string) =>
     (sp.get(k) ?? '')
@@ -106,7 +107,7 @@ function hashToState(): { filters: Filters; sort: SortMode } {
       savedOnly: sp.get('sv') === '1',
       criticalOnly: sp.get('cr') === '1',
     },
-    sort: o === 'verified' || o === 'stay' || o === 'age' ? o : 'default',
+    sort: o === 'verified' || o === 'stay' || o === 'age' || o === 'default' ? o : 'eligible',
   };
 }
 
@@ -151,6 +152,23 @@ export function ListView({ savedIds, onToggleSave }: Props) {
     return sortPrograms(applyFilters(all, filters, savedIds), sort, savedIds);
   }, [all, filters, sort, savedIds]);
 
+  // 首屏结论条：访客的第一个问题是「我能申什么」，不是「怎么筛」。
+  // 这三个数直接从数据算，不硬编码；数据变化时自动跟着变。
+  const stats = useMemo(() => {
+    if (!all) return null;
+    const cut = Date.now() - 90 * 86400000;
+    const stale = all.filter((p) => {
+      const t = p.last_verified ? Date.parse(p.last_verified) : NaN;
+      return Number.isNaN(t) || t < cut;
+    }).length;
+    return {
+      eligible: all.filter((p) => p.status === 'eligible').length,
+      notEligible: all.filter((p) => p.status === 'not_eligible').length,
+      sources: all.reduce((n, p) => n + (p.source_count ?? 0), 0),
+      stale,
+    };
+  }, [all]);
+
   if (error) return <p className="state">数据加载失败：{error}</p>;
   if (!all || !facets) return <p className="state">{t('searchHint')}…</p>;
 
@@ -162,12 +180,27 @@ export function ListView({ savedIds, onToggleSave }: Props) {
       <header className="page__head">
         <h1 className="page__title">{t('listTitle')}</h1>
         <p className="page__intro">{t('listIntro')}</p>
+
+        {/* 结论条：可申 / 不可申两个数字对立摆放，比 11 张卡片平等排列
+            更能让人 3 秒内知道「这事跟我有没有关系」。 */}
+        {stats && (
+          <p className="statsbar">
+            <span className="statsbar__item statsbar__item--ok">
+              <strong>{stats.eligible}</strong> {t('eligible')}
+            </span>
+            <span className="statsbar__item statsbar__item--no">
+              <strong>{stats.notEligible}</strong> {t('notEligible')}
+            </span>
+            <span className="statsbar__item statsbar__item--muted">
+              {t('sourceCount')} {stats.sources} · {stats.stale} {t('statsStale')}
+            </span>
+          </p>
+        )}
       </header>
 
       <FilterBar
         filters={filters}
         facets={facets}
-        resultCount={visible.length}
         all={all}
         onChange={setFilters}
         onReset={() => setFilters(EMPTY_FILTERS)}
@@ -184,6 +217,7 @@ export function ListView({ savedIds, onToggleSave }: Props) {
             value={sort}
             onChange={(e) => setSort(e.target.value as SortMode)}
           >
+            <option value="eligible">{t('sortEligible')}</option>
             <option value="default">{t('sortDefault')}</option>
             <option value="verified">{t('sortVerified')}</option>
             <option value="stay">{t('sortStay')}</option>

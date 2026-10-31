@@ -21,9 +21,9 @@ function hostOf(url: string): string {
   }
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children, id }: { title: string; children: React.ReactNode; id?: string }) {
   return (
-    <section className="sec">
+    <section className="sec" id={id}>
       <h2 className="sec__title">{title}</h2>
       {children}
     </section>
@@ -41,11 +41,44 @@ function KV({ k, v }: { k: string; v: React.ReactNode }) {
 }
 
 /**
- * 0–99 是「官方页面没写年龄限制」在 schema 里的占位区间（schema 的 min/max 不允许 null）。
- * 直接渲染成「0–99 岁」会被读成一条真实规定，所以这里识别出来改显示「未核实」。
+ * 0–99 在 schema 里兼作两种含义，直接渲染都会被读成真实规定：
+ *   a) 「官方未公布年龄」——note 以 ⚠️ 写明未核实（如 global-aiesec）→ 显示「未核实」
+ *   b) 「无年龄上限」——note 写「无年龄上限」（如 de-16e、global-iaeste）→ 只显示下限
+ * 判据只能落在 note 上，因为数据里没有独立字段；schema 加 age_verified 后应删掉这段。
  */
-function isAgeUnknown(min?: number, max?: number): boolean {
-  return min === 0 && max === 99;
+function isAgeUnknown(min: number | undefined, max: number | undefined, note?: string): boolean {
+  return min === 0 && max === 99 && /未核实/.test(note ?? '');
+}
+
+/** 无上限：max 是 99 占位，但 note 没说是未核实 */
+function isAgeOpenEnded(min: number | undefined, max: number | undefined, note?: string): boolean {
+  return max === 99 && !isAgeUnknown(min, max, note);
+}
+
+/** 把 age 对象渲染成一句人话 */
+function ageText(
+  age: { min?: number; max?: number; note?: string } | undefined,
+  t: (k: 'notVerified') => string,
+  td: (s: string) => string,
+): string {
+  if (!age) return t('notVerified');
+  if (isAgeUnknown(age.min, age.max, age.note)) return t('notVerified');
+  const note = age.note ? ` · ${td(age.note)}` : '';
+  if (isAgeOpenEnded(age.min, age.max, age.note)) {
+    return `${age.min ?? 0}+${note}`;
+  }
+  return `${age.min ?? '—'}–${age.max ?? '—'}${note}`;
+}
+
+/**
+ * 取第一句作为判定理由。护照说明往往有 2–3 句（第一句讲结论，后面讲条件），
+ * 详情页标题下只放结论，条件留给下面的 callout。
+ * 中文句号/分号、英文句号/分号都算断句，找不到就不截断。
+ */
+function firstSentence(s: string): string {
+  const m = s.match(/^[^。；;]+[。；;]?|^[^.]+\.?/);
+  const out = (m?.[0] ?? s).trim();
+  return out.length > 120 ? `${out.slice(0, 118)}…` : out;
 }
 
 function money(
@@ -140,6 +173,25 @@ export function DetailView({
         </div>
         <h1 className="detail__title">{title}</h1>
         {sub && <p className="detail__sub">{sub}</p>}
+
+        {/* 一句话判定：读者进详情页只想知道「我能不能申」，不该先滚过 4000px 才看见。
+            判定用正文语气写，原因是护照段 note 的首句，不另造结论。
+            注意「跳来源」必须是按钮而不是 href="#sources"：本站用 hash 路由，
+            把 hash 改成 #sources 会让路由把详情页卸载掉。 */}
+        <p className={`verdict verdict--${passport.mainland_china === 'eligible' ? 'ok' : 'no'}`}>
+          <strong>{te(passport.mainland_china)}</strong>
+          {passport.note && <span className="verdict__why">{firstSentence(td(passport.note))}</span>}
+          <button
+            type="button"
+            className="verdict__src"
+            onClick={() =>
+              document.getElementById('sources')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+          >
+            {t('sources')} ↓
+          </button>
+        </p>
+
         <p className="detail__summary">{td(p.summary)}</p>
         <div className="detail__meta">
           <span>
@@ -193,14 +245,7 @@ export function DetailView({
         <dl className="kvs">
           <KV
             k={t('ageRequirement')}
-            v={
-              el.age
-                ? // 0–99 是「官方未设年龄限制」的占位写法，直接显示会像是真的区间
-                  `${isAgeUnknown(el.age.min, el.age.max) ? t('notVerified') : `${el.age.min ?? '—'}–${el.age.max ?? '—'}`}${
-                    el.age.note ? ` · ${td(el.age.note)}` : ''
-                  }`
-                : t('notVerified')
-            }
+            v={el.age ? ageText(el.age, t, td) : t('notVerified')}
           />
           <KV k={t('education')} v={te(el.education?.minimum_level)} />
           <KV
@@ -386,7 +431,7 @@ export function DetailView({
         </Section>
       )}
 
-      <Section title={t('sources')}>
+      <Section title={t('sources')} id="sources">
         {/* 先给一行汇总：读者最想知道「有几条官方主源」，而不是逐条数 */}
         <p className="srcsum">
           <span className="srcsum__item">

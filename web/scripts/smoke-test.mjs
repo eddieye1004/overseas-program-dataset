@@ -207,6 +207,27 @@ ok(
 );
 ok('default：不传收藏时顺序不变', sortPrograms(index, 'default')[0].id === index[0].id);
 
+// 默认排序改成「可申优先」后，第一屏应该全是能申的项目。
+// 这条断言锁的是产品决定：访客滚到一半才发现「我申不了」是最糟的体验。
+const byEligible = sortPrograms(index, 'eligible');
+const RANK = { eligible: 0, conditional: 1, unknown: 2, not_eligible: 3 };
+ok(
+  'eligible：状态优先级不递增（可申在前，不可申沉底）',
+  byEligible.every((p, i) => i === 0 || RANK[byEligible[i - 1].status] <= RANK[p.status]),
+  byEligible.map((p) => p.status).join(','),
+);
+ok(
+  'eligible：首条可申，末条不可申',
+  byEligible[0].status === 'eligible' &&
+    byEligible[byEligible.length - 1].status === 'not_eligible',
+  `${byEligible[0].status} / ${byEligible[byEligible.length - 1].status}`,
+);
+ok('eligible：不改变条数', byEligible.length === index.length);
+ok(
+  'eligible：收藏仍置顶（用户标注优先于系统判断）',
+  sortPrograms(index, 'eligible', ['jp-working-holiday'])[0].id === 'jp-working-holiday',
+);
+
 console.log('\n[12] 收藏视图 / 致命风险视图筛选');
 const savedOnly = applyFilters(
   index,
@@ -231,6 +252,39 @@ const both = applyFilters(
   ['jp-working-holiday'],
 );
 ok('两个开关可叠加', both.length === 1 && both[0].id === 'jp-working-holiday');
+
+console.log('\n[12b] 年龄占位语义：未核实 ≠ 0 岁');
+{
+  // 索引层把 99 统一成 null，「官方未公布年龄」与「无上限」都表现为 null，
+  // 只能靠 age_verified 区分。这条断言锁住这个区分，避免卡片再次显示「0 岁」。
+  const aiesec = index.find((p) => p.id === 'global-aiesec-global-talent');
+  ok('未核实年龄的项目 age_verified=false', aiesec?.age_verified === false, JSON.stringify(aiesec));
+  ok('未核实年龄的项目 min 不被当作真实下限', aiesec?.age_min === 0 && aiesec?.age_max === null);
+
+  const de = index.find((p) => p.id === 'de-16e-internship');
+  ok('「无年龄上限」的项目 age_verified=true', de?.age_verified === true, JSON.stringify(de));
+
+  // 年龄筛选不该因数据缺失而排除项目：20 岁筛「未核实」那条要保留
+  const withAge = applyFilters(index, { ...EMPTY_FILTERS, ageOnly: true, age: 20 });
+  ok(
+    '年龄筛选保留未核实项目',
+    withAge.some((p) => p.id === 'global-aiesec-global-talent'),
+    `got ${withAge.length}`,
+  );
+  // 40 岁应被 au-462（上限 30）排除，但仍保留未核实那条
+  const at40 = applyFilters(index, { ...EMPTY_FILTERS, ageOnly: true, age: 40 });
+  ok(
+    '超龄项目被排除',
+    !at40.some((p) => p.id === 'au-462-work-holiday'),
+    `got ${at40.length}`,
+  );
+  ok(
+    '未核实项目仍保留',
+    at40.some((p) => p.id === 'global-aiesec-global-talent'),
+    `got ${at40.length}`,
+  );
+  ok('20 岁比 40 岁筛出的更多', withAge.length >= at40.length, `${withAge.length} vs ${at40.length}`);
+}
 
 console.log('\n[13] 智能匹配打分（lib/match.ts）');
 const get = (id) => index.find((p) => p.id === id);

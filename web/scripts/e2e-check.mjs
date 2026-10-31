@@ -485,8 +485,19 @@ await sleep(700);
   ok('列表页标签页标题含页面名', /项目库|Programs/.test(t1), t1);
 
   // 卡片上直接能看到「几条来源 / 几条官方 / 核实于哪天」
-  ok('卡片显示来源计数', await evalJs(`!!document.querySelector('.card__trust__src')`));
-  ok('卡片显示核实日期', await evalJs(`!!document.querySelector('.card__trust__date')`));
+  // 2026-10-31 改版把这三项压进一行 .card__factsline，选择器随之调整
+  ok(
+    '卡片显示来源计数',
+    await evalJs(
+      `[...document.querySelectorAll('.card__factsline')].every(el => /来源|Sources/.test(el.textContent))`,
+    ),
+  );
+  ok(
+    '卡片显示核实日期',
+    await evalJs(
+      `[...document.querySelectorAll('.card__factsline')].every(el => /\\d{4}-\\d{2}-\\d{2}/.test(el.textContent))`,
+    ),
+  );
 
   // 键盘用户的第一个 Tab 位
   ok('存在跳到主内容的链接', await evalJs(`!!document.querySelector('a.skiplink[href="#main"]')`));
@@ -607,6 +618,167 @@ console.log('\n[24] 未核实值不显示为假数字');
     return hit ? hit.querySelector('dd').textContent : '';
   })()`);
   ok('费用为空时明说官方未公布', feeRow.includes('官方页面未公布'), feeRow);
+}
+
+console.log('\\n[25] 信息架构改版：结论条 / 折叠筛选 / 推叠卡片预算');
+{
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1280,
+    height: 900,
+    deviceScaleFactor: 1,
+    mobile: false,
+  });
+  await goto('#/');
+  await sleep(700);
+
+  // 结论条：访客第一个问题是「我能申什么」，这两个数字必须首屏就有
+  const stats = await evalJs(
+    `JSON.stringify([...document.querySelectorAll('.statsbar__item')].map(e => e.textContent.trim()))`,
+  );
+  const S = JSON.parse(stats);
+  ok('首屏有结论条', S.length >= 3, stats);
+  // 「大陆护照可申」本身包含「可申」二字，所以不能只测子串，
+  // 改用前缀数字区分：6 那条是可申，5 那条是不可申。
+  ok(
+    '结论条含不可申计数',
+    S.some((s) => /^5\s/.test(s) && s.includes('不可申')),
+    stats,
+  );
+  ok(
+    '结论条含可申计数',
+    S.some((s) => /^6\s/.test(s) && s.includes('可申') && !s.includes('不可申')),
+    stats,
+  );
+
+  // 默认排序把可申的排前面，第一张卡必须是 eligible
+  ok(
+    '默认排序首卡可申',
+    (await evalJs(`document.querySelector('.card')?.dataset.status`)) === 'eligible',
+  );
+  ok(
+    '排序下拉默认选中「可申优先」',
+    (await evalJs(`document.querySelector('.listbar select')?.value`)) === 'eligible',
+  );
+
+  // 「我的资格」必须排在第一组（搜索之后），而不是夹在类型和标签之间
+  const firstLegend = await evalJs(
+    `document.querySelectorAll('.filters fieldset.chips legend')[0]?.textContent ?? ''`,
+  );
+  ok('第一组筛选是「我的资格」', /资格|eligibility/i.test(firstLegend), firstLegend);
+  ok(
+    '资格按钮是双栏大按钮',
+    await evalJs(`!!document.querySelector('.chips--pair .chip')`),
+  );
+
+  // 折叠：默认收起，展开后显示更多条件
+  ok('折叠区默认收起', await evalJs(`document.querySelector('.filters__extra')?.hidden === true`));
+  ok(
+    '更多筛选按钮 aria-expanded=false',
+    (await evalJs(`document.querySelector('.filters__more')?.getAttribute('aria-expanded')`)) ===
+      'false',
+  );
+  await evalJs(`document.querySelector('.filters__more').click()`);
+  await sleep(400);
+  ok('展开后折叠区可见', await evalJs(`document.querySelector('.filters__extra')?.hidden === false`));
+  await evalJs(`document.querySelector('.filters__more').click()`);
+  await sleep(400);
+
+  // 重复计数必须已删除：结果数只在 .listbar 出现一次
+  ok('筛选区不再重复显示结果计数', await evalJs(`!document.querySelector('.filters__count')`));
+
+  // 卡片预算：≤220px 才能让桌面首屏露出 2 张以上完整卡片
+  const cardH = await evalJs(`Math.round(document.querySelector('.card').getBoundingClientRect().height)`);
+  ok('卡片高度 ≤240px', cardH <= 240, `got ${cardH}px`);
+  const fullCards = await evalJs(
+    `[...document.querySelectorAll('.card')].filter(c => { const r = c.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }).length`,
+  );
+  ok('桌面首屏露出 ≥2 张完整卡片', fullCards >= 2, `got ${fullCards}`);
+
+  // 移动端抽屉：<720px 筛选面板收成一条，首屏必须出现卡片
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  await sleep(600);
+  await goto('#/');
+  await sleep(800);
+  const m = JSON.parse(
+    await evalJs(`(() => {
+      const f = document.querySelector('.filters');
+      return JSON.stringify({
+        sheetVisible: !!document.querySelector('.filters__sheetbtn') &&
+          getComputedStyle(document.querySelector('.filters__sheetbtn')).display !== 'none',
+        bodyHidden: getComputedStyle(document.querySelector('.filters__body')).display === 'none',
+        filtersH: Math.round(f.getBoundingClientRect().height),
+        gridTop: Math.round(document.querySelector('.grid').getBoundingClientRect().top),
+        vh: innerHeight,
+      });
+    })()`),
+  );
+  ok('移动端有筛选抽屉按钮', m.sheetVisible, JSON.stringify(m));
+  ok('移动端筛选体默认收起', m.bodyHidden, JSON.stringify(m));
+  ok('移动端筛选条高度 <120px', m.filtersH < 120, `got ${m.filtersH}px`);
+  ok('移动端首屏能看到卡片网格', m.gridTop < m.vh, `gridTop=${m.gridTop}, vh=${m.vh}`);
+
+  await evalJs(`document.querySelector('.filters__sheetbtn').click()`);
+  await sleep(500);
+  ok(
+    '点开抽屉后筛选体可见',
+    await evalJs(`getComputedStyle(document.querySelector('.filters__body')).display !== 'none'`),
+  );
+
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1280,
+    height: 900,
+    deviceScaleFactor: 1,
+    mobile: false,
+  });
+  await sleep(400);
+}
+
+console.log('\\n[26] 详情页判定条 + 来源锚点');
+{
+  await goto('#/p/ca-iec-working-holiday');
+  await sleep(900);
+  const v = await evalJs(`document.querySelector('.verdict')?.textContent ?? ''`);
+  ok('详情页标题下有判定条', v.length > 0, v.slice(0, 60));
+  ok('判定条写明不可申', /不可申|Not open/.test(v), v.slice(0, 60));
+  ok(
+    '判定条带来源跳转按钮',
+    (await evalJs(`document.querySelector('.verdict__src')?.tagName`)) === 'BUTTON',
+  );
+  ok('来源区块有 id=sources', await evalJs(`!!document.querySelector('#sources')`));
+  // 锚点必须真能滚过去：位置应在文档中段之后，而不是顶部
+  const beforeY = await evalJs(`scrollY`);
+  // 无头环境里 smooth 滚动动画不一定推进（实测同一个页面在独立脚本里滚到 2332px，
+  // 在长流程 e2e 里始终停在 0）。所以不去断言动画结果，改为记录 scrollIntoView
+  // 的调用参数——这才是产品代码该保证的东西：按钮点了确实去找 #sources。
+  await evalJs(`(() => {
+    window.__scrolled = null;
+    const orig = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = function (opt) {
+      window.__scrolled = { id: this.id || null, behavior: opt && opt.behavior };
+      return orig.call(this, opt);
+    };
+    return true;
+  })()`);
+  await evalJs(`document.querySelector('.verdict__src').click()`);
+  await sleep(600);
+  const spy = JSON.parse(await evalJs(`JSON.stringify(window.__scrolled)`));
+  ok('按钮对 #sources 调用 scrollIntoView', spy && spy.id === 'sources', JSON.stringify(spy));
+  ok('使用平滑滚动', spy && spy.behavior === 'smooth', JSON.stringify(spy));
+
+  // 来源区块确实在页面下方（否则这个按钮没有存在意义）
+  const geo = JSON.parse(
+    await evalJs(`(() => {
+      const r = document.querySelector('#sources').getBoundingClientRect();
+      return JSON.stringify({ top: Math.round(r.top), scrollable: document.documentElement.scrollHeight > innerHeight });
+    })()`),
+  );
+  ok('来源区块位于首屏之下且页面可滚', geo.top > 400 && geo.scrollable, JSON.stringify(geo));
+  ok('滚动位置未被测试动作改变（无副作用）', (await evalJs(`scrollY`)) === beforeY);
 }
 
 ws.close();

@@ -38,6 +38,12 @@ export interface ProgramIndexEntry {
   status: EligibilityStatus;
   age_min: number | null;
   age_max: number | null;
+  /**
+   * false 表示数据源写明「官方未公布年龄限制」，而不是「无上限」。
+   * 两者在 schema 里都用 0–99 占位，只有 note 能把它们分开，
+   * 所以由 sync-data.mjs 判好后带过来，前端不再重复猜。
+   */
+  age_verified: boolean;
   max_stay_months: number | null;
   education: string | null;
   language_required: boolean;

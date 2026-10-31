@@ -148,7 +148,21 @@ export type UiKey =
   | 'pageTitleSuffix'
   // —— 未核实值（2026-10-30：官方没写的一律留空，不拿二手数字充数）——
   | 'notVerified'
-  | 'notVerifiedHint';
+  | 'notVerifiedHint'
+  // —— 信息架构改版（2026-10-31：首屏讲结论、筛选分主次）——
+  | 'statsStale'
+  | 'statsCheckedTo'
+  | 'sortEligible'
+  | 'moreFilters'
+  | 'fewerFilters'
+  | 'otherTags'
+  | 'selectedCount'
+  | 'filtersToggle'
+  | 'closeFilters'
+  | 'noAgeLimit'
+  | 'andUnder'
+  | 'andOver'
+  | 'ageUnit';
 
 export const UI: Record<Lang, Record<UiKey, string>> = {
   zh: {
@@ -297,6 +311,20 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     notVerified: '未核实',
     notVerifiedHint: '官方页面未公布此项',
     pageTitleSuffix: '海外项目数据库',
+    // 信息架构改版（2026-10-31）
+    statsStale: '超期未复核',
+    statsCheckedTo: '数据核实至',
+    sortEligible: '可申优先',
+    moreFilters: '更多筛选',
+    fewerFilters: '收起筛选',
+    otherTags: '其他标签',
+    selectedCount: '已选',
+    filtersToggle: '筛选条件',
+    closeFilters: '收起筛选面板',
+    noAgeLimit: '无年龄限制',
+    andUnder: '岁及以下',
+    andOver: '岁及以上',
+    ageUnit: '岁',
   },
   en: {
     siteTitle: 'Overseas Program Dataset',
@@ -448,6 +476,20 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     notVerified: 'Not verified',
     notVerifiedHint: 'Not published on the official page',
     pageTitleSuffix: 'Overseas Program Database',
+    // Information architecture (2026-10-31)
+    statsStale: 'past re-check date',
+    statsCheckedTo: 'Data checked to',
+    sortEligible: 'Eligible first',
+    moreFilters: 'More filters',
+    fewerFilters: 'Fewer filters',
+    otherTags: 'Other tags',
+    selectedCount: 'Selected',
+    filtersToggle: 'Filters',
+    closeFilters: 'Collapse filters',
+    noAgeLimit: 'no age limit',
+    andUnder: 'or under',
+    andOver: 'or over',
+    ageUnit: 'yrs',
   },
 };
 

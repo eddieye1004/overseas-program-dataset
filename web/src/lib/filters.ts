@@ -32,7 +32,20 @@ export const EMPTY_FILTERS: Filters = {
 };
 
 /** 列表排序方式。match 由智能匹配页使用，不在项目库里出现。 */
-export type SortMode = 'default' | 'verified' | 'stay' | 'age';
+export type SortMode = 'eligible' | 'default' | 'verified' | 'stay' | 'age';
+
+/** 资格优先级：可申最前，不可申沉底。未标注状态的排在中间。 */
+const STATUS_RANK: Record<string, number> = {
+  eligible: 0,
+  conditional: 1,
+  unknown: 2,
+  not_eligible: 3,
+};
+
+/** 未知状态按 'unknown' 处理，不让缺失值意外排到最前或最后 */
+function statusRank(p: ProgramIndexEntry): number {
+  return STATUS_RANK[p.status] ?? STATUS_RANK.unknown;
+}
 
 /** 把数据里的 'YYYY-MM-DD' 转成可比较的数字；缺失排到最后 */
 function dateValue(s: string | null): number {
@@ -49,6 +62,17 @@ export function sortPrograms(
 ): ProgramIndexEntry[] {
   const out = [...list];
   switch (mode) {
+    case 'eligible':
+      // 默认排序：能申的排前面。访客滚到一半才发现「这个我申不了」是最糟的体验。
+      // 收藏的仍然置顶——那是用户自己标过的，优先级高于系统判断。
+      // 同档内保持数据原顺序（id 字母序），不做二次排序，避免看起来随机。
+      {
+        const set = savedIds.length > 0 ? new Set(savedIds) : null;
+        const rank = (p: ProgramIndexEntry) =>
+          statusRank(p) + (set?.has(p.id) ? -10 : 0);
+        out.sort((a, b) => rank(a) - rank(b));
+      }
+      break;
     case 'verified':
       // 最近核过的排前面，未标注核实日期的沉底
       out.sort((a, b) => dateValue(b.last_verified) - dateValue(a.last_verified));
@@ -120,9 +144,10 @@ export function matches(
   }
 
   // 年龄：只有用户填了年龄才生效；缺失年龄信息的项目默认保留（不因数据缺失隐藏）
-  // 0–99 是「官方没公布年龄限制」的占位区间，等同缺失，不做上下限比较。
+  // 官方未公布年龄的项目（age_verified=false）等同缺失，不做上下限比较——
+  // 它的 min 可能被写成 18 表示「无统一下限」，拿它筛选会凭空排除结果。
   if (f.ageOnly && f.age != null) {
-    const ageUnknown = p.age_min === 0 && p.age_max === 99;
+    const ageUnknown = p.age_verified === false || (p.age_min == null && p.age_max == null);
     if (!ageUnknown && p.age_min != null && f.age < p.age_min) return false;
     if (!ageUnknown && p.age_max != null && f.age > p.age_max) return false;
   }

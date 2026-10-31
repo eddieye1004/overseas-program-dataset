@@ -35,14 +35,27 @@ export function Card({ p, saved, onToggleSave, score, best, reasons }: Props) {
 
   // 0–99 是「官方没写年龄限制」在 schema 里的占位区间（min/max 不允许 null），
   // 直接显示会被读成一条真实规定，所以按未核实处理。
-  const ageText =
-    p.age_min === 0 && p.age_max === 99
-      ? t('notVerified')
-      : p.age_min != null && p.age_max != null
-        ? `${p.age_min}–${p.age_max}`
-        : p.age_min != null
-          ? `${p.age_min}+`
-          : t('notVerified');
+  // 索引里 age_max 已被 sync-data 统一成 null（99 视作无上限），
+  // 所以「未核实」不能再靠 min===0 && max===99 判断——那个组合在索引层不存在，
+  // 会导致「官方未公布年龄」的项目被渲染成「0 岁」。改读 age_verified。
+  // min=0 同理表示「官方没设下限」（如 de-16e 允许任何年龄在读学生），
+  // 不能渲染成「0 岁」。
+  const ageKnown = p.age_verified !== false && (p.age_min != null || p.age_max != null);
+  const noLower = p.age_min == null || p.age_min === 0;
+  const noUpper = p.age_max == null;
+
+  let ageText: string;
+  if (!ageKnown) {
+    ageText = t('notVerified');
+  } else if (noLower && noUpper) {
+    ageText = t('noAgeLimit');
+  } else if (noLower) {
+    ageText = `${p.age_max} ${t('ageUnit')}${t('andUnder')}`;
+  } else if (noUpper) {
+    ageText = `${p.age_min} ${t('ageUnit')}${t('andOver')}`;
+  } else {
+    ageText = `${p.age_min}–${p.age_max} ${t('ageUnit')}`;
+  }
 
   const stayText = p.max_stay_months != null ? `${p.max_stay_months} ${t('monthsUnit')}` : t('notVerified');
 
@@ -72,21 +85,6 @@ export function Card({ p, saved, onToggleSave, score, best, reasons }: Props) {
       <p className="card__sub">{sub}</p>
       <p className="card__summary">{td(p.summary)}</p>
 
-      <dl className="card__facts">
-        <div>
-          <dt>{t('age')}</dt>
-          <dd>{ageText}</dd>
-        </div>
-        <div>
-          <dt>{t('stay')}</dt>
-          <dd>{stayText}</dd>
-        </div>
-        <div>
-          <dt>{t('lang')}</dt>
-          <dd>{p.language_required ? t('required') : t('notRequired')}</dd>
-        </div>
-      </dl>
-
       {reasons && reasons.length > 0 && (
         <ul className="card__reasons">
           {reasons.slice(0, 3).map((r, i) => (
@@ -97,6 +95,19 @@ export function Card({ p, saved, onToggleSave, score, best, reasons }: Props) {
         </ul>
       )}
 
+      {/* 4 个字段压成一行：年龄 · 停留 · 来源 · 核实日期。
+          原先 dt/dd 三列 + 单独一条 trust 共占 77px，合并后省 45px，
+          而且读起来像一句描述而不是表格式罗列。 */}
+      <p className="card__factsline">
+        <span>{ageText}</span>
+        <span>{stayText}</span>
+        <span>
+          {t('sourceCount')} {p.source_count ?? 0}
+          <span className="card__factsline__p"> / {t('primary')} {p.source_primary ?? 0}</span>
+        </span>
+        {p.last_verified && <span>{p.last_verified}</span>}
+      </p>
+
       <div className="card__tags">
         {p.tags.slice(0, 4).map((tg) => (
           <span className="tag" key={tg}>
@@ -104,20 +115,6 @@ export function Card({ p, saved, onToggleSave, score, best, reasons }: Props) {
           </span>
         ))}
       </div>
-
-      {/* 可信度条：几条来源、其中几条官方、最后核于哪天。卡片上就该看得到，
-          而不是点进详情才知道这条数据靠不靠得住。 */}
-      <p className="card__trust">
-        <span className="card__trust__src" title={t('sourcePrimaryCount')}>
-          {t('sourceCount')} {p.source_count ?? 0}
-          <span className="card__trust__p"> · {t('primary')} {p.source_primary ?? 0}</span>
-        </span>
-        {p.last_verified && (
-          <span className="card__trust__date">
-            {t('verifiedOn')} {p.last_verified}
-          </span>
-        )}
-      </p>
 
       <button
         type="button"

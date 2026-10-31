@@ -24,6 +24,14 @@ const OUT_DIR = join(WEB_ROOT, 'public', 'data');
   const ageMin = Number.isFinite(age.min) ? age.min : null;
   const ageMax = Number.isFinite(age.max) && age.max < 99 ? age.max : null;
 
+  // 0–99 在 schema 里兼作两种含义，索引层必须把它们分开，否则卡片会把
+  // 「官方没公布年龄」渲染成「0 岁以上」：
+  //   a) 真实的「无年龄上限」——note 写的是「无年龄上限」（如 de-16e、iaeste）
+  //   b) 「未核实」——note 以 ⚠️ 开头并写明官方未公布（如 global-aiesec）
+  // 判据只能落在 note 上，因为数据里没有独立字段；这条规则一旦 schema 加了
+  // age_verified 之类的字段就该删掉。
+  const ageUnknown = age.min === 0 && age.max === 99 && /未核实/.test(age.note ?? '');
+
   return {
     id: p.program.id,
     name: p.program.name,
@@ -43,6 +51,7 @@ const OUT_DIR = join(WEB_ROOT, 'public', 'data');
     status: el.passport_types?.mainland_china ?? 'unknown',
     age_min: ageMin,
     age_max: ageMax,
+    age_verified: !ageUnknown,
     max_stay_months: wc.max_stay_months ?? null,
     education: el.education?.minimum_level ?? null,
     language_required: lang.required === true,
