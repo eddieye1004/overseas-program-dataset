@@ -74,15 +74,16 @@ overseas-program-dataset/
 ├── LICENSE                      # 数据 CC BY 4.0 / 代码 MIT
 ├── data/
 │   ├── schema.json              # 数据字段定义（机器可读）
-│   ├── sources.md               # 官方来源清单与核实说明
+│   ├── sources.md               # 官方来源清单（由 gen_sources.py 生成，勿手改）
 │   └── programs/                # 每个项目一个 JSON 文件
 │       ├── au-462-work-holiday.json
 │       ├── nz-china-whv.json
 │       └── ...
 ├── scripts/
-│   └── validate.py              # 数据完整性 + 官方链接存活校验
+│   ├── validate.py              # 数据完整性 + 官方链接存活校验
+│   └── gen_sources.py           # 从 programs/*.json 生成 data/sources.md
 ├── tests/
-│   └── test_validate.py         # 校验器自身的测试（62 例）
+│   └── test_validate.py         # 校验器自身的测试（66 例）
 ├── web/                         # 中英双语静态站（React + Vite）
 │   ├── src/                     # 页面、筛选、智能匹配、i18n
 │   ├── scripts/sync-data.mjs    # 数据集 -> 前端 JSON

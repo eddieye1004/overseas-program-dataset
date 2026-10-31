@@ -60,6 +60,12 @@ jobs:
             python scripts/validate.py
           fi
 
+      - name: 来源清单必须与数据一致
+        # data/sources.md 是 scripts/gen_sources.py 的产物。手工维护时期它漂到了
+        # 只列 28 条 URL（记录里 38 条），德国 §16e 法条页与日本査証手数料页
+        # 这两个唯一 A 级依据在清单里根本不存在。这条闸门让漂移不可能通过 CI。
+        run: python scripts/gen_sources.py --check
+
       - name: 检查官方链接存活
         # 链接检查涉及网络请求，可能因目标站点反爬或临时故障产生误报，
         # 因此设置为 continue-on-error，不阻断 CI，但会在日志中报告。

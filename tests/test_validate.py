@@ -702,5 +702,67 @@ class TestRealDataFreshness(unittest.TestCase):
         )
 
 
+# ---------------------------------------------------------------------------
+# 9. data/sources.md 必须是数据生成的，不能与 JSON 漂移
+# ---------------------------------------------------------------------------
+
+GEN = os.path.join(ROOT, "scripts", "gen_sources.py")
+SOURCES_MD = os.path.join(ROOT, "data", "sources.md")
+
+
+class TestGeneratedSourcesDoc(unittest.TestCase):
+    """来源清单是派生物。
+
+    这一条来源于一次真实事故：sources.md 手工维护到 2026-10-31 时只列 28 条 URL，
+    而记录里已有 38 条，德国 §16e 法条页与日本査証手数料页这两个唯一 A 级依据
+    在清单里根本不存在，头部还写着「所有来源核实于 2026-09-17」。
+    读者被引到一份缺证据的清单上，比没有清单更糟。
+    """
+
+    def test_committed_file_matches_generated_output(self):
+        proc = subprocess.run(
+            [sys.executable, GEN, "--check"],
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
+        )
+        self.assertEqual(
+            proc.returncode, 0,
+            "data/sources.md 与 data/programs/*.json 不一致，"
+            "请运行 python scripts/gen_sources.py 后重新提交：\n"
+            + proc.stdout + proc.stderr,
+        )
+
+    def test_every_source_url_appears_in_the_doc(self):
+        with open(SOURCES_MD, encoding="utf-8") as fh:
+            md = fh.read()
+        md_urls = set(re.findall(r"<(https?://[^>]+)>", md))
+        missing = []
+        for name in sorted(os.listdir(PROGRAMS)):
+            if not name.endswith(".json"):
+                continue
+            with open(os.path.join(PROGRAMS, name), encoding="utf-8") as fh:
+                doc = json.load(fh)
+            urls = [doc["program"]["official_url"]]
+            urls += [s.get("url") for s in doc.get("sources", [])]
+            for u in urls:
+                if u and u not in md_urls:
+                    missing.append(f"{name}: {u}")
+        self.assertEqual(missing, [], "以下 URL 在 data/sources.md 里找不到：\n" + "\n".join(missing))
+        self.assertGreater(len(md_urls), 30, "解析到的 URL 太少，正则可能失效了")
+
+    def test_doc_does_not_claim_a_single_blanket_verification_date(self):
+        """旧版有一句「所有来源的最后核实日期为 2026-09-17」，实际各条日期各不相同。"""
+        with open(SOURCES_MD, encoding="utf-8") as fh:
+            md = fh.read()
+        self.assertNotIn("所有来源的最后核实日期为", md)
+        self.assertIn("由脚本生成", md)
+
+    def test_grades_come_from_the_validator_not_from_prose(self):
+        """分级列必须现算，否则会出现「文档说 A 级、校验器判 C 级」的自相矛盾。"""
+        with open(SOURCES_MD, encoding="utf-8") as fh:
+            md = fh.read()
+        self.assertIn("classify_source", md)
+        self.assertIn("A · 政府/法律", md)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
