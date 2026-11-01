@@ -1,0 +1,254 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "uk-short-term-study-visa",
+    "name": "英国短期学习签证（英语课程）",
+    "name_en": "Short-term study visa (English language course)",
+    "country": "英国",
+    "country_code": "GB",
+    "region": "europe",
+    "program_type": "cultural_exchange",
+    "visa_code": "Short-term study visa",
+    "official_url": "https://www.gov.uk/visa-to-study-english",
+    "authority": "UK Visas and Immigration (UKVI), Home Office（英国内政部签证与移民局）",
+    "summary": "英国为 6 个月以上、11 个月以内的英语语言课程设的短期学习签证。16 岁以上即可申请，不看学籍、不需要担保机构出 CAS，只要求课程所在的学校是官方认证机构。可停留课程时长 + 30 天。这是在职人士少数能合法在英国待满近一年的路径，代价是期间的任何工作都被明文禁止。",
+    "tags": [
+      "no_agency_needed",
+      "low_cost"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "官方资格页未对国籍设限，只要求 16 岁以上并被认证机构的英语课程录取。中国大陆护照持有人可申，但属于需要签证的国籍，须在来英前在线申请。"
+    },
+    "age": {
+      "min": 16,
+      "max": 99,
+      "note": "官方原文 `You must be 16 or older to apply.`。全文无年龄上限。未满 18 岁另需提供旅行与住宿安排证明及父母/监护人同意书。"
+    },
+    "education": {
+      "minimum_level": "any",
+      "major_restriction": [],
+      "note": "官方未设学历门槛，只要求被一所认证机构的英语语言课程录取。课程须为 6 个月以上、11 个月以内，且不包含其他科目（原文：`includes no other subjects`）。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方未要求雅思/托福等任何语言考试成绩。课程本身就是英语课，学校可能自设分班测试，但这不是签证条件。"
+    },
+    "funds": {
+      "required": true,
+      "note": "须证明 `you have enough money to support yourself without working or help from public funds`，或由亲友资助并提供住宿；另须能支付返程或续程旅费。官方未公布具体金额门槛（未能核实），申请材料要求近 6 个月银行流水或工资单。"
+    },
+    "other_requirements": [
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "结核病（TB）检查：中国在英国内政部公布的须做 TB 检查的国家名单内，且本签证停留可达 11 个月（满 6 个月即触发）。须在指定诊所拍胸片，取得有效期 6 个月的证明，随签证申请提交。"
+      },
+      {
+        "type": "return_ticket",
+        "required": true,
+        "note": "官方原文 `you can pay for your return or onward journey`。"
+      },
+      {
+        "type": "no_dependents",
+        "required": true,
+        "note": "官方明文 `bring family members ('dependants') with you on this visa` 属于不可以做的事。"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无年度名额限制，符合条件即可申请。真正的约束来自课程本身：必须是认证机构开设的 6–11 个月纯英语课程。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年可申请，无统一开放/截止日。官方原文：最早可在出发前 3 个月申请（`The earliest you can apply is 3 months before you travel to the UK.`）。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费",
+        "amount": { "local_amount": 228, "currency": "GBP", "cny_estimate": 2100 },
+        "refundable": false
+      },
+      {
+        "item": "移民健康附加费（IHS）",
+        "amount": { "local_amount": 776, "currency": "GBP", "cny_estimate": 7200, "note": "官方页写 `It usually costs £776`，按年计；不足一年的部分按比例计算，实际金额以申请时系统计算为准" },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方原文：`you'll usually get a decision within 3 weeks`（完成网申、核验身份并提交材料后）。可付费加急。"
+  },
+
+  "documents": [
+    { "name": "有效护照", "required": true, "note": "当前有效护照或其他有效旅行证件", "prepare_days": 30 },
+    { "name": "资金证明", "required": true, "note": "近 6 个月银行流水或工资单，证明无需工作即可自给", "prepare_days": 30 },
+    { "name": "住宿与行程说明", "required": true, "note": "官方提示：拿到签证前不要先付住宿或机票钱", "prepare_days": 7 },
+    { "name": "课程费用已缴或可支付的证明", "required": true, "note": "官方原文 `evidence that you've paid your course fees or have enough money to pay them`", "prepare_days": 14 },
+    { "name": "录取通知书", "required": true, "note": "须写明课程名称、时长与费用（含住宿）", "prepare_days": 30 },
+    { "name": "结核病检查证明", "required": true, "note": "中国在须检名单内；胸片证明有效期 6 个月", "prepare_days": 14 },
+    { "name": "非英文材料的认证翻译件", "required": true, "note": "官方原文 `a certified translation if any documents are not in English or Welsh`", "prepare_days": 14 }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认课程符合签证要求",
+      "description": "课程须为英语语言课程、时长 6–11 个月、不含其他科目，且学校是认证机构（有学生担保牌照，或在 ASIC / Accreditation UK / BAC / Ofsted / QAA 等名单内）。6 个月以内改申访问签证，超过 11 个月改申学生签证。",
+      "duration": "1-2 周",
+      "official_link": "https://www.gov.uk/visa-to-study-english/your-course"
+    },
+    {
+      "step_no": 2,
+      "title": "拿到录取通知书并备齐材料",
+      "description": "录取通知书须写明课程名称、时长与费用。同时准备资金证明、住宿与行程说明、课程费支付证明。中国大陆申请人另需做 TB 检查。",
+      "duration": "2-4 周",
+      "official_link": "https://www.gov.uk/visa-to-study-english/documents-you-must-provide"
+    },
+    {
+      "step_no": 3,
+      "title": "在线申请（最早出发前 3 个月）",
+      "description": "必须在线申请，并预约签证申请中心提交材料、核验身份。缴费 £228 签证费 + IHS（官方写通常 £776）。",
+      "duration": "1 天",
+      "official_link": "https://www.gov.uk/visa-to-study-english/apply"
+    },
+    {
+      "step_no": 4,
+      "title": "等待审理",
+      "description": "官方口径为通常 3 周出结果。可付费加急。结果以邮件通知。",
+      "duration": "约 3 周",
+      "official_link": "https://www.gov.uk/visa-to-study-english/apply"
+    },
+    {
+      "step_no": 5,
+      "title": "赴英就学（期间不得工作）",
+      "description": "可停留课程时长 + 30 天，总长不超过 11 个月。期间不得从事任何有薪或无薪工作、工作体验或实习，不得转为其他课程，不得延期，不得带家属。",
+      "duration": "6-11 个月",
+      "official_link": "https://www.gov.uk/visa-to-study-english"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 11,
+    "max_same_employer_months": 0,
+    "max_study_months": 11,
+    "renewable": false,
+    "renewal_condition": "不可延期。官方原文 `extend this visa` 列在不可以做的事里。若想继续留在英国学习，须改申学生签证（Student visa），那是另一套要求与费用。",
+    "restricted_occupations": [
+      "任何有薪工作",
+      "任何无薪工作",
+      "工作体验（work experience）",
+      "工作实习（work placements）",
+      "自雇或经营业务",
+      "在英国公立学校就读",
+      "课程以外的任何其他科目"
+    ],
+    "note": "这是本签证最关键的限制：官方原文 `work or carry out any business (this includes paid or unpaid work, work experience or work placements)` 全部禁止。因此它只适合「纯语言进修」，不能包装成「边游边打工」。可停留时长 = 课程时长 + 30 天，且总长不超过 11 个月。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "持此签证期间不得从事任何工作，包括无薪实习与工作体验（官方原文明确列出 paid or unpaid work、work experience、work placements）。把它宣传成「边游学边打工」是与政府原文直接冲突的。"
+    },
+    {
+      "level": "critical",
+      "description": "必须先在出发前拿到签证才能入境，且最早只能提前 3 个月申请。官方提醒在拿到签证前不要先付住宿或机票钱。时间规划错了会直接损失学费与机酒。"
+    },
+    {
+      "level": "warning",
+      "description": "课程必须是认证机构开设的纯英语课程，6–11 个月。认证名单是封闭的（学生担保牌照 / ASIC / Accreditation UK / BAC / Ofsted / QAA 等），不在名单里的语言学校读完也拿不到签证。"
+    },
+    {
+      "level": "warning",
+      "description": "中国大陆申请人在须做结核病检查的国家名单内，须在指定诊所拍胸片，证明有效期仅 6 个月。这是容易漏掉的一项，漏了会被拒。"
+    },
+    {
+      "level": "warning",
+      "description": "不可延期、不可带家属、不可转其他课程。想长期留在英国必须换学生签证，那需要 CAS 与更高的资金证明，是另一套成本。"
+    },
+    {
+      "level": "info",
+      "description": "优势：16 岁以上不看学籍、不需 CAS、无语言考试门槛；总成本（£228 签证费 + £776 IHS）约 1 万人民币，低于学生签证路径；是在职人士少数能合法在英国住满近一年的方式。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Short-term study visa: Overview — GOV.UK",
+      "url": "https://www.gov.uk/visa-to-study-english",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "总览页原文：`You may be eligible for a Short-term study visa if you're taking an English language course in the UK. To apply, your course must last longer than 6 months but not more than 11 months.`；停留 `You can stay in the UK for the length of your course plus an extra 30 days as long as your stay is no longer than 11 months.`；费用 `It costs £228 for a Short-term study visa.` + `It usually costs £776`（IHS）；禁止事项 `You cannot: ... work or carry out any business (this includes paid or unpaid work, work experience or work placements) ... extend this visa ... bring family members ('dependants') with you on this visa`。另说明 6 个月以内应申请 Visitor visa、超过 11 个月应申请 Student visa。"
+    },
+    {
+      "type": "primary",
+      "name": "Short-term study visa: Who can apply — GOV.UK",
+      "url": "https://www.gov.uk/visa-to-study-english/eligibility",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "资格页原文：`You must be 16 or older to apply.`；须证明 `you've been accepted onto an English language course that lasts longer than 6 months and up to 11 months and includes no other subjects`、`your course is with an accredited institution`、`you have enough money to support yourself without working or help from public funds`、`you can pay for your return or onward journey`。未满 18 岁另需旅行住宿安排与父母/监护人同意。"
+    },
+    {
+      "type": "primary",
+      "name": "Short-term study visa: Your course — GOV.UK",
+      "url": "https://www.gov.uk/visa-to-study-english/your-course",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "课程与机构认证要求原文：课程须与 `an 'accredited institution'` 合作，认证方式为持有学生担保牌照，或在 ASIC、Accreditation UK、British Accreditation Council、Education and Training Inspectorate、Estyn、Education Scotland、Independent Schools Inspectorate、Ofsted、Office for Students、QAA 名单内。另有「海外高校在英国开设部分课程」的路径，要求该机构 `hold its own national accreditation`、`offer no more than half of its educational programme in the UK`、`offer programmes that are equivalent to a UK degree`。"
+    },
+    {
+      "type": "primary",
+      "name": "Short-term study visa: Documents you'll need — GOV.UK",
+      "url": "https://www.gov.uk/visa-to-study-english/documents-you-must-provide",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "材料清单原文：`a current passport`、`evidence that you can support yourself during your trip, for example bank statements or payslips for the last 6 months`、`details of where you intend to stay and your travel plans - you should not pay for accommodation or travel until you get your visa`、`evidence that you've paid your course fees or have enough money to pay them`、`your tuberculosis (TB) test results, if you're from a country where you have to take the TB test`、`a certified translation if any documents are not in English or Welsh`。"
+    },
+    {
+      "type": "primary",
+      "name": "Short-term study visa: Apply — GOV.UK",
+      "url": "https://www.gov.uk/visa-to-study-english/apply",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "申请流程与审理时长原文：`The earliest you can apply is 3 months before you travel to the UK.`；`you'll usually get a decision within 3 weeks`；`You may be able to pay to get a faster decision.`；`You'll only get your fee refunded if UKVI has not started processing your application.`"
+    },
+    {
+      "type": "primary",
+      "name": "Countries where you need a TB test for your UK visa application — GOV.UK",
+      "url": "https://www.gov.uk/tb-test-visa/countries-where-you-need-a-tb-test-to-enter-the-uk",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "TB 检查国家名单中 `China` 在列（名单按字母排序，China 位于 Chad、Cameroon、Congo 之后）。触发条件（TB test 总览页原文）：`you're coming to the UK for 6 months or more` 且 `you've lived in any of these listed countries for 6 months or more` 且 `you were living there (or another listed country) within the last 6 months`。证书有效期 6 个月。"
+    },
+    {
+      "type": "primary",
+      "name": "Standard Visitor visa: permitted activities — GOV.UK",
+      "url": "https://www.gov.uk/standard-visitor",
+      "publisher": "UK Visas and Immigration (GOV.UK)",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "用于划清与访问签证的边界：访问签证可 `visit the UK ... for tourism, business, study (courses up to 6 months)`，可 `do a recreational course of up to 30 days`，但同样 `You cannot: do paid or unpaid work for a UK company`。即 6 个月以内短课程走访问签证，6–11 个月纯英语课程才走本签证，两条路径都禁止工作。"
+    }
+  ],
+
+  "last_verified": "2026-11-01",
+  "verified_by": "eddieye1004"
+}

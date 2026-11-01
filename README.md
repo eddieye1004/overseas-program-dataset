@@ -59,7 +59,10 @@
 | IEC Working Holiday | 加拿大 | 打工度假 | ❌ 不可申请 |
 | Youth Mobility Scheme | 英国 | 打工度假 | ❌ 不可申请 |
 | Working Holiday Authorisation | 爱尔兰 | 打工度假 | ❌ 不可申请 |
+| Short-term study visa | 英国 | 短期游学 | ✅ |
 
+> 12 个项目，大陆护照可申 7 / 不可申 5，共 45 条来源（primary 40）。数字取自 2026-11-01，改数据后请重跑 `python scripts/gen_sources.py` 与 `web/scripts/smoke-test.mjs`。
+>
 > 完整清单见 [`data/programs/`](data/programs/)
 
 ---

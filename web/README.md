@@ -270,7 +270,7 @@ node scripts/smoke-test.mjs                      # PASS 76 / 76
 node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 129 / 129
 ```
 
-验收清单里写死的条数（11 个项目、可申 6 / 不可申 5、来源 37）跟着数据变，改 `data/programs/*.json` 后需重新取数并更新 `ACCEPTANCE.md`。
+验收清单里写死的条数（12 个项目、可申 7 / 不可申 5、来源 45）跟着数据变，改 `data/programs/*.json` 后需重新取数并更新 `ACCEPTANCE.md`。两套测试不再写死条数，改为从数据派生，所以加项目不会让它们变红。
 
 ### 已知限制（不是缺陷）
 

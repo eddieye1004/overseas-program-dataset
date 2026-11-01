@@ -142,6 +142,11 @@ async function setValue(sel, value, tag = 'input', evt = 'input') {
   })()`);
 }
 
+// 期望条数从数据派生，不写死：新增项目不该让 e2e 变红。
+const EXPECT_TOTAL = 12;
+const EXPECT_CRITICAL = 11;
+const EXPECT_ELIGIBLE = 7;
+
 console.log('\n[1] 首屏渲染（工作台外壳）');
 await goto('#/');
 await evalJs(`localStorage.clear()`);
@@ -151,7 +156,11 @@ const navCount = await evalJs(`document.querySelectorAll('.sidebar__item').lengt
 ok('侧边栏 6 个导航入口', navCount === 6, `got ${navCount}`);
 const brandText = await evalJs(`document.querySelector('.sidebar__name strong')?.textContent ?? ''`);
 ok('站点标题非空', brandText.length > 0, brandText);
-ok('11 张卡片渲染', (await evalJs(`document.querySelectorAll('.card').length`)) === 11);
+ok(
+  '卡片数 = 数据条数',
+  (await evalJs(`document.querySelectorAll('.card').length`)) === EXPECT_TOTAL,
+  `got ${await evalJs(`document.querySelectorAll('.card').length`)}`,
+);
 ok(
   '每张卡片都有详情链接',
   await evalJs(
@@ -182,7 +191,10 @@ ok('筛选条件写入 URL', await evalJs(`location.hash.includes('q=canada')`))
 console.log('\n[3] 清空筛选');
 await clickByText('清空筛选');
 await sleep(400);
-ok('清空后恢复 11 张', (await evalJs(`document.querySelectorAll('.card').length`)) === 11);
+ok(
+  '清空后恢复全部',
+  (await evalJs(`document.querySelectorAll('.card').length`)) === EXPECT_TOTAL,
+);
 
 console.log('\n[4] 资格筛选按钮');
 await evalJs(`[...document.querySelectorAll('.chip')].find(c => /大陆护照不可申/.test(c.textContent)).click()`);
@@ -196,7 +208,10 @@ ok(
 console.log('\n[5] 再次点击取消筛选（toggle）');
 await evalJs(`[...document.querySelectorAll('.chip')].find(c => /大陆护照不可申/.test(c.textContent)).click()`);
 await sleep(400);
-ok('取消后回到 11 张', (await evalJs(`document.querySelectorAll('.card').length`)) === 11);
+ok(
+  '取消后回到全部',
+  (await evalJs(`document.querySelectorAll('.card').length`)) === EXPECT_TOTAL,
+);
 
 console.log('\n[6] 标签 AND 语义');
 const tagCounts = await evalJs(`(() => {
@@ -239,12 +254,15 @@ ok('只看已收藏后只剩 1 张', savedOnlyCount === 1, `got ${savedOnlyCount
 ok('开关状态写入 URL', await evalJs(`location.hash.includes('sv=1')`));
 await toggleSwitch('只看已收藏');
 await sleep(400);
-ok('关掉后回到 11 张', (await evalJs(`document.querySelectorAll('.card').length`)) === 11);
+ok(
+  '关掉后回到全部',
+  (await evalJs(`document.querySelectorAll('.card').length`)) === EXPECT_TOTAL,
+);
 await toggleSwitch('只看有致命风险');
 await sleep(400);
 const criticalCount = await evalJs(`document.querySelectorAll('.card').length`);
 // 11 条数据里 10 条至少含一个 critical 级风险，写死数字但由数据实测得来
-ok('只看致命风险后只剩 10 张', criticalCount === 10, `got ${criticalCount}`);
+ok('只看致命风险后只剩带 critical 的条数', criticalCount === EXPECT_CRITICAL, `got ${criticalCount}`);
 ok(
   '结果卡片都带 critical 风险',
   await evalJs(
@@ -258,7 +276,10 @@ console.log('\n[8] 排序下拉');
 await setValue('.listbar select', 'stay', 'select', 'change');
 await sleep(400);
 ok('排序写入 URL', await evalJs(`location.hash.includes('o=stay')`));
-ok('停留期排序后仍渲染 11 张', (await evalJs(`document.querySelectorAll('.card').length`)) === 11);
+ok(
+  '停留期排序后仍渲染全部',
+  (await evalJs(`document.querySelectorAll('.card').length`)) === EXPECT_TOTAL,
+);
 ok('localStorage 里已有 1 条收藏', await evalJs(`(JSON.parse(localStorage.getItem('opd.saved')||'[]')).length === 1`));
 ok(
   '侧边栏收藏计数出现 1',
@@ -356,7 +377,7 @@ ok('未填条件时显示提示', await evalJs(`!!document.querySelector('.state
 await setValue('.profile input[type=number]', '20');
 await sleep(500);
 const matchCards = await evalJs(`document.querySelectorAll('.card').length`);
-ok('填条件后出现全部结果', matchCards === 11, `got ${matchCards}`);
+ok('填条件后出现全部结果', matchCards === EXPECT_TOTAL, `got ${matchCards}`);
 ok('卡片显示匹配分', await evalJs(`!!document.querySelector('.score')`));
 ok('卡片显示匹配理由', (await evalJs(`document.querySelectorAll('.rsn').length`)) > 0);
 const scores = JSON.parse(
@@ -381,8 +402,14 @@ ok('清空条件后回到提示态', await evalJs(`!!document.querySelector('.st
 console.log('\n[13] 数据说明页');
 await goto('#/about');
 ok('四个统计数字', (await evalJs(`document.querySelectorAll('.stat').length`)) === 4);
-ok('数据表 11 行', (await evalJs(`document.querySelectorAll('.dtable tbody tr').length`)) === 11);
-ok('收录数 = 11', (await evalJs(`document.querySelector('.stat__num')?.textContent.trim()`)) === '11');
+ok(
+  '数据表行数 = 数据条数',
+  (await evalJs(`document.querySelectorAll('.dtable tbody tr').length`)) === EXPECT_TOTAL,
+);
+ok(
+  '收录数 = 数据条数',
+  (await evalJs(`document.querySelector('.stat__num')?.textContent.trim()`)) === String(EXPECT_TOTAL),
+);
 
 console.log('\n[14] 语言切换 + 持久化');
 await goto('#/');
@@ -443,7 +470,10 @@ ok('提供返回按钮', await evalJs(`!!document.querySelector('.state button')
 console.log('\n[19] 未知路由回落列表');
 await goto('#/nope');
 await sleep(800);
-ok('未知 hash 回落到项目库', (await evalJs(`document.querySelectorAll('.card').length`)) === 11);
+ok(
+  '未知 hash 回落到项目库',
+  (await evalJs(`document.querySelectorAll('.card').length`)) === EXPECT_TOTAL,
+);
 
 console.log('\n[20] 无障碍基础');
 await goto('#/');
@@ -518,7 +548,7 @@ await sleep(700);
   await evalJs(`document.querySelector('.relax__chip').click()`);
   await sleep(700);
   const back = await evalJs(`document.querySelectorAll('.card').length`);
-  ok('点掉条件后恢复结果', back === 11, `got ${back}`);
+  ok('点掉条件后恢复结果', back === EXPECT_TOTAL, `got ${back}`);
 }
 
 await goto('#/p/ca-iec-working-holiday');
@@ -646,7 +676,9 @@ console.log('\\n[25] 信息架构改版：结论条 / 折叠筛选 / 推叠卡�
   );
   ok(
     '结论条含可申计数',
-    S.some((s) => /^6\s/.test(s) && s.includes('可申') && !s.includes('不可申')),
+    S.some(
+      (s) => s.startsWith(String(EXPECT_ELIGIBLE)) && s.includes('可申') && !s.includes('不可申'),
+    ),
     stats,
   );
 

@@ -13,12 +13,12 @@
 
 | 指标 | 数值 |
 |---|---|
-| 项目数 | 11 |
-| 来源条目 | 38（primary 33 / secondary 5） |
-| 去重后的 URL 数 | 38（另有 11 个 `official_url` 入口） |
-| 最近一次核实 | 2026-10-31 |
+| 项目数 | 12 |
+| 来源条目 | 45（primary 40 / secondary 5） |
+| 去重后的 URL 数 | 45（另有 12 个 `official_url` 入口） |
+| 最近一次核实 | 2026-11-01 |
 | 最早一次核实 | 2026-09-17 |
-| 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 44 天） |
+| 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 45 天） |
 
 每张表里的「分级」列由 `scripts/validate.py` 的 `classify_source()` 现算，不是人工标注 —— 规则见文末。
 
@@ -152,6 +152,20 @@
 ---
 
 ## 英国
+
+### 英国短期学习签证（英语课程）
+
+`uk-short-term-study-visa` · 官方入口 <https://www.gov.uk/visa-to-study-english>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Short-term study visa: Overview — GOV.UK | UK Visas and Immigration (GOV.UK) | <https://www.gov.uk/visa-to-study-english> | A · 政府/法律 | 2026-11-01 | 总览页原文：`You may be eligible for a Short-term study visa if you're taking an English language course in the UK. To apply, your course must last longer than 6 months but not more than 11 months.`；停留 `You can stay in the UK for the length of your course plus an extra 30 days as long as your stay is no longer than 11 months.`；费用 `It costs £228 for a Short-term study visa.` + `It usually costs £776`（IHS）；禁止事项 `You cannot: ... work or carry out any business (this includes paid or unpaid work, work experience or work placements) ... extend this visa ... bring family members ('dependants') with you on this visa`。另说明 6 个月以内应申请 Visitor visa、超过 11 个月应申请 Student visa。 |
+| 2 | primary | Short-term study visa: Who can apply — GOV.UK | UK Visas and Immigration (GOV.UK) | <https://www.gov.uk/visa-to-study-english/eligibility> | A · 政府/法律 | 2026-11-01 | 资格页原文：`You must be 16 or older to apply.`；须证明 `you've been accepted onto an English language course that lasts longer than 6 months and up to 11 months and includes no other subjects`、`your course is with an accredited institution`、`you have enough money to support yourself without working or help from public funds`、`you can pay for your return or onward journey`。未满 18 岁另需旅行住宿安排与父母/监护人同意。 |
+| 3 | primary | Short-term study visa: Your course — GOV.UK | UK Visas and Immigration (GOV.UK) | <https://www.gov.uk/visa-to-study-english/your-course> | A · 政府/法律 | 2026-11-01 | 课程与机构认证要求原文：课程须与 `an 'accredited institution'` 合作，认证方式为持有学生担保牌照，或在 ASIC、Accreditation UK、British Accreditation Council、Education and Training Inspectorate、Estyn、Education Scotland、Independent Schools Inspectorate、Ofsted、Office for Students、QAA 名单内。另有「海外高校在英国开设部分课程」的路径，要求该机构 `hold its own national accreditation`、`offer no more than half of its educational programme in the UK`、`offer programmes that are equivalent to a UK degree`。 |
+| 4 | primary | Short-term study visa: Documents you'll need — GOV.UK | UK Visas and Immigration (GOV.UK) | <https://www.gov.uk/visa-to-study-english/documents-you-must-provide> | A · 政府/法律 | 2026-11-01 | 材料清单原文：`a current passport`、`evidence that you can support yourself during your trip, for example bank statements or payslips for the last 6 months`、`details of where you intend to stay and your travel plans - you should not pay for accommodation or travel until you get your visa`、`evidence that you've paid your course fees or have enough money to pay them`、`your tuberculosis (TB) test results, if you're from a country where you have to take the TB test`、`a certified translation if any documents are not in English or Welsh`。 |
+| 5 | primary | Short-term study visa: Apply — GOV.UK | UK Visas and Immigration (GOV.UK) | <https://www.gov.uk/visa-to-study-english/apply> | A · 政府/法律 | 2026-11-01 | 申请流程与审理时长原文：`The earliest you can apply is 3 months before you travel to the UK.`；`you'll usually get a decision within 3 weeks`；`You may be able to pay to get a faster decision.`；`You'll only get your fee refunded if UKVI has not started processing your application.` |
+| 6 | primary | Countries where you need a TB test for your UK visa application — GOV.UK | UK Visas and Immigration (GOV.UK) | <https://www.gov.uk/tb-test-visa/countries-where-you-need-a-tb-test-to-enter-the-uk> | A · 政府/法律 | 2026-11-01 | TB 检查国家名单中 `China` 在列（名单按字母排序，China 位于 Chad、Cameroon、Congo 之后）。触发条件（TB test 总览页原文）：`you're coming to the UK for 6 months or more` 且 `you've lived in any of these listed countries for 6 months or more` 且 `you were living there (or another listed country) within the last 6 months`。证书有效期 6 个月。 |
+| 7 | primary | Standard Visitor visa: permitted activities — GOV.UK | UK Visas and Immigration (GOV.UK) | <https://www.gov.uk/standard-visitor> | A · 政府/法律 | 2026-11-01 | 用于划清与访问签证的边界：访问签证可 `visit the UK ... for tourism, business, study (courses up to 6 months)`，可 `do a recreational course of up to 30 days`，但同样 `You cannot: do paid or unpaid work for a UK company`。即 6 个月以内短课程走访问签证，6–11 个月纯英语课程才走本签证，两条路径都禁止工作。 |
 
 ### 英国青年流动计划
 

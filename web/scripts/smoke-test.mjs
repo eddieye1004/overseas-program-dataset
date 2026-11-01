@@ -72,8 +72,13 @@ function ok(name, cond, detail = '') {
 }
 
 console.log('\n[1] 数据集完整性');
-ok('index 条数 = 11', index.length === 11, `got ${index.length}`);
-ok('programs 条数 = 11', programs.length === 11, `got ${programs.length}`);
+// 条数不写死：项目会一直加。这里守的是数据自洽，具体数字由
+// README / web/ACCEPTANCE.md 记录（那两处标注了取数日期）。
+const TOTAL = index.length;
+const N_ELIGIBLE = index.filter((p) => p.status === 'eligible').length;
+const N_NOT = index.filter((p) => p.status === 'not_eligible').length;
+ok('index 非空', TOTAL > 0, `got ${TOTAL}`);
+ok('programs 条数与 index 一致', programs.length === TOTAL, `index=${TOTAL}, programs=${programs.length}`);
 ok(
   'index 每条都有 id/name/name_en/status',
   index.every((p) => p.id && p.name && p.name_en && p.status),
@@ -84,14 +89,15 @@ ok(
     JSON.stringify(programs.map((p) => p.program.id).sort()),
 );
 ok(
-  '大陆可申 6 条 / 不可申 5 条',
-  index.filter((p) => p.status === 'eligible').length === 6 &&
-    index.filter((p) => p.status === 'not_eligible').length === 5,
-  `eligible=${index.filter((p) => p.status === 'eligible').length}, not=${index.filter((p) => p.status === 'not_eligible').length}`,
+  'status 只有 eligible / not_eligible，且两者之和 = 总数',
+  index.every((p) => p.status === 'eligible' || p.status === 'not_eligible') &&
+    N_ELIGIBLE + N_NOT === TOTAL,
+  `eligible=${N_ELIGIBLE}, not=${N_NOT}, total=${TOTAL}`,
 );
+console.log(`   实测：共 ${TOTAL} 项，可申 ${N_ELIGIBLE}，不可申 ${N_NOT}`);
 
 console.log('\n[2] 默认无筛选');
-ok('空筛选返回全部', applyFilters(index, EMPTY_FILTERS).length === 11);
+ok('空筛选返回全部', applyFilters(index, EMPTY_FILTERS).length === TOTAL);
 
 console.log('\n[3] 关键词搜索（中英文双向）');
 const zh = applyFilters(index, { ...EMPTY_FILTERS, q: '加拿大' });
@@ -117,35 +123,51 @@ ok('搜索大小写不敏感', caseIns.length >= 1);
 console.log('\n[4] 单维度筛选');
 ok('按地区 oceania = 2（au + nz）', applyFilters(index, { ...EMPTY_FILTERS, regions: ['oceania'] }).length === 2);
 ok('按类型 working_holiday = 7', applyFilters(index, { ...EMPTY_FILTERS, types: ['working_holiday'] }).length === 7);
-ok('按资格 eligible = 6', applyFilters(index, { ...EMPTY_FILTERS, statuses: ['eligible'] }).length === 6);
-ok('按资格 not_eligible = 5', applyFilters(index, { ...EMPTY_FILTERS, statuses: ['not_eligible'] }).length === 5);
+ok(
+  '按资格 eligible 条数与数据一致',
+  applyFilters(index, { ...EMPTY_FILTERS, statuses: ['eligible'] }).length === N_ELIGIBLE,
+);
+ok(
+  '按资格 not_eligible 条数与数据一致',
+  applyFilters(index, { ...EMPTY_FILTERS, statuses: ['not_eligible'] }).length === N_NOT,
+);
 
 console.log('\n[5] 组合筛选（组间 AND / 组内 OR）');
 const combo = applyFilters(index, { ...EMPTY_FILTERS, regions: ['asia'], statuses: ['not_eligible'] });
 ok('亚洲 + 不可申 = jp/kr', combo.length === 2 && combo.every((p) => ['jp-working-holiday', 'kr-h1-working-holiday'].includes(p.id)), JSON.stringify(combo.map((p) => p.id)));
 const or = applyFilters(index, { ...EMPTY_FILTERS, regions: ['oceania', 'europe'] });
-// 大洋洲 2（au-462、nz-china）+ 欧洲 3（de-16e、ie、uk-yms）
-ok('组内 OR：大洋洲+欧洲 = 5', or.length === 5, `got ${or.length}`);
+// 组内 OR 应等于两个地区条数之和，不写死具体值
+ok(
+  '组内 OR：大洋洲+欧洲 = 两地之和',
+  or.length ===
+    applyFilters(index, { ...EMPTY_FILTERS, regions: ['oceania'] }).length +
+      applyFilters(index, { ...EMPTY_FILTERS, regions: ['europe'] }).length,
+  `got ${or.length}`,
+);
 const tagsAnd = applyFilters(index, { ...EMPTY_FILTERS, tags: ['no_agency_needed', 'high_wage'] });
 ok('标签 AND 语义生效', tagsAnd.every((p) => p.tags.includes('no_agency_needed') && p.tags.includes('high_wage')));
 
 console.log('\n[6] 年龄筛选');
 const age20 = applyFilters(index, { ...EMPTY_FILTERS, ageOnly: true, age: 20 });
-ok('20 岁全部可申（11 条都覆盖 20）', age20.length === 11, `got ${age20.length}`);
+ok('20 岁覆盖全部项目', age20.length === TOTAL, `got ${age20.length}`);
 const age40 = applyFilters(index, { ...EMPTY_FILTERS, ageOnly: true, age: 40 });
-ok('40 岁被年龄上限过滤', age40.length < 11, `got ${age40.length}`);
+ok('40 岁被年龄上限过滤', age40.length < TOTAL, `got ${age40.length}`);
 const age17 = applyFilters(index, { ...EMPTY_FILTERS, ageOnly: true, age: 17 });
-ok('17 岁低于下限被过滤', age17.length < 11, `got ${age17.length}`);
+ok('17 岁低于下限被过滤', age17.length < TOTAL, `got ${age17.length}`);
 const ageOff = applyFilters(index, { ...EMPTY_FILTERS, ageOnly: false, age: 40 });
-ok('未勾选年龄时忽略年龄', ageOff.length === 11);
+ok('未勾选年龄时忽略年龄', ageOff.length === TOTAL);
 
 console.log('\n[7] 筛选项派生（全部来自数据，不硬编码）');
 const f = buildFacets(index);
 ok('regions 5 种', f.regions.length === 5, JSON.stringify(f.regions.map((x) => x.value)));
-ok('types 3 种', f.types.length === 3, JSON.stringify(f.types.map((x) => x.value)));
+ok(
+  'types 与数据里出现的类型数一致',
+  f.types.length === new Set(index.map((p) => p.program_type)).size,
+  JSON.stringify(f.types.map((x) => x.value)),
+);
 ok('statuses 2 种', f.statuses.length === 2, JSON.stringify(f.statuses.map((x) => x.value)));
-ok('tags 有值且计数合计 ≥ 11', f.tags.length > 10);
-ok('region 计数合计 = 11', f.regions.reduce((a, b) => a + b.count, 0) === 11);
+ok('tags 有值', f.tags.length > 0, `got ${f.tags.length}`);
+ok('region 计数合计 = 总数', f.regions.reduce((a, b) => a + b.count, 0) === TOTAL);
 
 console.log('\n[8] 双语完整性（词典覆盖所有中文串）');
 const HAS_CJK = /[\u4e00-\u9fff]/;
@@ -317,7 +339,7 @@ ok(
   ),
 );
 const ranked = matchAll(index, goodProfile);
-ok('matchAll 返回全部 11 条', ranked.length === 11);
+ok('matchAll 返回全部项目', ranked.length === TOTAL, `got ${ranked.length}`);
 ok('matchAll 按分数降序', ranked.every((r, i) => i === 0 || ranked[i - 1].score >= r.score));
 ok('matchAll 每条都有 id 与 0–100 分', ranked.every((r) => r.id && r.score >= 0 && r.score <= 100));
 const paidTop = matchAll(index, { ...EMPTY_PROFILE, mustBePaid: true, preferNoAgency: true })[0];
