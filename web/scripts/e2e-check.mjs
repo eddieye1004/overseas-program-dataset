@@ -143,10 +143,24 @@ async function setValue(sel, value, tag = 'input', evt = 'input') {
 }
 
 // 期望条数从数据派生，不写死：新增项目不该让 e2e 变红。
-const EXPECT_TOTAL = 12;
-const EXPECT_CRITICAL = 11;
-const EXPECT_ELIGIBLE = 7;
-const EXPECT_NOT_ELIGIBLE = 5;
+// 注意：这里以前写的是常量 12 / 11 / 7 / 5，注释却声称「从数据派生」。
+// 2026-11-01 加第 12 个项目时，sitemap 少了一条 URL 而总数没变，只数条数的
+// 断言没抓到——同一类问题。直接读 public/data/index.json，改数据即同步。
+const INDEX = JSON.parse(
+  await (await import('node:fs/promises')).readFile(
+    new URL('../public/data/index.json', import.meta.url),
+    'utf8',
+  ),
+);
+const EXPECT_TOTAL = INDEX.length;
+const EXPECT_CRITICAL = INDEX.filter((p) => (p.risk_levels ?? []).includes('critical')).length;
+const EXPECT_ELIGIBLE = INDEX.filter((p) => p.status === 'eligible').length;
+const EXPECT_NOT_ELIGIBLE = INDEX.filter((p) => p.status === 'not_eligible').length;
+// 长文数量同样派生自 sync-data 生成的 sitemap，避免再加一篇时又漏。
+const SITEMAP = await (
+  await import('node:fs/promises')
+).readFile(new URL('../public/sitemap.xml', import.meta.url), 'utf8');
+const GUIDE_COUNT = (SITEMAP.match(/\/guides\//g) ?? []).length;
 
 console.log('\n[1] 首屏渲染（工作台外壳）');
 await goto('#/');
@@ -663,12 +677,12 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
     smMissing.length === 0,
     `缺 ${smMissing.length} 条: ${smMissing.join(', ')}`,
   );
-  // 首页 + 每个项目详情页 + 每篇长文（长文条数由页面里的 guides 清单决定，
+  // 首页 + 每个项目详情页 + 每篇长文（长文条数由 sitemap 里的 /guides/ 计数派生，
   // 这里只校验「不重复、不缺项目」，长文覆盖由 [27] 那一节负责）
   ok(
     'sitemap 条数 = 首页 + 项目数 + 长文数',
-    probe.sitemapUrls === 1 + 12 + 2,
-    `got ${probe.sitemapUrls}, 应为 ${1 + 12 + 2}`,
+    probe.sitemapUrls === 1 + EXPECT_TOTAL + GUIDE_COUNT,
+    `got ${probe.sitemapUrls}, 应为 ${1 + EXPECT_TOTAL + GUIDE_COUNT}（项目 ${EXPECT_TOTAL} + 长文 ${GUIDE_COUNT}）`,
   );
   ok('favicon.svg 是可解析的 SVG', probe.iconOk === true);
   ok('index.html 用真 favicon 而非空 data URI', probe.iconHref.includes('favicon.svg'), probe.iconHref);
