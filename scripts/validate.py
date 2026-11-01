@@ -30,6 +30,7 @@ import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, date
+from urllib.parse import urlsplit
 
 # ---------------------------------------------------------------------------
 # 常量
@@ -145,6 +146,18 @@ OFFICIAL_ORG_FRAGMENTS = (
     "aiesec.org",
 )
 
+# C 级里可核验但非政府的那一类：高校官网。分出来不是为了提级，而是为了让
+# 「学校页面」与「留学中介站」不再同为一句「C」——2026-11-01 实测
+# ox.ac.uk 与 study-abroad.cn 都判 C，规则分不开二者，而这个区别会直接
+# 影响读者对一条来源的信任程度。
+#
+# 学术界域名的组合是有限且稳定的（不像私立语言学校那样无限增长），
+# 因此可以白名单，而不是去猜。
+ACADEMIC_FRAGMENTS = (
+    ".edu", ".ac.uk", ".edu.cn", ".edu.hk", ".edu.mo", ".edu.tw",
+    ".ac.jp", ".ac.kr", ".ac.nz", ".edu.au", ".ac.at", ".edu.sg",
+)
+
 # 非法/需要标注 "publisher" 的模糊来源名
 VAGUE_PUBLISHERS = {
     "公开资料", "网络资料", "互联网", "综合", "不详", "未知",
@@ -181,7 +194,13 @@ def is_vague_publisher(publisher):
 def classify_source(url):
     """把来源 URL 分级为 A / B / C / D。
 
-    D 级：百科、自媒体、商业博客、来源不明 —— 不允许作为 source。
+    A = 政府/使领馆/移民局/官方法规库
+    B = 项目本体国际组织官网
+    C = 高校官网（可核验机构）/ 其他第三方 —— 不单独支撑硬性判定
+    D = 百科、自媒体、商业博客、来源不明 —— 不允许作为 source
+
+    高校与普通第三方都返回 "C"，但 ``describe_source_grade()`` 会把两者
+    分开说明，避免「学校页面」与「留学中介站」在文档里是同一个词。
     """
     if not isinstance(url, str):
         return "D"
@@ -196,6 +215,47 @@ def classify_source(url):
         if frag in u:
             return "B"
     return "C"
+
+
+def is_academic_source(url):
+    """高校官网判定。只用于给 C 级加一层说明，不改变分级结果。
+
+    必须按主机名后缀匹配，不能对整条 URL 做子串判断：
+    ``.edu`` 这个片段的子串也会命中 ``education.com`` 与
+    ``educationaltesting.org``，那样任何带 edu 开头的商业站都会被当成高校。
+    """
+    if not isinstance(url, str):
+        return False
+    try:
+        host = (urlsplit(url).hostname or "").lower()
+    except ValueError:
+        return False
+    if not host:
+        return False
+    for frag in ACADEMIC_FRAGMENTS:
+        # frag 形如 ".edu" / ".ac.uk"：要求命中的是完整域名标签边界
+        if host.endswith(frag):
+            return True
+    return False
+
+
+def describe_source_grade(url):
+    """给文档与前端用的可读分级：C 级再分「高校」与「其他第三方」。"""
+    g = classify_source(url)
+    if g == "C" and is_academic_source(url):
+        return "C-academic"
+    return g
+
+
+def grade_label(grade):
+    """分级 → 一句中文说明。供 gen_sources 与测试共用，避免两处措辞漂移。"""
+    return {
+        "A": "A · 政府/法律",
+        "B": "B · 项目本体组织",
+        "C-ACADEMIC": "C · 高校官网",
+        "C": "C · 其他第三方",
+        "D": "D · 禁用作依据",
+    }.get(grade.upper(), "?")
 
 
 def _check_sources_quality(rep, fname, doc):

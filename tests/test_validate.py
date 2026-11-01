@@ -142,6 +142,55 @@ class TestSourceGrading(unittest.TestCase):
         # 含 "gov" 片段但实际是百科
         self.assertEqual(validate.classify_source("https://baike.baidu.com/gov/x"), "D")
 
+    # --- C 级内部再分「高校」与「其他第三方」 -----------------------------
+    # 2026-11-01 实测：ox.ac.uk 与 study-abroad.cn 都判 C，规则分不开大学官网
+    # 与留学中介。分级结果不变（两者都不能单独支撑硬性判定），但文档和
+    # sources.md 必须能说清读者在看的是哪一种。
+
+    ACADEMIC_URLS = [
+        "https://www.ox.ac.uk/admissions/x",
+        "https://www.ucl.ac.uk/prospective-students",
+        "https://www.mit.edu/x",
+        "https://www.kyoto-u.ac.jp/en/x",
+        "https://gao.um.edu.mo?lang=zh-hant&p=7735/",
+        "https://oice.xaut.edu.cn/info/1146/2290.htm",
+    ]
+    NON_ACADEMIC_C_URLS = [
+        "https://www.ef.com/x",
+        "https://study-abroad.cn/x",
+        "https://www.australia.com/en/youth-travel/faq.html",
+        "https://www.education.com/x",
+        "https://www.educationaltesting.org/x",
+        "https://notedu.cn/x",
+    ]
+
+    def test_academic_c_grade_splits_from_other_c(self):
+        for url in self.ACADEMIC_URLS:
+            self.assertTrue(validate.is_academic_source(url), url)
+            self.assertEqual(validate.classify_source(url), "C", url)
+            self.assertEqual(validate.describe_source_grade(url), "C-academic", url)
+
+    def test_academic_detection_uses_hostname_suffix_not_substring(self):
+        """`.edu` 的子串也会命中 education.com / educationaltesting.org。
+
+        这两个都是商业站，按子串判断会把它们当成高校官网。必须按主机名后缀匹配。
+        """
+        for url in self.NON_ACADEMIC_C_URLS:
+            self.assertFalse(validate.is_academic_source(url), url)
+            self.assertEqual(validate.describe_source_grade(url), "C", url)
+
+    def test_academic_split_does_not_change_the_grade(self):
+        """C-academic 仍是 C：高校页面不得单独支撑硬性判定。"""
+        for url in self.ACADEMIC_URLS:
+            self.assertEqual(validate.classify_source(url), "C", url)
+
+    def test_grade_label_covers_every_grade_used(self):
+        """分级措辞只有一处定义，避免 gen_sources 与测试各写一套。"""
+        for g in ("A", "B", "C", "C-academic", "D"):
+            label = validate.grade_label(g)
+            self.assertNotEqual(label, "?", g)
+            self.assertTrue(label.startswith(g[0].upper()), (g, label))
+
 
 # ---------------------------------------------------------------------------
 # 2. 来源质量违规注入

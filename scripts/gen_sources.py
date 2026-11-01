@@ -35,12 +35,16 @@ _spec = importlib.util.spec_from_file_location("validate_mod", os.path.join(HERE
 _validate = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_validate)
 classify_source = _validate.classify_source
+describe_source_grade = _validate.describe_source_grade
 
+# C 级要再分一层：高校官网与留学中介站同为 C，但读者对两者的信任程度不同。
+# 措辞统一从 validate.grade_label() 取，避免文档与校验器各写一套。
 GRADE_NOTE = {
-    "A": "A · 政府/法律",
-    "B": "B · 项目本体组织",
-    "C": "C · 可核验机构",
-    "D": "D · 禁用作依据",
+    "A": _validate.grade_label("A"),
+    "B": _validate.grade_label("B"),
+    "C": _validate.grade_label("C"),
+    "C-ACADEMIC": _validate.grade_label("C-ACADEMIC"),
+    "D": _validate.grade_label("D"),
 }
 
 
@@ -158,7 +162,7 @@ def render(programs, today):
                     cell(s.get("name")),
                     cell(s.get("publisher")),
                     cell(s.get("url")),
-                    GRADE_NOTE.get(classify_source(s.get("url")), "?"),
+                    GRADE_NOTE.get(describe_source_grade(s.get("url")).upper(), "?"),
                     cell(s.get("last_verified")),
                     cell(s.get("claim")),
                 ))
@@ -175,10 +179,15 @@ def render(programs, today):
              "`make-it-in-germany.com` `verwaltung.bund.de` `diplo.de` `gesetze-im-internet.de` "
              "`state.gov` `europa.eu` `un.org` 等 |")
     L.append("| **B** | 项目本体国际组织官网 | `OFFICIAL_ORG_FRAGMENTS`：`iaeste.org` `iaeste.at` `iaeste.de` `aiesec.org` |")
-    L.append("| **C** | 高校官方部门等可核验机构 | 其余 `.edu.cn` / `.edu.mo` / `.edu.hk` 等，仅作补充说明 |")
+    L.append("| **C（高校）** | 高校官网 —— 可核验，但不单独支撑硬性判定 | `ACADEMIC_FRAGMENTS`：`.edu` `.ac.uk` `.edu.cn` `.edu.hk` `.edu.mo` `.edu.tw` `.ac.jp` `.ac.kr` `.ac.nz` `.edu.au` `.ac.at` `.edu.sg`，按主机名后缀匹配 |")
+    L.append("| **C（其他）** | 商业站、中介站等 —— 与高校同为 C，但可信程度不同，按域名分辨 | 未命中以上任何名单 |")
     L.append("| **D（禁止使用）** | 百科、自媒体、商业博客、来源不明 | `FORBIDDEN_SOURCE_DOMAINS` |")
     L.append("")
     L.append("**本数据集要求：** 每条资格数据至少由 A 或 B 级来源支撑。C 级仅作补充说明。**D 级严禁作为数据来源。**")
+    L.append("")
+    L.append("> C 级为何要再分一层：2026-11-01 实测 `ox.ac.uk` 与 `study-abroad.cn` 同为 C 级，"
+             "规则分不开「大学官网」与「留学中介站」。分级本身不改（两者都不能单独支撑硬性判定），"
+             "但读者需要知道自己在看哪一种。")
     L.append("")
     L.append("### 这条规则是自动执行的")
     L.append("")

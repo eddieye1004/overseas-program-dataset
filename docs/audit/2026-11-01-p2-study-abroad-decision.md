@@ -88,11 +88,36 @@ offer English language or higher education courses」（`irishimmigration.ie/com
 如果选 A，建议同时做两件事（都在 1 小时内）：
 
 - **README 加一段收录标准**，把「只收录有政府官方依据的项目；私立机构与中介不作为来源」写成明文。这是让 A 从「事实」变成「承诺」的那一步。README 措辞按 HANDOVER §5.1 不属于 dsh 职责，需你确认或由你改。
-- **`ox.ac.uk` 这类高校域名的分级单独议**，与游学决策分开。现状是把大学官网判 C，这会影响以后任何引用大学页面的记录（例如学分、实习认定）。这条属于校验器口径问题，可以单开一项。
+- ~~**`ox.ac.uk` 这类高校域名的分级单独议**~~ —— **2026-11-01 已修**，见下节。
 
 ---
 
-## 五、未核实
+## 五、已修：C 级内部再分「高校」与「其他第三方」
+
+`ox.ac.uk` 与 `study-abroad.cn` 在旧规则里都是 C。分级本身不改（两者都不能单独支撑硬性判定），
+但「大学官网」与「留学中介站」被写成同一个词，读者没法判断手上这条来源是什么。
+
+改动（`scripts/validate.py`）：
+
+| 新增 | 作用 |
+|---|---|
+| `ACADEMIC_FRAGMENTS` | `.edu` `.ac.uk` `.edu.cn` `.edu.hk` `.edu.mo` `.edu.tw` `.ac.jp` `.ac.kr` `.ac.nz` `.edu.au` `.ac.at` `.edu.sg` |
+| `is_academic_source(url)` | 按**主机名后缀**匹配，不做整条 URL 子串 |
+| `describe_source_grade(url)` | `C` → `C-academic`（高校）或 `C`（其他） |
+| `grade_label(grade)` | 分级措辞唯一定义处，`gen_sources` 与测试共用 |
+
+**为什么必须按主机名而不是子串**：`.edu` 这个片段的子串会命中 `education.com` 与
+`educationaltesting.org`，两个都是商业站。第一版写成 `any(frag in url)`，实测这两个被判成高校官网。
+
+分级结果不变，因此 `validate.py` 的拦截行为没有任何变化（0 错 0 警，仍在）。
+变的只有 `data/sources.md` 的分级列与 README 的说明——现在四条 C 级来源里
+两条标「C · 高校官网」（`um.edu.mo`、`xaut.edu.cn`），两条标「C · 其他第三方」
+（`australia.com`、`opportunitynest.org`）。
+
+测试：`TestSourceGrading` 新增 4 例（12 个 URL 的正反两面 + 分级不变 + 措辞覆盖），
+unittest 66 → **70**。
+
+## 六、未核实
 
 | 项 | 状态 |
 |---|---|

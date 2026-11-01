@@ -35,7 +35,7 @@
 | 1 | primary | Work and Holiday visa (subclass 462) | Australian Department of Home Affairs | <https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462> | A · 政府/法律 | 2026-10-16 | 基本资格（18-30 岁含、指定国家护照、不可携带子女）、停留期 12 个月、签证费 AUD 840（官方页 data-svpattribute 渲染值 AUD840.00）、中国/印度/越南护照持有人须先参加 ballot 并被随机抽中；2026-10-30 复核：AUD 670 为 2026-07-01 前旧价，页面已不含该数字 |
 | 2 | primary | Work and Holiday visa (subclass 462) — First Work and Holiday visa | Australian Department of Home Affairs | <https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462/first-work-holiday-462> | A · 政府/法律 | 2026-10-30 | 首次 462 的资格（be 18 to 30 years old inclusive、apply from outside Australia、not be accompanied by dependent children）、停留 12 个月、签证费 AUD840.00、资金 AUD5,000、中国/印度/越南护照持有人须先经 ballot 抽中、平均审理约三个月 |
 | 3 | primary | New Work and Holiday (subclass 462) visa pre-application process | Australian Department of Home Affairs | <https://immi.homeaffairs.gov.au/what-we-do/whm-program/latest-news/new-work-and-holiday-subclass-462-visa-pre-application-process> | A · 政府/法律 | 2026-10-30 | 中国、印度、越南护照持有人必须先参加签证预申请（ballot）并被随机抽中，才能递交首次 462 申请；该页 2026-10-19 更新，正文由前端渲染 |
-| 4 | secondary | Working Holiday Visa FAQ（澳大利亚旅游局） | Tourism Australia（澳大利亚旅游局） | <https://www.australia.com/en/youth-travel/working-holiday-visa/faq.html> | C · 可核验机构 | 2026-10-16 | 旅游推广性质的 462 / 417 类别说明与常见问题（非移民局官方页，仅作辅证） |
+| 4 | secondary | Working Holiday Visa FAQ（澳大利亚旅游局） | Tourism Australia（澳大利亚旅游局） | <https://www.australia.com/en/youth-travel/working-holiday-visa/faq.html> | C · 其他第三方 | 2026-10-16 | 旅游推广性质的 462 / 417 类别说明与常见问题（非移民局官方页，仅作辅证） |
 
 ---
 
@@ -78,7 +78,7 @@
 | # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
 |---|---|---|---|---|---|---|---|
 | 1 | primary | AIESEC Global Talent（官方项目页） | AIESEC International | <https://aiesec.org/global-talent> | B · 项目本体组织 | 2026-10-30 | Global Talent 平台定位、岗位领域划分与在招数量（67 个国家/地区、2,000+ 实习岗位）、4 步申请流程、提供签证与落地支持。该页**未**公布年龄、学历、费用、保险要求。 |
-| 2 | secondary | AIESEC Global Talent 2026 概述 | Opportunity Nest | <https://www.opportunitynest.org/opportunity/aiesec-global-talent-global> | C · 可核验机构 | 2026-10-30 | 二手概述（2026-10-30 复核原文）：年龄 mainly people between 18 and 30（原文用 mainly，非硬性区间）；学籍条件为「我们查过的德国岗位」的个例——accepted only master's students who stay enrolled for the whole internship, or bachelor's graduates within two months of graduating，**不是全球统一门槛**；Life and health insurance is mandatory；There is no single deadline, internships are posted and filled continuously。该页同时写明 AIESEC's central pages do not mention a programme fee，即连这篇二手来源也未给费用数字，故数据里 700 USD 项目费无法追溯来源、已删除。 |
+| 2 | secondary | AIESEC Global Talent 2026 概述 | Opportunity Nest | <https://www.opportunitynest.org/opportunity/aiesec-global-talent-global> | C · 其他第三方 | 2026-10-30 | 二手概述（2026-10-30 复核原文）：年龄 mainly people between 18 and 30（原文用 mainly，非硬性区间）；学籍条件为「我们查过的德国岗位」的个例——accepted only master's students who stay enrolled for the whole internship, or bachelor's graduates within two months of graduating，**不是全球统一门槛**；Life and health insurance is mandatory；There is no single deadline, internships are posted and filled continuously。该页同时写明 AIESEC's central pages do not mention a programme fee，即连这篇二手来源也未给费用数字，故数据里 700 USD 项目费无法追溯来源、已删除。 |
 
 ### IAESTE 国际大学生技术实习交流计划
 
@@ -90,7 +90,7 @@
 | 2 | primary | IAESTE — International Association for the Exchange of Students for Technical Experience（组织介绍页） | IAESTE International | <https://www.iaeste.org/> | B · 项目本体组织 | 2026-10-30 | 组织性质与规模：100+ 国家/地区、1948 年至今累计派出 374,000+ 名学生、2,500+ 志愿者、3,000+ 接收机构；实习带薪（cost of living allowance 至少覆盖住宿、餐饮与本地交通） |
 | 3 | primary | Application process — IAESTE Germany | IAESTE Germany | <https://www.iaeste.de/application-process/> | B · 项目本体组织 | 2026-10-30 | 申请流程（Exchange Platform 注册、三份必需文件、账号验证）、英语证书要求（3 年内有效）、Offer 发布节奏（11月/1月/4月国际交流会议） |
 | 4 | primary | Outgoing Trainee — IAESTE Austria | IAESTE Austria | <https://www.iaeste.at?p=1254/> | B · 项目本体组织 | 2026-09-17 | 申请三步流程、必需材料（CV/成绩单/在读证明）、免费语言测试、押金 EUR 300、实习带薪且覆盖当地生存成本 |
-| 5 | secondary | IAESTE 实习交流计划 — 澳门大学全球事务部 | University of Macau, Global Affairs Office | <https://gao.um.edu.mo?lang=zh-hant&p=7735/> | C · 可核验机构 | 2026-09-17 | 申请资格（全日制在校生、成绩卓越、良好英语）、无申请费、每年 1 月底至 2 月接受申请、大四学生学籍风险提示（高校官方部门来源） |
+| 5 | secondary | IAESTE 实习交流计划 — 澳门大学全球事务部 | University of Macau, Global Affairs Office | <https://gao.um.edu.mo?lang=zh-hant&p=7735/> | C · 高校官网 | 2026-09-17 | 申请资格（全日制在校生、成绩卓越、良好英语）、无申请费、每年 1 月底至 2 月接受申请、大四学生学籍风险提示（高校官方部门来源） |
 | 6 | primary | IAESTE in China, HLG（IAESTE 官网合作机构页） | IAESTE A.s.b.l. | <https://iaeste.org/member-countries/china-hlg> | B · 项目本体组织 | 2026-10-30 | 中国大陆在 IAESTE 的合作机构（Co-operating Institution）为 Archibucks 与 HLG 两家，非 National Committee（国家委员会）；官方联系域名 iaeste.learngive.cn |
 
 ---
@@ -202,7 +202,7 @@
 | # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
 |---|---|---|---|---|---|---|---|
 | 1 | primary | Summer Work Travel — BridgeUSA（美国国务院） | U.S. Department of State, Bureau of Educational and Cultural Affairs | <https://j1visa.state.gov/programs/summer-work-travel/> | A · 政府/法律 | 2026-10-30 | SWT 项目规则：Sponsor 须为来自非免签国的参与者提供预先安排并已审查的岗位、须在入境前提供项目手册/24 小时紧急热线/联系人、须告知最低工资与加班义务、须每月与参与者保持联系；含 Program Exclusions 岗位排除清单（不得安排进有损项目声誉的岗位、不得进入需自购库存再销售的销售岗等）；官方另发 2024 Program Date Chart。**该页未公布年龄上限、项目费与审理时长**，官方也无独立的资格子页（/eligibility 为 404）。 |
-| 2 | secondary | SWT 项目宣讲通知（西安理工大学国际合作与交流处） | 西安理工大学国际合作与交流处 | <https://oice.xaut.edu.cn/info/1146/2290.htm> | C · 可核验机构 | 2026-10-16 | 中国高校引进该项目的落地口径（18-28 周岁全日制在校本科生/研究生）、费用结构、申请流程、工作时间 6月15日-9月15日（高校官方部门来源，反映中方实际操作） |
+| 2 | secondary | SWT 项目宣讲通知（西安理工大学国际合作与交流处） | 西安理工大学国际合作与交流处 | <https://oice.xaut.edu.cn/info/1146/2290.htm> | C · 高校官网 | 2026-10-16 | 中国高校引进该项目的落地口径（18-28 周岁全日制在校本科生/研究生）、费用结构、申请流程、工作时间 6月15日-9月15日（高校官方部门来源，反映中方实际操作） |
 
 ---
 
@@ -212,10 +212,13 @@
 |---|---|---|
 | **A（最高）** | 目的地国家政府官网、法律文本 | `OFFICIAL_GOV_FRAGMENTS`：`.gov` `.gov.uk` `.go.jp` `.go.kr` `canada.ca` `homeaffairs.gov.au` `immigration.govt.nz` `irishimmigration.ie` `ireland.ie` `make-it-in-germany.com` `verwaltung.bund.de` `diplo.de` `gesetze-im-internet.de` `state.gov` `europa.eu` `un.org` 等 |
 | **B** | 项目本体国际组织官网 | `OFFICIAL_ORG_FRAGMENTS`：`iaeste.org` `iaeste.at` `iaeste.de` `aiesec.org` |
-| **C** | 高校官方部门等可核验机构 | 其余 `.edu.cn` / `.edu.mo` / `.edu.hk` 等，仅作补充说明 |
+| **C（高校）** | 高校官网 —— 可核验，但不单独支撑硬性判定 | `ACADEMIC_FRAGMENTS`：`.edu` `.ac.uk` `.edu.cn` `.edu.hk` `.edu.mo` `.edu.tw` `.ac.jp` `.ac.kr` `.ac.nz` `.edu.au` `.ac.at` `.edu.sg`，按主机名后缀匹配 |
+| **C（其他）** | 商业站、中介站等 —— 与高校同为 C，但可信程度不同，按域名分辨 | 未命中以上任何名单 |
 | **D（禁止使用）** | 百科、自媒体、商业博客、来源不明 | `FORBIDDEN_SOURCE_DOMAINS` |
 
 **本数据集要求：** 每条资格数据至少由 A 或 B 级来源支撑。C 级仅作补充说明。**D 级严禁作为数据来源。**
+
+> C 级为何要再分一层：2026-11-01 实测 `ox.ac.uk` 与 `study-abroad.cn` 同为 C 级，规则分不开「大学官网」与「留学中介站」。分级本身不改（两者都不能单独支撑硬性判定），但读者需要知道自己在看哪一种。
 
 ### 这条规则是自动执行的
 
