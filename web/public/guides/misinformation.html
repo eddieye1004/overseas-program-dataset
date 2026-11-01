@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>被中介包装过的五个说法：逐条对照官方原文 · 海外项目数据库</title>
+<meta name="description" content="加拿大「雇主担保工签」包装成打工度假、日本打工度假「年度协商开放」、韩国 H-1「对华开放」、英国游学「可以打工」、IAESTE「需要 C1」——这五条在中文互联网上流传的说法，逐条对照官方原文。" />
+<link rel="canonical" href="https://eddieye1004.github.io/overseas-program-dataset/guides/misinformation.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="被中介包装过的五个说法：逐条对照官方原文" />
+<meta property="og:description" content="五条在中文互联网上流传的说法，逐条对照 45 条官方来源。每条给出原文与核实日期。" />
+<meta property="og:url" content="https://eddieye1004.github.io/overseas-program-dataset/guides/misinformation.html" />
+<meta property="og:locale" content="zh_CN" />
+<link rel="icon" href="../favicon.svg" />
+<link rel="stylesheet" href="./guide.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "被中介包装过的五个说法：逐条对照官方原文",
+  "datePublished": "2026-11-01",
+  "dateModified": "2026-11-01",
+  "inLanguage": "zh-CN",
+  "author": { "@type": "Person", "name": "eddieye1004" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isPartOf": {
+    "@type": "Dataset",
+    "name": "海外项目数据库",
+    "url": "https://eddieye1004.github.io/overseas-program-dataset/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div class="top">
+  <div class="top__inner">
+    <a class="top__brand" href="../">海外项目数据库</a>
+    <a class="top__nav" href="../">打开项目库 →</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+<h1>被中介包装过的五个说法</h1>
+
+<p class="lede">做这个数据集的过程中，反复遇到同一类问题：某些说法在中文互联网上传得很广，但一查官方页面就不成立。下面五条是其中最常见的。每一条都给出官方原文和核实日期，你可以自己点开链接核对。</p>
+
+<p class="meta">2026-11-01 · 全部原文于 2026-10-29 至 11-01 之间直接从官方页面抓取 · 对应 <code>data/programs/*.json</code> 的 <code>sources[]</code> 与 <code>risks[]</code></p>
+
+<div class="verdict">
+  <p><strong>五条说法的共同结构：</strong>把一个真实存在的项目，换成另一个门槛低得多的身份，然后卖给不符合条件的人。四种典型手法是——换签证类型、编造「年度开放」、把「不能申」说成「要抢名额」、把禁止的事说成允许。</p>
+</div>
+
+<h2>一、「加拿大打工度假」—— 实际是雇主担保工签</h2>
+
+<p><strong>流传说法：</strong>交钱就能办加拿大打工度假，去那边工作两年。</p>
+
+<p><strong>官方事实：</strong>加拿大 IEC（International Experience Canada）只对与加拿大签有青年流动协议的国家和地区开放。官方 <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility/eligibility-by-country.html">eligibility by country</a> 页面的 36 个国家/地区区块中，含 Hong Kong 与 Taiwan，<strong>不含 China</strong>。全文检索 <code>China</code> 命中 0 次（2026-10-29 核实）。</p>
+
+<p>中介实际卖的是<strong>雇主担保工签</strong>（LMIA-based work permit）。两者性质完全不同：</p>
+
+<div class="scroll">
+<table class="tbl">
+  <thead><tr><th></th><th>IEC 打工度假</th><th>雇主担保工签</th></tr></thead>
+  <tbody>
+    <tr><td>是否需要雇主</td><td>不需要（开放式工签）</td><td>必须，且雇主须先申请 LMIA</td></tr>
+    <tr><td>大陆护照</td><td><span class="tag tag--no">不可申</span></td><td>可以，但门槛高得多</td></tr>
+    <tr><td>费用量级</td><td>官方 184.75 加元</td><td>中介报价常达数万至十几万人民币</td></tr>
+    <tr><td>能否换雇主</td><td>可以</td><td>通常绑定特定雇主</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="hint">表格在窄屏上可左右滑动查看完整列。</p>
+
+<p>判断方法只有一个：<strong>问对方签证代码。</strong>IEC 走的是 <code>International Experience Canada</code> 下的 Working Holiday 类别；工签走的是 <code>LMIA / Employer-specific work permit</code>。代码不同，就是两种东西。</p>
+
+<h2>二、「日本打工度假年度协商开放」—— 中日之间没有这个协议</h2>
+
+<p><strong>流传说法：</strong>日本打工度假对中国大陆是年度协商制，某些年份会开放，找对机构就能办。</p>
+
+<p><strong>官方事实：</strong>日本外务省 <a href="https://www.mofa.go.jp/j_info/visit/w_holiday/index.html">The Working Holiday Programmes in Japan</a> 页面（页头日期 2026-04-01）公布的 32 个协议国家/地区名单<strong>不含中国大陆</strong>。全文检索 <code>yen</code> / <code>fee</code> / <code>hours</code> / <code>week</code> 命中均为 0。</p>
+
+<p>更关键的是同一页上的一句声明：</p>
+
+<blockquote>
+  there is no organization, including incorporated associations, in Japan with which the Ministry of Foreign Affairs cooperates in operating the working holiday programmes
+  <span class="src">Ministry of Foreign Affairs of Japan, 2026-04-01 版本，2026-10-29 核实</span>
+</blockquote>
+
+<p>翻译过来：日本国内<strong>没有任何</strong>与外务省合作运营打工度假制度的团体，包括社团法人在内。也就是说，任何声称「我们和日本官方合作代办打工度假」的机构，按官方原文属于欺诈。</p>
+
+<p>「年度协商制」这个说法在官方文件里找不到任何依据。协议名单是固定的，不是逐年谈的。</p>
+
+<h2>三、「韩国 H-1 对华开放」—— 30 国名单里没有中国大陆</h2>
+
+<p><strong>官方事实：</strong>韩国外交部在外同胞厅（WHIC）的 <a href="https://whic.mofa.go.kr/contents.do?menuNo=90&contentsNo=38">签约国名单</a>（2026/27 更新）列出 30 个国家和地区，逐行为：Andorra、Argentina、Australia、Austria、Brazil、Belgium、Canada、Chile、Czech Republic、Denmark、Finland、France、Germany、Hong Kong、Hungary、Ireland、Israel、Italy、Japan、Latvia、Luxembourg、Netherlands、New Zealand、Poland、Portugal、Spain、Sweden、Taiwan、U.K.、U.S.A.。</p>
+
+<p><strong>没有中国大陆。</strong>名单里 China 出现 3 次，全部是别的东西：脚注「Hong Kong is China's Special Administrative Region」、以及「可通过驻北京/上海使领馆递交」与「驻韩外交使团名单里的 China」。</p>
+
+<div class="verdict">
+  <p><strong>这条有个教训值得记：</strong>早期版本的记录里曾写「韩国驻华使领馆仅面向奥地利国籍」。那是把澳洲悉尼使馆的网址前缀 <code>au-sydney-en</code> 误读成了奥地利（<code>au</code> = Austria）。<strong>一个两字母前缀读错，结论就完全反向。</strong>这也是为什么这个数据集要求每条判定必须能指到具体页面。</p>
+</div>
+
+<h2>四、「英国游学可以打工」—— 短期学习签证明文禁止</h2>
+
+<p><strong>流传说法：</strong>报个英国语言课程过去，边学边打工把学费赚回来。</p>
+
+<p><strong>官方事实：</strong>英国短期学习签证（Short-term study visa）的 <a href="https://www.gov.uk/visa-to-study-english">Overview 页</a>把禁止事项列得很清楚：</p>
+
+<blockquote>
+  You cannot: … work or carry out any business (this includes paid or unpaid work, work experience or work placements) … extend this visa … bring family members ('dependants') with you on this visa
+  <span class="src">UK Visas and Immigration, Short-term study visa, 2026-11-01 核实</span>
+</blockquote>
+
+<p>注意括号里那三个词：<code>paid or unpaid work</code>、<code>work experience</code>、<code>work placements</code>。连无薪实习和工作体验都包括在内。这不是「限制多」，是<strong>一条都不允许</strong>。</p>
+
+<p>签证本身的钱是清楚的：签证费 £228，IHS（移民健康附加费）通常 £776，合计约 £1,004。可停留「课程时长 + 30 天」，上限 11 个月。课程必须是认证机构开设的 6–11 个月纯英语课程。</p>
+
+<p>要合法在英国工作，走的是另一条路——青年流动计划（YMS），但那条对大陆护照<strong>不可申</strong>（参与名单含 Hong Kong 与 Taiwan，无 China，2026-11-01 核实）。两条路一条能工作不能申，一条能申不能工作。</p>
+
+<h2>五、「IAESTE 需要 CEFR C1/C2」—— 官方没有这个说法</h2>
+
+<p><strong>流传说法：</strong>IAESTE 要求英语达到 CEFR C1/C2。</p>
+
+<p><strong>官方事实：</strong>IAESTE 官方页面没有这个门槛。IAESTE Germany 的实际要求是「提供不超过 3 年的英语水平证明」，认可清单包括 UNIcert / Cambridge / IELTS / ISE / TOEFL / TOEIC / PTE Academic / onSET / OLS / Duolingo，或者「至少 2 个完整学期全英授课」。<strong>清单本身不设等级门槛。</strong></p>
+
+<p>另外，美国、加拿大（魁北克除外）、英国、爱尔兰、新西兰、澳大利亚的申请人免交语言证明。</p>
+
+<p>C1/C2 这个具体等级在官方文本里找不到出处。数据集里原来的 CEFR 表述已在 2026-10-30 复核时删除。</p>
+
+<h2>六、怎么自己判断一条说法可不可信</h2>
+
+<p>不需要专业知识，问四个问题就够：</p>
+
+<ol>
+  <li><strong>签证代码是什么？</strong>同一个国家可能有好几种签证都能「过去待一年」，代码不同，权利完全不同。要不到代码的，基本可以判定是包装。</li>
+  <li><strong>官方页面能打开吗？</strong>让对方给出具体页面（不是首页，是写着这条规则的那一页），自己点开看一眼。这一条能筛掉绝大多数。</li>
+  <li><strong>卡的是哪个时点？</strong>年龄是「递交时」还是「出发时」，资金是「账户里有」还是「连续持有 28 天」，这些细节官方都写清楚了，含糊其辞的通常是故意的。</li>
+  <li><strong>对方承诺的是「帮你办」还是「保证能过」？</strong>签证由使领馆决定，任何机构都不可能保证结果。承诺 100% 通过的，按定义就是在骗。</li>
+</ol>
+
+<a class="cta" href="../">
+  <strong>打开项目库看每个项目的官方原文 →</strong>
+  12 个项目、45 条来源。每条判定后面都跟着官方 URL 和核实日期，点得开、对得上。
+</a>
+
+<p class="foot">
+本文所有引用均可在对应项目的 <code>sources[].claim</code> 里找到逐字原文与核实日期。<br />
+数字取自 2026-11-01。政策变动频繁，递交前请以官方页面为准。<br />
+发现错误请到 <a href="https://github.com/eddieye1004/overseas-program-dataset/issues">GitHub Issues</a> 提出。
+</p>
+
+</main>
+</body>
+</html>

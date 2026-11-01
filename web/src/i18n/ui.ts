@@ -57,6 +57,8 @@ export type UiKey =
   | 'secondary'
   | 'openLink'
   | 'footerNote'
+  | 'guideAgeWall'
+  | 'guideMisinfo'
   | 'countPrograms'
   | 'searchHint'
   | 'riskCritical'
@@ -220,6 +222,8 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     openLink: '打开链接',
     footerNote:
       '数据以各国官方移民部门页面为准。本站只做索引，不代办申请、不提供签证建议；提交前请自行复核官方页面。',
+    guideAgeWall: '长文：打工度假的年龄墙',
+    guideMisinfo: '长文：被中介包装过的五个说法',
     countPrograms: '共收录项目',
     searchHint: '输入关键词开始筛选',
     riskCritical: '致命风险',
@@ -382,6 +386,8 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     openLink: 'Open link',
     footerNote:
       'The national immigration authorities are authoritative. This site is an index only: it does not file applications or give visa advice. Re-check the official page before you apply.',
+    guideAgeWall: 'Long read: the working holiday age wall',
+    guideMisinfo: 'Long read: five claims that agencies dress up',
     countPrograms: 'Programs listed',
     searchHint: 'Type a keyword to start filtering',
     riskCritical: 'Critical',

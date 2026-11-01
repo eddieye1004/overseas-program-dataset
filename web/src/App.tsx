@@ -114,6 +114,11 @@ export default function App() {
 
         <footer className="ftr">
           <p>{t('footerNote')}</p>
+          {/* 长文是独立静态页，不经 React；从这里链进去，主站才不至于成为孤岛 */}
+          <p className="ftr__guides">
+            <a href="./guides/age-wall.html">{t('guideAgeWall')}</a>
+            <a href="./guides/misinformation.html">{t('guideMisinfo')}</a>
+          </p>
         </footer>
       </div>
     </div>

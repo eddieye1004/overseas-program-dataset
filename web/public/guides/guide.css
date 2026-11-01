@@ -1,0 +1,191 @@
+/* guides/guide.css
+   长文页共用样式。刻意与主站（React 工作台）分离：
+   - 长文是**静态 HTML**，可被搜索引擎单独收录（主站用 hash 路由，详情页收录不了）
+   - 同一套设计令牌，但不依赖打包，单文件 3KB，首屏零 JS
+
+   颜色/间距全部对齐 src/tokens.css，改主站令牌时请同步这里
+   （两处都写死是有意的：静态页不能依赖构建产物里的 CSS 变量文件）。
+*/
+
+:root {
+  --canvas: #faf9f5;
+  --canvas-card: #ffffff;
+  --canvas-sunken: #efe9de;
+  --ink: #141413;
+  --ink-2: #3d3d3a;
+  --ink-3: #5c5a54;
+  --ink-4: #6b6862;
+  --accent: #8f4630;
+  --accent-soft: #f4e7e0;
+  --accent-line: #e3c9bb;
+  --ok: #3f6b4d;
+  --no: #a03232;
+  --warn: #7a5518;
+  --line: #e6dfd8;
+  --line-soft: #efe9e2;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --font-serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", Georgia, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-line); }
+a:hover { border-bottom-color: var(--accent); }
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 24px 96px; }
+
+/* ── 顶部 ── */
+.top {
+  border-bottom: 1px solid var(--line);
+  background: var(--canvas);
+  padding: 14px 0;
+  margin-bottom: 48px;
+}
+.top__inner {
+  max-width: 720px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.top__brand { font-weight: 650; color: var(--ink); border: 0; font-size: 15px; }
+.top__nav { font-size: 13px; color: var(--ink-3); border: 0; }
+
+/* ── 标题区 ── */
+h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 4.4vw, 36px);
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+}
+.lede { font-size: 17px; color: var(--ink-2); margin: 0 0 20px; }
+.meta { font-size: 13px; color: var(--ink-4); margin: 0 0 40px; }
+.meta code { font-family: var(--font-mono); font-size: 12px; }
+
+h2 {
+  font-family: var(--font-serif);
+  font-size: 23px;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 52px 0 16px;
+  padding-top: 8px;
+}
+h3 { font-size: 17px; color: var(--ink); margin: 32px 0 10px; }
+p { margin: 0 0 18px; }
+
+strong { color: var(--ink); font-weight: 650; }
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--canvas-sunken);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+/* ── 结论条 ── */
+.verdict {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  background: var(--canvas-card);
+  border-radius: var(--r-md);
+  padding: 18px 20px;
+  margin: 0 0 40px;
+}
+.verdict p { margin: 0; }
+.verdict p + p { margin-top: 10px; }
+
+/* ── 表格 ── */
+.tbl { width: 100%; border-collapse: collapse; margin: 0 0 24px; font-size: 14px; }
+.tbl th, .tbl td {
+  text-align: left;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+.tbl th { font-weight: 600; color: var(--ink); background: var(--canvas-sunken); }
+.tbl td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tbl tr:last-child td { border-bottom: 0; }
+.scroll { overflow-x: auto; margin: 0 0 8px; -webkit-overflow-scrolling: touch; }
+.scroll .tbl { margin: 0; min-width: 520px; }
+
+/* 窄屏上表格会横向滚动，但滚动条本身在手机上常被隐藏，
+   不给提示的话读者会以为「表格被截断了」。 */
+.hint { font-size: 12px; color: var(--ink-4); margin: 0 0 24px; display: none; }
+@media (max-width: 620px) {
+  .hint { display: block; }
+}
+
+.tag {
+  display: inline-block;
+  font-size: 12px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.tag--ok { color: var(--ok); border-color: #cfe0d4; background: #f2f7f3; }
+.tag--no { color: var(--no); border-color: #f0d2d2; background: #fdf4f4; }
+
+/* ── 引用块 / 官方原文 ── */
+blockquote {
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  background: var(--canvas-card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  font-size: 14px;
+  color: var(--ink-2);
+}
+blockquote .src {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+/* ── 列表 ── */
+ul, ol { margin: 0 0 20px; padding-left: 22px; }
+li { margin-bottom: 8px; }
+
+/* ── 结尾 ── */
+.foot {
+  margin-top: 64px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink-4);
+}
+.cta {
+  display: block;
+  margin: 40px 0 0;
+  padding: 16px 20px;
+  background: var(--canvas-card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--line);
+}
+.cta strong { display: block; color: var(--ink); margin-bottom: 4px; }
+
+@media (max-width: 620px) {
+  .wrap { padding: 0 18px 72px; }
+  .top__inner { padding: 0 18px; }
+  h2 { margin-top: 40px; }
+}

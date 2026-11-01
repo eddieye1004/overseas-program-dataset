@@ -12,6 +12,10 @@ const WEB_ROOT = resolve(__dirname, '..');
 const DATA_DIR = resolve(WEB_ROOT, '..', 'data', 'programs');
 const I18N_DIR = join(WEB_ROOT, 'i18n-src');
 const OUT_DIR = join(WEB_ROOT, 'public', 'data');
+const PUBLIC_DIR = join(WEB_ROOT, 'public');
+
+/** 长文页清单。新增一篇就加一行，sitemap 会自动带上。 */
+const GUIDES = ['age-wall.html', 'misinformation.html'];
 
 /** 从单条 program 里抽出列表页需要的字段，避免把整份 97KB 数据塞进首屏。 */function toIndexEntry(p) {
   const el = p.eligibility ?? {};
@@ -127,6 +131,39 @@ async function main() {
   await writeFile(join(OUT_DIR, 'programs.json'), full, 'utf8');
   await writeFile(join(OUT_DIR, 'index.json'), index, 'utf8');
   await writeFile(join(OUT_DIR, 'i18n.json'), i18n, 'utf8');
+
+  // sitemap 也从数据生成，否则加一个项目就会漏一条 URL。
+  // 2026-11-01 加 uk-short-term-study-visa 时手工维护的版本就漏了它，
+  // 而 e2e 断言的是「恰好 12 条」，条数对得上、内容却少一条——断言没抓到。
+  const SITE = 'https://eddieye1004.github.io/overseas-program-dataset';
+  const newest = programs.reduce(
+    (a, p) => (p.last_verified > a ? p.last_verified : a),
+    '1970-01-01',
+  );
+  const urlBlock = (loc, lastmod, priority) =>
+    [
+      '  <url>',
+      `    <loc>${loc}</loc>`,
+      `    <lastmod>${lastmod}</lastmod>`,
+      '    <changefreq>monthly</changefreq>',
+      `    <priority>${priority}</priority>`,
+      '  </url>',
+    ].join('\n');
+  const sitemap = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    urlBlock(`${SITE}/`, newest, '1.0'),
+    ...programs.map((p) =>
+      urlBlock(`${SITE}/#/p/${p.program.id}`, p.last_verified ?? newest, '0.8'),
+    ),
+    // 长文页是独立静态 HTML，能被搜索引擎单独收录（hash 路由的详情页不行）。
+    // 清单写在这里而不是扫目录，是为了让「加文章」必须显式改一行，
+    // 不会因为某个草稿文件被丢进 public/ 就意外上线。
+    ...GUIDES.map((g) => urlBlock(`${SITE}/guides/${g}`, newest, '0.7')),
+    '</urlset>',
+    '',
+  ].join('\n');
+  await writeFile(join(PUBLIC_DIR, 'sitemap.xml'), sitemap, 'utf8');
 
   // 覆盖率自检：数据里出现的中文串若不在词典里，构建时就报出来，别等到页面上才发现
   const missing = findUntranslated(programs, dict);

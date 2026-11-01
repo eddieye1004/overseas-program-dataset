@@ -589,6 +589,7 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
       robotsSitemap: /Sitemap:\\s*https:\\/\\//i.test(robots.text),
       sitemapOk: sitemap.ok,
       sitemapUrls: (sitemap.text.match(/<loc>/g) || []).length,
+      sitemapText: sitemap.text,
       iconOk: icon.ok && /<svg/i.test(icon.text),
       // 分享图必须是真 PNG（前 8 字节魔数），不是占位 SVG
       ogImageOk: ogimg.ok && ogimg.text.startsWith('\\uFFFDPNG'),
@@ -613,8 +614,23 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
   ok('robots.txt 可访问', probe.robotsOk === true);
   ok('robots.txt 指向 sitemap', probe.robotsSitemap === true);
   ok('sitemap.xml 可访问', probe.sitemapOk === true);
-  // 首页 + 11 个项目详情页
-  ok('sitemap 含 12 条 URL', probe.sitemapUrls === 12, `got ${probe.sitemapUrls}`);
+  // 条数对不等于内容对：2026-11-01 加第 12 个项目时 sitemap 少一条 URL，
+  // 但总数仍是 12（首页 + 11 个旧项目），只数条数的断言没抓到。
+  // 所以这里逐 id 比对：首页 + 每个 program.id 的详情页都必须出现。
+  const smText = String(probe.sitemapText ?? '');
+  const smMissing = ['au-462-work-holiday', 'ca-iec-working-holiday', 'de-16e-internship', 'global-aiesec-global-talent', 'global-iaeste', 'ie-working-holiday-authorisation', 'jp-working-holiday', 'kr-h1-working-holiday', 'nz-china-whv', 'uk-short-term-study-visa', 'uk-youth-mobility-scheme', 'us-j1-summer-work-travel'].filter((id) => !smText.includes('#/p/' + id));
+  ok(
+    'sitemap 覆盖全部项目详情页',
+    smMissing.length === 0,
+    `缺 ${smMissing.length} 条: ${smMissing.join(', ')}`,
+  );
+  // 首页 + 每个项目详情页 + 每篇长文（长文条数由页面里的 guides 清单决定，
+  // 这里只校验「不重复、不缺项目」，长文覆盖由 [27] 那一节负责）
+  ok(
+    'sitemap 条数 = 首页 + 项目数 + 长文数',
+    probe.sitemapUrls === 1 + 12 + 2,
+    `got ${probe.sitemapUrls}, 应为 ${1 + 12 + 2}`,
+  );
   ok('favicon.svg 是可解析的 SVG', probe.iconOk === true);
   ok('index.html 用真 favicon 而非空 data URI', probe.iconHref.includes('favicon.svg'), probe.iconHref);
   ok('canonical 指向站点根', probe.canonical.endsWith('/overseas-program-dataset/'), probe.canonical);
@@ -816,6 +832,53 @@ console.log('\\n[26] 详情页判定条 + 来源锚点');
     '滚动后仍停在详情页（路由未被破坏）',
     await evalJs(`location.hash.startsWith('#/p/ca-iec-working-holiday') && !!document.querySelector('.verdict')`),
   );
+}
+
+
+console.log('\\n[27] 长文页（public/guides，静态 HTML，不经 React）');
+{
+  // 长文是唯一能被搜索引擎单独收录的页面（详情页用 hash 路由，收录不了）。
+  // 它们不进打包、不进 i18n，所以必须单独验：能打开、有 canonical、有 JSON-LD。
+  const probe = await evalJs(`(async () => {
+    const get = async (p) => {
+      try {
+        const r = await fetch(p, { cache: 'no-store' });
+        return { ok: r.ok, status: r.status, text: r.ok ? await r.text() : '' };
+      } catch (e) { return { ok: false, status: 0, text: '' }; }
+    };
+    const out = {};
+    for (const g of ["age-wall.html", "misinformation.html"]) {
+      const r = await get('./guides/' + g);
+      out[g] = {
+        ok: r.ok,
+        status: r.status,
+        bytes: r.text.length,
+        hasCanonical: r.text.includes('rel="canonical"') && r.text.includes('https://eddieye1004.github.io'),
+        hasLd: r.text.includes('application/ld+json'),
+        hasCta: r.text.includes('class="cta"'),
+        h1: (() => {
+          const a = r.text.indexOf('<h1');
+          if (a < 0) return 0;
+          const b = r.text.indexOf('>', a);
+          const c = r.text.indexOf('</h1>', b);
+          return c > b ? r.text.slice(b + 1, c).replace(new RegExp('<[^>]+>', 'g'), '').trim().length : 0;
+        })(),
+      };
+    }
+    const css = await get('./guides/guide.css');
+    return { guides: out, cssOk: css.ok, cssBytes: css.text.length };
+  })()`);
+
+  for (const g of ["age-wall.html", "misinformation.html"]) {
+    const d = probe.guides[g];
+    ok(`长文 ${g} 可访问`, d.ok === true, `status=${d.status}`);
+    ok(`长文 ${g} 正文非空`, d.bytes > 4000, `bytes=${d.bytes}`);
+    ok(`长文 ${g} 只有一个 h1 且有内容`, d.h1 > 4, `h1len=${d.h1}`);
+    ok(`长文 ${g} canonical 指向线上地址`, d.hasCanonical === true);
+    ok(`长文 ${g} 含 JSON-LD`, d.hasLd === true);
+    ok(`长文 ${g} 含回流主站的 CTA`, d.hasCta === true);
+  }
+  ok('guide.css 可访问', probe.cssOk === true);
 }
 
 ws.close();

@@ -154,6 +154,31 @@ a:hover {
 .ftr p {
   margin: 0;
 }
+/* 长文入口：与免责声明分开一行，避免读成同一句话 */
+.ftr__guides {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.ftr__guides a {
+  min-height: var(--tap);
+  display: inline-flex;
+  align-items: center;
+}
+/* 分隔点用 flex 伪元素画，不用「 · 」字符：
+   该字符会按 baseline 对齐，在 39px 高的链接旁边飘到上部，
+   看起来像个孤立的句号。 */
+.ftr__guides a + a::before {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.45;
+  margin: 0 10px;
+  flex: 0 0 auto;
+}
 
 /* ---------- 筛选区 ---------- */
 
