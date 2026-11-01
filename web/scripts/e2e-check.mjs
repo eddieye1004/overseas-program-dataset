@@ -146,6 +146,7 @@ async function setValue(sel, value, tag = 'input', evt = 'input') {
 const EXPECT_TOTAL = 12;
 const EXPECT_CRITICAL = 11;
 const EXPECT_ELIGIBLE = 7;
+const EXPECT_NOT_ELIGIBLE = 5;
 
 console.log('\n[1] 首屏渲染（工作台外壳）');
 await goto('#/');
@@ -398,6 +399,44 @@ ok(
 await clickByText('清空');
 await sleep(350);
 ok('清空条件后回到提示态', await evalJs(`!!document.querySelector('.state')`));
+
+console.log('\n[12b] 身份：在读 vs 在职');
+ok(
+  '匹配页有「当前身份」下拉',
+  await evalJs(
+    `[...document.querySelectorAll('.profile .pfield__label')].some(l => l.textContent.includes('身份'))`,
+  ),
+);
+
+// 在职：选 working，要求在读证明的项目应出现 fail 理由
+await setValue('.profile .student-sel', 'working', 'select', 'change');
+await sleep(700);
+const workingFails = await evalJs(
+  `JSON.stringify([...document.querySelectorAll('.card')].map(c => ({
+     id: c.querySelector('.card__link')?.getAttribute('href') || '',
+     fail: [...c.querySelectorAll('.rsn--fail')].map(x => x.textContent).join('|'),
+   })).filter(x => x.fail.includes('在读')))`,
+);
+ok('在职时出现「要求在读证明」的 fail 理由', JSON.parse(workingFails || '[]').length > 0, workingFails);
+ok(
+  '在职时被压的是 IAESTE 与 J-1',
+  (() => {
+    const ids = JSON.parse(workingFails || '[]').map((r) => r.id).join(',');
+    return ids.includes('global-iaeste') && ids.includes('us-j1-summer-work-travel');
+  })(),
+  workingFails,
+);
+
+// 在读：切回 enrolled，同两条的 fail 应消失
+await setValue('.profile .student-sel', 'enrolled', 'select', 'change');
+await sleep(700);
+const enrolledFails = await evalJs(
+  `[...document.querySelectorAll('.card')].filter(c =>
+     [...c.querySelectorAll('.rsn--fail')].some(x => x.textContent.includes('在读'))).length`,
+);
+ok('切回在读后「要求在读」的 fail 消失', enrolledFails === 0, `got ${enrolledFails}`);
+await clickByText('清空');
+await sleep(350);
 
 console.log('\n[13] 数据说明页');
 await goto('#/about');
@@ -684,10 +723,24 @@ console.log('\\n[25] 信息架构改版：结论条 / 折叠筛选 / 推叠卡�
   const S = JSON.parse(stats);
   ok('首屏有结论条', S.length >= 3, stats);
   // 「大陆护照可申」本身包含「可申」二字，所以不能只测子串，
-  // 改用前缀数字区分：6 那条是可申，5 那条是不可申。
+  // 用前缀数字 + 是否含「不可申」三字区分两种。
   ok(
     '结论条含不可申计数',
-    S.some((s) => /^5\s/.test(s) && s.includes('不可申')),
+    S.some((s) => s.startsWith(String(EXPECT_NOT_ELIGIBLE)) && s.includes('不可申')),
+    stats,
+  );
+  // 在职可申必须严格小于可申总数：差额就是那几条有学籍门槛的项目。
+  // 这条防的是「两个数字算成一样」——那说明 enrollment_scope 没进派生逻辑。
+  // 它是可申数的括号附注，不是一个独立并列项，所以数值用正则从「在职可申 3」里取。
+  ok(
+    '结论条含在职可申，且小于可申总数',
+    S.some((s) => {
+      if (!s.includes('在职可申')) return false;
+      const m = s.match(/在职可申\s*(\d+)/);
+      if (!m) return false;
+      const n = Number(m[1]);
+      return Number.isFinite(n) && n > 0 && n < EXPECT_ELIGIBLE;
+    }),
     stats,
   );
   ok(

@@ -164,6 +164,11 @@ export function ListView({ savedIds, onToggleSave }: Props) {
     return {
       eligible: all.filter((p) => p.status === 'eligible').length,
       notEligible: all.filter((p) => p.status === 'not_eligible').length,
+      // 在职者（非在读、毕业超过 2 年）能申几个——全站最容易被高估的数字：
+      // 「7 个可申」里 2 个要求在读证明、1 个只给毕业 2 年内，在职的人实际轮到 4 个。
+      working: all.filter(
+        (p) => p.status === 'eligible' && p.enrollment_scope === 'none',
+      ).length,
       sources: all.reduce((n, p) => n + (p.source_count ?? 0), 0),
       stale,
     };
@@ -185,8 +190,13 @@ export function ListView({ savedIds, onToggleSave }: Props) {
             更能让人 3 秒内知道「这事跟我有没有关系」。 */}
         {stats && (
           <p className="statsbar">
+            {/* 可申后面紧跟括号附注，而不是另起一个并列项：
+                并列会让「7」「3」「5」被读成一排三个同类数字。 */}
             <span className="statsbar__item statsbar__item--ok">
               <strong>{stats.eligible}</strong> {t('eligible')}
+              <span className="statsbar__note">
+                {t('statsWorking').replace('{n}', String(stats.working))}
+              </span>
             </span>
             <span className="statsbar__item statsbar__item--no">
               <strong>{stats.notEligible}</strong> {t('notEligible')}

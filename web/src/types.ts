@@ -46,6 +46,17 @@ export interface ProgramIndexEntry {
   age_verified: boolean;
   max_stay_months: number | null;
   education: string | null;
+  /**
+   * 学籍门槛，四档：
+   *   required            必须提供在读证明、全程保持学籍（IAESTE、J-1）
+   *   enrolled_or_recent  在读，或毕业 2 年内（德国 16e）
+   *   unknown             官方未公布，无法判断（AIESEC）
+   *   none                不要求学籍
+   * education.minimum_level 分不出这件事——IAESTE、J-1、德国 16e 都写
+   * bachelor_in_progress，实际要求却是三种。判据在 other_requirements 的
+   * enrollment_proof 与 education.note，由 sync-data.mjs 判好带过来。
+   */
+  enrollment_scope: 'required' | 'enrolled_or_recent' | 'unknown' | 'none';
   language_required: boolean;
   funds_amount: number | null;
   funds_currency: string | null;

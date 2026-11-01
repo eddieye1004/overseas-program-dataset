@@ -63,6 +63,7 @@ export function MatchView({
       pr.status != null ||
       pr.age != null ||
       pr.education != null ||
+      pr.studentStatus != null ||
       pr.budgetCny != null ||
       pr.minStayMonths != null ||
       pr.mustBePaid ||
@@ -146,6 +147,24 @@ export function MatchView({
               <option value="bachelor_in_progress">{te('bachelor_in_progress')}</option>
               <option value="bachelor_completed">{te('bachelor_completed')}</option>
               <option value="master">{te('master')}</option>
+            </select>
+          </Field>
+
+          {/* 身份放在学历下面：学历说的是「读到哪」，身份说的是「现在是不是学生」。
+              两者不是一回事——德国 16e 允许毕业 2 年内申请，IAESTE 与 J-1 则明文
+              要求在读证明。只填学历的话，这三条会被算成同一档。 */}
+          <Field label={t('profileStudent')}>
+            <select
+              className="input student-sel"
+              value={pr.studentStatus ?? ''}
+              onChange={(e) =>
+                setPr({ ...pr, studentStatus: (e.target.value || null) as Profile['studentStatus'] })
+              }
+            >
+              <option value="">{t('profileAny')}</option>
+              <option value="enrolled">{t('studentEnrolled')}</option>
+              <option value="recent_grad">{t('studentRecentGrad')}</option>
+              <option value="working">{t('studentWorking')}</option>
             </select>
           </Field>
 

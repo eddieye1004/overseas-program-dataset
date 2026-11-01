@@ -45,6 +45,16 @@
   color: var(--no);
 }
 
+/* 「在职可申」是可申数的子集，做成数字后面的括号附注。
+   早先把它排成并列的第三个数字，并把字号降一档——结论条中间砸出凹坑，
+   读起来像三个互不相干的数；改成同字号并列又会被读成「7、3、5」三个同类值。
+   从属关系靠括号表达，不靠字号。 */
+.statsbar__note {
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+}
+
 .statsbar__item--muted {
   color: var(--ink-3);
   font-size: var(--fs-xs);

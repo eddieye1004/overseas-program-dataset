@@ -36,6 +36,27 @@ const GUIDES = ['age-wall.html', 'misinformation.html'];
   // age_verified 之类的字段就该删掉。
   const ageUnknown = age.min === 0 && age.max === 99 && /未核实/.test(age.note ?? '');
 
+  // 「学籍门槛」是四档，不是两档。判据只能落在 other_requirements 与
+  // education.note 上，因为 education.minimum_level 把多种身份要求压成了同一个值：
+  //   required            明文要求提供在读证明、全程保持学籍（IAESTE、J-1）
+  //   enrolled_or_recent  在读，或毕业 N 年内（德国 16e，官方原文「申请前 2 年内」）
+  //   none                不要求学籍
+  //   unknown             官方未公布，无法判断（AIESEC）
+  // 后两档必须分开：把 unknown 并进 none，会让「官方没说要学籍」变成「在职也能申」，
+  // 而实际上 AIESEC 的资格由各国分会与岗位自行决定。
+  const enroll = (el.other_requirements ?? []).find((o) => o.type === 'enrollment_proof');
+  const eduNote = el.education?.note ?? '';
+  let enrollmentScope = 'none';
+  if (/未核实/.test(eduNote)) {
+    // 官方页没写清 → 不猜。这条必须排在前面，因为被标未核实的 note 里
+    // 往往同时提到「在读」「毕业」，正则会被这些字样带偏。
+    enrollmentScope = 'unknown';
+  } else if (enroll?.required === true) {
+    enrollmentScope = 'required';
+  } else if (/(在读|就读|在校)/.test(eduNote) && /(\d+\s*年内|已取得|毕业)/.test(eduNote)) {
+    enrollmentScope = 'enrolled_or_recent';
+  }
+
   return {
     id: p.program.id,
     name: p.program.name,
@@ -58,6 +79,7 @@ const GUIDES = ['age-wall.html', 'misinformation.html'];
     age_verified: !ageUnknown,
     max_stay_months: wc.max_stay_months ?? null,
     education: el.education?.minimum_level ?? null,
+    enrollment_scope: enrollmentScope,
     language_required: lang.required === true,
     funds_amount: funds.amount?.local_amount ?? null,
     funds_currency: funds.amount?.currency ?? null,

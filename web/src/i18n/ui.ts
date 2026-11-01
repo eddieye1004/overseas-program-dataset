@@ -96,6 +96,11 @@ export type UiKey =
   | 'profileStatus'
   | 'profileAge'
   | 'profileEdu'
+  | 'profileStudent'
+  | 'studentEnrolled'
+  | 'studentRecentGrad'
+  | 'studentWorking'
+  | 'statsWorking'
   | 'profileBudget'
   | 'profileStay'
   | 'profilePaid'
@@ -261,6 +266,13 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     profileStatus: '护照资格',
     profileAge: '年龄',
     profileEdu: '最高学历',
+    profileStudent: '当前身份',
+    studentEnrolled: '在校（本科或硕士在读）',
+    studentRecentGrad: '毕业 2 年内',
+    studentWorking: '在职 / 毕业超过 2 年',
+    // {n} 由 ListView 插值。括号样式随语言变：中文全角、英文半角，
+    // 数字位置也不同（中英都是「标签 + 数字」，所以只改括号与分隔符）。
+    statsWorking: '（在职可申 {n}）',
     profileBudget: '可用于前期的预算（人民币）',
     profileStay: '希望至少待多久',
     profilePaid: '必须带薪',
@@ -426,6 +438,11 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     profileStatus: 'Passport eligibility',
     profileAge: 'Age',
     profileEdu: 'Highest education',
+    profileStudent: 'Current status',
+    studentEnrolled: 'Enrolled (undergrad or postgrad)',
+    studentRecentGrad: 'Graduated within 2 years',
+    studentWorking: 'Working / graduated over 2 years ago',
+    statsWorking: '({n} open to workers)',
     profileBudget: 'Upfront budget available (CNY)',
     profileStay: 'Minimum stay you want',
     profilePaid: 'Must be paid',
@@ -674,6 +691,12 @@ export const MATCH_TEXT: Record<Lang, Record<string, string>> = {
     'm.budgetUnknown': '资金要求本机无法折算，未计入',
     'm.eduOk': '学历达到门槛',
     'm.eduLow': '学历低于该项目门槛',
+    'm.studentOk': '接受在校生，且要求全程保持学籍',
+    'm.studentFree': '不要求在读，任何身份都能申',
+    'm.studentNeeded': '要求在读证明并全程保持学籍，在职者无法申请',
+    'm.studentRecentOk': '在读或毕业 2 年内可申',
+    'm.studentTooLate': '只接受在读或毕业 2 年内，超过这个窗口无法申请',
+    'm.studentUnknown': '官方未公布身份门槛，需自行向官方确认',
     'm.stayOk': '可停留 {v} 个月，满足预期',
     'm.stayLow': '最长只待 {v} 个月，短于预期',
     'm.stayUnknown': '停留期数据缺失',
@@ -696,6 +719,12 @@ export const MATCH_TEXT: Record<Lang, Record<string, string>> = {
     'm.budgetUnknown': 'Funds cannot be converted locally; not scored',
     'm.eduOk': 'Education meets the threshold',
     'm.eduLow': 'Education below this program threshold',
+    'm.studentOk': 'Open to students; you must stay enrolled throughout',
+    'm.studentFree': 'No enrolment required; open to any status',
+    'm.studentNeeded': 'Requires proof of enrolment; not open to workers',
+    'm.studentRecentOk': 'Open while enrolled or within 2 years of graduating',
+    'm.studentTooLate': 'Only while enrolled or within 2 years of graduating',
+    'm.studentUnknown': 'Enrolment requirement not published; confirm with the sponsor',
     'm.stayOk': 'Up to {v} months, meets your expectation',
     'm.stayLow': 'Only {v} months, shorter than expected',
     'm.stayUnknown': 'Stay length not recorded',

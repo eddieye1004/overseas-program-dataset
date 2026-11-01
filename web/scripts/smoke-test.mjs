@@ -348,6 +348,89 @@ ok(
   paidTop.reasons.some((r) => r.code === 'm.paidOk' || r.code === 'm.paidUnknown'),
 );
 
+// —— 身份（在读 / 毕业 2 年内 / 在职）——
+// 这一组守的是「学历字段分不出身份」这件事：IAESTE 与 J-1 的 minimum_level
+// 都是 bachelor_in_progress，德国 16e 也是，但只有前两条要求在读证明。
+console.log('\n[13b] 身份：在读 vs 在职');
+const ENROLLED_ONLY = ['global-iaeste', 'us-j1-summer-work-travel'];
+ok(
+  'enrollment_scope=required 的正好是 IAESTE 与 J-1',
+  JSON.stringify(
+    index.filter((p) => p.enrollment_scope === 'required').map((p) => p.id).sort(),
+  ) === JSON.stringify(ENROLLED_ONLY),
+  JSON.stringify(index.filter((p) => p.enrollment_scope === 'required').map((p) => p.id)),
+);
+ok(
+  '德国 16e 学历写 bachelor_in_progress，但门槛是「在读或毕业 2 年内」',
+  get('de-16e-internship').education === 'bachelor_in_progress' &&
+    get('de-16e-internship').enrollment_scope === 'enrolled_or_recent',
+  get('de-16e-internship').enrollment_scope,
+);
+ok(
+  'IAESTE 学历同样写 bachelor_in_progress，却必须在读',
+  get('global-iaeste').education === 'bachelor_in_progress' &&
+    get('global-iaeste').enrollment_scope === 'required',
+);
+ok(
+  'AIESEC 官方未公布身份门槛，记为 unknown 而不是 none',
+  get('global-aiesec-global-talent').enrollment_scope === 'unknown',
+  get('global-aiesec-global-talent').enrollment_scope,
+);
+ok(
+  'AU 462 的注里同时出现「在读」与「2 年」，但门槛仍是 none（它接受已毕业者）',
+  get('au-462-work-holiday').enrollment_scope === 'none',
+  get('au-462-work-holiday').enrollment_scope,
+);
+
+const asEnrolled = scoreOne(get('global-iaeste'), {
+  ...EMPTY_PROFILE,
+  studentStatus: 'enrolled',
+});
+const asWorking = scoreOne(get('global-iaeste'), {
+  ...EMPTY_PROFILE,
+  studentStatus: 'working',
+});
+ok(
+  '在读申 IAESTE 得分 > 在职申 IAESTE',
+  asEnrolled.score > asWorking.score,
+  `${asEnrolled.score} vs ${asWorking.score}`,
+);
+ok(
+  '在职申 IAESTE 给出 m.studentNeeded 且是 fail',
+  asWorking.reasons.some((r) => r.code === 'm.studentNeeded' && r.kind === 'fail'),
+);
+ok('在职申 IAESTE 被压到 ≤30', asWorking.score <= 30, `got ${asWorking.score}`);
+
+const recentOn16e = scoreOne(get('de-16e-internship'), {
+  ...EMPTY_PROFILE,
+  studentStatus: 'recent_grad',
+});
+ok(
+  '毕业 2 年内申 16e 不触发在读 fail',
+  !recentOn16e.reasons.some((r) => r.code === 'm.studentNeeded'),
+  JSON.stringify(recentOn16e.reasons.map((r) => r.code)),
+);
+ok(
+  '不要求在读的项目对在职者给 pass 而非 fail',
+  scoreOne(get('nz-china-whv'), { ...EMPTY_PROFILE, studentStatus: 'working' }).reasons.some(
+    (r) => r.code === 'm.studentFree' && r.kind === 'pass',
+  ),
+);
+ok(
+  '不填身份时不计分（不计入分母）',
+  scoreOne(get('global-iaeste'), { ...EMPTY_PROFILE }).reasons.length === 0,
+);
+const workingEligible = index.filter(
+  (p) => p.status === 'eligible' && p.enrollment_scope === 'none',
+).length;
+ok(
+  '在职可申 = 可申里 enrollment_scope 为 none 的条数',
+  workingEligible ===
+    index.filter((p) => p.status === 'eligible' && p.enrollment_scope === 'none').length,
+  `${workingEligible}`,
+);
+ok('在职可申严格少于可申总数', workingEligible < index.filter((p) => p.status === 'eligible').length);
+
 console.log('\n[14] 界面词条双语对齐');
 const zhKeys = Object.keys(UI.zh).sort();
 const enKeys = Object.keys(UI.en).sort();
@@ -377,6 +460,7 @@ const reasonCodes = [
   'm.budgetOk', 'm.budgetLow', 'm.budgetUnknown', 'm.eduOk', 'm.eduLow',
   'm.stayOk', 'm.stayLow', 'm.stayUnknown', 'm.paidOk', 'm.paidUnknown',
   'm.agencyOk', 'm.agencyNeeded', 'm.regionOk', 'm.regionNo',
+  'm.studentOk', 'm.studentFree', 'm.studentNeeded', 'm.studentRecentOk', 'm.studentTooLate', 'm.studentUnknown',
 ];
 ok(
   'MATCH_TEXT 覆盖全部理由码',
