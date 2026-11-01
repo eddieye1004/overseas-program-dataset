@@ -1,0 +1,243 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "us-j1-camp-counselor",
+    "name": "美国 J-1 营地辅导员项目",
+    "name_en": "Camp Counselor (J-1 Exchange Visitor Program)",
+    "country": "美国",
+    "country_code": "US",
+    "region": "north_america",
+    "program_type": "cultural_exchange",
+    "visa_code": "J-1",
+    "official_url": "https://j1visa.state.gov/programs/camp-counselor/",
+    "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
+    "summary": "美国国务院 J-1 交流访问者项目下的营地辅导员类别：在美夏令营担任辅导员，直接负责一组美国青少年的督导与活动组织，最长 4 个月。与暑期带薪实习（SWT）同为 J-1，但参与人资格不看学籍，在读学生、青年工作者、教师或具备专门技能者均可，因此是在职青年少数可申的 J-1 类别。须经国务院指定 Sponsor 且岗位必须预先落实。",
+    "tags": [
+      "requires_agency",
+      "cultural_exchange",
+      "english_required",
+      "rolling",
+      "paid"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "22 CFR 62.30 未对国籍设限，只要求是「foreign national」。中国大陆护照持有人可申的前提是能找到接收的指定 Sponsor 并落实营地岗位——官方 Sponsor 名单里是否有中国大陆合作渠道，本轮未能核实（见 sources 第 4 条）。"
+    },
+    "age": {
+      "min": 18,
+      "max": 99,
+      "note": "法规原文只有下限：Are at least 18 years of age（22 CFR 62.30(b)(1)）。全文无年龄上限，因此 18 岁以上不限。这是「确认没有上限」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "any",
+      "major_restriction": [],
+      "note": "无学历层级要求，但身份须属于四类之一：Are bona fide youth workers, students, teachers, or individuals with specialized skills（22 CFR 62.30(b)(2)）。在职人士可作为 youth worker 或 specialized skills 申请，实际操作中由各 Sponsor 判断是否成立——这一点各机构解释可能不同，属未核实范围。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "须 Sufficiently proficient in the English language to supervise and interact with American youth（官方项目页）。官方未设雅思/托福分数线，由 Sponsor 面试评估，因此不列任何考试与分数。"
+    },
+    "funds": {
+      "required": false,
+      "note": "22 CFR 62.30 未设资金门槛。但须自付项目费、机票与前期食宿，且项目费金额官方不公布、由各 Sponsor 自定（未能核实）。薪酬按官方要求须与美方同岗位同酬。"
+    },
+    "other_requirements": [
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "强制。22 CFR 62.14 规定最低额度：医疗每事故/疾病不低于 $100,000、遗体送返 $25,000、医疗转运 $50,000、自付额不超过 $500。通常含在 Sponsor 项目费内。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "官方未设年度名额上限。但对重复参与者有比例限制：参加过两次以上的人不得超过该 Sponsor 上一年度派出总数的 10%（22 CFR 62.30(j)）。另外岗位必须预先落实，Sponsor 不得为尚未落实营地岗位的人办理入境（§62.30(h)(3)）。",
+    "windows": [
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "官方项目页与法规均不公布统一报名窗口，报名与岗位安置日历由各 Sponsor 自行设定，故记为未核实。项目须在学年之间的长假期间进行，最长 4 个月，且不得延期（§62.30(h)(2) 与官方资源页 Extensions of program participation are not permitted）。"
+      }
+    ],
+    "fees": [],
+    "processing_time": "官方未公布审理时长（未能核实）。SEVIS I-901 费为 $35，须在面签前缴纳（ICE SEVIS I-901 官方费率表 Camp counselor program $35）。签证费（MRV）本轮未能核到：travel.state.gov 对本机三个通道全部返回 403，按规则记未核实，不沿用其他 J-1 类别的数字。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期覆盖整个在美停留期",
+      "prepare_days": 30
+    },
+    {
+      "name": "DS-2019 表",
+      "required": true,
+      "note": "由国务院指定 Sponsor 签发，是申请 J-1 签证的核心文件；须先有预先落实的营地岗位才会签发",
+      "prepare_days": 60
+    },
+    {
+      "name": "预先落实的营地岗位（pre-arranged placement）",
+      "required": true,
+      "note": "法规硬性要求：Sponsor 不得为未落实营地岗位的人办理入境（22 CFR 62.30(h)(3)）。不存在「先入境再找营地」的路径",
+      "prepare_days": 60
+    },
+    {
+      "name": "符合 62.14 的医疗保险证明",
+      "required": true,
+      "note": "医疗 $100,000 / 遗体送返 $25,000 / 医疗转运 $50,000 / 自付额 ≤ $500",
+      "prepare_days": 14
+    },
+    {
+      "name": "SEVIS I-901 缴费凭证",
+      "required": true,
+      "note": "营地辅导员类别 $35，须在面签前缴纳",
+      "prepare_days": 7
+    },
+    {
+      "name": "Sponsor 推荐人信息",
+      "required": true,
+      "note": "Sponsor 须进行面对面或线上面试，并向申请人的雇主或教师索取推荐（22 CFR 62.30(c)）",
+      "prepare_days": 14
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认自己属于四类参与人之一",
+      "description": "法规限定为 bona fide youth workers、students、teachers，或 individuals with specialized skills。全日制在读学生走 student；在职青年走 youth worker 或 specialized skills；教师走 teacher。若三者都不符合，此项目不通。",
+      "duration": "5 分钟",
+      "official_link": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.30"
+    },
+    {
+      "step_no": 2,
+      "title": "通过国务院指定 Sponsor 报名",
+      "description": "必须经国务院指定的 Sponsor，无法自行向国务院申请。Sponsor 名单可在官方页按 Camp Counselor 类别筛选。报名时缴纳项目费（金额各家不同，官方不公布）。",
+      "duration": "1-2 周",
+      "official_link": "https://j1visa.state.gov/participants/how-to-apply/sponsor-search/"
+    },
+    {
+      "step_no": 3,
+      "title": "面试与推荐人核查",
+      "description": "Sponsor 须对候选人进行面试，并向其雇主或教师索取关于是否适合担任营地辅导员的推荐。这一步是法规强制，不能跳过。",
+      "duration": "1-3 周",
+      "official_link": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.30"
+    },
+    {
+      "step_no": 4,
+      "title": "落实营地岗位并获得 DS-2019",
+      "description": "岗位必须预先落实：营地须为 ACA 会员、受认可非营利机构附属、或经 Sponsor 检查批准。岗位确认后 Sponsor 签发 DS-2019。",
+      "duration": "2-8 周",
+      "official_link": "https://j1visa.state.gov/programs/camp-counselor/"
+    },
+    {
+      "step_no": 5,
+      "title": "缴纳 SEVIS 费、面签、赴美",
+      "description": "缴 SEVIS I-901 费 $35 → 填 DS-160 → 预约面签 → 赴美。赞助方须提供 24 小时紧急联系电话。项目最长 4 个月，不得延期。",
+      "duration": "2-4 周",
+      "official_link": "https://www.ice.gov/sevis/i901/faq"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 4,
+    "max_same_employer_months": 4,
+    "renewable": false,
+    "renewal_condition": "不可延期（22 CFR 62.30(h)(2) 限定项目不超过 4 个月；官方资源页原文 Extensions of program participation are not permitted）。但可以重新参加：法规只限制「参加过两次以上」的人不得超过该 Sponsor 上一年度派出总数的 10%（§62.30(j)），并未禁止重复参加。所以「不能延长这一次」与「可以再来一次」同时成立。",
+    "restricted_occupations": [
+      "行政管理人员（administrative personnel）",
+      "厨师（cooks）",
+      "洗碗工、清洁工等体力杂工（menial laborers such as dishwashers or janitors）"
+    ],
+    "note": "法规原文说明这些岗位不属于本项目范围：this program is not intended to assist American camps in bringing in foreign nationals to serve as administrative personnel, cooks, or menial laborers（22 CFR 62.30(a)）。参与者应直接负责一组美国青少年的督导，非辅导性杂务可以有，但不能以「staff」身份充任。薪酬须与美方同岗位同酬。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "必须经美国国务院指定 Sponsor 申请，无法自主申请；且岗位必须预先落实。任何「先过去再找营地」的说法都与 22 CFR 62.30(h)(3) 直接冲突。"
+    },
+    {
+      "level": "critical",
+      "description": "「不看学籍」不等于「谁都能申」。法规限定四类身份，在职人士须被 Sponsor 认定为 youth worker 或 specialized skills，各机构解释口径可能不同。若 Sponsors 不认，此项目对纯在职白领实际不可用——这是本项目最大的未核实点。"
+    },
+    {
+      "level": "warning",
+      "description": "官方 Sponsor 名单是 serverSide 分页表格，翻页端点稳定返回 HTTP 400，本轮只拿到第一页 100 行，其中 Camp Counselor 类别 1 条（ESF Dream Camp, PA）。这 100 行里没有 CIEE、InterExchange 等大型 J-1 赞助机构，可反证它只是第一页。中国大陆是否有指定 Sponsor 或合作渠道未能核实，若没有则「可申」结论不成立。"
+    },
+    {
+      "level": "warning",
+      "description": "签证费（MRV）与项目费均未能核到：前者因 travel.state.gov 三个通道全部 403，后者官方本就不公布。不沿用 SWT 的数字。"
+    },
+    {
+      "level": "warning",
+      "description": "重复参与者有 10% 比例上限（22 CFR 62.30(j)）。想去第二次、第三次的人可能被 Sponsor 排到名额之外。"
+    },
+    {
+      "level": "info",
+      "description": "优势：18 岁以上无上限，是在职青年少数可申的 J-1 类别；SEVIS 费仅 $35（J-1 通则 $220、F-1 $350）；薪酬要求与美方同酬；与已收录的 SWT 共用 J-1 与 Sponsor 体系，信息成本低。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Camp Counselor — BridgeUSA（美国国务院）",
+      "url": "https://j1visa.state.gov/programs/camp-counselor/",
+      "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "项目定位与参与人资格：`The Camp Counselor Program enables post-secondary students, youth workers, and teachers to share their culture and ideas with the people of the United States in camp settings throughout the country.`；Participants 须 `Sufficiently proficient in the English language to supervise and interact with American youth`、`A foreign post-secondary student, youth worker, teacher or individual with specialized skills`、`At least 18-years-old`；Benefit 为 `pay and benefits commensurate with those offered to their American counterparts`。该页明确 `Camp Counselors will occasionally have to: Perform non-counseling duties as part of camp life, but not serve as \"staff\"`。**该页未公布年龄上限、签证费、项目费与审理时长。**"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 62.30 — Camp counselors（美国联邦法规原文）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.30",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "逐条原文：(b) 参与人资格 `limited to foreign nationals who: (1) Are at least 18 years of age; (2) Are bona fide youth workers, students, teachers, or individuals with specialized skills`；(c) Sponsor 须 `Conduct an in-person interview` 并向雇主或教师索取推荐；(e) 营地须为 ACA 会员、受认可非营利附属、或经 Sponsor 检查批准；(f) 薪酬须与美方同酬；(h)(2) `Not facilitate the entry of any participant for a program of more than four months duration`；(h)(3) `Under no circumstance facilitate the entry into the United States of a participant for whom a camp placement has not been pre-arranged`；(j) 参加两次以上者不得超过该 Sponsor 上年派出总数的 `ten percent`。**全文无年龄上限。**"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 62.14 — Insurance（保险最低额度）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.14",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "强制保险与最低额度：`Medical benefits of at least $100,000 per accident or illness`；`Repatriation of remains in the amount of $25,000`；`Expenses associated with the medical evacuation ... in the amount of $50,000`；`Deductibles not to exceed $500 per accident or illness`。"
+    },
+    {
+      "type": "primary",
+      "name": "I-901 SEVIS Fee FAQ — How Much Is the I-901 SEVIS Fee?",
+      "url": "https://www.ice.gov/sevis/i901/faq",
+      "publisher": "U.S. Immigration and Customs Enforcement (ICE), Student and Exchange Visitor Program",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "费率表原文：`For exchange visitors (J-1) $220 UNLESS participating in:` … `Camp counselor program $35`。对照组：F-1/M-1 为 $350，J-2 为 None。另说明 `you must pay the I-901 SEVIS fee before going to the United States embassy or consulate for your visa interview`。"
+    },
+    {
+      "type": "primary",
+      "name": "Camp Counselor Program Resource Page（项目时长与不可延期）",
+      "url": "https://j1visa.state.gov/camp-counselor-program-resource-page/",
+      "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "`Camp Counselor participants are authorized to participate in the program for up to four months during the long break between academic years as determined by the Department of State. Extensions of program participation are not permitted.` 这是「不可延期」的直接原文依据，也是 4 个月上限的第二处佐证。"
+    },
+    {
+      "type": "primary",
+      "name": "Designated Sponsor Organizations（可按类别筛选的官方 Sponsor 名单）",
+      "url": "https://j1visa.state.gov/participants/how-to-apply/sponsor-search/",
+      "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
+      "last_verified": "2026-11-01",
+      "verified_by": "eddieye1004",
+      "claim": "官方指定 Sponsor 名单，可按 Camp Counselor 类别筛选。00:06 UTC+8 抓到的完整页面共 100 行数据（id 358561–358660，连续），其中 Camp Counselor 类别 1 条：`ESF Dream Camp`，`750 E HAVERFORD RD, BRYN MAWR, 19010 PA`，`http://esfjobs.com`。**该表为 serverSide 分页 DataTable，翻页端点 `admin-ajax.php?action=get_wdtable&table_id=45` 稳定返回 HTTP 400（3 字节），同域名 `action=heartbeat` 返回 200，说明是表格端点被单独拦或已损坏。本轮用 curl / Python urllib / 页面内 fetch（带 cookie 与 nonce）三种方式都是 400，因此无法确认 Camp Counselor 类别的全量数量，也无法确认其中是否有中国大陆合作渠道。**同一批 100 行里没有 CIEE、InterExchange、Spirit、Cultural Vistas 等已知大型 J-1 赞助机构，可反证这 100 行只是第一页而非全量。"
+    }
+  ],
+  "last_verified": "2026-11-01",
+  "verified_by": "eddieye1004"
+}

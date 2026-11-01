@@ -13,9 +13,9 @@
 
 | 指标 | 数值 |
 |---|---|
-| 项目数 | 12 |
-| 来源条目 | 45（primary 40 / secondary 5） |
-| 去重后的 URL 数 | 45（另有 12 个 `official_url` 入口） |
+| 项目数 | 13 |
+| 来源条目 | 51（primary 46 / secondary 5） |
+| 去重后的 URL 数 | 51（另有 13 个 `official_url` 入口） |
 | 最近一次核实 | 2026-11-01 |
 | 最早一次核实 | 2026-09-17 |
 | 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 45 天） |
@@ -181,6 +181,19 @@
 ---
 
 ## 美国
+
+### 美国 J-1 营地辅导员项目
+
+`us-j1-camp-counselor` · 官方入口 <https://j1visa.state.gov/programs/camp-counselor/>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Camp Counselor — BridgeUSA（美国国务院） | U.S. Department of State, Bureau of Educational and Cultural Affairs | <https://j1visa.state.gov/programs/camp-counselor/> | A · 政府/法律 | 2026-11-01 | 项目定位与参与人资格：`The Camp Counselor Program enables post-secondary students, youth workers, and teachers to share their culture and ideas with the people of the United States in camp settings throughout the country.`；Participants 须 `Sufficiently proficient in the English language to supervise and interact with American youth`、`A foreign post-secondary student, youth worker, teacher or individual with specialized skills`、`At least 18-years-old`；Benefit 为 `pay and benefits commensurate with those offered to their American counterparts`。该页明确 `Camp Counselors will occasionally have to: Perform non-counseling duties as part of camp life, but not serve as "staff"`。**该页未公布年龄上限、签证费、项目费与审理时长。** |
+| 2 | primary | 22 CFR 62.30 — Camp counselors（美国联邦法规原文） | U.S. Government Publishing Office / National Archives（eCFR） | <https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.30> | A · 政府/法律 | 2026-11-01 | 逐条原文：(b) 参与人资格 `limited to foreign nationals who: (1) Are at least 18 years of age; (2) Are bona fide youth workers, students, teachers, or individuals with specialized skills`；(c) Sponsor 须 `Conduct an in-person interview` 并向雇主或教师索取推荐；(e) 营地须为 ACA 会员、受认可非营利附属、或经 Sponsor 检查批准；(f) 薪酬须与美方同酬；(h)(2) `Not facilitate the entry of any participant for a program of more than four months duration`；(h)(3) `Under no circumstance facilitate the entry into the United States of a participant for whom a camp placement has not been pre-arranged`；(j) 参加两次以上者不得超过该 Sponsor 上年派出总数的 `ten percent`。**全文无年龄上限。** |
+| 3 | primary | 22 CFR 62.14 — Insurance（保险最低额度） | U.S. Government Publishing Office / National Archives（eCFR） | <https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.14> | A · 政府/法律 | 2026-11-01 | 强制保险与最低额度：`Medical benefits of at least $100,000 per accident or illness`；`Repatriation of remains in the amount of $25,000`；`Expenses associated with the medical evacuation ... in the amount of $50,000`；`Deductibles not to exceed $500 per accident or illness`。 |
+| 4 | primary | I-901 SEVIS Fee FAQ — How Much Is the I-901 SEVIS Fee? | U.S. Immigration and Customs Enforcement (ICE), Student and Exchange Visitor Program | <https://www.ice.gov/sevis/i901/faq> | A · 政府/法律 | 2026-11-01 | 费率表原文：`For exchange visitors (J-1) $220 UNLESS participating in:` … `Camp counselor program $35`。对照组：F-1/M-1 为 $350，J-2 为 None。另说明 `you must pay the I-901 SEVIS fee before going to the United States embassy or consulate for your visa interview`。 |
+| 5 | primary | Camp Counselor Program Resource Page（项目时长与不可延期） | U.S. Department of State, Bureau of Educational and Cultural Affairs | <https://j1visa.state.gov/camp-counselor-program-resource-page/> | A · 政府/法律 | 2026-11-01 | `Camp Counselor participants are authorized to participate in the program for up to four months during the long break between academic years as determined by the Department of State. Extensions of program participation are not permitted.` 这是「不可延期」的直接原文依据，也是 4 个月上限的第二处佐证。 |
+| 6 | primary | Designated Sponsor Organizations（可按类别筛选的官方 Sponsor 名单） | U.S. Department of State, Bureau of Educational and Cultural Affairs | <https://j1visa.state.gov/participants/how-to-apply/sponsor-search/> | A · 政府/法律 | 2026-11-01 | 官方指定 Sponsor 名单，可按 Camp Counselor 类别筛选。00:06 UTC+8 抓到的完整页面共 100 行数据（id 358561–358660，连续），其中 Camp Counselor 类别 1 条：`ESF Dream Camp`，`750 E HAVERFORD RD, BRYN MAWR, 19010 PA`，`http://esfjobs.com`。**该表为 serverSide 分页 DataTable，翻页端点 `admin-ajax.php?action=get_wdtable&table_id=45` 稳定返回 HTTP 400（3 字节），同域名 `action=heartbeat` 返回 200，说明是表格端点被单独拦或已损坏。本轮用 curl / Python urllib / 页面内 fetch（带 cookie 与 nonce）三种方式都是 400，因此无法确认 Camp Counselor 类别的全量数量，也无法确认其中是否有中国大陆合作渠道。**同一批 100 行里没有 CIEE、InterExchange、Spirit、Cultural Vistas 等已知大型 J-1 赞助机构，可反证这 100 行只是第一页而非全量。 |
 
 ### 美国 J-1 暑期带薪实习项目
 
