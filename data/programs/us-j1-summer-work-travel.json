@@ -21,7 +21,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -30,9 +29,9 @@
       "note": "不限护照类型，只要符合美国国务院对 J-1 交流访问者的要求即可。中国自 2007-2008 年引入该项目。"
     },
     "age": {
-      "min": 18,
-      "max": 28,
-      "note": "通常要求 18-28 周岁的全日制在校本科生、研究生。具体上限以各 Sponsor 机构规定为准。"
+      "min": 0,
+      "max": 99,
+      "note": "⚠️ 未核实。美国国务院 SWT 项目页与 22 CFR 62.32、62.10 全文均未出现任何年龄限制（检索 18、28、years of age 命中均为 0）。原记录「18-28 周岁」的来源是西安理工大学国际合作处页面，属二手来源，不能单独支撑硬性年龄判定。是否另有下限由各 Sponsor 自行规定，需向具体 Sponsor 核实。"
     },
     "education": {
       "minimum_level": "bachelor_in_progress",
@@ -42,7 +41,11 @@
     "language": {
       "required": true,
       "tests": [
-        { "test": "none", "min_score": 0, "validity_months": 0 }
+        {
+          "test": "none",
+          "min_score": 0,
+          "validity_months": 0
+        }
       ],
       "note": "无需雅思/托福成绩，但必须具备足以在英语工作环境中沟通的能力。须通过项目方英语测试及美方雇主面试。"
     },
@@ -78,7 +81,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
@@ -98,29 +100,76 @@
     "fees": [
       {
         "item": "报名费",
-        "amount": { "local_amount": 3000, "currency": "CNY", "note": "各机构不同，部分机构在通过英语测试后可退" },
+        "amount": {
+          "local_amount": 3000,
+          "currency": "CNY",
+          "note": "各机构不同，部分机构在通过英语测试后可退"
+        },
         "refundable": false
       },
       {
         "item": "项目费",
-        "amount": { "local_amount": 3280, "currency": "USD", "cny_estimate": 23500, "note": "含岗位匹配、DS-2019 表、SEVIS I-901 费、签证辅导、医疗保险、行前培训等" },
+        "amount": {
+          "local_amount": 3280,
+          "currency": "USD",
+          "cny_estimate": 23500,
+          "note": "含岗位匹配、DS-2019 表、SEVIS I-901 费、签证辅导、医疗保险、行前培训等"
+        },
         "refundable": false
       }
     ],
     "processing_time": "签证审理约 2-4 周"
   },
-
   "documents": [
-    { "name": "有效护照", "required": true, "note": "有效期覆盖整个停留期", "prepare_days": 30 },
-    { "name": "在读证明", "required": true, "note": "学校出具的全日制在读证明", "prepare_days": 14 },
-    { "name": "假期证明", "required": true, "note": "证明 6-9 月为学校假期，需提前向院系申请", "prepare_days": 30 },
-    { "name": "家长知情同意书", "required": true, "note": "报名前须征得家长/监护人同意", "prepare_days": 7 },
-    { "name": "DS-2019 表", "required": true, "note": "美国国务院授权 Sponsor 机构签发的核心文件，项目方协助办理", "prepare_days": 60 },
-    { "name": "SEVIS I-901 缴费凭证", "required": true, "note": "通常含在项目费中", "prepare_days": 7 },
-    { "name": "Job Offer", "required": true, "note": "美方雇主工作邀请函，通过雇主面试后获得", "prepare_days": 60 },
-    { "name": "签证照片", "required": true, "note": "符合美国签证规格", "prepare_days": 7 }
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期覆盖整个停留期",
+      "prepare_days": 30
+    },
+    {
+      "name": "在读证明",
+      "required": true,
+      "note": "学校出具的全日制在读证明",
+      "prepare_days": 14
+    },
+    {
+      "name": "假期证明",
+      "required": true,
+      "note": "证明 6-9 月为学校假期，需提前向院系申请",
+      "prepare_days": 30
+    },
+    {
+      "name": "家长知情同意书",
+      "required": true,
+      "note": "报名前须征得家长/监护人同意",
+      "prepare_days": 7
+    },
+    {
+      "name": "DS-2019 表",
+      "required": true,
+      "note": "美国国务院授权 Sponsor 机构签发的核心文件，项目方协助办理",
+      "prepare_days": 60
+    },
+    {
+      "name": "SEVIS I-901 缴费凭证",
+      "required": true,
+      "note": "通常含在项目费中",
+      "prepare_days": 7
+    },
+    {
+      "name": "Job Offer",
+      "required": true,
+      "note": "美方雇主工作邀请函，通过雇主面试后获得",
+      "prepare_days": 60
+    },
+    {
+      "name": "签证照片",
+      "required": true,
+      "note": "符合美国签证规格",
+      "prepare_days": 7
+    }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -179,7 +228,6 @@
       "official_link": "https://www.irs.gov/"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 4,
     "max_same_employer_months": 4,
@@ -196,7 +244,6 @@
     ],
     "note": "岗位均为非专业性基础服务类，每周工作 32-40 小时，超时按州法支付加班费。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -223,7 +270,6 @@
       "description": "优势：不限名额、无语言硬门槛、门槛低；J-1 签证记录对未来赴美留学签证有正向参考。实习薪资可覆盖在美基本开销。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -245,7 +291,6 @@
       "note": "2026-10-30 未重抓。年龄 18-28 与项目费属于中国落地口径，不是美国国务院规定。"
     }
   ],
-
   "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }
