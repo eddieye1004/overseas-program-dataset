@@ -1,0 +1,290 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "nl-orientation-year",
+    "name": "荷兰毕业后求职居留",
+    "name_en": "Residence Permit for Orientation Year (Zoekjaar)",
+    "country": "荷兰",
+    "country_code": "NL",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Orientation year (zoekjaar)",
+    "official_url": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year",
+    "authority": "荷兰移民与归化局（IND, Immigratie- en Naturalisatiedienst）",
+    "summary": "在荷兰读完本科、硕士、博士或做完研究后，可申请一年的求职居留（zoekjaar），期间工作完全自由、不需要雇主申请工作许可。境外院校毕业生也能申请，但要求院校在 THE、QS、软科三个排名里至少两个进入前 200，且学历须经 Nuffic 认证。不可延长，一年内找到工作要转成高技术移民或自雇居留。",
+    "tags": [
+      "no_quota_cap",
+      "requires_degree",
+      "no_agency_needed",
+      "rolling"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "IND 页面按「你在哪读书、什么时候毕业」判断，不按国籍排除。中国大陆护照持有人两条路都成立：在荷兰读完学位，或在境外院校毕业且该校满足排名门槛。土耳其公民及其家属另有一套规定，见官方页面的单独说明。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方页面未设年龄限制。0-99 表示「无年龄要求」，不是「未核实」。真正的门槛是毕业时间：须在申请日之前 3 年内完成学业或研究。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "满足以下任一情形即可：①在荷兰高等教育机构完成经认证的本科或硕士项目；②在荷兰完成至少一个学年（不少于 10 个月）的 post-master 项目；③在荷兰完成《文化政策（专项资助）法》下的学习项目；④在荷兰完成外交部发展合作政策下的学习项目；⑤在境外指定院校完成硕士、博士或 post-master 项目；⑥在申请日前 3 年内于荷兰从事过科研（持指令 (EU) 2016/801 下的科研居留，或基于科研的高技术移民居留且合同上的 UFO 岗位代码以 01 开头）；⑦在申请日前 3 年内取得 Erasmus Mundus 联合硕士项目的硕士学位。"
+    },
+    "language": {
+      "required": true,
+      "tests": [
+        {
+          "test": "IELTS",
+          "min_score": 6.0,
+          "validity_months": 24
+        }
+      ],
+      "note": "只有「境外院校毕业」这条路要查语言，且在荷兰毕业的人不适用。境外院校毕业生须满足下列之一：雅思总分 6.0（学术类或培训类均可，官方原文 `It does not matter which version you have`）；或在 Code of Conduct 语言考试附录所列的其他考试中达到等同 6.0 的成绩；或持有《2021 年公民融合法》第 4 条第 1 款 b 项所述的文凭；或持《公民融合 decree》第 2.3 条第 1 款所述的文凭；或所读硕士/博士/post-master 项目本身以英语或荷兰语授课。官方页面未写成绩有效期，`validity_months: 24` 是推断值，不是官方数字，递交前请向 IND 确认。"
+    },
+    "funds": {
+      "required": false,
+      "note": "官方 orientation year 页面未列资金门槛，核心条件是学历与院校排名，不是存款。若从境外走 MVV（临时居留许可）入境，MVV 本身另有通用要求，以 IND 页面为准。这一条与德国 §20 不同——德国明文要求生计保障，荷兰这一类别没有。"
+    },
+    "other_requirements": [
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "入境后须做结核病（TB）筛查，在拿到居留许可后 3 个月内到市政卫生服务局（GGD）预约。豁免情形：国籍在豁免附录内、已持有荷兰有效居留并只是转换目的、在荷兰出生且一直居住在此、11 岁及以下、6 个月内在荷兰做过 TB 检查、持欧盟长期居民居留或为其家庭成员。"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "12 岁以上申请人必须完整填写《Antecedents Certificate》（无犯罪声明附表）并随申请提交。这是在声明是否曾被判过罪，不是要你去开无犯罪记录证明。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": false,
+        "note": "在荷兰境内可在线申请（需 DigiD、BSN、BRP 登记、且毕业后仍持有效居留）；在境外则向荷兰使领馆申请 MVV 与居留许可，两者同时递交。已离境且原居留过期不超过 2 年的人仍在覆盖范围内。"
+      },
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "不得为同一段科研、同一个学习项目或博士项目重复申请过 orientation year 居留。但换一段科研或换一个项目后可以再申请一次——官方原文把「第二次及以后」单列了一节。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "不设名额上限，也没有统一开放窗口。约束是「毕业/完成研究之日起 3 年内」这个个人时间窗，越早递交越好。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动受理。申请日起往前推 3 年内完成学业或研究者均可申请。"
+      },
+      {
+        "year": 2027,
+        "status": "open",
+        "note": "同上。费用与条件按 IND 页面当期版本执行，最近一次更新为 2026-10-07。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "居留许可申请费（首次申请或转换居留目的）",
+        "amount": {
+          "local_amount": 254,
+          "currency": "EUR",
+          "cny_estimate": 2010
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方写明 IND 必须在 90 天内作出决定（`The IND must take a decision within 90 days.`）。材料不齐时决定期可被延长，IND 会另发信通知。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "走 MVV 时，护照在贴签证时的剩余有效期须不少于 6 个月；MVV 本身有效期为 90 天。",
+      "prepare_days": 30
+    },
+    {
+      "name": "学位证书或毕业证明",
+      "required": true,
+      "note": "荷兰院校的学位或「完成学业声明」；境外院校的学位须先经 Nuffic 认证（比利时法兰德斯地区院校除外，但须在法兰德斯高等教育注册册内）。",
+      "prepare_days": 30
+    },
+    {
+      "name": "Nuffic 学历认证报告",
+      "required": true,
+      "note": "仅境外院校毕业生需要。认证用于确认外国学历在荷兰的等值程度，Nuffic 也可能核验文凭真伪。荷兰院校毕业生不需要。",
+      "prepare_days": 60
+    },
+    {
+      "name": "院校排名证明",
+      "required": true,
+      "note": "仅境外院校毕业生需要。院校须在 THE、QS、软科三个发布方中至少两个的前 200 名（综合排名或学科排名均可），且排名以毕业或取得学位当日为准。用学科排名时，该学科须与你所读专业或研究方向一致。不同发布方的综合排名与学科排名可以混用。",
+      "prepare_days": 14
+    },
+    {
+      "name": "英语成绩单",
+      "required": true,
+      "note": "仅境外院校毕业生需要，且仅当所读项目不是英语或荷兰语授课时。雅思 6.0（学术类/培训类均可），或 Code of Conduct 附录内其他考试的等同成绩。",
+      "prepare_days": 60
+    },
+    {
+      "name": "Antecedents Certificate（无犯罪声明）",
+      "required": true,
+      "note": "12 岁以上申请人必填，随申请一并提交。如实申报是否曾被判罪，不是要求另行开具证明。",
+      "prepare_days": 3
+    },
+    {
+      "name": "护照照片",
+      "required": true,
+      "note": "到使领馆面交时携带；同时在现场采集指纹与签名作为生物信息。",
+      "prepare_days": 7
+    },
+    {
+      "name": "官方文件的公证与翻译",
+      "required": true,
+      "note": "境外官方文件须做公证（legalised）并译成荷兰语、英语、法语或德语之一。",
+      "prepare_days": 30
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认自己落在哪一条资格路径",
+      "description": "先分清是「荷兰院校毕业」还是「境外院校毕业」。前者只看学位与毕业时间；后者还多两道关：院校排名（三个发布方中两个的前 200）与 Nuffic 认证，若项目非英语/荷兰语授课还要英语成绩。这一步判断错，后面全部白做。",
+      "duration": "1 天",
+      "official_link": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year"
+    },
+    {
+      "step_no": 2,
+      "title": "核对 3 年时间窗",
+      "description": "申请日往前推 3 年内必须完成学业、取得学位或结束科研。已离境且原居留过期不超过 2 年的人仍在覆盖范围内，不要以为回国就作废。",
+      "duration": "1 天",
+      "official_link": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year"
+    },
+    {
+      "step_no": 3,
+      "title": "备齐材料（境外学历先做 Nuffic 认证）",
+      "description": "境外学历的 Nuffic 认证耗时最长，先启动。官方申请表格里列了完整清单，表格只有英文版。所有境外官方文件须公证并译成荷/英/法/德之一。",
+      "duration": "1-2 个月",
+      "official_link": "https://ind.nl/en/forms/9571.pdf"
+    },
+    {
+      "step_no": 4,
+      "title": "选择递交通道",
+      "description": "在荷兰境内且满足五项条件（住在荷兰、在荷兰毕业/取得博士/做研究、持对应有效居留、已在 BRP 登记、有 BSN）可在线申请，需 DigiD，用 iDEAL 付款。境外则先向荷兰使领馆预约，同时递交 MVV 与居留许可申请；面谈后等 1 周再寄材料，且不得晚于面谈后 3 周。",
+      "duration": "1 天",
+      "official_link": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year"
+    },
+    {
+      "step_no": 5,
+      "title": "缴费 254 欧元",
+      "description": "在线申请时用 iDEAL 立即支付；书面申请会收到缴费信。境外通道同样在面谈后 1 周再付，最晚不超过 3 周。",
+      "duration": "1 天",
+      "official_link": "https://ind.nl/en/fees-costs-of-an-application"
+    },
+    {
+      "step_no": 6,
+      "title": "等决定（最长 90 天）",
+      "description": "IND 须在 90 天内作出决定，可通过 My IND 跟踪进度。材料不齐时决定期会被延长，届时会另发信说明。决定信通常通过 Zivver 发送。",
+      "duration": "90 天内",
+      "official_link": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year"
+    },
+    {
+      "step_no": 7,
+      "title": "贴 MVV 或领居留卡",
+      "description": "境外获批后须在决定作出后 3 个月内到原递交的使领馆贴 MVV 签证贴纸，随后入境。境内获批则等 IND 柜台的信，预约领取居留卡。",
+      "duration": "3 个月内",
+      "official_link": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year"
+    },
+    {
+      "step_no": 8,
+      "title": "入境后做 TB 筛查并处理后续身份",
+      "description": "在拿到居留许可后 3 个月内到 GGD 做结核病筛查（符合豁免情形者除外）。一年内找到工作要转成高技术移民、自雇或创业居留，orientation year 本身不可延长。",
+      "duration": "3 个月内",
+      "official_link": "https://ind.nl/en/requirements-that-apply-to-everyone"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 12,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "明文不可延长：`You cannot extend the residence permit for the orientation year for highly educated persons.` 一年内找到工作须转成其他居留目的（高技术移民、自雇、创业）。例外是「第二次 orientation year」——换一段科研或换一个在荷兰完成的学习/博士项目后可以再申请一次，但新项目必须在上一次 orientation year 之后完成。",
+    "restricted_occupations": [],
+    "note": "工作完全自由：`You may work freely in the Netherlands or do an internship. Your employer does not need a work permit`，也可作为独立创业者、自雇者或自由职业者工作。居留卡背面印有 `Work freely permitted, TWV not required`。等待决定期间也可以先上班，但须先在护照上贴一张 Residence Endorsement 贴纸（`Arbeid vrij toegestaan, TWV niet vereist`），且申请材料里必须含荷兰文凭复印件、经 Nuffic 认证的境外文凭，或过去 3 年从事科研的证明。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "境外院校这条路最容易踩的坑是排名口径：院校必须在 THE、QS、软科三个发布方中至少两个的前 200，且排名以你毕业当日为准，不是申请当日。只进一个榜单前 200，或用与所学专业无关的学科排名，都不成立。"
+    },
+    {
+      "level": "critical",
+      "description": "3 年时间窗从毕业或结束研究之日起算，不是从拿到居留卡起算，也不是从回国起算。拖过 3 年就永久失去这一类别。"
+    },
+    {
+      "level": "warning",
+      "description": "境外学历必须先经 Nuffic 认证，这一步常被忽略且耗时最长（按 1-2 个月预留）。法兰德斯地区院校可免认证，但须在法兰德斯高等教育注册册内。"
+    },
+    {
+      "level": "warning",
+      "description": "英语成绩只在「境外院校毕业 + 项目非英语/荷兰语授课」时被要求。官方页面没写成绩有效期，本文按 24 个月标注是推断值，递交前应向 IND 核实。"
+    },
+    {
+      "level": "warning",
+      "description": "这一年不计入永久居留所需的居住年限，也不是工作许可的替代品——它只是给你时间找工作。一年到期若没转成工作类居留，就得离境。"
+    },
+    {
+      "level": "info",
+      "description": "12 岁以上都要填《Antecedents Certificate》，这是申报表不是证明信。如实填写即可，把它当成「要开无犯罪记录证明」去跑公证会白费时间。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Residence permit for orientation year — IND（含国籍分流后的完整条件）",
+      "url": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year",
+      "publisher": "荷兰移民与归化局（IND）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "页面标注 `Last update: 7 October 2026`。核心条件原文：`You completed one of the following study programmes in the 3 years before the date of application`；境外院校须 `Your educational institution is in the top 200 of the general rankings or the rankings by subject of at least 2 of the 3 publishers`；`Your educational institution is in the top 200 of these rankings on the date of your graduation or promotion`；`All foreign diplomas have to be evaluated by Nuffic before they can be accepted`；语言 `You obtained a minimum score of 6.0 on a test in the International English Language Testing System (IELTS). There are 2 versions of the IELTS: Academic and General Training. It does not matter which version you have.`；工作 `You may work freely in the Netherlands or do an internship. Your employer does not need a work permit`；期限 `The residence permit for the orientation year for highly educated persons is valid for 1 year.` 与 `You cannot extend the residence permit for the orientation year for highly educated persons.`；审理 `The IND must take a decision within 90 days.` 该页条件正文藏在国籍问答分流器里，静态 HTML 只显示引导语，须以 POST 提交 `nationality_1=Chinese (113)`、`valid_permit`、`expired_permit` 与 `form_build_id` 才能拿到完整条件。"
+    },
+    {
+      "type": "primary",
+      "name": "Requirements that apply to everyone — IND",
+      "url": "https://ind.nl/en/requirements-that-apply-to-everyone",
+      "publisher": "荷兰移民与归化局（IND）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "页面标注 `Last update: 20 March 2026`。通用要求原文：`You have a valid passport or other travel document.`；`You do not pose a danger to public order or national security. Everyone over the age of 12 must completely fill in an Appendix Antecedents Certificate and enclose it with the application.`；`After you arrive in the Netherlands, you have to be tested for tuberculosis (TB).` 豁免含 `You already have a valid residence permit in the Netherlands and you are applying for a different residence permit.`、`You are 11 years of age or younger.`、`You took a TB test in the Netherlands less than 6 months ago.` 该页未列资金门槛——orientation year 类别在这一点上没有存款要求。"
+    },
+    {
+      "type": "primary",
+      "name": "Fees: costs of an application — IND（orientation year 条目）",
+      "url": "https://ind.nl/en/fees-costs-of-an-application",
+      "publisher": "荷兰移民与归化局（IND）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "费用表 `Looking for a job after study, promotion or scientific research (orientation year)` 一行原文为 `First application or change in purpose of stay € 254,00`，另有 `Holder status long-term resident EU in another EU member state € 254,00`。与申请流程页 `The application costs € 254,00.` 一致。"
+    },
+    {
+      "type": "secondary",
+      "name": "Language Test Appendix to the Code of Conduct（October 2026 版）",
+      "url": "https://www.internationalstudy.nl/wp-content/uploads/2026/06/Language-Test-Appendix-to-the-Code-of-Conduct-October-2026.pdf",
+      "publisher": "荷兰国际教育合作组织（Nuffic）维护的 Code of Conduct 语言考试附录（由 IND 页面直接链接，本站非 .gov 域名，按二级来源登记）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "IND 页面把「其他可接受的英语考试等同 6.0」指向这份附录（`another accepted English language test that is listed in the Language tests appendix to the Code of Conduct`）。本条目只作为该指向的落点登记，具体分数换算须在递交时按当期版本核对。"
+    }
+  ],
+  "last_verified": "2026-11-08",
+  "verified_by": "eddieye1004"
+}

@@ -13,9 +13,9 @@
 
 | 指标 | 数值 |
 |---|---|
-| 项目数 | 25 |
-| 来源条目 | 105（primary 100 / secondary 5） |
-| 去重后的 URL 数 | 95（另有 25 个 `official_url` 入口） |
+| 项目数 | 26 |
+| 来源条目 | 109（primary 103 / secondary 6） |
+| 去重后的 URL 数 | 99（另有 26 个 `official_url` 入口） |
 | 最近一次核实 | 2026-11-08 |
 | 最早一次核实 | 2026-09-17 |
 | 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 52 天） |
@@ -186,6 +186,21 @@
 | 2 | primary | H-1 visa (Working Holiday) — 韩国驻悉尼总领事馆 | Consulate General of the Republic of Korea in Sydney | <https://overseas.mofa.go.kr/au-sydney-en/brd/m_2367/view.do?seq=760608&page=1> | A · 政府/法律 | 2026-10-30 | H-1 签证年龄要求（2026-09-01 起部分国家放宽至 18-35 岁）、工作限制（同一雇主不超过 6 个月）、禁止职业清单、材料清单 |
 | 3 | primary | Working Holiday (H-1) Visa Information by Country and Region | Working Holiday Info Center, Overseas Koreans Agency（韩国外交部海外侨胞厅） | <https://whic.mofa.go.kr/contents.do?menuNo=90&contentsNo=38> | A · 政府/法律 | 2026-10-30 |  |
 | 4 | primary | 韩国打工度假官方手册（2026-2027，在外同胞厅 Working Holiday Info Center） | Overseas Koreans Agency, Republic of Korea | <https://whic.mofa.go.kr/upload/temp/kr_workingholiday_english.pdf> | A · 政府/法律 | 2026-11-08 | 2026-2027 官方手册原文：`Stay up to 12 months`、`maximum working hours: 25 hours/week`、`Entitled to undertake most types of temporary employment ... with the exception of certain professional jobs (doctor, language instructor, athlete, entertainer, etc)`；资格条件 `Be between the ages of 18 and 30 years (inclusive)`、`Be inside your home country when you apply and when your visa is granted`、`Have sufficient funds ... (KRW 3,000,000 minimum)`、`Not have criminal record`；材料清单 `Medical certificate`、`Criminal record check`、`Travel plans`、`Health Insurance ... (Coverage: KRW 40,000,000 minimum)`；Q&A 明确 25 小时上限与受限职业；FAQ 明确不可续签、可在有限情形转签证、加拿大与日本公民可参加两次；并声明各项要求可能因使领馆/KVAC 而异。 |
+
+---
+
+## 荷兰
+
+### 荷兰毕业后求职居留
+
+`nl-orientation-year` · 官方入口 <https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Residence permit for orientation year — IND（含国籍分流后的完整条件） | 荷兰移民与归化局（IND） | <https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year> | A · 政府/法律 | 2026-11-08 | 页面标注 `Last update: 7 October 2026`。核心条件原文：`You completed one of the following study programmes in the 3 years before the date of application`；境外院校须 `Your educational institution is in the top 200 of the general rankings or the rankings by subject of at least 2 of the 3 publishers`；`Your educational institution is in the top 200 of these rankings on the date of your graduation or promotion`；`All foreign diplomas have to be evaluated by Nuffic before they can be accepted`；语言 `You obtained a minimum score of 6.0 on a test in the International English Language Testing System (IELTS). There are 2 versions of the IELTS: Academic and General Training. It does not matter which version you have.`；工作 `You may work freely in the Netherlands or do an internship. Your employer does not need a work permit`；期限 `The residence permit for the orientation year for highly educated persons is valid for 1 year.` 与 `You cannot extend the residence permit for the orientation year for highly educated persons.`；审理 `The IND must take a decision within 90 days.` 该页条件正文藏在国籍问答分流器里，静态 HTML 只显示引导语，须以 POST 提交 `nationality_1=Chinese (113)`、`valid_permit`、`expired_permit` 与 `form_build_id` 才能拿到完整条件。 |
+| 2 | primary | Requirements that apply to everyone — IND | 荷兰移民与归化局（IND） | <https://ind.nl/en/requirements-that-apply-to-everyone> | A · 政府/法律 | 2026-11-08 | 页面标注 `Last update: 20 March 2026`。通用要求原文：`You have a valid passport or other travel document.`；`You do not pose a danger to public order or national security. Everyone over the age of 12 must completely fill in an Appendix Antecedents Certificate and enclose it with the application.`；`After you arrive in the Netherlands, you have to be tested for tuberculosis (TB).` 豁免含 `You already have a valid residence permit in the Netherlands and you are applying for a different residence permit.`、`You are 11 years of age or younger.`、`You took a TB test in the Netherlands less than 6 months ago.` 该页未列资金门槛——orientation year 类别在这一点上没有存款要求。 |
+| 3 | primary | Fees: costs of an application — IND（orientation year 条目） | 荷兰移民与归化局（IND） | <https://ind.nl/en/fees-costs-of-an-application> | A · 政府/法律 | 2026-11-08 | 费用表 `Looking for a job after study, promotion or scientific research (orientation year)` 一行原文为 `First application or change in purpose of stay € 254,00`，另有 `Holder status long-term resident EU in another EU member state € 254,00`。与申请流程页 `The application costs € 254,00.` 一致。 |
+| 4 | secondary | Language Test Appendix to the Code of Conduct（October 2026 版） | 荷兰国际教育合作组织（Nuffic）维护的 Code of Conduct 语言考试附录（由 IND 页面直接链接，本站非 .gov 域名，按二级来源登记） | <https://www.internationalstudy.nl/wp-content/uploads/2026/06/Language-Test-Appendix-to-the-Code-of-Conduct-October-2026.pdf> | C · 其他第三方 | 2026-11-08 | IND 页面把「其他可接受的英语考试等同 6.0」指向这份附录（`another accepted English language test that is listed in the Language tests appendix to the Code of Conduct`）。本条目只作为该指向的落点登记，具体分数换算须在递交时按当期版本核对。 |
 
 ---
 
