@@ -111,7 +111,7 @@
     {
       "name": "英语语言能力证明",
       "required": true,
-      "note": "CEFR C1/C2 或 IAESTE 免费口试",
+      "note": "按接收国委员会要求，例如 IAESTE Germany 要求 3 年内有效的英语证书或全英文授课证明",
       "prepare_days": 60
     },
     {
@@ -132,7 +132,7 @@
     {
       "step_no": 2,
       "title": "完成英语水平测试",
-      "description": "提供国际认可的英语证书（CEFR C1/C2，3 年内有效），或联系当地 IAESTE 委员会参加免费口试。",
+      "description": "按所在国委员会要求准备英语证明。IAESTE Germany 明文要求 3 年内有效的英语证书（UNIcert、Cambridge、IELTS、ISE、TOEFL、TOEIC、PTE Academic、onSET、OLS、Duolingo）或至少两个完整学期全英文授课；美国、加拿大（魁北克除外）、英国、爱尔兰、新西兰、澳大利亚申请人免交。中国区要求需向 IAESTE China 确认。",
       "duration": "1-2 周",
       "official_link": "https://www.iaeste.de/application-process/"
     },
@@ -259,6 +259,6 @@
       "claim": "中国大陆在 IAESTE 的合作机构（Co-operating Institution）为 Archibucks 与 HLG 两家，非 National Committee（国家委员会）；官方联系域名 iaeste.learngive.cn"
     }
   ],
-  "last_verified": "2026-10-30",
+  "last_verified": "2026-11-08",
   "verified_by": "eddieye1004"
 }

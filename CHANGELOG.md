@@ -10,6 +10,17 @@
 
 > 本次首次改动数据文件（新增 5 个项目），版本号按 v0.3.0 记。
 
+### 复核 — 爱尔兰 WHA 更新到 2027 年度，无犯罪记录由问卷升为资格条件（2026-11-08）
+
+原来的记录停在 2026 年度，ISD 已换版：站点上现在挂的是 `2027-EN_Guidance-Note.pdf` 与 `WHA-2027-Application-Form-November-2026.pdf`，旧的 2026 两份 PDF 直连返回 403。按新版重写了申请窗口、名额口径、材料清单与来源清单。
+
+- 窗口：2027 年度自 2026-11-01 09:00（台北时间）开放，按收件先后受理，前 400 份合格申请在 2027 年初签发；获批者可在 2027-12-31 前任一时点入境开始 12 个月。
+- 口径收紧一处：`not have a criminal record` 在 2027 指南里是第 (g) 项资格条件，2026 版只是申请表里的问卷题。`other_requirements` 里该条从 `required: false` 改为 `required: true`，并写明两版的差别。
+- 补上原文依据的细节：工作必须是旅行的附带安排（`employment being an incidental, rather than the primary reason for the visit`）、短期课程上限 6 个月（`no longer than six months`）、停留超 90 天须注册缴费、项目本身无申请费（`There is no application fee for participation in this programme`，只有 NT$3,200 代理手续费）。
+- 同时修正 `global-iaeste` 两处：`documents` 里的「CEFR C1/C2」与 `steps` 里的同一表述，改为按接收国委员会要求准备——正文早已写明 IAESTE 官方不设等级门槛，材料清单却还留着旧说法。
+
+**取数教训**：`ireland.ie` 的 WHA 页正文全是导航菜单，真正内容（11 个签约国家/地区各自的受理机构）在一张表格里；`irishimmigration.ie` 的 PDF 直连用 curl 会 403，改用 urllib 带 Chrome UA 才拿到 200。判断「页面改版了」不能只看正文里有没有关键词，要对比 PDF 文件名里的年份。
+
 ### 新增 — 2 个项目：美国 F-1 OPT 与德国 §20 求职居留（2026-11-08）
 
 数据从 18 个项目扩到 20 个：可申 12 → 14、不可申仍为 6，来源 72 → 78 条（A 级 62 → 68）。两项都补的是「留学之后怎么留下来」这一段，此前数据集只覆盖到「怎么出去」和「读完怎么短期留下」，缺英美两国最常用的两条桥。

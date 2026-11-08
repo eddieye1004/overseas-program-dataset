@@ -29,9 +29,9 @@ web/
 ├─ i18n-src/                  翻译源（chunk-*.json），构建期不参与打包
 │                             merged.json 是本地合并中间产物，已 gitignore
 ├─ public/data/               sync:data 生成的产物，随构建拷进 dist
-│   ├─ programs.json          20 条完整记录 226.4 KB（gzip 54.8 KB）
-│   ├─ index.json             卡片用轻量索引 23.7 KB（含来源计数）
-│   └─ i18n.json              1270 条词条 363.3 KB
+│   ├─ programs.json          20 条完整记录 229.4 KB（gzip 68.9 KB）
+│   ├─ index.json             卡片用轻量索引 23.9 KB（含来源计数）
+│   └─ i18n.json              1294 条词条 377.3 KB
 ├─ scripts/
 │   ├─ sync-data.mjs          合并 data/programs/*.json → public/data/
 │   ├─ smoke-test.mjs         89 条纯逻辑断言（筛选/排序/匹配/词典对齐）
@@ -66,7 +66,7 @@ web/
 |---|---|
 | 托管 | GitHub Pages 免费（public 仓库 1 GB、月 100 GB 流量）；Cloudflare Pages 免费额度更大 |
 | 运行时费用 | 0 元。没有 Function、没有 KV、没有第三方 API |
-| 首屏体积 | HTML 0.58 KB + CSS 28.7 KB（gzip 6.2 KB）+ JS 203.1 KB（gzip 64.9 KB）+ index.json 21.0 KB |
+| 首屏体积 | HTML 3.2 KB（gzip 1.4 KB）+ CSS 29.4 KB（gzip 6.4 KB）+ JS 204.4 KB（gzip 66.7 KB）+ index.json 23.9 KB |
 | 换设备 | 收藏/进度**不同步**，需要手工导出（本期没做导出，见「已知限制」） |
 | 数据更新 | 需要跑 `pnpm run sync:data` 再构建；Pages 工作流已包含这一步 |
 | SEO | hash 路由对搜索引擎不友好。要按详情页做 SEO 需换成真实路径 + 站点地图，属于下一阶段 |
