@@ -1,0 +1,288 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "uk-hpi-visa",
+    "name": "英国高潜力人才签证",
+    "name_en": "High Potential Individual (HPI) visa",
+    "country": "英国",
+    "country_code": "GB",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "High Potential Individual",
+    "official_url": "https://www.gov.uk/high-potential-individual-visa",
+    "authority": "UK Visas and Immigration（英国内政部签证与移民局）",
+    "summary": "不需要先在英国读书、也不需要雇主担保的英国工作签证：只要近 5 年内从英国内政部认可的境外大学毕业，就能申请 2 年（博士 3 年），期间可自由工作、求职、自雇。2026 年度名单收了 82 所境外院校，其中中国大陆 8 所、香港 5 所，是全球少数对大陆护照持有人直接开放、且不要求已有 offer 的发达国家长期居留路径。每人一生只能申请一次。",
+    "tags": [
+      "no_agency_needed",
+      "requires_degree",
+      "english_required",
+      "no_quota_cap",
+      "high_demand"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "官方资格页未设国籍限制，门槛在于「学位授予院校是否在认可名单内」与「学位授予时间落在哪份名单的区间」。2026 年度（2026-11-01 至 2027-10-31 授予的学位）名单里的中国大陆院校 8 所：Peking University、Tsinghua University、Fudan University、Shanghai Jiao Tong University、Zhejiang University、Nanjing University、University of Science and Technology of China、Harbin Institute of Technology；香港 5 所：The University of Hong Kong、The Chinese University of Hong Kong、The Hong Kong University of Science and Technology、City University of Hong Kong、The Hong Kong Polytechnic University。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方未设年龄限制。0-99 表示「无年龄要求」，不是「未核实」。真正的约束是学位授予时间须在申请前 5 年内。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须由认可名单内的境外大学授予学位，且学位层级至少等同英国本科。英国本国大学不在名单内——已在英国读书的人应走毕业生签证（Graduate visa）。学位须在申请前 5 年内授予，且必须按「学位授予时间」去查对应年度那份名单，不是查最新一份。学历真伪与层级由 Ecctis 出具证明，但 Ecctis 不负责判断院校是否在名单内。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "须证明英语能力（官方原文 `prove your knowledge of English`），可通过指定英语考试或学位本身以英语授课来证明。官方资格页未在本页列出具体分数线，须按 GOV.UK 的英语证明指引核对。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 1270,
+        "currency": "GBP",
+        "cny_estimate": 11600,
+        "note": "官方原文 `you'll usually need to have at least £1,270 available (unless you're exempt)`"
+      },
+      "note": "须证明有至少 £1,270 存款，且这笔钱须连续存满 28 天，第 28 天须落在递交申请前 31 天内。例外：申请前已在英国持有效签证停留满 12 个月的人可免此项。"
+    },
+    "other_requirements": [
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "一生只能申请一次（官方原文 `You can only apply for an HPI visa once.`）。已经拿过毕业生签证（Graduate visa）或曾以 Doctorate Extension Scheme 学生身份来英的人不能再申请。"
+      },
+      {
+        "type": "government_support_letter",
+        "required": true,
+        "note": "须先向 Ecctis 申请学历认证，确认学位真实且层级达标，费用 £252（含增值税）。已有 Ecctis 认证结果的不用重做。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": false,
+        "note": "境内境外都能申请（官方原文 `You can apply for an HPI visa from inside the UK or outside the UK.`）。境外申请最早可在出行前 3 个月递交。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "有年度限额但未公布具体数字。官方原文：`There is a yearly limit on applications for this visa. The application year runs between 1 November and 31 October. If the limit has been reached, you'll be told when you apply online.` 名额是否用尽只能在在线申请时才知道，无法提前查询。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "申请年度按 11 月 1 日至次年 10 月 31 日计。2026-11-01 起进入新的申请年度，同时启用「2026 名单」——该名单对应 2026-11-01 至 2027-10-31 之间授予的学位。"
+      },
+      {
+        "year": 2027,
+        "status": "upcoming",
+        "note": "申请年度延续至 2027-10-31。学位若在 2027 年内授予，仍查 2026 那份名单；名单每年 11 月 1 日换版，一共可回溯 6 个年度（2021 至 2026）。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "Ecctis 学历认证费",
+        "amount": {
+          "local_amount": 252,
+          "currency": "GBP",
+          "cny_estimate": 2300,
+          "note": "官方原文 `pay £252 for Ecctis to check your qualification is valid (this includes VAT)`"
+        },
+        "refundable": false
+      },
+      {
+        "item": "签证申请费",
+        "amount": {
+          "local_amount": 880,
+          "currency": "GBP",
+          "cny_estimate": 8000,
+          "note": "官方原文 `pay the £880 application fee`"
+        },
+        "refundable": false
+      },
+      {
+        "item": "移民医疗附加费（IHS）",
+        "amount": {
+          "local_amount": 1035,
+          "currency": "GBP",
+          "cny_estimate": 9500,
+          "note": "按年计：2 年档合计 £2,070，3 年档合计 £3,105（官方原文 `2 years - it will cost £2,070`、`3 years - it will cost £3,105`）"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方原文：境外申请 `3 weeks, if you're outside the UK`，境内申请 `8 weeks, if you're inside the UK`。需要现场采集生物信息的还要另加预约等待时间。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期须覆盖整个签证期；护照先到期时签证只批到护照到期日",
+      "prepare_days": 30
+    },
+    {
+      "name": "Ecctis 学历认证证明",
+      "required": true,
+      "note": "证明学位真实且层级至少等同英国本科。已有旧认证结果可直接沿用。注意 Ecctis 不核院校是否在名单内，名单要自己查",
+      "prepare_days": 30
+    },
+    {
+      "name": "学位证书与成绩单",
+      "required": true,
+      "note": "须能证明授予院校与授予日期——两者共同决定该查哪一年的名单",
+      "prepare_days": 14
+    },
+    {
+      "name": "英语能力证明",
+      "required": true,
+      "note": "指定英语考试成绩，或以英语授课的学位本身作为证明。具体可接受形式按 GOV.UK 英语证明指引核对",
+      "prepare_days": 60
+    },
+    {
+      "name": "存款证明",
+      "required": true,
+      "note": "至少 £1,270，连续存满 28 天，第 28 天在递交前 31 天内。已在英国持有效签证满 12 个月者可免",
+      "prepare_days": 31
+    },
+    {
+      "name": "ATAS 证明（如需）",
+      "required": false,
+      "note": "用本签证读或研究敏感课题（部分工程、材料、物理方向）时需要。纯工作不需要",
+      "prepare_days": 30
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "按学位授予时间查对应年度的院校名单",
+      "description": "名单每年 11 月 1 日换版，官方提供 2021 至 2026 共 6 份。查错年份会得出错误结论：2026 名单只适用于 2026-11-01 至 2027-10-31 授予的学位。先确认院校在名单内，再谈其他条件。",
+      "duration": "10 分钟",
+      "official_link": "https://www.gov.uk/government/publications/high-potential-individual-visa-global-universities-list"
+    },
+    {
+      "step_no": 2,
+      "title": "向 Ecctis 申请学历认证",
+      "description": "费用 £252（含税）。Ecctis 只核学位真实性与层级，不核院校是否在名单内——名单是自己查的，别把两件事混成一件。已有认证结果可直接复用，不必重做。",
+      "duration": "数周",
+      "official_link": "https://www.gov.uk/high-potential-individual-visa/eligibility"
+    },
+    {
+      "step_no": 3,
+      "title": "准备英语与存款证明",
+      "description": "英语按官方认可方式证明。存款至少 £1,270，须连续存满 28 天，且第 28 天落在递交前 31 天内——这条时间窗经常被算错，导致资金证明失效。",
+      "duration": "1-2 个月",
+      "official_link": "https://www.gov.uk/high-potential-individual-visa/money"
+    },
+    {
+      "step_no": 4,
+      "title": "在线递交并缴费",
+      "description": "申请费 £880，医疗附加费按年 £1,035。名额是否已用尽只在这一步才会提示，之前查不到。境外申请最早可在出行前 3 个月递交。",
+      "duration": "1 天",
+      "official_link": "https://www.gov.uk/high-potential-individual-visa"
+    },
+    {
+      "step_no": 5,
+      "title": "核验身份并等待决定",
+      "description": "按提示用 App 完成人脸与证件核验，或预约签证中心采集生物信息。境外约 3 周、境内约 8 周出结果。",
+      "duration": "3-8 周",
+      "official_link": "https://www.gov.uk/high-potential-individual-visa"
+    },
+    {
+      "step_no": 6,
+      "title": "到期前转其他签证类别",
+      "description": "本签证不可延期，但可在到期前转为技术工人签证（Skilled Worker）等其他类别。注意在 HPI 上待的时间不计入永居年限——想留下的必须尽早转签。",
+      "duration": "到期前 3 个月启动",
+      "official_link": "https://www.gov.uk/high-potential-individual-visa"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 24,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "不可延期（官方原文 `You cannot extend your HPI visa.`）。到期前可转其他签证类别，例如技术工人签证；但在 HPI 期间待的时间不计入永居所需的居留年限（`Your time on an HPI visa will not count as time spent in the UK if you apply to settle in the UK.`）。",
+    "restricted_occupations": [
+      "职业运动员（professional sportsperson，含教练）",
+      "领取公共福利（public funds）"
+    ],
+    "note": "可从事绝大多数工作、可求职、可自雇、可做志愿工作、可出入境、可带符合条件的配偶与子女。两类明确禁止：职业运动员、领取公共福利。学习受限——只有该课程本身不符合学生签证条件时才能用本签证去读（`You can only study with an HPI visa if your chosen course is not eligible for a Student visa.`）；研究敏感课题需 ATAS。2 年档，博士 3 年。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "一生只能申请一次（`You can only apply for an HPI visa once.`）。第一次被拒或用在错误时机，这条路就永久关闭。"
+    },
+    {
+      "level": "critical",
+      "description": "在 HPI 期间待的时间不计入永居年限。2 年看起来长，但对「想留下来」的人是零积累——不转技术工人签证，两年后仍是零。"
+    },
+    {
+      "level": "critical",
+      "description": "年度名额用尽只在在线申请时才提示，无法提前查询。碰上名额用完，只能等下一个申请年度（11 月 1 日）。"
+    },
+    {
+      "level": "warning",
+      "description": "名单按「学位授予时间」匹配，不是按申请时间。2026-10-31 拿到学位的人查的是 2025 那份名单。院校在某一年的名单里出现过、下一年被剔除是常事。"
+    },
+    {
+      "level": "warning",
+      "description": "英国大学不在名单内。已经在英国读书的人不适用本签证，应走毕业生签证（Graduate visa）——后者时长更短但可立即衔接，两条路不能叠加使用。"
+    },
+    {
+      "level": "warning",
+      "description": "费用不可退且分三笔：Ecctis £252 + 申请费 £880 + 医疗附加费每年 £1,035。2 年档合计约 £3,007（约 2.8 万元人民币），认证没通过时前一笔已经花掉。"
+    },
+    {
+      "level": "info",
+      "description": "优势：不需要 offer、不需要雇主担保、不需要先在英国读书，是境外学历直接换英国长期居留的少数通道之一；可自雇、可求职、可带家属。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "High Potential Individual (HPI) visa — Overview（英国政府官网）",
+      "url": "https://www.gov.uk/high-potential-individual-visa",
+      "publisher": "UK Visas and Immigration / GOV.UK",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "时长原文：`A High Potential Individual (HPI) visa gives you permission to stay in the UK for 2 years.`、`An HPI visa lasts for 2 years. If you have a PhD or other doctoral qualification, it will last for 3 years.` 名额原文：`There is a yearly limit on applications for this visa. The application year runs between 1 November and 31 October. If the limit has been reached, you'll be told when you apply online.` 不可延期与永居不计入：`You cannot extend your HPI visa.`、`Your time on an HPI visa will not count as time spent in the UK if you apply to settle in the UK.` 审理原文：`3 weeks, if you're outside the UK`、`8 weeks, if you're inside the UK`。可做与不可做：`work in most jobs`、`look for work`、`be self-employed`、`do voluntary work`；`cannot: apply for most benefits ('public funds')`、`work as a professional sportsperson`。读书限制：`You can only study with an HPI visa if your chosen course is not eligible for a Student visa.` 递交窗口：`The earliest you can apply for a visa is 3 months before you travel.`"
+    },
+    {
+      "type": "primary",
+      "name": "High Potential Individual (HPI) visa — Eligibility（资格条件）",
+      "url": "https://www.gov.uk/high-potential-individual-visa/eligibility",
+      "publisher": "UK Visas and Immigration / GOV.UK",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "核心条件原文：`To be eligible for a High Potential Individual (HPI) visa, you must have been awarded a qualification by an eligible university.`；`UK universities are not eligible. If you're already in the UK on a student visa you may be able to apply for a Graduate visa.`；`You must have been awarded your qualification in the last 5 years.`；`You'll need to apply to Ecctis to check your qualification is valid and at the right level. Ecctis will not check if your university is eligible.`；`You do not need to have a job offer to apply.`；`You can apply for an HPI visa from inside the UK or outside the UK.`；`You can only apply for an HPI visa once.` 排除条件：`you have already been given a Graduate visa`、`you have already come to the UK as a Doctorate Extension Scheme student`。名单年度切换：`1 November 2026 to 31 October 2027` 至 `1 November 2021 to 31 October 2022` 共 6 个区间。"
+    },
+    {
+      "type": "primary",
+      "name": "High Potential Individual (HPI) visa — How much it costs（费用与资金）",
+      "url": "https://www.gov.uk/high-potential-individual-visa/how-much-it-costs",
+      "publisher": "UK Visas and Immigration / GOV.UK",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "三笔费用原文：`pay £252 for Ecctis to check your qualification is valid (this includes VAT)`、`pay the £880 application fee`、`pay the healthcare surcharge - this is usually £1,035 for each year you'll be in the UK`；分档合计：`2 years - it will cost £2,070`、`3 years - it will cost £3,105`。资金原文：`you'll usually need to have at least £1,270 available (unless you're exempt)`、`You will need to have had the money available for at least 28 days in a row. Day 28 must be within 31 days of applying for this visa.`、`You'll usually need to show proof of this when you apply, unless you've been in the UK with a valid visa for at least 12 months.`"
+    },
+    {
+      "type": "primary",
+      "name": "High Potential Individual visa: global universities list 2026（2026 年度认可院校名单）",
+      "url": "https://www.gov.uk/government/publications/high-potential-individual-visa-global-universities-list/high-potential-individual-visa-global-universities-list-2026",
+      "publisher": "UK Visas and Immigration / GOV.UK",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "页面标注 `Updated 4 November 2026`，适用范围原文 `This list of universities relates to qualifications awarded between 1 November 2026 and 31 October 2027.` 名单共 82 所院校。中国大陆 8 所：`Fudan University`、`Harbin Institute of Technology`、`Nanjing University`、`Peking University`、`Shanghai Jiao Tong University`、`Tsinghua University`、`University of Science and Technology of China`、`Zhejiang University`。香港 5 所：`City University of Hong Kong (CityUHK)`、`The Chinese University of Hong Kong (CUHK)`、`The Hong Kong Polytechnic University`、`The Hong Kong University of Science and Technology`、`The University of Hong Kong`。榜单按字母排列并标注院校所属国家/地区，中国大陆条目全部标 `China`。"
+    }
+  ],
+  "last_verified": "2026-11-08",
+  "verified_by": "eddieye1004"
+}

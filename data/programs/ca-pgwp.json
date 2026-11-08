@@ -1,0 +1,287 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "ca-pgwp",
+    "name": "加拿大毕业后工签",
+    "name_en": "Post-graduation work permit (PGWP)",
+    "country": "加拿大",
+    "country_code": "CA",
+    "region": "north_america",
+    "program_type": "short_term_work",
+    "visa_code": "PGWP",
+    "official_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation.html",
+    "authority": "Immigration, Refugees and Citizenship Canada（IRCC，加拿大移民、难民及公民部）",
+    "summary": "在加拿大指定学习机构（DLI）读完 8 个月以上课程后申请的开放式工签，不绑雇主、不要求 offer。时长看课程层级：2 年及以上课程或硕士（满 8 个月）最高 3 年，8 个月至 2 年按课程时长批。2024-11-01 起新增语言门槛（大学学位 CLB 7、学院 CLB 5），部分申请人还要满足专业领域要求。中国大陆护照持有人不受国籍限制，门槛在院校与课程。",
+    "tags": [
+      "no_agency_needed",
+      "english_required",
+      "requires_degree",
+      "no_quota_cap"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "官方资格页未设国籍限制，门槛全部落在「院校是否 PGWP 合格 DLI」与「课程层级/时长」上。中国大陆护照持有人只要在合格 DLI 读完合格课程即可申请；没在加拿大读过书的人不适用。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方未设年龄限制。0-99 表示「无年龄要求」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须在 PGWP 合格的指定学习机构（DLI）完成至少 8 个月（魁省 900 小时）的课程，并在每个学期保持全日制学生身份（最后一个学期可part-time）。本科、硕士、博士学历无专业限制；其他大学课程与学院课程若学签申请在 2024-11-01 当日或之后递交，须毕业于「长期短缺职业对应」的合格专业领域。仅完成 DLI 的课程不等于自动符合资格，院校本身也须在 PGWP 名单内。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "2024-11-01 起（当日或之后递交 PGWP 申请）须提供英语或法语能力证明；此前递交的申请与飞行学校毕业生豁免。分数线按学历分两档：本科/硕士/博士及其他大学课程须 CLB 7（法语 NCLC 7），学院、理工、非大学课程须 CLB 5（NCLC 5），四项能力（读、写、听、说）都要达标。官方按 CLB/NCLC 体系折算，不直接给雅思托福分数，须用官方对照表换算。"
+    },
+    "funds": {
+      "required": false,
+      "note": "官方未设存款证明门槛。但须缴两笔费用：工签费 155 加元 + 开放式工签持有人费 100 加元。"
+    },
+    "other_requirements": [
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "已经拿过一次 PGWP 的人不能再申请（官方原文 `You can't get a PGWP if you already had one after completing an earlier program of study.`）。每人每个学历层级只有一次机会。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": false,
+        "note": "境内境外都能申请（官方原文 `You can apply for a post-graduation work permit (PGWP) from within Canada or from another country, as long as you're eligible.`）。但递交时学签须在这 180 天内的某个时点仍有效。"
+      },
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "须证明完成学业（学位/文凭/证书、学校正式信函、或官方成绩单三选一），并证明课程期间为全日制注册（官方成绩单）。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无名额上限，按个人毕业时间滚动递交。真正的约束是 180 天窗口：须在学校确认你完成课程之日起 180 天内递交，且学签须在这 180 天内有效过。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年按个人毕业时间滚动。语言要求自 2024-11-01 起生效；专业领域要求适用于学签申请在 2024-11-01 当日或之后递交的人。"
+      },
+      {
+        "year": 2027,
+        "status": "upcoming",
+        "note": "同上，无年度窗口。政策按公告日切换而非按自然年，递交前须重新核对当轮要求。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "工作许可申请费",
+        "amount": {
+          "local_amount": 155,
+          "currency": "CAD",
+          "cny_estimate": 800,
+          "note": "官方费用表 Work Permits 段 `Work permit (including extensions) — per person 155.00`"
+        },
+        "refundable": false
+      },
+      {
+        "item": "开放式工签持有人费",
+        "amount": {
+          "local_amount": 100,
+          "currency": "CAD",
+          "cny_estimate": 520,
+          "note": "官方费用表 `Open work permit holder 100.00`，PGWP 属开放式工签，须与工签费一并缴纳"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方未在资格页给出统一审理时长，实际以 IRCC 在线工具按申请地显示的当前周期为准。等待期间若符合条件可先全职工作（见 work_conditions）。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "官方明确建议：递交前先确认护照有效期覆盖你有资格获得的完整工签期，因为工签只会批到护照到期日",
+      "prepare_days": 30
+    },
+    {
+      "name": "完成学业证明",
+      "required": true,
+      "note": "学位/文凭/证书（飞行学校课程除外）、学校正式信函、或官方成绩单三选一",
+      "prepare_days": 14
+    },
+    {
+      "name": "全日制注册证明",
+      "required": true,
+      "note": "DLI 出具的官方成绩单，或官网可下载的成绩单副本",
+      "prepare_days": 7
+    },
+    {
+      "name": "英语或法语能力证明",
+      "required": true,
+      "note": "2024-11-01 起必需（飞行学校毕业生除外）。文档清单里这一项被列为 optional，但若你的学历层级要求语言，必须主动上传",
+      "prepare_days": 60
+    },
+    {
+      "name": "合格专业领域证明（如需）",
+      "required": false,
+      "note": "仅当学签申请在 2024-11-01 当日或之后递交、且读的是非学位课程时需要。系统清单不会提示这一项，须自行上传到「Client information」栏",
+      "prepare_days": 14
+    },
+    {
+      "name": "体检证明（如需）",
+      "required": false,
+      "note": "过去一年在指定国家居住超过 6 个月等情形需要预先体检",
+      "prepare_days": 30
+    },
+    {
+      "name": "生物信息采集",
+      "required": true,
+      "note": "通常须在递交时缴纳生物信息费，否则会被延误",
+      "prepare_days": 14
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认院校与课程都在 PGWP 名单内",
+      "description": "两件事要分开查：院校是否是 PGWP 合格的 DLI，以及课程是否满足 8 个月（魁省 900 小时）下限。在 DLI 读书不等于自动符合 PGWP 资格，官方对此有明确提示。",
+      "duration": "30 分钟",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/about.html"
+    },
+    {
+      "step_no": 2,
+      "title": "核对语言与专业领域两条新增要求",
+      "description": "语言按学历分档：大学学位 CLB 7，学院 CLB 5，四项能力都要达标。专业领域要求看学签递交日：2024-11-01 及之后递交的才适用，且本硕博学位豁免。两条都不满足就不要递交，拒签不退费。",
+      "duration": "1 天",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/eligibility.html"
+    },
+    {
+      "step_no": 3,
+      "title": "在 180 天窗口内递交",
+      "description": "从学校确认你完成课程之日起算 180 天，且学签须在这 180 天内的某个时点仍然有效。超窗即失去资格，没有补救通道。",
+      "duration": "1 天",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/apply.html"
+    },
+    {
+      "step_no": 4,
+      "title": "缴工签费与开放式工签持有人费",
+      "description": "两笔都要缴：工签费 155 加元 + 开放式工签持有人费 100 加元。只缴一笔会被退回补缴。",
+      "duration": "即时",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/apply.html"
+    },
+    {
+      "step_no": 5,
+      "title": "等待期间可先全职工作",
+      "description": "递交时持有有效学签、且此前在校期间合法校外打工未超时的人，可在等待决定期间全职工作。收到 WP-EXT for PGWP（IMM 0127 E）信的人，即使信上有效期过了也可继续工作。",
+      "duration": "以审理周期为准",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/after-you-apply.html"
+    },
+    {
+      "step_no": 6,
+      "title": "拿到工签后累积经验并规划永居",
+      "description": "PGWP 是开放式工签，可换雇主、可自雇。这段时间的加拿大工作经验是快速通道（Express Entry）加拿大经验类的核心加分项。",
+      "duration": "最长 3 年",
+      "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation.html"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 36,
+    "max_same_employer_months": 36,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "不可重复申请：已经拿过一次 PGWP 的人不能再申请（`You can't get a PGWP if you already had one after completing an earlier program of study.`）。唯一的例外性延签是护照先到期的情况——工签只批到护照到期日，换发新护照后可书面（paper）申请把剩余资格期补足。",
+    "restricted_occupations": [],
+    "note": "开放式工签，不绑雇主、不限岗位、可自雇。时长按课程层级定：硕士（满 8 个月）与 2 年及以上课程最高 3 年；8 个月至 2 年按课程时长批（例：9 个月课程最高批 9 个月）；多个合格课程可合并计算时长。护照先到期时工签只批到护照到期日。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "180 天硬窗口 + 学签有效性双重条件。错过窗口或学签在 180 天内已失效，资格即灭失，没有申诉通道。"
+    },
+    {
+      "level": "critical",
+      "description": "每人只能拿一次 PGWP。读第二个课程想再拿一次工签不成立，这条限制在政策里写死。"
+    },
+    {
+      "level": "critical",
+      "description": "2024-11-01 起新增语言门槛（大学 CLB 7 / 学院 CLB 5）。这条改动让此前「读完就能拿工签」的经验失效，按旧经验准备会直接拒签。"
+    },
+    {
+      "level": "warning",
+      "description": "专业领域要求容易漏查：它只对学签申请在 2024-11-01 及之后递交的人生效，且本硕博学位豁免。读学院课程的人若选错专业，毕业即失去资格。"
+    },
+    {
+      "level": "warning",
+      "description": "系统文档清单不会提示「合格专业领域证明」，须自行上传到 Client information 栏。漏传会被当作材料不全处理。"
+    },
+    {
+      "level": "warning",
+      "description": "护照有效期直接决定工签长度。护照剩 1 年，3 年资格只批 1 年；补办护照后须走纸质申请补期，耗时数月。"
+    },
+    {
+      "level": "warning",
+      "description": "公立学院课程由私立学院代授（课程授权协议 / P3）的项目多数不再符合 PGWP 资格，只有特定日期前入学的有例外。选校时容易踩这条。"
+    },
+    {
+      "level": "info",
+      "description": "优势：开放式工签不绑雇主，可自由换工作、可自雇；硕士满 8 个月即可能拿到 3 年工签，是加拿大留学转永居的主流路径。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Post-graduation work permit — About（PGWP 概览与时长规则）",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/about.html",
+      "publisher": "Immigration, Refugees and Citizenship Canada",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "定义与时长原文：`The post-graduation work permit (PGWP) allows students who have graduated from eligible designated learning institutions (DLIs) to gain valuable Canadian work experience.`、`Graduating from a designated learning institution (DLI) doesn't automatically make you eligible for a PGWP.`、`The length of your PGWP depends on the level and duration of your study program, as well as the expiry date of your passport, whichever comes first.` 硕士规则：`You can apply for a 3-year PGWP, even if your master's program was less than 2 years, as long as your program was at least 8 months (or 900 hours for Quebec programs)`、`This doesn't apply to certificate or diploma programs.` 其余档位：`If your program was at least 8 months (or 900 hours for Quebec credentials), but less than 2 years — We may give you a PGWP that's valid for up to the same length as your study program.`、`If your program was 2 years or more — We may give you a PGWP that's valid for 3 years.` 一次性限制：`You can't get a PGWP if you already had one after completing an earlier program of study.` 政策生效日：`As of November 1, 2024, the eligibility requirements for a PGWP changed. Most PGWP applicants now need to give proof of language results when they apply.` 护照规则：`Your work permit will only be issued for the period your passport is valid.`、`To extend your PGWP, you must apply on paper after you get a new passport`"
+    },
+    {
+      "type": "primary",
+      "name": "Post-graduation work permit — Who can apply（资格条件与语言/专业分档）",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/eligibility.html",
+      "publisher": "Immigration, Refugees and Citizenship Canada",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "四条通用条件原文：`you completed a program of study at a PGWP-eligible designated learning institution that was at least 8 months long (or 900 hours for Quebec programs)`、`you maintained full-time status as a student in Canada during each semester of your study program`（`You may study part-time during your final semester.`）、`you apply for your PGWP within 180 days of confirmation that you completed your program of study`、`your study permit was valid at some point during the 180 days after you completed your program of study`。语言分档原文：本硕博与其他大学课程 `You must prove your English or French language skills with a minimum level of Canadian Language Benchmarks (CLB) 7 in English or Niveaux de competence linguistique canadiens (NCLC) 7 in French in all 4 language areas.`；学院/理工/非大学课程 `... CLB 5 ... NCLC 5 ...`。专业领域要求：`If you submitted your study permit application on or after November 1, 2024, you must graduate in an eligible field of study.`，而本硕博 `There are no field of study requirements for graduates with a bachelor's degree, master's degree or doctoral degree.` 排除清单含 `already received a PGWP`、`studied English or French as a second language`、`completed a non-credit program of study (except for a flight school program)`、`completed over 50% of your study program through distance learning`、`completed a study program at a non-Canadian institution located in Canada`。"
+    },
+    {
+      "type": "primary",
+      "name": "Post-graduation work permit — How to apply（材料与缴费）",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/apply.html",
+      "publisher": "Immigration, Refugees and Citizenship Canada",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "窗口与缴费原文：`You have up to 180 days after you graduate to apply for a PGWP.`、`In most cases, you must apply online for a PGWP.`、`Make sure you pay both the open work permit holder fee and the work permit fee.`、`we'll ask you to pay your fees at the end of your application`。清单缺陷原文：`your PGWP document checklist will list the proof of language results as an optional document. You must include this proof with your application if it's a requirement for your study program.`、`Due to system limitations, the document checklist won't ask you to provide proof that you graduated from an eligible field of study. If you're required to provide proof ... you must upload it in the 「Client information」 section of your account.`"
+    },
+    {
+      "type": "primary",
+      "name": "Post-graduation work permit — After you apply（等待期间工作权限）",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/after-you-apply.html",
+      "publisher": "Immigration, Refugees and Citizenship Canada",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "等待期工作原文：`You can work full-time until we make a decision on your work permit application if you had a valid study permit at the time you submitted your application`、`were eligible to work off campus without a work permit while studying and you didn't work more hours than you were allowed to`。WP-EXT 信规则：`You can work until we make a decision on your work permit application even if the validity period of the letter expires.` 拒签后果：`If we refuse your work permit, you must stop working the day we notify you.` 出入境规则：`If you leave and re-enter Canada after applying for your post-graduation work permit, you can still work full-time while you wait for a decision.`"
+    },
+    {
+      "type": "primary",
+      "name": "Fees for citizenship and immigration services（IRCC 官方费用表）",
+      "url": "https://ircc.canada.ca/english/information/fees/fees.asp",
+      "publisher": "Immigration, Refugees and Citizenship Canada",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "Work Permits 段落原文：`Work permit (including extensions) — per person 155.00`、`Open work permit holder 100.00`、`Restore your status ($246.25) and get a new work permit ($155)`。PGWP 属开放式工签，故两笔费用合计 255 加元。"
+    }
+  ],
+  "last_verified": "2026-11-08",
+  "verified_by": "eddieye1004"
+}

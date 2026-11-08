@@ -1,0 +1,289 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "au-485-graduate",
+    "name": "澳洲毕业生临时签证",
+    "name_en": "Temporary Graduate visa (subclass 485) — Post-Higher Education Work stream",
+    "country": "澳大利亚",
+    "country_code": "AU",
+    "region": "oceania",
+    "program_type": "short_term_work",
+    "visa_code": "485",
+    "official_url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work",
+    "authority": "Department of Home Affairs（澳大利亚内政部）",
+    "summary": "在澳洲读完学位后的毕业后工签，本科与授课型硕士 2 年、研究型硕士与博士 3 年，香港与 BNO 护照可批 5 年。不绑雇主、不要求 offer，可工作可读书可带家属。硬门槛是年龄：递交时须 35 岁及以下，且人必须在澳洲境内、过去 6 个月内持过学生签证。中国大陆护照持有人不受国籍限制，门槛在学历与年龄。",
+    "tags": [
+      "no_agency_needed",
+      "requires_degree",
+      "english_required",
+      "no_quota_cap",
+      "residency_required"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "官方资格页未设国籍限制，门槛在年龄、学历与在澳学习经历。香港与英国国民（海外）BNO 护照持有人另有一条优惠：停留期可批 5 年（其余护照为 2-3 年），且 5 年后可能衔接永居路径。中国大陆护照按标准 2-3 年计。"
+    },
+    "age": {
+      "min": 18,
+      "max": 35,
+      "note": "官方原文 `be aged 35 years or under when you apply. *Exceptions apply`。判定口径是「递交时的年龄」，不是入学时或毕业时的年龄。35 岁上限是 2024 年从 50 岁下调的，按旧口径准备的会直接不符合资格。香港与 BNO 护照持有人在停留期上有优惠，年龄口径仍按官方例外条款核对。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须在递交前 6 个月内完成合格的 CRICOS 注册课程。学习要求为「2 个学年」：单一课程注册时长满 2 学年，或多个课程合计满 2 学年并最终取得合格学历；实际在澳学习总时长不得少于 16 个自然月。2 学年按 CRICOS 注册时长折算为 92 周，按课程注册周期算而非实际耗时——读得慢不会多算，学分减免会少算。英语语言课程与预科课程不能用来满足该要求。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "须随申请提供英语能力证明（官方原文 `provide evidence of the required level of English with your application.`）。485 资格页只写「所需等级」，未在该页列出具体分数；具体分数按 Home Affairs 英语要求页的等级表核对。2025-08-07 起认可考试清单已换版，此日期前考的旧成绩在有效期内仍可用，须按签证类别核对其有效期上限（最长 3 年）。"
+    },
+    "funds": {
+      "required": false,
+      "note": "官方未设存款证明门槛。但须缴签证费 5,750 澳元（主申请人），另需自付体检、无犯罪证明、健康保险等费用。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "递交时人必须在澳洲境内（官方原文 `be in Australia when you apply for this visa`），且不能在出入境查验区（`You can be in Australia (but not in immigration clearance) when you apply`）。获批时可在境内或境外。"
+      },
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "过去 6 个月内须持有过学生签证（官方原文 `have held a Student visa in the last 6 months`），且须持有合格签证（`hold an eligible visa`）。此外本签证一生只能作为主申请人拿一次，且递交后不能更换分支（`it is not possible to change streams after you apply`）。"
+      },
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "须为所有申请人提供足够的健康保险证明（`provide evidence of adequate health insurance for all applicants when you apply`），并满足内政部的健康要求（体检）。"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "递交时须提供已申请澳洲联邦警察（AFP）无犯罪记录的证明（`provide evidence you have applied for an Australian Federal Police check when you apply`），并满足品行要求。注意是「已申请」的凭证，不是必须先拿到结果。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无名额上限，按个人毕业时间滚动递交。主要时间约束是「递交前 6 个月内完成课程」与「过去 6 个月内持过学生签证」这两条滚动窗口。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动。页面标注 `Last updated: 5 November 2026`。年龄上限 35 岁、英语考试清单 2025-08-07 换版，两条都是近年改动。"
+      },
+      {
+        "year": 2027,
+        "status": "upcoming",
+        "note": "同上，无年度窗口。政策按公告日切换而非自然年，递交前须重新核对。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费（主申请人）",
+        "amount": {
+          "local_amount": 5750,
+          "currency": "AUD",
+          "cny_estimate": 27000,
+          "note": "官方原文 `The visa costs AUD5,750.00 for the main applicant (concessions apply in limited circumstances).` 太平洋岛国与东帝汶公民适用较低费率"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方不公布固定时长，只提供 Visa processing time guide 工具，按近期已决申请给出参考区间（`This will show the processing times for recently decided applications. It is a guide only and not specific to your application.`）。材料不全、需补充信息或需核验背景时会延长。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "含既往学生签证记录。香港或 BNO 护照持有人须用该护照申请才能适用 5 年停留",
+      "prepare_days": 30
+    },
+    {
+      "name": "学历完成证明",
+      "required": true,
+      "note": "CRICOS 注册课程的完成证明与成绩单，须能证明注册时长（2 学年 / 92 周）与实际在澳学习不少于 16 个自然月",
+      "prepare_days": 14
+    },
+    {
+      "name": "英语能力证明",
+      "required": true,
+      "note": "2025-08-07 及之后考的，须用新版认可清单内的考试（IELTS、PTE、TOEFL iBT、CELPIP、MET、LANGUAGECERT、OET、C1 Advanced）；TOEFL iBT 须在报名时选择「Taking TOEFL for Australia」",
+      "prepare_days": 60
+    },
+    {
+      "name": "健康保险证明",
+      "required": true,
+      "note": "覆盖全部申请人的足够保额健康保险，通常为 OVHC（海外访客健康保险）",
+      "prepare_days": 14
+    },
+    {
+      "name": "AFP 无犯罪记录申请凭证",
+      "required": true,
+      "note": "递交时提供「已申请」的证明即可，不必等结果出来。结果由 AFP 直接寄给内政部",
+      "prepare_days": 21
+    },
+    {
+      "name": "体检报告",
+      "required": true,
+      "note": "按内政部健康要求完成指定体检项目，须在认可机构做",
+      "prepare_days": 30
+    },
+    {
+      "name": "澳洲价值观声明",
+      "required": true,
+      "note": "在线申请流程中签署（`Sign the Australian values statement`）",
+      "prepare_days": 0
+    },
+    {
+      "name": "家属材料（如需）",
+      "required": false,
+      "note": "家属须同时在澳、且同样满足健康与品行要求。获批后再加家属只能走 subsequent entrant 通道",
+      "prepare_days": 30
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "核对年龄与在澳状态两条硬条件",
+      "description": "递交时须 35 岁及以下，且本人必须在澳洲境内（不在出入境查验区）。这两条是拒签高发点：年龄按递交日算，不是毕业日；人一旦离境就无法递交。",
+      "duration": "10 分钟",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work"
+    },
+    {
+      "step_no": 2,
+      "title": "确认学历满足 2 学年 / 92 周与 16 个自然月",
+      "description": "按 CRICOS 注册时长折算，不按你实际花的时间。有学分减免的尤其要算清楚：减免会减少计入的周数，读满 16 个自然月不等于满足 92 周。英语课程与预科不计入。",
+      "duration": "30 分钟",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/meeting-the-temporary-graduate-visa-subclass-485-study-requirement"
+    },
+    {
+      "step_no": 3,
+      "title": "备齐英语、保险、AFP 与体检",
+      "description": "英语须用 2025-08-07 之后的新版认可考试（旧成绩仍在有效期内可用的按类别核对）。AFP 证明只要求「已申请」的凭证，可以并行推进，不必等结果。",
+      "duration": "2-6 周",
+      "official_link": "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/english-language"
+    },
+    {
+      "step_no": 4,
+      "title": "在线递交并缴 5,750 澳元",
+      "description": "用 ImmiAccount 递交。缴费不足额会被退回，务必核对主申请人加家属的总额。递交后不能更换分支。",
+      "duration": "1 天",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work"
+    },
+    {
+      "step_no": 5,
+      "title": "等待审理并处理补件",
+      "description": "官方只提供处理时长参考工具，不给固定承诺。材料填错、需要补充信息或背景核验会明显延长。",
+      "duration": "以官方工具查询为准",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work"
+    },
+    {
+      "step_no": 6,
+      "title": "获批后自主求职，必要时衔接偏远地区二签",
+      "description": "本签证不提供就业安排，须自行找工作。若毕业院校位于偏远地区，可能符合 Second Post-Higher Education Work stream，再延长 1-2 年。香港护照持有人另有 5 年后衔接永居的路径。",
+      "duration": "2-3 年（港/BNO 5 年）",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 36,
+    "max_same_employer_months": 36,
+    "max_study_months": 36,
+    "renewable": false,
+    "renewal_condition": "本分支本身不可续签，但两条延伸路径存在：①毕业院校位于偏远地区可申请 Second Post-Higher Education Work stream，按地区再加 1-2 年；②转技术移民类签证（如 189/190/491）。香港与 BNO 护照持有人停留期 5 年，5 年后可能衔接永居。",
+    "restricted_occupations": [],
+    "note": "开放式工签，不绑雇主、不限岗位，可工作、可读书、可带家属。停留时长按学历层级定：本科（含荣誉）2 年、授课型与延伸型硕士 2 年、研究型硕士 3 年、博士 3 年；研究生文凭默认 2 年，此前学历可延长时按更长期计。印度国籍另有 AI-ECTA 协定档位（STEM 一等荣誉本科 3 年、研究型硕士 3 年、博士 4 年）。香港与 BNO 护照 5 年。签证自获批日起算，期间可自由出入境。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "年龄上限 35 岁，按递交日算。2024 年从 50 岁下调，很多人的旧认知仍停在 50 岁，超龄即无资格。"
+    },
+    {
+      "level": "critical",
+      "description": "递交时人必须在澳洲境内。离境后无法递交，回国再申请不成立——这条和很多国家的毕业后工签相反。"
+    },
+    {
+      "level": "critical",
+      "description": "递交后不能更换分支（`it is not possible to change streams after you apply`）。选错分支只能撤回重来，费用与时间都损失。"
+    },
+    {
+      "level": "warning",
+      "description": "2 学年按 CRICOS 注册时长折算为 92 周。读得慢不会多算周数，学分减免会少算；只满足「在澳 16 个自然月」不等于满足 92 周。"
+    },
+    {
+      "level": "warning",
+      "description": "英语认可考试清单 2025-08-07 换版。用旧考试或旧分数线的，须逐项核对有效期上限；TOEFL iBT 未选「Taking TOEFL for Australia」的成绩可能不被接受。"
+    },
+    {
+      "level": "warning",
+      "description": "费用 5,750 澳元不退。家属每人另计，且获批后再加家属要走 subsequent entrant 并重付全额签证费。"
+    },
+    {
+      "level": "warning",
+      "description": "健康保险是递交时就要提供的材料，不是获批后再买。空窗期没有保险既不符合签证条件，也可能在看病时产生高额自付。"
+    },
+    {
+      "level": "info",
+      "description": "优势：不绑雇主、不要求 offer、可带家属、可读书；香港与 BNO 护照 5 年且可能衔接永居；偏远地区院校可再拿 1-2 年二签。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Temporary Graduate visa (subclass 485) — Post-Higher Education Work stream（官方签证页）",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work",
+      "publisher": "Australian Government Department of Home Affairs",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "资格原文：`be aged 35 years or under when you apply. *Exceptions apply`；`be in Australia when you apply for this visa`；`hold an eligible visa`；`have held a Student visa in the last 6 months`；`have a recent degree in a CRICOS-registered course`；`provide evidence of adequate health insurance for all applicants when you apply`；`provide evidence you have applied for an Australian Federal Police check when you apply`；`provide evidence of the required level of English with your application.`；`Sign the Australian values statement`；`Have no debt to the Australian Government`。停留时长原文：`Usually between 2 and 3 years, depending on your qualification.`、`Hong Kong and British National Overseas passport holders may stay for 5 years.` 费用原文：`The visa costs AUD5,750.00 for the main applicant (concessions apply in limited circumstances).`、`We cannot process your application if you do not pay the correct Visa Application Charge.` 递交地点原文：`You can be in Australia (but not in immigration clearance) when you apply for this visa.`、`All applicants can be in or outside Australia at the time of decision.` 分支不可改：`apply for your eligible stream (it is not possible to change streams after you apply)`。页面标注 `Last updated: 5 November 2026`。"
+    },
+    {
+      "type": "primary",
+      "name": "Temporary Graduate visa (subclass 485) — About this visa（停留时长分档与二签路径）",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work#About",
+      "publisher": "Australian Government Department of Home Affairs",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "分档原文：`Bachelor degree (including honours) — 2 years`、`Masters (coursework and extended) — 2 years`、`Doctoral degree — 3 years`、`The default Graduate Diploma stay period is 2 years, but may be longer where previous study would have attracted a longer stay period.` 印度国籍例外：`Bachelor degree (with first class honours in STEM, including ICT) — 3 years`、`Masters (coursework, extended and research) — 3 years`、`Doctoral degrees (PhD) — 4 years.` 港/BNO：`Hong Kong and British National Overseas passport holders may stay up to 5 years.`、`Current and future Temporary Graduate visa holders from Hong Kong may have a pathway to permanent residency after 5 years.` 起算与出入境：`The visa starts on the date we grant your visa.`、`You can travel in and out of Australia while your visa is valid.` 二签提示：`You may be eligible to apply for a Second Post-Higher Education Work stream visa.` 就业自决：`You must find your own employment while on this visa.`"
+    },
+    {
+      "type": "primary",
+      "name": "Temporary Graduate visa — study requirement（2 学年 / 92 周 / 16 个自然月口径）",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/meeting-the-temporary-graduate-visa-subclass-485-study-requirement",
+      "publisher": "Australian Government Department of Home Affairs",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "核心原文：`you must have completed in the 6 months immediately before the day you apply for your visa, either: a single eligible qualification that requires at least 2 academic years study or more than 1 qualification that results in a total of at least 2 academic years study`；`You must have completed your study in Australia, in a total of no less than 16 calendar months, while you held a visa authorising you to study.`；`Two academic years of study equals 92 weeks that contribute towards one or more acceptable qualification.`；`Two academic years study, or 92 weeks of registered study, is based on the duration of the course as registered by CRICOS.`；`You can take longer to complete your course, but you will only be credited with the number of weeks that CRICOS determines as the standard duration.`；`Only study that you successfully completed counts towards the 2 academic years. You cannot include failed subjects.`；`Credit for prior learning may reduce the amount of study undertaken.`；`You cannot use English language proficiency courses or enabling programs to meet the Temporary Graduate visa study requirement`"
+    },
+    {
+      "type": "primary",
+      "name": "English language visa requirements（认可考试与 2025-08-07 改版）",
+      "url": "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/english-language",
+      "publisher": "Australian Government Department of Home Affairs",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "改版原文：`On 7 August 2025, the English language tests approved for Australian visa purposes changed. If you completed a test before this date, your results may still be valid for up to 3 years.` 新版认可清单：`Cambridge C1 Advanced Test`、`Canadian English Language Proficiency Index Program General (CELPIP General)`、`International English Language Testing System Academic (IELTS Academic), including One Skill Retake (OSR)`、`IELTS General Training`、`LANGUAGECERT Academic Test`、`Michigan English Test (MET), including Single Section Retake (SSR)`、`Occupational English Test (OET)`、`Pearson Test of English Academic (PTE Academic)`、`TOEFL iBT - To ensure your TOEFL iBT result is valid for Australian visa purposes, you must select 'Taking TOEFL for Australia' when registering for your test.` 等级划分：该页把英语分为 `Functional English`、`Vocational English`、`Competent English`、`Proficient English`、`Superior English` 五档，各签证按档对应不同分数线。"
+    },
+    {
+      "type": "primary",
+      "name": "Competent English 分数表（Table 1，2025-08-07 及之后考试）",
+      "url": "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/english-language/competent-english",
+      "publisher": "Australian Government Department of Home Affairs",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "Table 1 各项最低分原文：`IELTS Academic / General Training — In each of the 4 test components, at least: 6 for listening, 6 for reading, 6 for writing, 6 for speaking`；`PTE Academic — 47 for listening, 48 for reading, 51 for writing, 54 for speaking`；`CELPIP General — 7 for listening, 7 for reading, 7 for writing, 7 for speaking`；`Cambridge C1 Advanced — 163 for listening, 163 for reading, 170 for writing, 179 for speaking`；`MET — 56 for listening, 55 for reading, 57 for writing, 48 for speaking`；`LANGUAGECERT Academic — 57 for listening, 60 for reading, 64 for writing, 70 for speaking`；`OET — 290 for listening, 310 for reading, 290 for writing, 330 for speaking`。该页同时说明英语国家护照持有人（`The Republic of Ireland`、`The United Kingdom of Great Britain and Northern Ireland`、`The United States of America` 等）可用护照直接证明，以及旧成绩有效期上限为 `3 years`。**485 资格页只写「所需的英语等级」，未在该页给出具体等级名与分数；本记录的分数为 Home Affairs 英语等级体系下 Competent English 档的官方分数，实际适用档位须按 485 页面链接核验。**"
+    }
+  ],
+  "last_verified": "2026-11-08",
+  "verified_by": "eddieye1004"
+}

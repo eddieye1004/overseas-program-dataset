@@ -46,10 +46,16 @@ const GUIDES = ['age-wall.html', 'misinformation.html'];
   // 而实际上 AIESEC 的资格由各国分会与岗位自行决定。
   const enroll = (el.other_requirements ?? []).find((o) => o.type === 'enrollment_proof');
   const eduNote = el.education?.note ?? '';
+  const enrollNote = enroll?.note ?? '';
   // 「在读，或毕业 N 年内」要先判：J-1 Intern 这类项目同样要求提交学籍/学历证明
   // （enrollment_proof.required = true），但官方口径是「在读或毕业 12 个月内」，
   // 归到 required（全程保持学籍）会把应届生误判成不合格。
   const isRecentGrad = /(在读|就读|在校)/.test(eduNote) && /(\d+\s*年内|已取得|毕业)/.test(eduNote);
+  // 第二类「不是保持学籍，而是证明读完了」：PGWP、485、PSWV 这类毕业后工签要求
+  // 学籍证明的目的是核实「确实完成了这段学业」，不是「现在还在读」。它们的窗口
+  // 是「毕业 N 个月内」，所以在职超过窗口的人不合格，但在校最后一学期的人合格——
+  // 这与 enrolled_or_recent 的语义一致，不能归到 required。
+  const provesCompletion = /(完成学业|已完成|已毕业|毕业证|结业|修完)/.test(enrollNote);
   let enrollmentScope = 'none';
   if (/未核实/.test(eduNote)) {
     // 官方页没写清 → 不猜。这条必须排在前面，因为被标未核实的 note 里
@@ -58,7 +64,7 @@ const GUIDES = ['age-wall.html', 'misinformation.html'];
   } else if (isRecentGrad) {
     enrollmentScope = 'enrolled_or_recent';
   } else if (enroll?.required === true) {
-    enrollmentScope = 'required';
+    enrollmentScope = provesCompletion ? 'enrolled_or_recent' : 'required';
   }
 
   return {

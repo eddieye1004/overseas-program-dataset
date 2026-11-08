@@ -20,7 +20,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -51,12 +50,12 @@
       {
         "type": "enrollment_proof",
         "required": false,
-        "note": "⚠️ 官方页未提及在读/毕业时间要求；「硕士在读需保持学籍、本科毕业 2 个月内」来自第三方概述页，未能核实。"
+        "note": "⚠️ 官方页未提及在读/毕业时间要求，也未设学历门槛；该门槛不在公开规则里，由各国分会与具体岗位在招募时设定。「硕士在读需保持学籍、本科毕业 2 个月内」出自第三方概述页，官方无对应表述，已不采用。"
       },
       {
         "type": "insurance",
         "required": false,
-        "note": "⚠️ 官方页未提及强制保险；「AIESEC 强制购买」来自第三方概述页，未能核实。"
+        "note": "⚠️ 官方页未要求强制保险；「AIESEC 强制购买保险」出自第三方概述页，官方无对应表述，已不采用。是否需要保险取决于接收国的签证要求。"
       },
       {
         "type": "internship_contract",
@@ -65,7 +64,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
@@ -78,16 +76,34 @@
       }
     ],
     "fees": [],
-    "processing_time": "⚠️ 官方页未公布审理时长（未能核实）。"
+    "processing_time": "⚠️ 官方页不公布审理时长——选拔由各国分会滚动进行，时长取决于具体岗位的招募周期，不是统一流程。"
   },
-
   "documents": [
-    { "name": "AIESEC 平台档案", "required": true, "note": "含技能、背景、经历、语言、简历（类似 LinkedIn）", "prepare_days": 7 },
-    { "name": "简历（CV）", "required": true, "note": "", "prepare_days": 14 },
-    { "name": "在读证明或毕业证明", "required": true, "note": "证明当前在读或毕业 2 个月内", "prepare_days": 14 },
-    { "name": "有效护照", "required": true, "note": "用于后续签证安排", "prepare_days": 30 }
+    {
+      "name": "AIESEC 平台档案",
+      "required": true,
+      "note": "含技能、背景、经历、语言、简历（类似 LinkedIn）",
+      "prepare_days": 7
+    },
+    {
+      "name": "简历（CV）",
+      "required": true,
+      "note": "",
+      "prepare_days": 14
+    },
+    {
+      "name": "在读证明或毕业证明",
+      "required": true,
+      "note": "证明当前在读或毕业 2 个月内",
+      "prepare_days": 14
+    },
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "用于后续签证安排",
+      "prepare_days": 30
+    }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -132,7 +148,6 @@
       "official_link": "https://aiesec.org/global-talent"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 18,
     "max_same_employer_months": 18,
@@ -142,7 +157,6 @@
     "restricted_occupations": [],
     "note": "补偿形式视岗位而定：可能提供薪资支持或住宿支持。实习通常为带薪（paid）。"
   },
-
   "risks": [
     {
       "level": "warning",
@@ -161,7 +175,6 @@
       "description": "优势：覆盖 120+ 国家、岗位领域广、企业实习平台化、有签证与保险支持。相比独立申请海外实习，降低了信息与流程门槛。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -182,7 +195,6 @@
       "claim": "二手概述（2026-10-30 复核原文）：年龄 mainly people between 18 and 30（原文用 mainly，非硬性区间）；学籍条件为「我们查过的德国岗位」的个例——accepted only master's students who stay enrolled for the whole internship, or bachelor's graduates within two months of graduating，**不是全球统一门槛**；Life and health insurance is mandatory；There is no single deadline, internships are posted and filled continuously。该页同时写明 AIESEC's central pages do not mention a programme fee，即连这篇二手来源也未给费用数字，故数据里 700 USD 项目费无法追溯来源、已删除。"
     }
   ],
-
-  "last_verified": "2026-10-30",
+  "last_verified": "2026-11-08",
   "verified_by": "eddieye1004"
 }

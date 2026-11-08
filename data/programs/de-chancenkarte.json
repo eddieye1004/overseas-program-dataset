@@ -1,7 +1,5 @@
 {
-
   "schema_version": "0.1.0",
-
   "program": {
     "id": "de-chancenkarte",
     "name": "德国机会卡（求职居留许可）",
@@ -21,7 +19,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -61,7 +58,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
@@ -80,18 +76,28 @@
     ],
     "fees": [
       {
-        "item": "国家签证费（求职机会卡）",
+        "item": "国家签证费（D 类，机会卡先在境外申请签证入境）",
         "amount": {
           "local_amount": 75,
           "currency": "EUR",
-          "cny_estimate": 590
+          "cny_estimate": 590,
+          "note": "AufenthV §46 第 2 款第 1 项：国家签证（D 类）签发费 75 欧元，多次入境同价。"
+        },
+        "refundable": false
+      },
+      {
+        "item": "居留许可签发费（入境后到外管局领机会卡）",
+        "amount": {
+          "local_amount": 100,
+          "currency": "EUR",
+          "cny_estimate": 790,
+          "note": "AufenthV §45 第 1 项：居留许可签发费 100 欧元，有效期一年以内与超过一年同价。"
         },
         "refundable": false
       }
     ],
-    "processing_time": "官方未在本页公布审理周期（未能核实）。实务上德国国家签证通常需数周至数月，取决于使领馆排期。"
+    "processing_time": "联邦法律不设统一审理时限，官方没有可引用的数字；实际取决于德国驻华使领馆的预约排期，实务上从预约到出签约 4-12 周，入境后到外管局换卡另需数周。"
   },
-
   "documents": [
     {
       "name": "有效护照",
@@ -136,7 +142,6 @@
       "prepare_days": 7
     }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -174,7 +179,6 @@
       "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/__20a.html"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 12,
     "max_same_employer_months": 12,
@@ -183,7 +187,6 @@
     "restricted_occupations": [],
     "note": "持卡期间允许：平均每周合计不超过 20 小时的工作；每段最长两周的试工（须为合格岗位、以培训为目的、或可用于职业资格认定程序）。不得把机会卡当工作许可使用——找到正式工作后须转成相应的工作居留许可。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -210,7 +213,6 @@
       "description": "优势：不需要先有工作offer即可入境；年龄 35 岁及以下直接拿 2 分；英语 C1 也能计分，德语不是绝对必需；是理工科背景转德国就业的低摩擦入口。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -247,10 +249,26 @@
       "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
       "claim": "该页是本项目的官方政策说明页，本站对其正文的可读性有限：直接抓取返回的是 `Radware Page / Verifying your browser before proceeding...`（115 字符反爬中间页），无头浏览器通道同样被拦，因此**未能读到正文逐字原文**。上面所有具体条款均以 gesetze-im-internet.de 的法条原文为准，本页仅作为项目存在与官方定位的佐证。"
+    },
+    {
+      "type": "primary",
+      "name": "AufenthV § 45 — Gebühren für die Aufenthaltserlaubnis（居留许可收费）",
+      "url": "https://www.gesetze-im-internet.de/aufenthv/__45.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "居留许可签发费 100 欧元，不论有效期在一年以内还是超过一年都收同一数额（原文 `für die Erteilung einer Aufenthaltserlaubnis ... a) mit einer Geltungsdauer von bis zu einem Jahr 100 Euro, b) mit einer Geltungsdauer von mehr als einem Jahr 100 Euro`）；延期视追加停留期长短为 93 或 96 欧元。§20 求职居留与 §20a 机会卡签发的都是 Aufenthaltserlaubnis，都适用这一档，不存在各外管局自行定价的空间。"
+    },
+    {
+      "type": "primary",
+      "name": "AufenthV § 46 — Gebühren für das Visum（国家签证收费）",
+      "url": "https://www.gesetze-im-internet.de/aufenthv/__46.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "德国国家签证（D 类）签发费 75 欧元，多次入境同价（原文 `für die Erteilung eines nationalen Visums (Kategorie „D“), auch für mehrmalige Einreisen 75 Euro`）；在德国境内把申根签证转为国家签证延长超过 90 天为 60 欧元。人在中国先办 D 类签证入境、再在德国当地换居留卡的两段式流程，第一段就是这 75 欧元。"
     }
   ],
-
-  "last_verified": "2026-11-03",
-
+  "last_verified": "2026-11-08",
   "verified_by": "eddieye1004"
 }

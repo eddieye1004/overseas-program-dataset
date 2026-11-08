@@ -138,6 +138,12 @@ OFFICIAL_GOV_FRAGMENTS = (
     "make-it-in-germany.com", "verwaltung.bund.de", "diplo.de",
     "gesetze-im-internet.de",
     "j1visa.state.gov", "state.gov",
+    # 日本台湾交流协会（koryu.or.jp）：日台之间唯一的签证受理窗口，性质等同驻外
+    # 使领馆——双方无正式邦交，以协会/代表处互设作为实质使馆。日台打工度假的受理、
+    # 审查、发签全部由它执行，材料规格（照片尺寸、存款证明金额与时效）与窗口日程
+    # 只在这里公布，外务省主源一概不写。不收进 A 级，这些字段就只能永久标「未能核实」。
+    # 与 irishimmigration.ie 同理：非 .gov 域名，但确实是官方经办机构。
+    "koryu.or.jp",
 )
 
 # B 级：项目本体国际组织官网

@@ -1,0 +1,241 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "nz-post-study-work",
+    "name": "新西兰毕业后工签",
+    "name_en": "Post Study Work Visa",
+    "country": "新西兰",
+    "country_code": "NZ",
+    "region": "oceania",
+    "program_type": "short_term_work",
+    "visa_code": "Post Study Work Visa",
+    "official_url": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa",
+    "authority": "Immigration New Zealand（INZ，新西兰移民局）",
+    "summary": "在新西兰读完合格课程后申请的开放式工签，最长 3 年，不绑雇主、不要求 offer。学历 7 级以上（本科、研究生文凭、硕士、博士）可自由就业；7 级非学位及以下须在合格清单内、且从事与所学相关的岗位。每人一生只能拿一次。2026 年 11 月 16 日起停止纸质申请，并把资格扩到「7 级研究生文凭 + 本科」的组合。中国大陆护照持有人不受国籍限制。",
+    "tags": [
+      "no_agency_needed",
+      "requires_degree",
+      "no_quota_cap",
+      "english_required"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "官方资格页未设国籍限制，门槛落在「在新西兰读完的学历层级与学习时长」上。中国大陆护照持有人只要在新西兰完成合格课程即可申请；没在新西兰读过书的人不适用。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方未设年龄限制。0-99 表示「无年龄要求」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须在新西兰完成合格学历。7 级及以上（本科、8 级研究生文凭、9 级硕士、10 级博士）须在新西兰全日制读满至少 30 周；7 级非学位及以下学历须在「毕业后工签合格学历清单」内，且最终从事的岗位须与所学相关，该限制会写进签证条件。2026-11-16 起资格扩大：在新西兰全日制读完 7 级研究生文凭（Graduate Diploma）、并已在新西兰或海外完成本科学位的人也可申请。英语语言课程与预科课程不能用来满足学业要求。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "本签证资格页未单列语言考试门槛，英语能力已由此前学生签证阶段核验。实际求职时英语水平决定岗位面，但不构成签发条件。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 5000,
+        "currency": "NZD",
+        "cny_estimate": 21500,
+        "note": "官方原文 `have at least NZD $5,000 to pay your living expenses`"
+      },
+      "note": "须证明有至少 5,000 新西兰元生活费。这是签证层面的资金要求，与雇主是否给 offer 无关。"
+    },
+    "other_requirements": [
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "一生只能拿一次（官方原文 `You can only have this visa once.`）。读完第二个学历也不能再申请第二次。"
+      },
+      {
+        "type": "health_check",
+        "required": false,
+        "note": "停留超过 6 个月时，来自结核病非低发国家的人通常须做胸片；停留 12 个月以上通常还须体检。若过去 5 年内在结核病非低发国家累计停留超过 3 个月，也会触发胸片要求。"
+      },
+      {
+        "type": "criminal_record",
+        "required": false,
+        "note": "在新西兰的累计停留时间达到 24 个月或以上时，须提供 6 个月内出具的无犯罪记录证明（含过去持其他签证在新西兰停留的时间）。此前签证申请中提交过、且签发未超 24 个月的可以复用。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": false,
+        "note": "官方未要求必须在新西兰境内递交，但申请窗口是从学生签证到期日起算的，超窗即失去资格。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无名额上限，按个人毕业时间滚动递交。真正的约束是申请窗口：一般须在学生签证到期后 3 个月内递交，博士为 6 个月，特定「先读低阶再读高阶但高阶不足 30 周」的情形可放宽到 12 个月。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动。2026-11-16 起两项变化同时生效：停止接受纸质申请（全部改为在线），资格扩到「7 级研究生文凭 + 本科学位」组合。"
+      },
+      {
+        "year": 2027,
+        "status": "upcoming",
+        "note": "同上，无年度窗口。政策按公告日切换，递交前须重新核对当轮要求。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费",
+        "amount": {
+          "local_amount": 1670,
+          "currency": "NZD",
+          "cny_estimate": 7200,
+          "note": "官方页面 Cost 栏标注 NZD $1670"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方页面 Processing time 栏标注 3.5 weeks（3.5 周），指近期已决申请的中位数，不构成对个案承诺。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期须覆盖申请的工签期",
+      "prepare_days": 30
+    },
+    {
+      "name": "学历完成证明",
+      "required": true,
+      "note": "院校出具的完成确认信，须能证明学历层级与在新西兰全日制就读的周数",
+      "prepare_days": 14
+    },
+    {
+      "name": "生活费证明",
+      "required": true,
+      "note": "至少 5,000 新西兰元，形式为银行流水或存款证明",
+      "prepare_days": 14
+    },
+    {
+      "name": "胸片或体检报告（如需）",
+      "required": false,
+      "note": "停留超 6 个月且来自结核病非低发国家时须胸片；停留超 12 个月通常还须体检。移民局会在审理中邮件通知是否需要",
+      "prepare_days": 21
+    },
+    {
+      "name": "无犯罪记录证明（如需）",
+      "required": false,
+      "note": "在新西兰累计停留满 24 个月时需要，且须为 6 个月内出具",
+      "prepare_days": 30
+    },
+    {
+      "name": "合格学历清单核对（如需）",
+      "required": false,
+      "note": "7 级非学位及以下学历须先确认自己在「毕业后工签合格学历清单」内，否则不满足资格",
+      "prepare_days": 7
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认学历层级与在新西兰的就读周数",
+      "description": "7 级及以上须在新西兰全日制读满至少 30 周。周数按院校记录与学历要求算，不是按你实际待了多久。7 级非学位及以下须查合格学历清单。",
+      "duration": "30 分钟",
+      "official_link": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa"
+    },
+    {
+      "step_no": 2,
+      "title": "记住申请窗口的起算点是学生签证到期日",
+      "description": "一般须在学生签证到期后 3 个月内递交；博士为 6 个月；「先读完合格学历、紧接着读一个不足 30 周的高阶学历」的情形可用第一个学历申请，窗口放宽到 12 个月。移民局会核对自己的记录，超窗直接不批。",
+      "duration": "1 天",
+      "official_link": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa"
+    },
+    {
+      "step_no": 3,
+      "title": "准备 5,000 新西兰元生活费证明",
+      "description": "这笔钱是签证条件，与有没有 offer 无关。资金证明的形式与存期按移民局资金指引准备。",
+      "duration": "2 周",
+      "official_link": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa"
+    },
+    {
+      "step_no": 4,
+      "title": "在线递交并缴费",
+      "description": "2026-11-16 起只接受在线申请，纸质申请不再受理。签证费 1,670 新西兰元。",
+      "duration": "1 天",
+      "official_link": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa"
+    },
+    {
+      "step_no": 5,
+      "title": "按通知补体检或胸片",
+      "description": "停留超 6 个月且来自结核病非低发国家的人须胸片。移民局会在审理中邮件通知，不必提前自行安排。",
+      "duration": "1-3 周",
+      "official_link": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa"
+    },
+    {
+      "step_no": 6,
+      "title": "拿到工签后按学历层级选择就业方式",
+      "description": "7 级及以上可自由就业；7 级非学位及以下只能从事与所学相关的岗位，这条限制写在签证条件里。带配偶与子女的，配偶可申请工签、子女可申请学生签。",
+      "duration": "最长 3 年",
+      "official_link": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 36,
+    "max_same_employer_months": 36,
+    "renewable": false,
+    "renewal_condition": "不可重复申请：`You can only have this visa once.` 到期后须转为技术移民类别（如 Accredited Employer Work Visa）或离境，不能再次申请本签证。",
+    "restricted_occupations": [],
+    "note": "开放式工签，不绑雇主。7 级及以上学历可从事任意岗位；7 级非学位及以下学历的岗位须与所学相关，该限制会写进签证条件。最长 3 年，具体时长取决于学历层级与在新西兰的就读时长。可带配偶（配偶可申请工签）与未成年子女（可申请学生签）。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "申请窗口从学生签证到期日起算，不是从毕业日起算。签证到期后拖过 3 个月（博士 6 个月）即失去资格，没有补救通道。"
+    },
+    {
+      "level": "critical",
+      "description": "一生只能拿一次。读完第二个学历想再拿一次工签不成立。"
+    },
+    {
+      "level": "critical",
+      "description": "7 级非学位及以下学历必须落在合格清单内，且岗位须与所学相关。选错专业或跨行就业会导致签证条件被违反。"
+    },
+    {
+      "level": "warning",
+      "description": "30 周全日制是硬门槛，按院校记录判定。用学分减免缩短就读时间的，可能达不到 30 周。"
+    },
+    {
+      "level": "warning",
+      "description": "2026-11-16 起纸质申请不再受理。习惯寄材料的申请人若按旧流程操作会被退回。"
+    },
+    {
+      "level": "warning",
+      "description": "英语语言课程与预科课程不能用来满足学业要求。先读语言班再升学的路径不产生本签证资格。"
+    },
+    {
+      "level": "info",
+      "description": "优势：开放式工签不绑雇主；博士可拿 3 年；可带配偶与子女，配偶还能申请工签；审理约 3.5 周，比多数同类签证快。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Post Study Work Visa（新西兰移民局官方签证页）",
+      "url": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa",
+      "publisher": "Immigration New Zealand",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "总述与资格原文：`Apply for this visa if you want to work in New Zealand soon after you have completed your studies here. It allows you to stay and work in New Zealand for up to 3 years, depending on what you studied.`；`have recently finished studying in New Zealand for an approved qualification`；`have at least NZD $5,000 to pay your living expenses`。学历与就业原文：`work in New Zealand if you have a degree level 7 or higher qualification`；`a degree level 7 or higher qualification — level 8 postgraduate Diploma, level 9 masters degree or level 10 doctoral degree`；`If you have studied a degree level 7 or higher qualification, you must have studied it full-time for at least 30 weeks in New Zealand.`；非学位层级 `a non-degree level 7 or lower qualification that is on the list of qualifications eligible for a Post Study Work Visa — you must intend to work in a job that is related to what you studied`。一次性限制：`You can only have this visa once.` 申请窗口：`apply no later than 3, 6 or 12 months after your student visa expires`；`a doctoral degree, you must apply for a PSWV no later than 6 months after your student visa expires`。2026-11-16 变化：`From 16 November 2026, we will no longer accept paper applications for this visa. All applications from 16 November must be submitted online.`；`From 16 November 2026, Post Study Work Visa eligibility will be extended to applicants who have: an NZQCF level 7 graduate diploma that they studied full-time for in New Zealand, and a bachelor's degree that they completed in New Zealand or overseas.` 费用与审理：页面 `Cost` 栏 `NZD $1670`、`Processing time` 栏 `3.5 weeks`。体检与无犯罪：`If you will stay in New Zealand for more than 6 months, you must have a chest X-ray if you: are a citizen of a country that does not have a low incidence of tuberculosis (TB)`；`You must provide police certificates that are less than 6 months old when you apply if: your total time in New Zealand will be 24 months or longer.`"
+    }
+  ],
+  "last_verified": "2026-11-08",
+  "verified_by": "eddieye1004"
+}

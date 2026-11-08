@@ -18,7 +18,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "not_eligible",
@@ -39,7 +38,7 @@
     "language": {
       "required": false,
       "tests": [],
-      "note": "官方三个主源页面（iec.html、eligibility.html、eligibility-by-country.html）均未列语言考试要求（IELTS / language test 命中 0）。原记录 IELTS 24 个月无官方依据已移除；是否另有语言要求未能核实。"
+      "note": "官方三个主源页面（iec.html、eligibility.html、eligibility-by-country.html）均未列语言考试要求（IELTS / language test 命中 0）。原记录「IELTS 24 个月」无官方依据已移除。个别参与国是否另设语言条件由该国与加拿大之间的双边安排决定，须向加拿大驻当地办事处确认。"
     },
     "funds": {
       "required": true,
@@ -59,11 +58,10 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "ballot",
     "quota": null,
-    "quota_note": "中国大陆不在协议内，无配额。官方主源未公布中国香港、中国台湾的年度配额数字（未能核实）。",
+    "quota_note": "中国大陆不在协议内，无配额。官方主源只按类别列出参与国/地区，不公布各参与方的年度配额——香港、台湾的具体名额由双方年度磋商确定，不在 canada.ca 上披露。",
     "windows": [
       {
         "year": 2026,
@@ -74,19 +72,37 @@
     "fees": [
       {
         "item": "开放式工签申请费",
-        "amount": { "local_amount": 184.75, "currency": "CAD", "cny_estimate": 960, "note": "官方原文 Processing fees CAN $184.75；官方注「Additional fees may apply.」，生物识别等其他费用另计、未含在内" },
+        "amount": {
+          "local_amount": 184.75,
+          "currency": "CAD",
+          "cny_estimate": 960,
+          "note": "官方原文 Processing fees CAN $184.75；官方注「Additional fees may apply.」，生物识别等其他费用另计、未含在内"
+        },
         "refundable": false
       }
     ],
     "processing_time": "约 6 周（官方：Current processing time 6 weeks after you submit all documents and give biometrics）"
   },
-
   "documents": [
-    { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照", "prepare_days": 30 },
-    { "name": "资金证明", "required": true, "note": "约 2,500 加元", "prepare_days": 14 },
-    { "name": "医疗保险", "required": true, "note": "覆盖全程", "prepare_days": 14 }
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "须为签约国家/地区签发的护照",
+      "prepare_days": 30
+    },
+    {
+      "name": "资金证明",
+      "required": true,
+      "note": "约 2,500 加元",
+      "prepare_days": 14
+    },
+    {
+      "name": "医疗保险",
+      "required": true,
+      "note": "覆盖全程",
+      "prepare_days": 14
+    }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -110,16 +126,14 @@
       "official_link": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 12,
     "max_same_employer_months": 0,
     "renewable": false,
     "renewal_condition": "不可续签。中国香港护照持有人「may participate in IEC only once」、中国台湾护照持有人「only once」，两类合格护照均只能参加一次。",
     "restricted_occupations": [],
-    "note": "开放式工签，可为任意雇主工作，无需雇主担保。停留期 12 个月为中国香港、中国台湾两类合格护照的官方上限（up to 12 months），其他签约国可达 24 个月。官方三页未提及学习时长上限（study 仅见 TEER 学历语境），原 max_study_months=6 无依据已删除（未能核实）。"
+    "note": "开放式工签，可为任意雇主工作，无需雇主担保。停留期 12 个月为中国香港、中国台湾两类合格护照的官方上限（up to 12 months），其他签约国可达 24 个月。官方三页未提及学习时长上限（study 仅见 TEER 学历语境），原 max_study_months=6 无依据已删除；开放式工签对就读未设明文上限，但入境目的仍须以度假与工作为主。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -135,10 +149,9 @@
     },
     {
       "level": "info",
-      "description": "无犯罪记录证明、体检、语言考试三项已从资格条件中移除：官方三个主源页面检索 criminal / police / medical exam / IELTS 命中均为 0，同类表述只有「not be inadmissible to Canada」这一准入性条件。移除依据是反向证据，不等于官方明示无需提供，个案审理仍可能要求（未能核实）。"
+      "description": "无犯罪记录证明、体检、语言考试三项已从资格条件中移除：官方三个主源页面检索 criminal / police / medical exam / IELTS 命中均为 0，同类表述只有「not be inadmissible to Canada」这一准入性条件。移除依据是反向证据（官方页检索命中 0），不等于官方明示无需提供；个案审理中签证官仍可要求补件。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -168,7 +181,6 @@
       "claim": "Country/Territory Age limit 全表：Hong Kong SAR = 18 to 30（Working Holiday Yes / Young Professionals No / International Co-op No）；Taiwan = 18 to 35（三类全部 Yes）；全表文本 China 命中 0 次，无中国大陆条目；表末 My country isn't listed 段落只指向 recognized organization 渠道"
     }
   ],
-
-  "last_verified": "2026-11-03",
+  "last_verified": "2026-11-08",
   "verified_by": "eddieye1004"
 }

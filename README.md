@@ -64,8 +64,13 @@
 | Short-term study visa | 英国 | 短期游学 | ✅ |
 | Job-search permit (§20) | 德国 | 毕业后求职 | ✅ |
 | Optional Practical Training (OPT) | 美国 | 毕业后工作 | ✅ |
+| Temporary Graduate visa (485) | 澳大利亚 | 毕业后工作 | ✅ |
+| Post-graduation work permit (PGWP) | 加拿大 | 毕业后工作 | ✅ |
+| Post Study Work Visa | 新西兰 | 毕业后工作 | ✅ |
+| High Potential Individual (HPI) | 英国 | 毕业后工作 | ✅ |
+| Research Scholar (J-1) | 美国 | 研究交流 | ✅ |
 
-**20 个项目，大陆护照可申 14 / 不可申 6，共 78 条来源（A 级 68 / B 级 6 / C 级 4），其中 4 条 C 级仅作旁证。** 数字取于 2026-11-08，改数据后重跑 `python scripts/gen_sources.py`。
+**25 个项目，大陆护照可申 19 / 不可申 6，共 105 条来源（A 级 95 / B 级 6 / C 级 4），其中 4 条 C 级仅作旁证。** 数字取于 2026-11-08，改数据后重跑 `python scripts/gen_sources.py`。
 
 完整清单见 [`data/programs/`](data/programs/)，逐条来源见 [`data/sources.md`](data/sources.md)。
 
@@ -171,7 +176,7 @@ overseas-program-dataset/
 - 本数据集为**信息汇编**，不构成法律或移民建议。
 - 各国政策、名额、费用、开放时间**随时可能调整**，申请前请以官方最新公告为准。
 - `last_verified` 表示该条信息的最后核实日期，**不保证在此之后仍然有效**。
-- 部分官方站点（如日本外务省 `mofa.go.jp`、加拿大 IRCC `canada.ca`）会对脚本式请求返回 403 或连接重置。这类站点用真实浏览器通道仍可读到原文，本数据集据此复核；若某轮确实读不到，该字段标为「未能核实」，**不等于数据有误**。
+- 部分官方站点（如日本外务省 `mofa.go.jp`、加拿大 IRCC `canada.ca`）会对脚本式请求返回 403 或连接重置。这类站点用真实浏览器通道仍可读到原文，本数据集据此复核。有些字段国家级页面确实不写（如材料规格由各使领馆自定、项目费由各 Sponsor 自定），这类字段写明「官方未规定、该向谁确认」，**不填一个看似合理的数字**。
 
 ---
 

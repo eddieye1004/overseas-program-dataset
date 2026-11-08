@@ -45,7 +45,7 @@
     "language": {
       "required": true,
       "tests": [],
-      "note": "要求因国家委员会而异。IAESTE Germany 明文要求英语水平证明且不得超过 3 年，认可清单为 UNIcert、Cambridge、IELTS、ISE、TOEFL、TOEIC、PTE Academic、onSET、OLS、Duolingo，或「至少 2 个完整学期全英文授课」；美国、加拿大（魁北克除外）、英国、爱尔兰、新西兰、澳大利亚申请人免交。中国区是否同样要求未在官方页核实（应为「需向 IAESTE China 确认」）。**此前记录的「需 CEFR C1 或 C2 级」未能核实，官方清单不设等级门槛。**"
+      "note": "要求因国家委员会而异。IAESTE Germany 明文要求英语水平证明且不得超过 3 年，认可清单为 UNIcert、Cambridge、IELTS、ISE、TOEFL、TOEIC、PTE Academic、onSET、OLS、Duolingo，或「至少 2 个完整学期全英文授课」；美国、加拿大（魁北克除外）、英国、爱尔兰、新西兰、澳大利亚申请人免交。中国区是否同样要求未在官方页核实（应为「需向 IAESTE China 确认」）。**官方清单不设等级门槛，此前记录的「需 CEFR C1 或 C2 级」无对应表述，已不采用。**"
     },
     "funds": {
       "required": false,
@@ -72,7 +72,7 @@
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
-    "quota_note": "无统一名额上限。官方口径为 1948 年至今累计派出 374,000+ 名学生、2,500+ 志愿者、3,000+ 接收机构；按年派出量官方未公布（「每年约 4,000 名」为旧记录，未能核实）。 费用：官方未公布任何统一金额，各国委员会自定注册费/参与费，未能核实。",
+    "quota_note": "无统一名额上限。官方口径为 1948 年至今累计派出 374,000+ 名学生、2,500+ 志愿者、3,000+ 接收机构；按年派出量官方只给累计口径，不公布单一年份数字（「每年约 4,000 名」为旧记录，无官方依据，已不采用）。费用同理：IAESTE 不设全球统一价，注册费与参与费由各国委员会自定，须向具体委员会查询。",
     "windows": [
       {
         "year": 2026,

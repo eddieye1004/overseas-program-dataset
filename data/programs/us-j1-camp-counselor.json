@@ -45,7 +45,7 @@
     },
     "funds": {
       "required": false,
-      "note": "22 CFR 62.30 未设资金门槛。但须自付项目费、机票与前期食宿，且项目费金额官方不公布、由各 Sponsor 自定（未能核实）。薪酬按官方要求须与美方同岗位同酬。"
+      "note": "22 CFR 62.30 未设资金门槛。但须自付项目费、机票与前期食宿，且项目费由各 Sponsor 自定，国务院不统一公布金额，须向所选 Sponsor 索取报价。薪酬按官方要求须与美方同岗位同酬。"
     },
     "other_requirements": [
       {
@@ -67,7 +67,7 @@
       }
     ],
     "fees": [],
-    "processing_time": "官方未公布审理时长（未能核实）。SEVIS I-901 费为 $35，须在面签前缴纳（ICE SEVIS I-901 官方费率表 Camp counselor program $35）；签证费按 22 CFR 22.1 第 21(a) 项为 $185。"
+    "processing_time": "国务院不公布统一的审理时长——Sponsor 审核与 DS-2019 签发由各机构自行掌握，面签排期由使领馆决定。SEVIS I-901 费为 $35，须在面签前缴纳（ICE SEVIS I-901 官方费率表 Camp counselor program $35）；签证费按 22 CFR 22.1 第 21(a) 项为 $185。"
   },
   "documents": [
     {
@@ -247,6 +247,6 @@
       "claim": "领事服务收费表原文（22 CFR 22.1 第 21(a) 项）：`Non-petition-based nonimmigrant visa (except E category) $185`。J-1 交换访问学者签证属非 petition 类，按此费率缴纳；该表为国务院领事收费的法定依据，逐项列出护照、签证、公证等各类费用。"
     }
   ],
-  "last_verified": "2026-11-03",
+  "last_verified": "2026-11-08",
   "verified_by": "eddieye1004"
 }

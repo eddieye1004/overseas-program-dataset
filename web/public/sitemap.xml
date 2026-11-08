@@ -13,8 +13,20 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/au-485-graduate</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/ca-iec-working-holiday</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/ca-pgwp</loc>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -32,13 +44,13 @@
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/de-chancenkarte</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/global-aiesec-global-talent</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -56,19 +68,25 @@
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/jp-working-holiday</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/kr-h1-working-holiday</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/nz-china-whv</loc>
     <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/nz-post-study-work</loc>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -85,8 +103,14 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/uk-hpi-visa</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/uk-short-term-study-visa</loc>
-    <lastmod>2026-11-01</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -104,13 +128,19 @@
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/us-j1-camp-counselor</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/us-j1-intern</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/us-j1-research-scholar</loc>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -122,7 +152,7 @@
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/#/p/us-j1-trainee</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -156,6 +156,25 @@ const EXPECT_TOTAL = INDEX.length;
 const EXPECT_CRITICAL = INDEX.filter((p) => (p.risk_levels ?? []).includes('critical')).length;
 const EXPECT_ELIGIBLE = INDEX.filter((p) => p.status === 'eligible').length;
 const EXPECT_NOT_ELIGIBLE = INDEX.filter((p) => p.status === 'not_eligible').length;
+// 搜索命中数也从数据派生：2026-11-08 加 ca-pgwp 时，写死的「canada 只剩 1 张」
+// 直接变红，而实际行为是对的——加拿大本来就有两个项目。
+const searchHaystack = (p) =>
+  [
+    p.name,
+    p.name_en,
+    p.country,
+    p.country_code,
+    p.authority ?? '',
+    p.visa_code ?? '',
+    p.summary,
+    p.id,
+    ...(p.tags ?? []),
+  ]
+    .join(' ')
+    .toLowerCase();
+const EXPECT_CANADA_IDS = INDEX.filter((p) => searchHaystack(p).includes('canada'))
+  .map((p) => p.id)
+  .sort();
 // 长文数量同样派生自 sync-data 生成的 sitemap，避免再加一篇时又漏。
 const SITEMAP = await (
   await import('node:fs/promises')
@@ -196,10 +215,18 @@ await evalJs(`(() => {
   return true;
 })()`);
 await sleep(400);
-ok('搜索 canada 后只剩 1 张', (await evalJs(`document.querySelectorAll('.card').length`)) === 1);
 ok(
-  '剩余卡片是 ca-iec',
-  await evalJs(`document.querySelector('.card__link')?.getAttribute('href') === '#/p/ca-iec-working-holiday'`),
+  `搜索 canada 后只剩 ${EXPECT_CANADA_IDS.length} 张`,
+  (await evalJs(`document.querySelectorAll('.card').length`)) === EXPECT_CANADA_IDS.length,
+  await evalJs(`[...document.querySelectorAll('.card__link')].map((a) => a.getAttribute('href')).join(',')`),
+);
+ok(
+  '命中的正好是加拿大的项目',
+  JSON.stringify(
+    await evalJs(
+      `[...document.querySelectorAll('.card__link')].map((a) => a.getAttribute('href').replace('#/p/', '')).sort()`,
+    ),
+  ) === JSON.stringify(EXPECT_CANADA_IDS),
 );
 ok('筛选条件写入 URL', await evalJs(`location.hash.includes('q=canada')`));
 

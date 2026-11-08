@@ -18,7 +18,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -43,7 +42,7 @@
     },
     "funds": {
       "required": true,
-      "note": "须证明 `you have enough money to support yourself without working or help from public funds`，或由亲友资助并提供住宿；另须能支付返程或续程旅费。官方未公布具体金额门槛（未能核实），申请材料要求近 6 个月银行流水或工资单。"
+      "note": "须证明 `you have enough money to support yourself without working or help from public funds`，或由亲友资助并提供住宿；另须能支付返程或续程旅费。官方不设固定金额门槛，只要求能自给；申请材料要求近 6 个月银行流水或工资单作为佐证。"
     },
     "other_requirements": [
       {
@@ -63,7 +62,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
@@ -78,28 +76,70 @@
     "fees": [
       {
         "item": "签证申请费",
-        "amount": { "local_amount": 228, "currency": "GBP", "cny_estimate": 2100 },
+        "amount": {
+          "local_amount": 228,
+          "currency": "GBP",
+          "cny_estimate": 2100
+        },
         "refundable": false
       },
       {
         "item": "移民健康附加费（IHS）",
-        "amount": { "local_amount": 776, "currency": "GBP", "cny_estimate": 7200, "note": "官方页写 `It usually costs £776`，按年计；不足一年的部分按比例计算，实际金额以申请时系统计算为准" },
+        "amount": {
+          "local_amount": 776,
+          "currency": "GBP",
+          "cny_estimate": 7200,
+          "note": "官方页写 `It usually costs £776`，按年计；不足一年的部分按比例计算，实际金额以申请时系统计算为准"
+        },
         "refundable": false
       }
     ],
     "processing_time": "官方原文：`you'll usually get a decision within 3 weeks`（完成网申、核验身份并提交材料后）。可付费加急。"
   },
-
   "documents": [
-    { "name": "有效护照", "required": true, "note": "当前有效护照或其他有效旅行证件", "prepare_days": 30 },
-    { "name": "资金证明", "required": true, "note": "近 6 个月银行流水或工资单，证明无需工作即可自给", "prepare_days": 30 },
-    { "name": "住宿与行程说明", "required": true, "note": "官方提示：拿到签证前不要先付住宿或机票钱", "prepare_days": 7 },
-    { "name": "课程费用已缴或可支付的证明", "required": true, "note": "官方原文 `evidence that you've paid your course fees or have enough money to pay them`", "prepare_days": 14 },
-    { "name": "录取通知书", "required": true, "note": "须写明课程名称、时长与费用（含住宿）", "prepare_days": 30 },
-    { "name": "结核病检查证明", "required": true, "note": "中国在须检名单内；胸片证明有效期 6 个月", "prepare_days": 14 },
-    { "name": "非英文材料的认证翻译件", "required": true, "note": "官方原文 `a certified translation if any documents are not in English or Welsh`", "prepare_days": 14 }
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "当前有效护照或其他有效旅行证件",
+      "prepare_days": 30
+    },
+    {
+      "name": "资金证明",
+      "required": true,
+      "note": "近 6 个月银行流水或工资单，证明无需工作即可自给",
+      "prepare_days": 30
+    },
+    {
+      "name": "住宿与行程说明",
+      "required": true,
+      "note": "官方提示：拿到签证前不要先付住宿或机票钱",
+      "prepare_days": 7
+    },
+    {
+      "name": "课程费用已缴或可支付的证明",
+      "required": true,
+      "note": "官方原文 `evidence that you've paid your course fees or have enough money to pay them`",
+      "prepare_days": 14
+    },
+    {
+      "name": "录取通知书",
+      "required": true,
+      "note": "须写明课程名称、时长与费用（含住宿）",
+      "prepare_days": 30
+    },
+    {
+      "name": "结核病检查证明",
+      "required": true,
+      "note": "中国在须检名单内；胸片证明有效期 6 个月",
+      "prepare_days": 14
+    },
+    {
+      "name": "非英文材料的认证翻译件",
+      "required": true,
+      "note": "官方原文 `a certified translation if any documents are not in English or Welsh`",
+      "prepare_days": 14
+    }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -137,7 +177,6 @@
       "official_link": "https://www.gov.uk/visa-to-study-english"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 11,
     "max_same_employer_months": 0,
@@ -155,7 +194,6 @@
     ],
     "note": "这是本签证最关键的限制：官方原文 `work or carry out any business (this includes paid or unpaid work, work experience or work placements)` 全部禁止。因此它只适合「纯语言进修」，不能包装成「边游边打工」。可停留时长 = 课程时长 + 30 天，且总长不超过 11 个月。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -182,7 +220,6 @@
       "description": "优势：16 岁以上不看学籍、不需 CAS、无语言考试门槛；总成本（£228 签证费 + £776 IHS）约 1 万人民币，低于学生签证路径；是在职人士少数能合法在英国住满近一年的方式。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -248,7 +285,6 @@
       "claim": "用于划清与访问签证的边界：访问签证可 `visit the UK ... for tourism, business, study (courses up to 6 months)`，可 `do a recreational course of up to 30 days`，但同样 `You cannot: do paid or unpaid work for a UK company`。即 6 个月以内短课程走访问签证，6–11 个月纯英语课程才走本签证，两条路径都禁止工作。"
     }
   ],
-
-  "last_verified": "2026-11-01",
+  "last_verified": "2026-11-08",
   "verified_by": "eddieye1004"
 }

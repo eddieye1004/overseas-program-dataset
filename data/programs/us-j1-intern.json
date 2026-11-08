@@ -1,7 +1,5 @@
 {
-
   "schema_version": "0.1.0",
-
   "program": {
     "id": "us-j1-intern",
     "name": "美国 J-1 实习项目",
@@ -22,7 +20,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -67,7 +64,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
@@ -90,9 +86,8 @@
         "refundable": false
       }
     ],
-    "processing_time": "官方未公布审理时长（未能核实）。SEVIS I-901 费须在面签前缴纳；签证费按 22 CFR 22.1 第 21(a) 项，非 petition 类非移民签证（J-1 属此类）为 $185。"
+    "processing_time": "国务院不公布统一的审理时长——Sponsor 审核与 DS-2019 签发由各机构自行掌握，面签排期由使领馆决定。SEVIS I-901 费须在面签前缴纳；签证费按 22 CFR 22.1 第 21(a) 项，非 petition 类非移民签证（J-1 属此类）为 $185。"
   },
-
   "documents": [
     {
       "name": "有效护照",
@@ -131,7 +126,6 @@
       "prepare_days": 7
     }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -169,7 +163,6 @@
       "official_link": "https://www.ice.gov/sevis/i901/faq"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 12,
     "max_same_employer_months": 12,
@@ -183,7 +176,6 @@
     ],
     "note": "实习须落在官方列出的 10 个职业类别内：农林渔、艺术与文化、建筑、教育/社会科学/图书馆/咨询与社会服务、健康相关、酒店与旅游、信息媒体与传播、管理/商业/商务与金融、公共行政与法律、科学/工程/建筑/数学与工业。不得取代美方正式雇员岗位。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -210,7 +202,6 @@
       "description": "优势：无年龄上限、无资金门槛；官方另设 Early Career STEM Research Initiative，理工科实习岗位池更大。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -258,8 +249,6 @@
       "claim": "领事服务收费表原文（22 CFR 22.1 第 21(a) 项）：`Non-petition-based nonimmigrant visa (except E category) $185`。J-1 交换访问学者签证属非 petition 类，按此费率缴纳；该表为国务院领事收费的法定依据，逐项列出护照、签证、公证等各类费用。"
     }
   ],
-
-  "last_verified": "2026-11-03",
-
+  "last_verified": "2026-11-08",
   "verified_by": "eddieye1004"
 }

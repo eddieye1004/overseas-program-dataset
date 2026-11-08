@@ -1,0 +1,287 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "us-j1-research-scholar",
+    "name": "美国 J-1 研究学者",
+    "name_en": "J-1 Research Scholar",
+    "country": "美国",
+    "country_code": "US",
+    "region": "north_america",
+    "program_type": "cultural_exchange",
+    "visa_code": "J-1 Research Scholar",
+    "official_url": "https://j1visa.state.gov/programs/research-scholar/",
+    "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
+    "summary": "面向已具研究能力的学者赴美做研究或任教的交流签证，最长 5 年，可带家属（J-2）。不要求美国雇主做劳工证，但必须由指定赞助机构（Sponsor）出具 DS-2019。中国大陆护照持有人不受国籍限制，门槛在学历、英语能力与 Sponsorship。两条最容易被忽略的禁令：不能申请终身教职岗位，且参加后须在境外住满 24 个月才能再次以教授/研究学者身份赴美。",
+    "tags": [
+      "requires_agency",
+      "requires_degree",
+      "english_required",
+      "stem_friendly",
+      "cultural_exchange"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "22 CFR 62.20 与国务院项目页均未设国籍限制，门槛在学历、研究能力、英语水平与是否有 Sponsor 接收。中国大陆护照持有人可申请，须找到愿意出具 DS-2019 的指定赞助机构（多为美国高校或研究机构）。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "法规与项目页均未设年龄限制。0-99 表示「无年龄要求」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "master",
+      "major_restriction": [],
+      "note": "须具备与「教授或研究学者」相称的教育背景或同等经历（官方原文 `Be a professor or research scholar or someone with similar education and or experience`）。法规未规定具体学位层级，实务上博士或即将完成博士学业者为主；硕士加相当研究经历也可被接受，由 Sponsor 判断。岗位本身必须是临时性质——官方原文 `The research scholar's appointment to a position shall be temporary, even if the position itself is permanent.`"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "Sponsor 须核验申请人的英语能力足以参与项目（22 CFR 62.10 要求以客观方式衡量）。官方未指定统一考试或分数线，由各 Sponsor 自行设定并在 DS-2019 签发前完成核验。"
+    },
+    "funds": {
+      "required": true,
+      "note": "须证明有足够资金覆盖本人及随行家属在整个项目期的生活（Sponsor 有义务核实，官方原文 `Ensure that exchange visitors have sufficient finances to participate in the program and to support their spouse and dependents, if any.`）。资金来源可为美方机构薪水、中方派出单位资助、或自有资金。法规未设统一金额下限。"
+    },
+    "other_requirements": [
+      {
+        "type": "government_support_letter",
+        "required": true,
+        "note": "必须由国务院指定的 Sponsor 出具 DS-2019 表。个人无法自行申请，须先拿到接收机构的邀请与 Sponsorship。"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "Sponsor 须确保申请人及随行家属在项目期全程有医疗保险（官方原文 `Ensure that the exchange participants and his/her dependents, if any, are covered by health insurance`）。这是硬性条件，不是建议。"
+      },
+      {
+        "type": "no_prior_visa",
+        "required": true,
+        "note": "三条时间禁令：①此前 24 个月内已完成过一个 research scholar 项目的人不得再次参加；②此前 12 个月内以任何 J 身份在美停留过的人不得参加，三个例外是「转学继续同一项目」「此前 J 身份累计不足 6 个月」「此前身份是 short-term scholar」；③项目结束后须在境外住满 2 年才能再次以教授/研究学者身份参加。此外不得是终身教职（tenure track）岗位候选人。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无名额上限，按 Sponsor 的接收安排滚动办理。真正的约束是「24 个月 / 12 个月冷却期」与「5 年总时长上限」这两条硬规则。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动，取决于 Sponsor 的接收时间与 DS-2019 签发节奏。J 类签证建议预留 3-6 个月处理 Sponsorship 与面签。"
+      },
+      {
+        "year": 2027,
+        "status": "upcoming",
+        "note": "同上，法规未按年份调整。5 年上限从 SEVIS 记录的初始项目开始日连续计算，不因中途离境而暂停。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "SEVIS I-901 费（J-1）",
+        "amount": {
+          "local_amount": 220,
+          "currency": "USD",
+          "cny_estimate": 1600,
+          "note": "官方费率页原文 `For exchange visitors (J-1) $220`。若参加 Summer work/travel、Au pair、Camp counselor 三类项目则为 $35"
+        },
+        "refundable": false
+      },
+      {
+        "item": "签证申请费（MRV）",
+        "amount": {
+          "local_amount": 185,
+          "currency": "USD",
+          "cny_estimate": 1350,
+          "note": "按 22 CFR 22.1 第 21(a) 项「非 petition 类非移民签证（E 类除外）」$185"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方未公布统一审理时长。Sponsor 端准备 DS-2019 通常需数周至数月，面签预约另计。整体建议预留 3-6 个月。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期须覆盖整个项目期，通常建议比项目结束日多留 6 个月",
+      "prepare_days": 30
+    },
+    {
+      "name": "DS-2019 表",
+      "required": true,
+      "note": "由 Sponsor 在 SEVIS 系统签发，是申请 J-1 的前提。没有这张表就无法进入签证流程",
+      "prepare_days": 60
+    },
+    {
+      "name": "学历与研究成果证明",
+      "required": true,
+      "note": "学位证书、成绩单、发表清单、推荐信。由 Sponsor 判断是否达到「教授或研究学者」水平",
+      "prepare_days": 30
+    },
+    {
+      "name": "资金证明",
+      "required": true,
+      "note": "美方薪水函、中方资助函或存款证明，须覆盖本人及随行家属",
+      "prepare_days": 30
+    },
+    {
+      "name": "英语能力证明",
+      "required": true,
+      "note": "按 Sponsor 要求提供（托福/雅思成绩、或 Sponsor 组织的面试评估）。官方未设统一分数线",
+      "prepare_days": 60
+    },
+    {
+      "name": "医疗保险证明",
+      "required": true,
+      "note": "须满足国务院对 J 类签证的保险最低要求（保额、共付上限等），Sponsor 会核验",
+      "prepare_days": 14
+    },
+    {
+      "name": "SEVIS I-901 缴费凭证",
+      "required": true,
+      "note": "220 美元，须在面签前缴纳并保留凭证",
+      "prepare_days": 3
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认自己不在冷却期内",
+      "description": "两条时间禁令先自查：此前 24 个月内是否完成过 research scholar 项目；此前 12 个月内是否以任何 J 身份在美停留过。三条例外要能举证（转学继续同一项目、此前 J 身份累计不足 6 个月、此前是 short-term scholar）。",
+      "duration": "30 分钟",
+      "official_link": "https://j1visa.state.gov/programs/research-scholar/"
+    },
+    {
+      "step_no": 2,
+      "title": "确认岗位不是终身教职而是临时职位",
+      "description": "官方明确禁止终身教职（tenure track）岗位候选人，并要求岗位本身是临时性质——即使职位本身是永久岗。这条与高校的常规招聘逻辑冲突，须在谈 offer 阶段就确认。",
+      "duration": "10 分钟",
+      "official_link": "https://j1visa.state.gov/programs/research-scholar/"
+    },
+    {
+      "step_no": 3,
+      "title": "找到 Sponsor 并拿到 DS-2019",
+      "description": "J-1 不能个人申请，必须由国务院指定的 Sponsor 出具 DS-2019。多数情况是接收你的美国高校或研究机构；也可通过第三方 Sponsorship 机构。这一步通常最耗时。",
+      "duration": "1-3 个月",
+      "official_link": "https://j1visa.state.gov/participants/how-to-apply/sponsor-search/"
+    },
+    {
+      "step_no": 4,
+      "title": "缴 SEVIS 费并完成 Sponsor 的核验",
+      "description": "SEVIS I-901 费 220 美元，须在面签前缴纳。Sponsor 同时会核验英语能力、资金与保险——这三项是 Sponsor 的法定义务，不是走过场。",
+      "duration": "2-4 周",
+      "official_link": "https://www.ice.gov/sevis/i901/faq"
+    },
+    {
+      "step_no": 5,
+      "title": "递交 DS-160 并面签",
+      "description": "缴 MRV 签证费 185 美元，填 DS-160，预约面签。研究敏感方向可能触发额外行政审查（administrative processing），预留时间。",
+      "duration": "2-8 周",
+      "official_link": "https://j1visa.state.gov/programs/research-scholar/"
+    },
+    {
+      "step_no": 6,
+      "title": "在 5 年上限内完成项目并规划后续",
+      "description": "5 年从 SEVIS 记录的初始项目开始日连续计算，中途离境不暂停。结束后须在境外住满 2 年才能再次以教授/研究学者身份赴美；想留下工作的应转向 H-1B 或 O-1，注意 J-1 可能附带回国服务要求（212(e)）。",
+      "duration": "最长 5 年",
+      "official_link": "https://www.ecfr.gov/api/renderer/v1/content/enhanced/current/title-22?part=62&section=62.20"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 60,
+    "max_same_employer_months": 60,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "可在 5 年上限内延长，但须有新的 DS-7002 完整执行以证明需求（22 CFR 62.20：`A responsible officer may not extend the period of program duration beyond the five-year period`）。超过 5 年一律不批。项目结束后须在境外住满 2 年才能再次以教授/研究学者身份参加。",
+    "restricted_occupations": [
+      "终身教职（tenure track）岗位候选人",
+      "与「临时性研究/教学」不符的长期固定职位"
+    ],
+    "note": "研究学者可从事研究，也可授课或演讲，除非 Sponsor 禁止（`A research scholar may also teach or lecture, unless disallowed by the sponsor.`）。岗位必须是临时性质，即使职位本身为永久岗。5 年总时长从 SEVIS 记录的初始项目开始日连续计算。可带配偶与子女（J-2），J-2 可申请工卡就业。注意 J-1 可能附带 212(e) 回国服务两年要求，须在 DS-2019 上核对是否勾选。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "不得是终身教职（tenure track）岗位候选人。很多高校的正式教职招聘默认走 tenure track，一旦岗位属此类，J-1 直接不符合资格。"
+    },
+    {
+      "level": "critical",
+      "description": "24 个月 / 12 个月双冷却期。此前 24 个月内完成过 research scholar 项目、或 12 个月内以任何 J 身份在美停留过（三个例外之外），都不能参加。这条经常被忽略，因为它不在「 eligibility 清单」的显眼位置。"
+    },
+    {
+      "level": "critical",
+      "description": "5 年上限连续计算，中途离境不暂停。把 5 年当成「累计 5 年在美时间」会算错，实际从第一天开始倒数。"
+    },
+    {
+      "level": "warning",
+      "description": "J-1 可能附带 212(e) 回国服务两年要求。触发后须回国住满 2 年，或在符合条件时申请豁免（waiver），否则无法在美转 H-1B 或调整身份。DS-2019 上是否勾选必须提前看清。"
+    },
+    {
+      "level": "warning",
+      "description": "没有 Sponsor 就没有 DS-2019，也就没有 J-1。个人无法自行申请，Sponsorship 是唯一入口，且第三方 Sponsorship 机构可能另收管理费。"
+    },
+    {
+      "level": "warning",
+      "description": "医疗保险是 Sponsor 的法定义务，也是签证条件。空窗期没保险既违反规定，也可能产生高额医疗费用。J-2 家属同样须全覆盖。"
+    },
+    {
+      "level": "info",
+      "description": "优势：不需要劳工证（Labor Certification），比 H-1B 少一道关卡；可带家属且 J-2 可就业；最长 5 年，比多数短期交流项目宽裕；可同时授课与做研究。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Research Scholar（美国国务院 J-1 官方项目页）",
+      "url": "https://j1visa.state.gov/programs/research-scholar/",
+      "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "三条禁令原文：`Not be a candidate for a tenure track position`；`Not have participated in and completed a research scholar program within the last 24 months preceding the beginning date`；`Not have participated in a J-Visa program for all or part of the 12-month period immediately preceding the start date`。身份要求：`Be a professor or research scholar or someone with similar education and or experience.` 临时性：`The research scholar's appointment to a position shall be temporary, even if the position itself is permanent.` 教学许可：`A research scholar may also teach or lecture, unless disallowed by the sponsor.` Sponsor 义务：`Ensure that the exchange participants and his/her dependents, if any, are covered by health insurance`；`Ensure that exchange visitors have sufficient finances to participate in the program and to support their spouse and dependents, if any.`；`Ensure that the foreign national is successfully carrying out the responsibilities for which entry to the United States was granted`"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 62.20 — Professors and research scholars（联邦法规原文）",
+      "url": "https://www.ecfr.gov/api/renderer/v1/content/enhanced/current/title-22?part=62&section=62.20",
+      "publisher": "U.S. Government Publishing Office / eCFR（Electronic Code of Federal Regulations）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "5 年上限原文：`A professor or research scholar may be authorized to participate in the Exchange Visitor Program for the length of time necessary to complete his or her program, provided such time does not exceed five years. The five-year period ... is continuous and begins with the initial program begin date documented in SEVIS`。重复参加禁令：`Repeat participation ... are not eligible for participation as a professor or research scholar for a period of two years following the end date`。延长期限：`A responsible officer may not extend the period of program duration beyond the five-year period`。活动变更：`professors may freely engage in research and research scholars may freely engage in teaching and lecturing ... does not extend the exchange visitor's maximum duration`"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 62.10 — Program administration（英语能力核验）",
+      "url": "https://www.ecfr.gov/api/renderer/v1/content/enhanced/current/title-22?part=62&section=62.10",
+      "publisher": "U.S. Government Publishing Office / eCFR（Electronic Code of Federal Regulations）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "Sponsor 须以客观方式核验英语能力，法规原文要求英语熟练度须经 `objective measurement` 确认，具体衡量方式与合格标准由 Sponsor 设定，法规未指定统一考试或分数线。"
+    },
+    {
+      "type": "primary",
+      "name": "SEVIS I-901 Fee（美国移民与海关执法局费率页）",
+      "url": "https://www.ice.gov/sevis/i901/faq",
+      "publisher": "U.S. Immigration and Customs Enforcement (ICE), Student and Exchange Visitor Program",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "费率原文：`For exchange visitors (J-1) $220 UNLESS participating in:` … `Summer work/travel program $35`、`Au pair program $35`、`Camp counselor program $35`。学生类为 `For students (F-1, F-3, M-1 or M-3) $350`。须在面签前缴纳。"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 22.1 — Schedule of fees（美国领事服务收费表）",
+      "url": "https://www.ecfr.gov/api/renderer/v1/content/enhanced/current/title-22?part=22&section=22.1",
+      "publisher": "U.S. Government Publishing Office / eCFR（Electronic Code of Federal Regulations）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "第 21 项原文：`Nonimmigrant Visa Application and Border Crossing Card Processing Fees (per person): (a) Non-petition-based nonimmigrant visa (except E category) $185 (b) H, L, O, P, Q and R category nonimmigrant visa 205 (c) E category nonimmigrant visa 315 (d) K category (fiancé) nonimmigrant visa $265`。J-1 属第 (a) 项，签证费 $185。"
+    }
+  ],
+  "last_verified": "2026-11-08",
+  "verified_by": "eddieye1004"
+}

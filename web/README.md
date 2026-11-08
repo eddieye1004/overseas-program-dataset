@@ -12,7 +12,7 @@
 |---|---|---|
 | 构建 | Vite 5 | 产物是纯静态文件，`dist/` 丢任何静态托管都能跑；不引入 SSR，因为没有需要服务端的东西 |
 | UI | React 18 + TypeScript | 筛选用例多、状态跨页面复用（收藏/对比/看板），手写 DOM 会失控；TS 用来钉住 schema 的枚举，改数据时类型会报错 |
-| 数据 | 构建期预生成 JSON | `scripts/sync-data.mjs` 把仓库 20 个 program JSON 合并成 3 个静态 JSON。浏览器只发静态请求，没有 API、没有数据库、没有 Key |
+| 数据 | 构建期预生成 JSON | `scripts/sync-data.mjs` 把仓库 25 个 program JSON 合并成 3 个静态 JSON。浏览器只发静态请求，没有 API、没有数据库、没有 Key |
 | 双语 | 离线词典（key = 中文原串） | 运行时调翻译 API 会产生费用且要联网；词典在构建期生成，访客翻页零延迟。缺词回落中文并 console.warn |
 | 路由 | hash（`#/p/<id>`） | GitHub Pages 不支持 SPA fallback rewrite，hash 路由不需要服务端配置，刷新不会 404 |
 | 个人状态 | localStorage | 没有账号体系，收藏/对比/进度/画像只存本机。换设备不同步——这是为「零成本 + 不收集数据」付的代价 |
@@ -29,14 +29,14 @@ web/
 ├─ i18n-src/                  翻译源（chunk-*.json），构建期不参与打包
 │                             merged.json 是本地合并中间产物，已 gitignore
 ├─ public/data/               sync:data 生成的产物，随构建拷进 dist
-│   ├─ programs.json          20 条完整记录 229.4 KB（gzip 68.9 KB）
-│   ├─ index.json             卡片用轻量索引 23.9 KB（含来源计数）
-│   └─ i18n.json              1294 条词条 377.3 KB
+│   ├─ programs.json          25 条完整记录 321.4 KB（gzip 95.4 KB）
+│   ├─ index.json             卡片用轻量索引 30.6 KB（含来源计数）
+│   └─ i18n.json              1675 条词条 548.6 KB
 ├─ scripts/
 │   ├─ sync-data.mjs          合并 data/programs/*.json → public/data/
 │   ├─ smoke-test.mjs         89 条纯逻辑断言（筛选/排序/匹配/词典对齐）
 │   ├─ e2e-check.mjs          148 条真实浏览器断言（CDP，无需 playwright）
-│   ├─ shots.mjs              一次跑完 13 张页面截图 + 横向溢出检测
+│   ├─ shots.mjs              一次跑完 15 张页面截图 + 横向溢出检测
 │   └─ screenshot.mjs         单页截图工具（真实手机视口）
 └─ src/
    ├─ main.tsx                StrictMode > I18nProvider > App
@@ -66,7 +66,7 @@ web/
 |---|---|
 | 托管 | GitHub Pages 免费（public 仓库 1 GB、月 100 GB 流量）；Cloudflare Pages 免费额度更大 |
 | 运行时费用 | 0 元。没有 Function、没有 KV、没有第三方 API |
-| 首屏体积 | HTML 3.2 KB（gzip 1.4 KB）+ CSS 29.4 KB（gzip 6.4 KB）+ JS 204.4 KB（gzip 66.7 KB）+ index.json 23.9 KB |
+| 首屏体积 | HTML 3.2 KB（gzip 1.4 KB）+ CSS 29.4 KB（gzip 6.4 KB）+ JS 204.4 KB（gzip 66.7 KB）+ index.json 30.6 KB |
 | 换设备 | 收藏/进度**不同步**，需要手工导出（本期没做导出，见「已知限制」） |
 | 数据更新 | 需要跑 `pnpm run sync:data` 再构建；Pages 工作流已包含这一步 |
 | SEO | hash 路由对搜索引擎不友好。要按详情页做 SEO 需换成真实路径 + 站点地图，属于下一阶段 |
@@ -233,7 +233,7 @@ python -m http.server 8099 --bind 127.0.0.1 -d dist   # 预览产物
 ```bash
 node scripts/smoke-test.mjs                         # 65 条纯逻辑断言
 node scripts/e2e-check.mjs http://127.0.0.1:8099/   # 84 条真实浏览器断言
-node scripts/shots.mjs http://127.0.0.1:8099/ ./shots  # 13 张截图 + 三档视口溢出检测
+node scripts/shots.mjs http://127.0.0.1:8099/ ./shots  # 15 张截图 + 三档视口溢出检测
 ```
 
 再加两道视觉门（需要本机装了 impeccable skill）：
@@ -270,12 +270,12 @@ node scripts/smoke-test.mjs                        # PASS 89 / 89
 node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 148 / 148
 ```
 
-两套测试的条数从数据派生，不写死，所以加项目不会让它们变红。文档里出现的「20 个项目、可申 14 / 不可申 6、来源 78」是 2026-11-08 的取数，改 `data/programs/*.json` 后需重新取数。
+两套测试的条数从数据派生，不写死，所以加项目不会让它们变红。文档里出现的「25 个项目、可申 19 / 不可申 6、来源 105」是 2026-11-08 的取数，改 `data/programs/*.json` 后需重新取数。
 
 ### 已知限制（不是缺陷）
 
 - 收藏、对比、申请进度、匹配画像只存 `localStorage`，换设备不同步，也没有导出/导入。
-- hash 路由导致 20 个详情页对爬虫是同一个 URL，SEO 收录价值有限；改 path 路由要动 404 回退与全部 e2e，因此未做。
+- hash 路由导致 25 个详情页对爬虫是同一个 URL，SEO 收录价值有限；改 path 路由要动 404 回退与全部 e2e，因此未做。
 - 桌面端侧栏导航与语言切换 39px 高，小于 44px 触控标准——有意保留的鼠标密度；窄屏与 `pointer: coarse` 下补到 44px。
 - 「可申/不可申」左侧竖条未做：状态已由徽标与结论条数字表达，再加色条属重复，且 impeccable 会把 `side-tab` 判为 AI 界面痕迹。
 - 数据更新仍靠人工改 JSON + `sync:data` + push，没有定时抓取官方页的机制。

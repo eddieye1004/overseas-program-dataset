@@ -23,7 +23,7 @@
       "mainland_china": "not_eligible",
       "hong_kong_china": "eligible",
       "taiwan_china": "eligible",
-      "note": "⚠️ 关键信息：爱尔兰 WHA 仅对签约国家/地区开放，官方名单为安道尔、阿根廷、澳大利亚、加拿大、智利、中国香港、日本、新西兰、韩国、美国、中国台湾。中国大陆不在名单内。中国香港名额数未能核实（ISD 页面只写 Places are limited，未公布具体数字）；中国台湾为每年 400 个名额（ISD 原文：an annual quota of 400 WHAs，2027 年度取前 400 份合格申请）。"
+      "note": "⚠️ 关键信息：爱尔兰 WHA 仅对签约国家/地区开放，官方名单为安道尔、阿根廷、澳大利亚、加拿大、智利、中国香港、日本、新西兰、韩国、美国、中国台湾。中国大陆不在名单内。中国香港名额数未公布（ISD 页面只写 Places are limited）；中国台湾为每年 400 个名额（ISD 原文：an annual quota of 400 WHAs，2027 年度取前 400 份合格申请）。"
     },
     "age": {
       "min": 18,

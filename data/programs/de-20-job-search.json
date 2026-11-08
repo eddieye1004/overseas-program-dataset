@@ -44,7 +44,7 @@
     },
     "funds": {
       "required": true,
-      "note": "§20 第 2 款明文要求生计保障：`Die Erteilung einer Aufenthaltserlaubnis nach Absatz 1 setzt die Lebensunterhaltssicherung voraus.` 实践中以存款、父母担保函、或已签的劳动合同证明。具体金额各地外管局口径不一（未能核实统一数额）。"
+      "note": "§20 第 2 款明文要求生计保障：`Die Erteilung einer Aufenthaltserlaubnis nach Absatz 1 setzt die Lebensunterhaltssicherung voraus.` 实践中以存款、父母担保函、或已签的劳动合同证明。这种证明没有全国统一数额，各地外管局按个案判断。"
     },
     "other_requirements": [
       {
@@ -82,17 +82,26 @@
     ],
     "fees": [
       {
+        "item": "国家签证费（D 类，入境前在德国驻华使领馆缴纳）",
+        "amount": {
+          "local_amount": 75,
+          "currency": "EUR",
+          "cny_estimate": 590
+        },
+        "refundable": false
+      },
+      {
         "item": "居留许可签发费",
         "amount": {
           "local_amount": 100,
           "currency": "EUR",
           "cny_estimate": 790,
-          "note": "按德国居留法收费条例的常规上限口径估算。各地外管局实际收费与减免政策不一，具体金额未能核实。"
+          "note": "AufenthV §45 第 1 项：居留许可签发费 100 欧元，有效期一年以内与超过一年同价，全国统一（原文见来源）。"
         },
         "refundable": false
       }
     ],
-    "processing_time": "各地外管局差异很大，预约排期从数天到数月不等，官方未公布统一时限（未能核实）。因为居留卡制作需另行等待，实务上应预留 6-8 周。"
+    "processing_time": "联邦法律不设统一审理时限，官方没有可引用的数字；实际取决于当地外管局预约排期与居留卡制卡，实务上从递交到拿到卡预留 6-8 周较稳妥，毕业季（7-9 月、1-2 月）排期更长。"
   },
   "documents": [
     {
@@ -228,6 +237,24 @@
       "last_verified": "2026-11-08",
       "verified_by": "eddieye1004",
       "claim": "英文对照确认同一口径：`In the cases covered by subsection (1) nos. 1 to 4, the temporary residence permit is granted for a period of up to 18 months. In the cases covered by subsection (1) no. 5, it is granted for a period of up to 12 months and may be extended once by up to six months if the foreigner's subsistence is secured. It may not be extended beyond these maximum periods.` 以及 `The temporary residence permit is granted pursuant to subsection (1) on the condition that the foreigner's subsistence is secured.` 该页同时提供 §20a 机会卡英文，用于区分两条路径：§20a 允许 `to pursue employment of up to 20 hours per week`。"
+    },
+    {
+      "type": "primary",
+      "name": "AufenthV § 45 — Gebühren für die Aufenthaltserlaubnis（居留许可收费）",
+      "url": "https://www.gesetze-im-internet.de/aufenthv/__45.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "居留许可签发费 100 欧元，不论有效期在一年以内还是超过一年都收同一数额（原文 `für die Erteilung einer Aufenthaltserlaubnis ... a) mit einer Geltungsdauer von bis zu einem Jahr 100 Euro, b) mit einer Geltungsdauer von mehr als einem Jahr 100 Euro`）；延期视追加停留期长短为 93 或 96 欧元。§20 求职居留与 §20a 机会卡签发的都是 Aufenthaltserlaubnis，都适用这一档，不存在各外管局自行定价的空间。"
+    },
+    {
+      "type": "primary",
+      "name": "AufenthV § 46 — Gebühren für das Visum（国家签证收费）",
+      "url": "https://www.gesetze-im-internet.de/aufenthv/__46.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "德国国家签证（D 类）签发费 75 欧元，多次入境同价（原文 `für die Erteilung eines nationalen Visums (Kategorie „D“), auch für mehrmalige Einreisen 75 Euro`）；在德国境内把申根签证转为国家签证延长超过 90 天为 60 欧元。人在中国先办 D 类签证入境、再在德国当地换居留卡的两段式流程，第一段就是这 75 欧元。"
     }
   ],
   "last_verified": "2026-11-08",

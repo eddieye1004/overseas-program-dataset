@@ -1,7 +1,5 @@
 {
-
   "schema_version": "0.1.0",
-
   "program": {
     "id": "us-j1-trainee",
     "name": "美国 J-1 培训项目",
@@ -22,7 +20,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -62,7 +59,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
@@ -85,9 +81,8 @@
         "refundable": false
       }
     ],
-    "processing_time": "官方未公布审理时长（未能核实）。SEVIS 费须在面签前缴纳；签证费按 22 CFR 22.1 第 21(a) 项为 $185。"
+    "processing_time": "国务院不公布统一的审理时长——Sponsor 审核与 DS-2019 签发由各机构自行掌握，面签排期由使领馆决定。SEVIS 费须在面签前缴纳；签证费按 22 CFR 22.1 第 21(a) 项为 $185。"
   },
-
   "documents": [
     {
       "name": "有效护照",
@@ -132,7 +127,6 @@
       "prepare_days": 7
     }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -170,7 +164,6 @@
       "official_link": "https://www.ice.gov/sevis/i901/faq"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 18,
     "max_same_employer_months": 18,
@@ -185,7 +178,6 @@
     ],
     "note": "官方原文明确禁止把该项目当作普通就业使用：`Use of the Exchange Visitor Program for ordinary employment or work purposes is strictly prohibited.` 培训须有结构化指导与在岗督导。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -208,7 +200,6 @@
       "description": "优势：无年龄上限；无学历也能走「5 年经验」路径；比 Intern 多 6 个月时长。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -256,8 +247,6 @@
       "claim": "领事服务收费表原文（22 CFR 22.1 第 21(a) 项）：`Non-petition-based nonimmigrant visa (except E category) $185`。J-1 交换访问学者签证属非 petition 类，按此费率缴纳；该表为国务院领事收费的法定依据，逐项列出护照、签证、公证等各类费用。"
     }
   ],
-
-  "last_verified": "2026-11-03",
-
+  "last_verified": "2026-11-08",
   "verified_by": "eddieye1004"
 }
