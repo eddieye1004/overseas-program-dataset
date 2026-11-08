@@ -1,0 +1,265 @@
+{
+
+  "schema_version": "0.1.0",
+
+  "program": {
+    "id": "us-j1-intern",
+    "name": "美国 J-1 实习项目",
+    "name_en": "Intern (J-1 Exchange Visitor Program)",
+    "country": "美国",
+    "country_code": "US",
+    "region": "north_america",
+    "program_type": "paid_internship",
+    "visa_code": "J-1",
+    "official_url": "https://j1visa.state.gov/programs/intern/",
+    "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
+    "summary": "美国国务院 J-1 交流访问者项目下的实习类别：在美企业从事与所学专业相关的实习，最长 12 个月。参与人须为境外高校全日制在读生，或毕业不超过 12 个月。与 Trainee 的区别在于 Intern 面向在读生与应届生，Trainee 面向已有学历加工作经验的在职者。须经国务院指定 Sponsor 办理，岗位须预先落实。",
+    "tags": [
+      "requires_agency",
+      "english_required",
+      "rolling",
+      "stem_friendly"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "22 CFR 62.22 未对国籍设限，只要求是 foreign national。中国大陆护照持有人可申，前提是能找到接收的国务院指定 Sponsor 并落实实习岗位。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "法规未设年龄上下限，只限定学籍状态。这里的 0-99 表示「官方无年龄要求」，不是「未核实」。实际操作中 Sponsor 会自行判断申请人是否具备完成实习的能力。"
+    },
+    "education": {
+      "minimum_level": "bachelor_in_progress",
+      "major_restriction": [],
+      "note": "须满足其一：在境外学位或证书授予类高等教育机构全日制在读，且所学方向即实习方向；或从该类机构毕业不超过 12 个月。实习内容必须与专业相关，Sponsor 通过 DS-7002（T/IPP）逐项核对。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "须具备可核验的英语能力，足以在实习环境日常沟通。核验方式三选一：认可的英语考试、学校出具的书面证明、Sponsor 组织的面试（当面、视频或电话）。官方未设分数线，因此不列具体考试与分数。"
+    },
+    "funds": {
+      "required": false,
+      "note": "法规未设资金门槛。但须自付项目费、往返机票与前期食宿，项目费金额官方不公布、由各 Sponsor 自定。若实习带薪，薪酬须与美方同岗位同酬。"
+    },
+    "other_requirements": [
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "强制。22 CFR 62.14 规定最低额度：医疗每事故/疾病不低于 $100,000、遗体送返 $25,000、医疗转运 $50,000、自付额不超过 $500。通常含在 Sponsor 项目费内。"
+      },
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "须有雇主签署的 DS-7002（Training/Internship Placement Plan），逐项写明培训内容与岗位职责。Sponsor 必须先拿到全部签字才能签发 DS-2019。"
+      },
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "在读生须提供境外院校的在读证明；应届生须提供毕业证明，且毕业日期距项目开始不超过 12 个月。"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "官方未设年度名额上限。每年 5 月 1 日为项目年度起始日，具体报名与岗位安置日历由各 Sponsor 自行设定。",
+    "windows": [
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "官方项目页与法规均不公布统一报名窗口，由各 Sponsor 自行安排，故记为未核实。实习最长 12 个月，可在上限内凭新的 DS-7002 延期。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "SEVIS I-901 费",
+        "amount": {
+          "local_amount": 220,
+          "currency": "USD",
+          "cny_estimate": 1580
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方未公布审理时长（未能核实）。SEVIS I-901 费须在面签前缴纳；签证费按 22 CFR 22.1 第 21(a) 项，非 petition 类非移民签证（J-1 属此类）为 $185。"
+  },
+
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期覆盖整个在美停留期",
+      "prepare_days": 30
+    },
+    {
+      "name": "DS-2019 表",
+      "required": true,
+      "note": "由国务院指定 Sponsor 签发，是申请 J-1 签证的核心文件",
+      "prepare_days": 60
+    },
+    {
+      "name": "DS-7002 培训/实习安置计划",
+      "required": true,
+      "note": "须由申请人、雇主、Sponsor 三方签字，写明岗位职责与培训目标",
+      "prepare_days": 60
+    },
+    {
+      "name": "在读证明或毕业证明",
+      "required": true,
+      "note": "证明全日制在读，或毕业不超过 12 个月",
+      "prepare_days": 14
+    },
+    {
+      "name": "符合 62.14 的医疗保险证明",
+      "required": true,
+      "note": "医疗 $100,000 / 遗体送返 $25,000 / 医疗转运 $50,000 / 自付额 ≤ $500",
+      "prepare_days": 14
+    },
+    {
+      "name": "SEVIS I-901 缴费凭证",
+      "required": true,
+      "note": "J-1 通则 $220，须在面签前缴纳",
+      "prepare_days": 7
+    }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认自己符合学籍条件",
+      "description": "两条路：境外高校全日制在读且实习方向与专业一致；或毕业不超过 12 个月。在读证明与毕业日期是 Sponsor 最先核的两项，不满足就没有后续。",
+      "duration": "5 分钟",
+      "official_link": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.22"
+    },
+    {
+      "step_no": 2,
+      "title": "找到国务院指定 Sponsor",
+      "description": "必须经国务院指定的 Sponsor，无法自行向国务院申请。Sponsor 名单可在官方页按 Intern 类别筛选。",
+      "duration": "2-4 周",
+      "official_link": "https://j1visa.state.gov/participants/how-to-apply/sponsor-search/"
+    },
+    {
+      "step_no": 3,
+      "title": "落实实习岗位并签 DS-7002",
+      "description": "雇主须签署 DS-7002，写明岗位职责、培训目标与时长。Sponsor 会核查雇主资质（首次合作的雇主还须实地考察）。",
+      "duration": "4-8 周",
+      "official_link": "https://j1visa.state.gov/programs/intern/"
+    },
+    {
+      "step_no": 4,
+      "title": "通过英语核验与面试",
+      "description": "Sponsor 须核验英语能力并做记录性面试，方式三选一：考试、学校书面证明、Sponsor 面试。",
+      "duration": "1-3 周",
+      "official_link": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.22"
+    },
+    {
+      "step_no": 5,
+      "title": "缴纳 SEVIS 费并申请签证",
+      "description": "拿到 DS-2019 后缴 SEVIS I-901 费 $220，再预约面签。面签时须出示已签署的 DS-7002。",
+      "duration": "2-6 周",
+      "official_link": "https://www.ice.gov/sevis/i901/faq"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 12,
+    "renewable": true,
+    "renewal_condition": "可在 12 个月上限内延期，条件是完整填写并执行新的 DS-7002。完成实习后若不再符合 Intern 资格，可在境外居住满 2 年后申请 Trainee。",
+    "restricted_occupations": [
+      "非技术性或临时性体力劳动",
+      "涉及儿童照护、老人照护的岗位",
+      "涉及医疗患者护理或接触的岗位",
+      "文书或办公室支持工作占比超过 20% 的岗位"
+    ],
+    "note": "实习须落在官方列出的 10 个职业类别内：农林渔、艺术与文化、建筑、教育/社会科学/图书馆/咨询与社会服务、健康相关、酒店与旅游、信息媒体与传播、管理/商业/商务与金融、公共行政与法律、科学/工程/建筑/数学与工业。不得取代美方正式雇员岗位。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "必须经国务院指定 Sponsor，无法自主申请；且岗位须预先落实。任何「先过去再找实习」的说法都绕过不了 DS-7002 前置要求。"
+    },
+    {
+      "level": "critical",
+      "description": "实习内容必须与专业相关，由 Sponsor 逐项审核。跨专业申请会被拒，且没有申诉通道。"
+    },
+    {
+      "level": "warning",
+      "description": "文书类工作不得超过 20%，也不得从事护理类岗位。想靠 J-1 去做办公室助理或护工，法规上不成立。"
+    },
+    {
+      "level": "warning",
+      "description": "12 个月上限固定，延期须重新签 DS-7002 并在上限内。想留更久只能转其他签证类别。"
+    },
+    {
+      "level": "warning",
+      "description": "项目费官方不公布、由各 Sponsor 自定，区间可能相当大；SEVIS 费 $220 与签证费 $185 另计。项目费可能远高于这两项固定支出。"
+    },
+    {
+      "level": "info",
+      "description": "优势：无年龄上限、无资金门槛；官方另设 Early Career STEM Research Initiative，理工科实习岗位池更大。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Intern — BridgeUSA（美国国务院）",
+      "url": "https://j1visa.state.gov/programs/intern/",
+      "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "参与人资格原文：`Interns must be foreign nationals: Who are currently enrolled in and pursuing studies at a foreign degree- or certificate-granting post-secondary academic institution outside the United States; or Who have graduated from such an institution no more than 12 months prior to their exchange visitor program start date.` 限制原文：`Interns cannot work in unskilled or casual labor positions, in positions that require or involve childcare or elder care or in any kind of position that involves medical patient care or contact. Nor can interns work in positions that require more than 20 percent clerical or office support work.` 该页列出 10 个职业类别，并说明 Early Career STEM Research Initiative。**该页未公布年龄要求、签证费与审理时长。**"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 62.22 — Trainees and interns（美国联邦法规原文）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.22",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "时长原文：`the maximum duration of a training program is 18 months, and the maximum duration of an internship program is 12 months`，且 `Program extensions are permitted within the maximum duration ... provided that the need for an extended training or internship program is documented by the full completion and execution of a new Form DS-7002.` 选人标准原文：`Are currently enrolled full-time and pursuing studies in their advanced chosen career field at a degree- or certificate-granting post-secondary academic institution outside the United States or graduated from such an institution no more than 12 months prior to their exchange visitor program begin date.` 英语核验原文：`Sponsors must verify an applicant's English language proficiency through a recognized English language test, by signed documentation from an academic institution or English language school, or through a documented interview`。另有 DS-7002 须在签发 DS-2019 前完成全部签字的要求。**全文无年龄条款。**"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 62.14 — Insurance（保险最低额度）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.14",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "强制保险与最低额度：`Medical benefits of at least $100,000 per accident or illness`；`Repatriation of remains in the amount of $25,000`；`Expenses associated with the medical evacuation ... in the amount of $50,000`；`Deductibles not to exceed $500 per accident or illness`。"
+    },
+    {
+      "type": "primary",
+      "name": "I-901 SEVIS Fee FAQ — How Much Is the I-901 SEVIS Fee?",
+      "url": "https://www.ice.gov/sevis/i901/faq",
+      "publisher": "U.S. Immigration and Customs Enforcement (ICE), Student and Exchange Visitor Program",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "费率表原文：`For exchange visitors (J-1) $220 UNLESS participating in:` … `Camp counselor program $35`。Intern 与 Trainee 属通则 J-1，适用 $220。另说明须在赴使领馆面签前缴纳。"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 22.1 — Schedule of fees（美国领事服务收费表）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-22/section-22.1",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "领事服务收费表原文（22 CFR 22.1 第 21(a) 项）：`Non-petition-based nonimmigrant visa (except E category) $185`。J-1 交换访问学者签证属非 petition 类，按此费率缴纳；该表为国务院领事收费的法定依据，逐项列出护照、签证、公证等各类费用。"
+    }
+  ],
+
+  "last_verified": "2026-11-03",
+
+  "verified_by": "eddieye1004"
+}

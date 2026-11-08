@@ -1,0 +1,219 @@
+{
+
+  "schema_version": "0.1.0",
+
+  "program": {
+    "id": "uk-graduate-visa",
+    "name": "英国毕业生签证",
+    "name_en": "Graduate Visa",
+    "country": "英国",
+    "country_code": "GB",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Graduate",
+    "official_url": "https://www.gov.uk/graduate-visa",
+    "authority": "UK Visas and Immigration（英国内政部签证与移民局）",
+    "summary": "在英国读完本科及以上课程后申请的毕业后工作签证，不需要雇主担保，可自由工作或求职。2026 年 12 月 31 日（含）之前递交批 2 年，2027 年 1 月 1 日起递交批 18 个月，博士 3 年。中国大陆护照持有人本身不受限，前提是已在英国以学生签证完成合格课程。",
+    "tags": [
+      "no_agency_needed",
+      "english_required",
+      "requires_degree"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "国籍本身不是条件，官方资格页未设国籍限制。真正的门槛是前置身份：必须已在英国持学生签证（或 Tier 4 普通学生签证）读完合格课程。中国大陆护照持有人只要走完这条路径即可申请；没在英国读过书的人不适用。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方未设年龄限制。0-99 表示「无年龄要求」，不是「未核实」。实际约束来自学历与在英学习经历。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须在英国以学生签证完成一门合格课程，且院校已向内政部确认你已完成学业。合格课程包括英国本科学位、研究生学位或其他符合条件的课程，并须满足最低在英学习时长要求（具体时长见官方「课程是否符合条件」页）。**不必等到毕业典礼或拿到证书**——院校通知内政部即可申请。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "本签证不再单独要求语言成绩。英语能力已由此前申请学生签证时的要求覆盖，官方资格页未列任何考试或分数。"
+    },
+    "funds": {
+      "required": false,
+      "note": "官方未设存款证明门槛。但须自付申请费 £937 与移民医疗附加费（IHS），后者通常为每年 £1,035，按签证年限计。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "递交申请时人必须在英国境内（官方原文 `you're in the UK`、`You must be in the UK when you apply.`）。"
+      },
+      {
+        "type": "no_dependents",
+        "required": false,
+        "note": "伴侣与子女如符合条件可一同申请居留，不是一律禁止；但与部分短期签证不同，本签证允许家属随行。"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无名额上限，全年可申请，按个人毕业时间滚动递交。唯一的时间限制是必须在学生签证到期前递交。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "2026-12-31（含）之前递交，签证时长 2 年。这是旧规则的最后窗口，跨年后同一份申请只批 18 个月。"
+      },
+      {
+        "year": 2027,
+        "status": "upcoming",
+        "note": "2027-01-01 起递交，签证时长 18 个月；博士或其他博士级学历仍为 3 年。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费",
+        "amount": {
+          "local_amount": 937,
+          "currency": "GBP",
+          "cny_estimate": 8600
+        },
+        "refundable": false
+      },
+      {
+        "item": "移民医疗附加费（IHS）",
+        "amount": {
+          "local_amount": 1035,
+          "currency": "GBP",
+          "cny_estimate": 9500,
+          "note": "按年计，官方原文 usually £1,035 for each year you'll be in the UK"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方原文：`you'll usually get a decision on your visa within 8 weeks`。等待期间可留在英国。"
+  },
+
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "含 BRP 或电子签证记录",
+      "prepare_days": 7
+    },
+    {
+      "name": "院校完成学业确认",
+      "required": true,
+      "note": "由院校直接通知内政部，申请人无需自行提交；但须先确认院校已完成申报",
+      "prepare_days": 14
+    },
+    {
+      "name": "学生签证（或 Tier 4）记录",
+      "required": true,
+      "note": "递交时该签证须仍在有效期内",
+      "prepare_days": 0
+    },
+    {
+      "name": "身份证明与生物信息",
+      "required": true,
+      "note": "按申请流程使用 UKVI 账号、人脸识别或到签证中心采集",
+      "prepare_days": 7
+    }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认课程合格且院校已申报完成",
+      "description": "先查官方「课程是否符合条件」页确认学历层级与最低在英学习时长；再向院校确认它已把「你已完成课程」报给内政部。这一步没做完，申请会被拒。",
+      "duration": "1-2 周",
+      "official_link": "https://www.gov.uk/graduate-visa/eligibility"
+    },
+    {
+      "step_no": 2,
+      "title": "在学生签证到期前在线递交",
+      "description": "必须本人在英国境内递交，且学生签证仍有效。不必等毕业证。",
+      "duration": "1 天",
+      "official_link": "https://www.gov.uk/graduate-visa"
+    },
+    {
+      "step_no": 3,
+      "title": "缴申请费与 IHS",
+      "description": "申请费 £937；医疗附加费通常每年 £1,035，按批下来的年限一次性缴。",
+      "duration": "即时",
+      "official_link": "https://www.gov.uk/graduate-visa"
+    },
+    {
+      "step_no": 4,
+      "title": "核验身份并等待决定",
+      "description": "按提示用 App 完成人脸与证件核验，或预约签证中心。通常 8 周内出结果，等待期间可合法留在英国。",
+      "duration": "约 8 周",
+      "official_link": "https://www.gov.uk/graduate-visa"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 24,
+    "renewable": false,
+    "renewal_condition": "不可延期（官方原文 `You cannot extend your Graduate visa.`）。到期前可转其他类别，例如技术工人签证（Skilled Worker）。",
+    "restricted_occupations": [],
+    "note": "可从事绝大多数工作、可求职、可自雇、可做志愿工作、可出入境。唯一限制在学习：只有课程本身不符合学生签证条件时，才能用本签证去读。2026-12-31 前递交批 2 年，之后 18 个月，博士 3 年。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "2027-01-01 起时长从 2 年缩到 18 个月。差一天递交，少 6 个月，没有补救通道。"
+    },
+    {
+      "level": "critical",
+      "description": "必须在英国境内、且学生签证未过期时递交。回国后再申请不成立。"
+    },
+    {
+      "level": "warning",
+      "description": "不可延期。这段时间事实上是找担保工作的窗口，不是长期居留方案，到期未转签就得离境。"
+    },
+    {
+      "level": "warning",
+      "description": "费用合计不低：£937 申请费加每年 £1,035 医疗附加费，2 年档约 £3,007（约 2.8 万元人民币），不退。"
+    },
+    {
+      "level": "info",
+      "description": "优势：不需要雇主担保、不限岗位、可自雇，是从留学转工作的最低摩擦路径；博士 3 年，时间更宽裕。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Graduate visa — Overview（英国政府官网）",
+      "url": "https://www.gov.uk/graduate-visa",
+      "publisher": "UK Visas and Immigration / GOV.UK",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "时长原文：`A Graduate visa gives you permission to stay in the UK for at least 18 months after successfully completing an eligible course in the UK.`；`2 years if you apply on or before 31 December 2026`、`18 months if you apply on or after 1 January 2027`、`If you have a PhD or other doctoral qualification, it will last for 3 years.`；`You cannot extend your Graduate visa.` 费用原文：`pay the £937 application fee`、`pay the healthcare surcharge - this is usually £1,035 for each year you'll be in the UK`。审理原文：`you'll usually get a decision on your visa within 8 weeks`。可做与不可做：`work in most jobs`、`look for work`、`be self-employed`、`travel abroad and return to the UK`。"
+    },
+    {
+      "type": "primary",
+      "name": "Graduate visa — Eligibility（资格条件）",
+      "url": "https://www.gov.uk/graduate-visa/eligibility",
+      "publisher": "UK Visas and Immigration / GOV.UK",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "四条须同时成立：`you're in the UK`、`your current visa is a Student visa or Tier 4 (General) student visa`、`you studied a UK bachelor's degree, postgraduate degree or other eligible course for a minimum period of time with your Student visa or Tier 4 (General) student visa`、`your education provider ... has told the Home Office you've successfully completed your course`。另：`You must apply before your Student visa or Tier 4 (General) student visa expires.` 与 `You do not have to wait until you've graduated or have been given a certificate.`。**该页与概览页均未设年龄限制、未要求单独提交语言成绩、未设存款门槛。**"
+    }
+  ],
+
+  "last_verified": "2026-11-03",
+
+  "verified_by": "eddieye1004"
+}

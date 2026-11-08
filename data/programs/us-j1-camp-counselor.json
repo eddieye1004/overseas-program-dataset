@@ -26,7 +26,7 @@
       "mainland_china": "eligible",
       "hong_kong_china": "eligible",
       "taiwan_china": "eligible",
-      "note": "22 CFR 62.30 未对国籍设限，只要求是「foreign national」。中国大陆护照持有人可申的前提是能找到接收的指定 Sponsor 并落实营地岗位——官方 Sponsor 名单里是否有中国大陆合作渠道，本轮未能核实（见 sources 第 4 条）。"
+      "note": "22 CFR 62.30 未对国籍设限，只要求是「foreign national」。中国大陆护照持有人可申的前提是能找到接收的指定 Sponsor 并落实营地岗位。官方指定 Sponsor 名录已完整取到（4,133 家机构，其中 Camp Counselor 类别 26 家），但名录只登记美国侧的 Sponsor 法人，不登记其海外招募渠道，因此「是否有面向中国大陆的招募渠道」仍需逐家问，不在名录可见范围内（见 sources 第 6 条）。"
     },
     "age": {
       "min": 18,
@@ -67,7 +67,7 @@
       }
     ],
     "fees": [],
-    "processing_time": "官方未公布审理时长（未能核实）。SEVIS I-901 费为 $35，须在面签前缴纳（ICE SEVIS I-901 官方费率表 Camp counselor program $35）。签证费（MRV）本轮未能核到：travel.state.gov 对本机三个通道全部返回 403，按规则记未核实，不沿用其他 J-1 类别的数字。"
+    "processing_time": "官方未公布审理时长（未能核实）。SEVIS I-901 费为 $35，须在面签前缴纳（ICE SEVIS I-901 官方费率表 Camp counselor program $35）；签证费按 22 CFR 22.1 第 21(a) 项为 $185。"
   },
   "documents": [
     {
@@ -167,11 +167,11 @@
     },
     {
       "level": "warning",
-      "description": "官方 Sponsor 名单是 serverSide 分页表格，翻页端点稳定返回 HTTP 400，本轮只拿到第一页 100 行，其中 Camp Counselor 类别 1 条（ESF Dream Camp, PA）。这 100 行里没有 CIEE、InterExchange 等大型 J-1 赞助机构，可反证它只是第一页。中国大陆是否有指定 Sponsor 或合作渠道未能核实，若没有则「可申」结论不成立。"
+      "description": "官方指定 Sponsor 名录共 4,133 家机构，Camp Counselor 类别只有 26 家，可选面远小于其他 J-1 类别（对比：Student, College/University 785 家、Research Scholar 863 家、Intern 110 家、Trainee 94 家）。名录只登记美国侧 Sponsor 法人与其美国地址，不登记海外招募渠道，因此「哪家有面向中国大陆的报名入口」仍需逐家问；若一家都不做，则「可申」结论不成立。"
     },
     {
       "level": "warning",
-      "description": "签证费（MRV）与项目费均未能核到：前者因 travel.state.gov 三个通道全部 403，后者官方本就不公布。不沿用 SWT 的数字。"
+      "description": "项目费官方不公布、由各 Sponsor 自定，可能远高于 SEVIS $35 与签证费 $185 这两项固定支出。"
     },
     {
       "level": "warning",
@@ -188,7 +188,7 @@
       "name": "Camp Counselor — BridgeUSA（美国国务院）",
       "url": "https://j1visa.state.gov/programs/camp-counselor/",
       "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
-      "last_verified": "2026-11-01",
+      "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
       "claim": "项目定位与参与人资格：`The Camp Counselor Program enables post-secondary students, youth workers, and teachers to share their culture and ideas with the people of the United States in camp settings throughout the country.`；Participants 须 `Sufficiently proficient in the English language to supervise and interact with American youth`、`A foreign post-secondary student, youth worker, teacher or individual with specialized skills`、`At least 18-years-old`；Benefit 为 `pay and benefits commensurate with those offered to their American counterparts`。该页明确 `Camp Counselors will occasionally have to: Perform non-counseling duties as part of camp life, but not serve as \"staff\"`。**该页未公布年龄上限、签证费、项目费与审理时长。**"
     },
@@ -197,7 +197,7 @@
       "name": "22 CFR 62.30 — Camp counselors（美国联邦法规原文）",
       "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.30",
       "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
-      "last_verified": "2026-11-01",
+      "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
       "claim": "逐条原文：(b) 参与人资格 `limited to foreign nationals who: (1) Are at least 18 years of age; (2) Are bona fide youth workers, students, teachers, or individuals with specialized skills`；(c) Sponsor 须 `Conduct an in-person interview` 并向雇主或教师索取推荐；(e) 营地须为 ACA 会员、受认可非营利附属、或经 Sponsor 检查批准；(f) 薪酬须与美方同酬；(h)(2) `Not facilitate the entry of any participant for a program of more than four months duration`；(h)(3) `Under no circumstance facilitate the entry into the United States of a participant for whom a camp placement has not been pre-arranged`；(j) 参加两次以上者不得超过该 Sponsor 上年派出总数的 `ten percent`。**全文无年龄上限。**"
     },
@@ -206,7 +206,7 @@
       "name": "22 CFR 62.14 — Insurance（保险最低额度）",
       "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.14",
       "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
-      "last_verified": "2026-11-01",
+      "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
       "claim": "强制保险与最低额度：`Medical benefits of at least $100,000 per accident or illness`；`Repatriation of remains in the amount of $25,000`；`Expenses associated with the medical evacuation ... in the amount of $50,000`；`Deductibles not to exceed $500 per accident or illness`。"
     },
@@ -215,7 +215,7 @@
       "name": "I-901 SEVIS Fee FAQ — How Much Is the I-901 SEVIS Fee?",
       "url": "https://www.ice.gov/sevis/i901/faq",
       "publisher": "U.S. Immigration and Customs Enforcement (ICE), Student and Exchange Visitor Program",
-      "last_verified": "2026-11-01",
+      "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
       "claim": "费率表原文：`For exchange visitors (J-1) $220 UNLESS participating in:` … `Camp counselor program $35`。对照组：F-1/M-1 为 $350，J-2 为 None。另说明 `you must pay the I-901 SEVIS fee before going to the United States embassy or consulate for your visa interview`。"
     },
@@ -224,20 +224,29 @@
       "name": "Camp Counselor Program Resource Page（项目时长与不可延期）",
       "url": "https://j1visa.state.gov/camp-counselor-program-resource-page/",
       "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
-      "last_verified": "2026-11-01",
+      "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
       "claim": "`Camp Counselor participants are authorized to participate in the program for up to four months during the long break between academic years as determined by the Department of State. Extensions of program participation are not permitted.` 这是「不可延期」的直接原文依据，也是 4 个月上限的第二处佐证。"
     },
     {
       "type": "primary",
-      "name": "Designated Sponsor Organizations（可按类别筛选的官方 Sponsor 名单）",
-      "url": "https://j1visa.state.gov/participants/how-to-apply/sponsor-search/",
+      "name": "Designated Sponsor List By Program（官方指定 Sponsor 名录，按类别）",
+      "url": "https://j1visa.state.gov/sponsors/designated-sponsor-list-by-program/",
       "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
-      "last_verified": "2026-11-01",
+      "last_verified": "2026-11-08",
       "verified_by": "eddieye1004",
-      "claim": "官方指定 Sponsor 名单，可按 Camp Counselor 类别筛选。00:06 UTC+8 抓到的完整页面共 100 行数据（id 358561–358660，连续），其中 Camp Counselor 类别 1 条：`ESF Dream Camp`，`750 E HAVERFORD RD, BRYN MAWR, 19010 PA`，`http://esfjobs.com`。**该表为 serverSide 分页 DataTable，翻页端点 `admin-ajax.php?action=get_wdtable&table_id=45` 稳定返回 HTTP 400（3 字节），同域名 `action=heartbeat` 返回 200，说明是表格端点被单独拦或已损坏。本轮用 curl / Python urllib / 页面内 fetch（带 cookie 与 nonce）三种方式都是 400，因此无法确认 Camp Counselor 类别的全量数量，也无法确认其中是否有中国大陆合作渠道。**同一批 100 行里没有 CIEE、InterExchange、Spirit、Cultural Vistas 等已知大型 J-1 赞助机构，可反证这 100 行只是第一页而非全量。"
+      "claim": "官方表格共 4,133 行，按 Category 字段分组：Research Scholar 863、Short-Term Scholar 833、Student, College/University 785、Professor 750、Specialist 441、Intern 110、Trainee 94、Teacher 72、Student, Secondary 65、Summer Work/Travel 37、Camp Counselor 26、Government Visitor 26、International Visitor 16、Au Pair 14、Alien Physician 1。Camp Counselor 的 26 家为：ESF Dream Camp、CampGroup LLC、National Ramah Commission、Camp Counselors USA（CCUSA）、CHI Camp Leaders、CIEE、Concordia Language Villages、A Cultural Exchange Service、Alliance Abroad Group、Odyssey International Camp、Union for Reform Judaism Youth Division、American Institute For Foreign Study（Camp America）、Evangelical Lutheran Church in America、The Jewish Agency American Section、American Work Experience、Cultural Exchange Network、Global Educational Concepts（GEC）、LifeTRAVELED、United Studies、ELEVATE CULTURAL EXCHANGE、UNIWORLD、International Exchange of North America（IENA）、InterExchange、International Training and Exchange（Intrax）、JCC Association、LPC-US。注：该表是 serverSide 分页的 wpDataTables，前端需带页面内的 wdtNonceFrontendServerSide_45 才能取数；不带 nonce 直接请求 `admin-ajax.php?action=get_wdtable&table_id=45` 会返回 400 / 3 字节，这正是此前误判「站点表格失效、名单不可读」的原因。"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 22.1 — Schedule of fees（美国领事服务收费表）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-22/section-22.1",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "领事服务收费表原文（22 CFR 22.1 第 21(a) 项）：`Non-petition-based nonimmigrant visa (except E category) $185`。J-1 交换访问学者签证属非 petition 类，按此费率缴纳；该表为国务院领事收费的法定依据，逐项列出护照、签证、公证等各类费用。"
     }
   ],
-  "last_verified": "2026-11-01",
+  "last_verified": "2026-11-03",
   "verified_by": "eddieye1004"
 }

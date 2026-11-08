@@ -1,55 +1,46 @@
 # 海外青年流动项目数据集 · Overseas Youth Mobility Program Dataset
 
-> **一个带官方来源追溯与时效校验的开放数据集，专门解决华语世界关于"海外打工度假 / 海外实习签证"的信息污染问题。**
+> 一个带官方来源追溯与时效校验的开放数据集，专门解决华语世界关于「海外打工度假 / 海外实习签证」的信息污染问题。
 
 [![Validate Dataset](https://github.com/eddieye1004/overseas-program-dataset/actions/workflows/validate.yml/badge.svg)](https://github.com/eddieye1004/overseas-program-dataset/actions/workflows/validate.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/Data-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![License: MIT](https://img.shields.io/badge/Code-MIT-blue.svg)](LICENSE)
-[![Live](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E6%B5%8F%E8%A7%88-Live%20Site-8f4630.svg)](https://eddieye1004.github.io/overseas-program-dataset/)
 
 **在线浏览：<https://eddieye1004.github.io/overseas-program-dataset/>** —— 中英双语，手机上能直接筛。不想读 JSON 就从这里进。
 
 ---
 
-## 为什么做这个项目
+## 解决什么问题
 
-你在中文互联网上搜索"打工度假签证"，会搜到大量互相矛盾的文章。它们普遍存在一个**系统性错误**：
+中文互联网上搜「打工度假签证」，会搜到大量互相矛盾的文章，普遍存在同一个系统性错误：
 
-> **把只对中国台湾 / 中国香港护照开放的项目，写成"中国公民可申请"。**
+> **把只对中国台湾 / 中国香港护照开放的项目，写成「中国公民可申请」。**
 
-例如"加拿大打工度假""英国青年流动计划""爱尔兰打工度假"，这些都是**双边互惠协议**——对方只开放给与其签约的国家/地区护照持有人。**中国大陆护照并不在名单内。** 而大量中文攻略、留学中介软文、AI 生成内容，仍在把它们列成"中国护照可申请"。
+加拿大 IEC、英国 YMS、爱尔兰 WHA、日本 WH、韩国 H-1 都是双边互惠协议，对方只开放给与其签约的国家/地区护照持有人，**中国大陆护照不在名单内**。而大量攻略、中介软文、AI 生成内容仍在把它们列成「中国护照可申请」。
 
-**结果是：一个大陆学生花了三个月准备材料，最后发现项目根本不接受他的护照。**
+结果是：一个大陆学生花三个月准备材料，最后发现项目根本不接受他的护照。
 
-这个数据集要解决的，就是这一个问题：
-
-> **让每一条资格信息都能被追溯到一个官方来源，并标注核实日期。**
-
----
-
-## 这个数据集是什么（以及不是什么）
+本数据集只做一件事——**让每一条资格信息都能追溯到一个官方来源，并标注核实日期。**
 
 | 是 | 不是 |
 |---|---|
 | 一份**带来源标注**的结构化项目数据 | 一个签证代办服务 |
 | 一份**可被社区贡献和维护**的开放数据 | 一份静态的、会过期的攻略 |
-| 一个**自动化校验**的数据集（CI 检查链接存活） | 一个查询工具（工具是它的下游） |
-| 面向**中国大陆护照**持有者的准确资格判定 | 面向所有护照的通用列表 |
+| 一个**自动化校验**的数据集（CI 检查链接存活与来源等级） | 一个查询工具（工具是它的下游） |
+| 面向**中国大陆护照**持有者的**护照 × 身份 × 年龄**三维资格判定 | 面向所有护照的通用列表 |
 
-**设计原则：**
+**设计原则**
+
 1. **来源可追溯** — 每条资格数据必须附带官方 URL
 2. **时效可验证** — 每条数据必须标注 `last_verified` 核实日期
-3. **护照优先** — 护照类型是第一筛选维度，因为它决定 90% 的结果
-4. **显式排除** — 明确记录"哪些项目大陆护照不能申请"，而不只是列出能申请的
+3. **护照优先，但不只看护照** — 护照决定 90% 的结果，剩下 10% 由**身份**（在校 / 毕业 2 年内 / 在职）与**年龄**决定。三条一起才是真实边界
+4. **显式排除** — 明确记录「哪些项目大陆护照不能申请」，而不只是列出能申请的
 
-**收录标准（2026-11-01 起明文）：**只收录**有政府官方页面作为依据**的项目，每条记录至少 1 条 A 级来源，校验器强制。
-私立语言学校、留学中介、培训机构（EF、Kaplan、各类留学网站）**不作为来源**，也不单列"机构名录"——本库没有能力判断机构是否合法办学，列出来就等于背书。
-所以游学类里能收的只有签证环节：英国短期学习签证就是这一类（[`uk-short-term-study-visa.json`](data/programs/uk-short-term-study-visa.json)）。
-决策依据与实测见 [`docs/audit/2026-11-01-p2-study-abroad-decision.md`](docs/audit/2026-11-01-p2-study-abroad-decision.md)。
+**收录标准**：只收录**有政府官方页面作为依据**的项目，每条记录至少 1 条 A 级来源，校验器强制。私立语言学校、留学中介、培训机构（EF、Kaplan 等）**不作为来源**，也不单列机构名录——本库没有能力判断机构是否合法办学，列出来等于背书。所以游学类只收签证环节，英国短期学习签证就是这一类。
 
 ---
 
-## 数据覆盖范围
+## 数据覆盖
 
 | 项目 | 国家/地区 | 类型 | 大陆护照 |
 |---|---|---|---|
@@ -57,72 +48,62 @@
 | China Working Holiday Visa | 新西兰 | 打工度假 | ✅ |
 | Working Holiday Programme | 日本 | 打工度假 | ❌ 不可申请 |
 | H-1 Working Holiday Visa | 韩国 | 打工度假 | ❌ 不可申请 |
-| Summer Work Travel (J-1) | 美国 | 带薪实习 | ✅ |
-| Study-related Internship (§16e) | 德国 | 实习 | ✅ |
-| IAESTE 国际实习 | 全球 100+ 国 | 技术实习 | ✅ |
-| AIESEC Global Talent | 全球 120+ 国 | 企业实习 | ✅ |
+| Work Holiday Programme | 新加坡 | 打工度假 | ❌ 不可申请 |
 | IEC Working Holiday | 加拿大 | 打工度假 | ❌ 不可申请 |
 | Youth Mobility Scheme | 英国 | 打工度假 | ❌ 不可申请 |
 | Working Holiday Authorisation | 爱尔兰 | 打工度假 | ❌ 不可申请 |
+| Summer Work Travel (J-1) | 美国 | 带薪实习 | ✅ |
+| Intern (J-1) | 美国 | 带薪实习 | ✅ |
+| Trainee (J-1) | 美国 | 在职培训 | ✅ |
+| Camp Counselor (J-1) | 美国 | 文化交流 | ✅ |
+| Study-related Internship (§16e) | 德国 | 实习签证 | ✅ |
+| Opportunity Card (Chancenkarte) | 德国 | 求职居留 | ✅ |
+| IAESTE 国际实习 | 全球 100+ 国 | 技术实习 | ✅ |
+| AIESEC Global Talent | 全球 120+ 国 | 企业实习 | ✅ |
+| Graduate Visa | 英国 | 毕业后工作 | ✅ |
 | Short-term study visa | 英国 | 短期游学 | ✅ |
 
-> 13 个项目，大陆护照可申 8 / 不可申 5，其中在职可申 3，共 51 条来源（primary 46）。数字取自 2026-11-01，改数据后请重跑 `python scripts/gen_sources.py` 与 `web/scripts/smoke-test.mjs`。
->
-> 完整清单见 [`data/programs/`](data/programs/)
+**18 个项目，大陆护照可申 12 / 不可申 6，共 72 条来源（A 级 62 / B 级 6 / C 级 4），其中 4 条 C 级仅作旁证。** 数字取于 2026-11-03，改数据后重跑 `python scripts/gen_sources.py`。
+
+完整清单见 [`data/programs/`](data/programs/)，逐条来源见 [`data/sources.md`](data/sources.md)。
 
 ---
 
-## 仓库结构
+## 数据格式
 
-```
-overseas-program-dataset/
-├── README.md                    # 你在这里
-├── CONTRIBUTING.md              # 如何贡献数据
-├── CHANGELOG.md                 # 数据变更记录
-├── LICENSE                      # 数据 CC BY 4.0 / 代码 MIT
-├── data/
-│   ├── schema.json              # 数据字段定义（机器可读）
-│   ├── sources.md               # 官方来源清单（由 gen_sources.py 生成，勿手改）
-│   └── programs/                # 每个项目一个 JSON 文件
-│       ├── au-462-work-holiday.json
-│       ├── nz-china-whv.json
-│       └── ...
-├── scripts/
-│   ├── validate.py              # 数据完整性 + 官方链接存活校验
-│   └── gen_sources.py           # 从 programs/*.json 生成 data/sources.md
-├── tests/
-│   └── test_validate.py         # 校验器自身的测试（66 例）
-├── web/                         # 中英双语静态站（React + Vite）
-│   ├── src/                     # 页面、筛选、智能匹配、i18n
-│   ├── scripts/sync-data.mjs    # 数据集 -> 前端 JSON
-│   └── scripts/e2e-check.mjs    # 真实浏览器端到端断言
-└── .github/
-    ├── workflows/validate.yml   # 每次 push + 每周自动校验
-    ├── workflows/pages.yml      # 构建并部署网页
-    └── ISSUE_TEMPLATE/          # 数据纠错 / 新增项目模板
-```
+每个项目一个 JSON 文件，结构定义见 [`data/schema.json`](data/schema.json)：
 
-### 架构图
+| 部分 | 说明 |
+|---|---|
+| `program` | 项目基本信息（名称、国家、签证代码、官方网址、标签） |
+| `eligibility` | 资格条件（护照类型、年龄、学历、语言、资金、其他要求） |
+| `timeline` | 时间窗口（开放日、名额、费用、申请机制、审理周期） |
+| `documents` | 所需材料清单 |
+| `steps` | 申请流程步骤 |
+| `work_conditions` | 工作限制（停留时长、同雇主上限、可否续签） |
+| `risks` | 关键风险（名额、一次性机会、拒签成本等） |
+| `sources` | **官方来源 URL + 核实日期 + 核实人 + 该条来源支撑的具体断言** |
 
-![仓库架构：从官方来源到下游使用者的数据链路](docs/architecture.png)
+`sources` 是本数据集区别于普通攻略的核心字段——**没有来源的数据不予合并**。每条来源按可信度分四级：
 
-> 左侧是**数据契约层**——每条资格判定都要能追到一个官方 URL；右侧是 **CI 质量闸门**——每周自动复查这些链接是否失效。社区纠错从 Issue 模板进来，经 PR 合并回数据层。
+| 级 | 含义 | 能否单独支撑硬性资格判定 |
+|---|---|---|
+| A | 政府/移民局/使领馆/官方法规库 | ✅ 必须至少 1 条 |
+| B | 项目本体国际组织官网（IAESTE、AIESEC 等） | 可作为旁证 |
+| C | 高校官方部门、其他可核验机构 | ❌ 仅旁证 |
+| D | 百科、自媒体、商业博客、来源不明 | ❌ 出现即 CI 失败 |
 
 ---
 
-## 快速开始
-
-### 使用数据
+## 使用
 
 ```bash
 git clone https://github.com/eddieye1004/overseas-program-dataset.git
 ```
 
-数据文件为 JSON 格式，结构定义见 [`data/schema.json`](data/schema.json)。
-
 只想看数据、不想用网页的，`data/programs/*.json` 就是全部内容。
 
-### 跑网页
+**跑网页**
 
 ```bash
 cd web
@@ -133,47 +114,53 @@ pnpm build        # 产出静态站到 web/dist
 
 `pnpm dev` 前会先跑 `scripts/sync-data.mjs`，把 `data/programs/*.json` 合并成前端加载的三个 JSON。改完数据重跑一次即可，不用碰前端代码。
 
-### 本地校验
+**本地校验**
 
 ```bash
-# 仅校验数据完整性与格式（离线）
-python scripts/validate.py
-
-# 同时检查官方链接是否存活（需要网络）
-python scripts/validate.py --check-links
-
-# 输出 JSON 格式报告
-python scripts/validate.py --json
+python scripts/validate.py                  # 数据完整性与格式（离线）
+python scripts/validate.py --check-links    # 同时检查官方链接存活（需网络）
+python -m pytest -q                         # 校验器自身的 70 个测试
+node web/scripts/smoke-test.mjs             # 前端纯逻辑断言
 ```
 
 ---
 
-## 数据说明
+## 仓库结构
 
-每条项目数据包含 6 个部分：
+```
+overseas-program-dataset/
+├── README.md                    # 你在这里
+├── CONTRIBUTING.md              # 如何贡献数据
+├── CHANGELOG.md                 # 数据变更记录
+├── LICENSE / LICENSE-DATA       # 代码 MIT / 数据 CC BY 4.0
+├── data/
+│   ├── schema.json              # 数据字段定义（机器可读）
+│   ├── sources.md               # 官方来源清单（gen_sources.py 生成，勿手改）
+│   └── programs/                # 每个项目一个 JSON
+├── scripts/
+│   ├── validate.py              # 完整性 + 来源分级 + 链接存活
+│   └── gen_sources.py           # 从 programs/*.json 生成 sources.md
+├── tests/test_validate.py       # 校验器自身的测试
+├── web/                         # 中英双语静态站（React + Vite）
+│   ├── src/                     # 页面、筛选、智能匹配、i18n
+│   └── scripts/                 # sync-data / smoke-test / e2e-check
+└── .github/workflows/           # validate.yml 每周校验 / pages.yml 部署
+```
 
-| 部分 | 说明 |
-|---|---|
-| `program` | 项目基本信息（名称、国家、签证代码、官方网址） |
-| `eligibility` | 资格条件（护照、年龄、学历、语言、资金…） |
-| `timeline` | 时间窗口（开放日、截止日、名额、费用、申请机制） |
-| `documents` | 所需材料清单 |
-| `steps` | 申请流程步骤 |
-| `sources` | **官方来源 URL + 核实日期 + 核实人** |
+![仓库架构：从官方来源到下游使用者的数据链路](docs/architecture.png)
 
-其中 `sources` 是本数据集区别于普通攻略的核心字段——**没有来源的数据不予合并。**
+左侧是**数据契约层**——每条资格判定都要能追到一个官方 URL；右侧是 **CI 质量闸门**——每周自动复查这些链接是否失效。社区纠错从 Issue 模板进来，经 PR 合并回数据层。
 
 ---
 
 ## 贡献
 
-欢迎提交数据纠错或新增项目。请先阅读 [`CONTRIBUTING.md`](CONTRIBUTING.md)。
+请先阅读 [`CONTRIBUTING.md`](CONTRIBUTING.md)。最重要的一条：
 
-**最重要的一条贡献规则：**
 > 每一条资格判定，都必须能指向一个**官方来源**（移民局官网 / 驻华使领馆 / 项目官方页面）。
 > 二手来源（中介网站、公众号、AI 生成内容）**不作为依据**。
 
-如发现数据错误，请使用 [数据纠错模板](.github/ISSUE_TEMPLATE/data-correction.md) 提交。
+数据纠错请用 [Issue 模板](.github/ISSUE_TEMPLATE/data-correction.md)。
 
 ---
 
@@ -181,22 +168,14 @@ python scripts/validate.py --json
 
 - 本数据集为**信息汇编**，不构成法律或移民建议。
 - 各国政策、名额、费用、开放时间**随时可能调整**，申请前请以官方最新公告为准。
-- 数据中的 `last_verified` 字段表示该条信息的最后核实日期，**不保证在此之后仍然有效**。
-- **来源分级**：每条来源按 A（政府域名）/ B（项目官方机构）/ C（第三方或高校部门）/ D（明令禁止）四档标注。C 级来源标记为 `secondary`，只能作为旁证，**不单独支撑任何硬性资格判定**。C 级内部再分「高校官网」与「其他第三方」两种，因为 `ox.ac.uk` 与 `study-abroad.cn` 都属 C 级，但读者需要知道自己在看哪一种；分级结果不变，只是把这件事写清楚。
-- **可达性限制**：部分官方站点（如日本外务省 `mofa.go.jp`、加拿大 IRCC `canada.ca`）在部分网络环境下会返回 403 或连接重置。此类条目在审计报告中列为「待核实」，**不等于数据有误**，仅表示该轮未能对着官方页面复核。
+- `last_verified` 表示该条信息的最后核实日期，**不保证在此之后仍然有效**。
+- 部分官方站点（如日本外务省 `mofa.go.jp`、加拿大 IRCC `canada.ca`）会对脚本式请求返回 403 或连接重置。这类站点用真实浏览器通道仍可读到原文，本数据集据此复核；若某轮确实读不到，该字段标为「未能核实」，**不等于数据有误**。
 
 ---
 
 ## 许可
 
-- **数据**（`data/` 目录）：[CC BY 4.0](LICENSE-DATA) — 可自由使用，需署名
-- **代码**（`scripts/`、`tests/`）：[MIT](LICENSE)
+- **数据**（`data/`）：[CC BY 4.0](LICENSE-DATA) — 可自由使用，需署名
+- **代码**（`scripts/`、`tests/`、`web/`）：[MIT](LICENSE)
 
-仓库采用 SPDX 标准的多许可布局：根目录 `LICENSE` 只放 MIT 全文（GitHub 据此识别代码许可），数据许可全文单独放在 [`LICENSE-DATA`](LICENSE-DATA)。第三方复用数据时请引用本仓库 URL 与 `last_verified` 日期。
-
----
-
-## 致谢
-
-本数据集最初源于一个个人困惑：**为什么中文世界关于打工度假的信息如此混乱？**
-如果你也因为错误信息浪费过时间，欢迎一起把它修好。
+仓库采用 SPDX 标准的多许可布局：根目录 `LICENSE` 只放 MIT 全文（GitHub 据此识别代码许可），数据许可全文单独放在 `LICENSE-DATA`。第三方复用数据时请引用本仓库 URL 与 `last_verified` 日期。

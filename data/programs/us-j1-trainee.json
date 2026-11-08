@@ -1,0 +1,263 @@
+{
+
+  "schema_version": "0.1.0",
+
+  "program": {
+    "id": "us-j1-trainee",
+    "name": "美国 J-1 培训项目",
+    "name_en": "Trainee (J-1 Exchange Visitor Program)",
+    "country": "美国",
+    "country_code": "US",
+    "region": "north_america",
+    "program_type": "paid_internship",
+    "visa_code": "J-1",
+    "official_url": "https://j1visa.state.gov/programs/trainee/",
+    "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
+    "summary": "J-1 下的在职者培训类别：在美企业接受与既有专业方向一致的系统培训，最长 18 个月（农业与酒店旅游类别为 12 个月）。与 Intern 的分界线是：Trainee 面向已毕业且有一年以上相关工作经验的人，Intern 面向在读生与毕业 12 个月内的人。这是已经工作几年、又想出国积累一段海外经历时最直接的一类 J-1。",
+    "tags": [
+      "requires_agency",
+      "english_required",
+      "rolling",
+      "requires_degree"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "法规未对国籍设限，只要求是 foreign national。中国大陆护照持有人可申，前提是找到接收的指定 Sponsor 并落实培训岗位。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "法规未设年龄上下限，只限定学历与工作年限。0-99 表示「官方无年龄要求」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "两条路满足其一即可：①持境外高等教育机构颁发的学位或专业证书，且在境外该领域有至少 1 年相关工作经验；②在境外该领域有至少 5 年工作经验（无学历要求）。培训内容不得重复申请人已有的工作经历。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "须具备可核验的英语能力，足以在培训环境日常沟通。核验方式三选一：认可的英语考试、学校出具书面证明、Sponsor 组织的面试。官方未设分数线。"
+    },
+    "funds": {
+      "required": false,
+      "note": "法规未设资金门槛。须自付项目费、机票与前期食宿；项目费由各 Sponsor 自定，官方不公布。"
+    },
+    "other_requirements": [
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "强制。22 CFR 62.14 最低额度：医疗 $100,000、遗体送返 $25,000、医疗转运 $50,000、自付额 ≤ $500。"
+      },
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "须有雇主签署的 DS-7002，写明培训计划与岗位职责。Sponsor 拿到全部签字后才签发 DS-2019。"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "官方未设年度名额上限，报名与岗位安置日历由各 Sponsor 自行设定。",
+    "windows": [
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "官方不公布统一报名窗口，记为未核实。培训最长 18 个月；农业与酒店旅游类别上限 12 个月，且不得靠追加 6 个月课堂学习把 12 个月撑到 18 个月。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "SEVIS I-901 费",
+        "amount": {
+          "local_amount": 220,
+          "currency": "USD",
+          "cny_estimate": 1580
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方未公布审理时长（未能核实）。SEVIS 费须在面签前缴纳；签证费按 22 CFR 22.1 第 21(a) 项为 $185。"
+  },
+
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期覆盖整个在美停留期",
+      "prepare_days": 30
+    },
+    {
+      "name": "DS-2019 表",
+      "required": true,
+      "note": "由国务院指定 Sponsor 签发",
+      "prepare_days": 60
+    },
+    {
+      "name": "DS-7002 培训安置计划",
+      "required": true,
+      "note": "申请人、雇主、Sponsor 三方签字",
+      "prepare_days": 60
+    },
+    {
+      "name": "学位证书或专业资格证书",
+      "required": true,
+      "note": "走「学历 + 1 年经验」路径时必需；走「5 年经验」路径可不提供",
+      "prepare_days": 30
+    },
+    {
+      "name": "相关工作经历证明",
+      "required": true,
+      "note": "1 年（有学历）或 5 年（无学历），须为境外经历",
+      "prepare_days": 30
+    },
+    {
+      "name": "符合 62.14 的医疗保险证明",
+      "required": true,
+      "note": "医疗 $100,000 / 遗体送返 $25,000 / 医疗转运 $50,000 / 自付额 ≤ $500",
+      "prepare_days": 14
+    },
+    {
+      "name": "SEVIS I-901 缴费凭证",
+      "required": true,
+      "note": "J-1 通则 $220",
+      "prepare_days": 7
+    }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "核对学历与工作年限的组合",
+      "description": "有学位 → 需要 1 年境外相关经验；无学位 → 需要 5 年境外相关经验。两项都不满足则走 Intern 而非 Trainee。",
+      "duration": "10 分钟",
+      "official_link": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.22"
+    },
+    {
+      "step_no": 2,
+      "title": "确认培训内容不与既有经历重复",
+      "description": "法规明令培训不得复制申请人已有的工作经历。这一步决定岗位能不能批，选岗位时就要考虑。",
+      "duration": "30 分钟",
+      "official_link": "https://j1visa.state.gov/programs/trainee/"
+    },
+    {
+      "step_no": 3,
+      "title": "通过指定 Sponsor 报名",
+      "description": "必须经国务院指定 Sponsor。Sponsor 名录可在官方页按 Trainee 类别筛选。",
+      "duration": "2-4 周",
+      "official_link": "https://j1visa.state.gov/participants/how-to-apply/sponsor-search/"
+    },
+    {
+      "step_no": 4,
+      "title": "落实岗位并签 DS-7002",
+      "description": "雇主签署培训安置计划，写明培训目标、职责与时长。Sponsor 审核雇主资质。",
+      "duration": "4-8 周",
+      "official_link": "https://j1visa.state.gov/programs/trainee/"
+    },
+    {
+      "step_no": 5,
+      "title": "缴 SEVIS 费并申请签证",
+      "description": "拿到 DS-2019 后缴 $220，预约面签，面签时出示已签署的 DS-7002。",
+      "duration": "2-6 周",
+      "official_link": "https://www.ice.gov/sevis/i901/faq"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 18,
+    "max_same_employer_months": 18,
+    "renewable": true,
+    "renewal_condition": "可在 18 个月上限内延期，须完整执行新的 DS-7002。农业与酒店旅游类别上限 12 个月。完成培训后须在境外居住满 2 年才可再次参加 Trainee；若届时不再符合 Trainee 资格，可在境外居住满 2 年后改走 Intern。",
+    "restricted_occupations": [
+      "非技术性或临时性体力劳动",
+      "涉及儿童照护、老人照护的岗位",
+      "涉及患者护理或接触的岗位",
+      "文书工作占比超过 20% 的岗位",
+      "本可由美方全职或兼职雇员充任的岗位"
+    ],
+    "note": "官方原文明确禁止把该项目当作普通就业使用：`Use of the Exchange Visitor Program for ordinary employment or work purposes is strictly prohibited.` 培训须有结构化指导与在岗督导。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "不得当作普通就业渠道。法规原文禁止用该项目替代正常雇佣，岗位须是培训性质且有督导。"
+    },
+    {
+      "level": "critical",
+      "description": "培训内容不得重复既有工作经历。资深从业者想「去美国干本行」很可能被判不符合。"
+    },
+    {
+      "level": "warning",
+      "description": "18 个月是上限，农业与酒店旅游只有 12 个月，且不能靠补课堂学习延长。"
+    },
+    {
+      "level": "warning",
+      "description": "完成后须在境外居住满 2 年才能再参加，不是「想再来就再来」。"
+    },
+    {
+      "level": "info",
+      "description": "优势：无年龄上限；无学历也能走「5 年经验」路径；比 Intern 多 6 个月时长。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Trainee — BridgeUSA（美国国务院）",
+      "url": "https://j1visa.state.gov/programs/trainee/",
+      "publisher": "U.S. Department of State, Bureau of Educational and Cultural Affairs",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "参与人资格原文：`Has a degree or professional certificate from a foreign post-secondary academic institution and at least one year of prior related work experience in his or her occupational field outside the United States; or Has five years of work experience outside the United States in the occupational field in which they are seeking training`。限制原文：`Trainees cannot work in unskilled or casual labor positions, in positions that require or involve childcare or elder care, or in any kind of position that involves patient care or contact.` `Use of the Exchange Visitor Program for ordinary employment or work purposes is strictly prohibited.` `the training cannot duplicate a trainee participant's prior work experience or training.`"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 62.22 — Trainees and interns（美国联邦法规原文）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.22",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "时长原文：`the maximum duration of a training program is 18 months`；`For training programs in the field of agriculture and in the occupational category of Hospitality and Tourism, the maximum duration of program participation is 12 months.`；`12-month training programs in the field of agriculture may not be extended to 18 months by adding six months of classroom participation and studies at the end of the original 12-month program duration.` 再参加条件原文：`Trainees are eligible for additional training programs after a period of at least two years residency outside the United States following completion of their training program.`"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 62.14 — Insurance（保险最低额度）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.14",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "强制保险与最低额度：医疗不低于 $100,000、遗体送返 $25,000、医疗转运 $50,000、自付额不超过 $500。"
+    },
+    {
+      "type": "primary",
+      "name": "I-901 SEVIS Fee FAQ — How Much Is the I-901 SEVIS Fee?",
+      "url": "https://www.ice.gov/sevis/i901/faq",
+      "publisher": "U.S. Immigration and Customs Enforcement (ICE), Student and Exchange Visitor Program",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "J-1 通则 $220；仅 Summer work/travel、Au pair、Camp counselor 三类为 $35，Trainee 不在减免名单内。"
+    },
+    {
+      "type": "primary",
+      "name": "22 CFR 22.1 — Schedule of fees（美国领事服务收费表）",
+      "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-22/section-22.1",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "领事服务收费表原文（22 CFR 22.1 第 21(a) 项）：`Non-petition-based nonimmigrant visa (except E category) $185`。J-1 交换访问学者签证属非 petition 类，按此费率缴纳；该表为国务院领事收费的法定依据，逐项列出护照、签证、公证等各类费用。"
+    }
+  ],
+
+  "last_verified": "2026-11-03",
+
+  "verified_by": "eddieye1004"
+}

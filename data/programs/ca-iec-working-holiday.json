@@ -29,7 +29,7 @@
     "age": {
       "min": 18,
       "max": 35,
-      "note": "18-35 周岁（官方总述 \"18 to 35 (18 to 30 in some countries)\"）。中国香港为 18-30，中国台湾为 18-35，其余签约国多为 18-35"
+      "note": "18-35 周岁（官方总述 \"If you're 18 to 35 (18 to 30 in some countries)\"）。by-country 表逐条：中国香港 SAR 为 18 to 30，中国台湾为 18 to 35，其余签约国多为 18-35"
     },
     "education": {
       "minimum_level": "any",
@@ -145,30 +145,30 @@
       "name": "International Experience Canada",
       "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html",
       "publisher": "Immigration, Refugees and Citizenship Canada",
-      "last_verified": "2026-10-29",
+      "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
-      "claim": "IEC 仅对与加拿大签订青年流动协议的国家/地区开放；中国大陆不在协议名单内；2026 IEC season is closed（pools closed）；Processing fees CAN $184.75；Current processing time 6 weeks after you submit all documents and give biometrics"
+      "claim": "IEC 仅对与加拿大签订青年流动协议的国家/地区开放；中国大陆不在协议名单内；官方原文 2026 IEC season is closed / The pools for the 2026 season are closed；Processing fees CAN $184.75（官方注 Additional fees may apply）；Current processing time 6 weeks after you submit all documents and give biometrics"
     },
     {
       "type": "primary",
       "name": "IEC 参与国家/地区名单（Who can apply）",
       "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility.html",
       "publisher": "Immigration, Refugees and Citizenship Canada",
-      "last_verified": "2026-10-29",
+      "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
-      "claim": "IEC 参与方为与加拿大签订青年流动协议（YMA）的国家/地区；资格条件（护照、年龄 18-35、资金、保险、返程机票、不可带家属）"
+      "claim": "IEC 参与方为与加拿大签订青年流动协议（YMA）的国家/地区。资格条件原文：be between the ages of 18 and 35 (inclusive)、a minimum of CAN$2,500、health insurance、返程机票、不可带家属"
     },
     {
       "type": "primary",
       "name": "IEC eligibility by country（各国 Working Holiday 条款与年龄上限）",
       "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility/eligibility-by-country.html",
       "publisher": "Immigration, Refugees and Citizenship Canada",
-      "last_verified": "2026-10-29",
+      "last_verified": "2026-11-03",
       "verified_by": "eddieye1004",
-      "claim": "官方名单含 Hong Kong 与 Taiwan，不含 China（中国大陆）；Hong Kong—Working Holiday 为 up to 12 months / 18-30 岁 / CAN$2,500 / 只能参加一次；Taiwan—Working Holiday 为 up to 12 months / 18-35 岁 / CAN$2,500 / 只能参加一次；全表 36 个条目中 China 命中 0"
+      "claim": "Country/Territory Age limit 全表：Hong Kong SAR = 18 to 30（Working Holiday Yes / Young Professionals No / International Co-op No）；Taiwan = 18 to 35（三类全部 Yes）；全表文本 China 命中 0 次，无中国大陆条目；表末 My country isn't listed 段落只指向 recognized organization 渠道"
     }
   ],
 
-  "last_verified": "2026-10-29",
+  "last_verified": "2026-11-03",
   "verified_by": "eddieye1004"
 }

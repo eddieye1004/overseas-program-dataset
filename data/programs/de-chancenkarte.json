@@ -1,0 +1,256 @@
+{
+
+  "schema_version": "0.1.0",
+
+  "program": {
+    "id": "de-chancenkarte",
+    "name": "德国机会卡（求职居留许可）",
+    "name_en": "Opportunity Card (Chancenkarte)",
+    "country": "德国",
+    "country_code": "DE",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "§20a AufenthG",
+    "official_url": "https://www.make-it-in-germany.com/en/working-in-germany/visa/opportunity-card",
+    "authority": "德国联邦政府 / 各地外国人管理局（Ausländerbehörde）",
+    "summary": "德国 2024 年 6 月起实施的求职居留许可：凭学历或职业资格加积分（满分制，最低 6 分）先入境德国找工作，最长 1 年；找到合格岗位后可延长至最多 2 年。持卡期间每周最多工作 20 小时，也可做最长两周的试工。中国大陆本科及以上学历持有人可申，前提是学历被德国官方认定。",
+    "tags": [
+      "stem_friendly",
+      "requires_degree",
+      "no_agency_needed"
+    ],
+    "active": true
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "法规未按国籍设限。中国大陆护照持有人可申，两条硬门槛：①学历或职业资格被德国主管机构认定（学历一般通过 anabin 数据库核验）；②满足「专业人士」条件或积分达到 6 分。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "年龄不设上下限，只影响积分：申请时不超过 35 岁得 2 分，36 至 40 岁得 1 分，40 岁以上不得分（§20b Abs.1 Nr.9、Nr.10）。0-99 表示「无年龄门槛」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "两条路径：①被认定为「专业人士」（Fachkraft），即持德国认可的高等学历，或持需至少两年培训且获来源国官方承认的职业资格；②走积分制，须有外国高等学历或受认可的职业资格。学历认定通常查 anabin 数据库，中国教育部认可的正规本科一般可对应。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "走积分制时须满足其一：基础德语（至少 A1 级简单德语），或英语达到 CEFR B2。德语水平越高得分越多：良好德语另计分、足够德语计分、C1 英语计分。走「专业人士」路径时语言要求按该路径规定。官方未指定具体考试机构，只要求可证明的水平。"
+    },
+    "funds": {
+      "required": true,
+      "note": "法规明文要求生计有保障（`der Lebensunterhalt gesichert ist`），须提供资金证明或德国境内的收入来源。官方未在法规中写死金额，实务上参照当地生活成本与居留许可通用标准，具体数额由各地外管局判断。"
+    },
+    "other_requirements": [
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "长期居留许可的常规要求，须提供德国认可的医疗保险证明；具体体检项目由各地外管局与使领馆确定。"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "须持德国可用的医疗保险，覆盖整个居留期。"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "法规未设个人名额上限，但明文授权联邦政府以行政法规按年度或更短周期限制尚未在德人士的机会卡发放数量（§20a Abs.7）。截至核实日未见到生效的数量限制公告。",
+    "windows": [
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "全年可申请，无固定开放窗口。官方不公布年度配额公告，若未来设限会在联邦法律公报发布，需在递交前复核。"
+      },
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "现行规则：先批最长 1 年的求职机会卡（Such-Chancenkarte）。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "国家签证费（求职机会卡）",
+        "amount": {
+          "local_amount": 75,
+          "currency": "EUR",
+          "cny_estimate": 590
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方未在本页公布审理周期（未能核实）。实务上德国国家签证通常需数周至数月，取决于使领馆排期。"
+  },
+
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期覆盖计划居留期",
+      "prepare_days": 30
+    },
+    {
+      "name": "学历证书与成绩单",
+      "required": true,
+      "note": "须能对应 anabin 数据库条目；非德语/英语材料需认证翻译",
+      "prepare_days": 60
+    },
+    {
+      "name": "学历认定证明（ANABIN 查询结果或 Zeugnisbewertung）",
+      "required": true,
+      "note": "证明学历与德国学位等效，是走积分制的前提",
+      "prepare_days": 90
+    },
+    {
+      "name": "语言能力证明",
+      "required": true,
+      "note": "基础德语（A1 及以上）或英语 B2；分数越高越好，直接挂钩积分",
+      "prepare_days": 60
+    },
+    {
+      "name": "资金证明",
+      "required": true,
+      "note": "证明在德期间生计有保障",
+      "prepare_days": 30
+    },
+    {
+      "name": "医疗保险证明",
+      "required": true,
+      "note": "覆盖整个居留期",
+      "prepare_days": 14
+    },
+    {
+      "name": "积分自评表",
+      "required": true,
+      "note": "按 §20b Abs.1 的 12 项逐条计分，总分须达 6 分",
+      "prepare_days": 7
+    }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先算积分，确认够 6 分",
+      "description": "按 12 项逐条计分：职业资格认定 4 分、良好德语 3 分、足够德语 2 分、基础德语 1 分、C1 英语 1 分、5 年经验 3 分、2 年经验 2 分、短缺职业 1 分、35 岁及以下 2 分、36-40 岁 1 分、过去 5 年在德合法居留满 6 个月 1 分、配偶同时申请 1 分。最低 6 分。算不到 6 分就只能走「专业人士」路径。",
+      "duration": "30 分钟",
+      "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/anlage.html"
+    },
+    {
+      "step_no": 2,
+      "title": "确认学历被德国认可",
+      "description": "查 anabin 数据库，确认你的学校与学位在列。不在列或状态不明时，需申请 Zeugnisbewertung（学历评估）。这一步最耗时，应最先启动。",
+      "duration": "1-3 个月",
+      "official_link": "https://www.make-it-in-germany.com/en/working-in-germany/visa/opportunity-card"
+    },
+    {
+      "step_no": 3,
+      "title": "备齐语言与资金证明",
+      "description": "德语 A1 或英语 B2 起步；资金证明按各地外管局口径准备。语言等级越高，积分越宽裕。",
+      "duration": "1-2 个月",
+      "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/__20a.html"
+    },
+    {
+      "step_no": 4,
+      "title": "向德国驻华使领馆递交国家签证申请",
+      "description": "预约使领馆或签证申请中心，提交护照、学历认定、语言、资金、保险与积分自评材料。",
+      "duration": "数周至数月",
+      "official_link": "https://www.auswaertiges-amt.de/en/visa-service"
+    },
+    {
+      "step_no": 5,
+      "title": "入境后找工作，找到即申请延长",
+      "description": "持求职机会卡每周最多工作 20 小时，可做最长两周的试工。拿到合格岗位的劳动合同或书面录用意向后，可在境内申请转为最长 2 年的后续机会卡（Folge-Chancenkarte），或直接转工作居留。",
+      "duration": "最长 1 年",
+      "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/__20a.html"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 12,
+    "renewable": true,
+    "renewal_condition": "求职机会卡首批发最长 1 年。持卡期间若拿到德国合格岗位的劳动合同或具约束力的录用意向，且联邦劳动局同意，可在境内延长为后续机会卡，最长 2 年（§20a Abs.5）。后续机会卡只发给尚不满足其他第 4 章居留许可条件的人。超出该期限的延长不被允许。",
+    "restricted_occupations": [],
+    "note": "持卡期间允许：平均每周合计不超过 20 小时的工作；每段最长两周的试工（须为合格岗位、以培训为目的、或可用于职业资格认定程序）。不得把机会卡当工作许可使用——找到正式工作后须转成相应的工作居留许可。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "不是工作许可。每周 20 小时上限意味着无法靠它全职就业，找到正式岗位后必须转换居留类型。"
+    },
+    {
+      "level": "critical",
+      "description": "积分制 6 分门槛卡人。学历认定（4 分或 0 分）几乎决定成败——学历不被认可时，仅靠语言加经验也很难凑到 6 分。"
+    },
+    {
+      "level": "warning",
+      "description": "学历认定耗时长（可达 3 个月），且需在递交签证前完成。启动晚了会错过计划入境时间。"
+    },
+    {
+      "level": "warning",
+      "description": "法规授权联邦政府按年度限制发放数量（§20a Abs.7）。目前未见到生效公告，但这条口子开着，递交前应复核。"
+    },
+    {
+      "level": "warning",
+      "description": "资金证明无统一数额，由各地外管局判断，同一份材料在不同城市可能结论不同。"
+    },
+    {
+      "level": "info",
+      "description": "优势：不需要先有工作offer即可入境；年龄 35 岁及以下直接拿 2 分；英语 C1 也能计分，德语不是绝对必需；是理工科背景转德国就业的低摩擦入口。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "§ 20a AufenthG — Chancenkarte（德国居留法原文）",
+      "url": "https://www.gesetze-im-internet.de/aufenthg_2004/__20a.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de 官方数据库）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "定义与权限原文：`Eine Chancenkarte ist eine Aufenthaltserlaubnis zur Suche nach einer Erwerbstätigkeit oder nach Maßnahmen zur Anerkennung ausländischer Berufsqualifikationen.` 工作限制原文：`eine Beschäftigung von durchschnittlich insgesamt höchstens 20 Stunden je Woche auszuüben` 与 `eine Probebeschäftigung für jeweils höchstens zwei Wochen`。发放条件：`er eine Fachkraft ist` 或 `nach Maßgabe der Tabelle in der Anlage zu diesem Gesetz eine ausreichende Punktzahl ... erhalten hat`；且 `der Lebensunterhalt gesichert ist`。学历门槛：外国职业资格须经来源国官方承认且培训期不少于两年，或持外国高校学历。语言门槛：`mindestens einfache deutsche Sprachkenntnisse` 或 `englische Sprachkenntnisse mindestens auf dem Niveau B2`。时长与延长：`zunächst für einen Zeitraum von bis zu einem Jahr`，凭劳动合同或具约束力录用意向可 `um bis zu zwei Jahre` 延长，`Eine über Satz 2 hinausgehende Verlängerung als Chancenkarte ist ausgeschlossen.` 配额授权：`die Zahl der Chancenkarten ... jährlich oder für einen kürzeren Zeitraum zu begrenzen`。"
+    },
+    {
+      "type": "primary",
+      "name": "§ 20b AufenthG — Punktevergabe für die Chancenkarte（积分项）",
+      "url": "https://www.gesetze-im-internet.de/aufenthg_2004/__20b.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de 官方数据库）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "12 项计分事由原文（编号 1-12）：①外国职业资格被认定需适应/补偿措施或需执业许可；②良好德语；③足够德语（未因②计分时）；④基础德语（未因②③计分时）；⑤英语 C1；⑥近 7 年内有至少 5 年相关经验；⑦近 5 年内有至少 2 年相关经验且未因⑥计分；⑧职业资格属 §18g Abs.1 S.2 Nr.1 短缺职业组；⑨申请时不超过 35 岁；⑩申请时超过 35 岁且不超过 40 岁；⑪过去 5 年在德合法连续居留至少 6 个月；⑫配偶或登记伴侣同时满足条件并共同申请。"
+    },
+    {
+      "type": "primary",
+      "name": "Anlage zu § 20a Abs. 3 Nr. 2, § 20b AufenthG（积分表与最低分）",
+      "url": "https://www.gesetze-im-internet.de/aufenthg_2004/anlage.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de 官方数据库）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "分值表原文：特征 1 = 4 分、2 = 3 分、3 = 2 分、4 = 1 分、5 = 1 分、6 = 3 分、7 = 2 分、8 = 1 分、9 = 2 分、10 = 1 分、11 = 1 分、12 = 1 分；`Die Mindestpunktzahl beträgt sechs Punkte.`（最低 6 分，满分 22 分）。出处标注 `BGBl. 2023 I Nr. 217, S. 20`。"
+    },
+    {
+      "type": "primary",
+      "name": "Opportunity Card — Make it in Germany（德国联邦政府官方门户）",
+      "url": "https://www.make-it-in-germany.com/en/working-in-germany/visa/opportunity-card",
+      "publisher": "Bundesministerium für Wirtschaft und Klimaschutz / Bundesregierung（德国联邦经济与气候保护部）",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "该页是本项目的官方政策说明页，本站对其正文的可读性有限：直接抓取返回的是 `Radware Page / Verifying your browser before proceeding...`（115 字符反爬中间页），无头浏览器通道同样被拦，因此**未能读到正文逐字原文**。上面所有具体条款均以 gesetze-im-internet.de 的法条原文为准，本页仅作为项目存在与官方定位的佐证。"
+    }
+  ],
+
+  "last_verified": "2026-11-03",
+
+  "verified_by": "eddieye1004"
+}

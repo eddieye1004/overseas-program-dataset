@@ -214,7 +214,11 @@ ok(
 console.log('\n[4] 资格筛选按钮');
 await evalJs(`[...document.querySelectorAll('.chip')].find(c => /大陆护照不可申/.test(c.textContent)).click()`);
 await sleep(400);
-ok('筛「不可申」= 5 张', (await evalJs(`document.querySelectorAll('.card').length`)) === 5);
+ok(
+  '筛「不可申」张数与数据一致',
+  (await evalJs(`document.querySelectorAll('.card').length`)) === EXPECT_NOT_ELIGIBLE,
+  `got ${await evalJs(`document.querySelectorAll('.card').length`)}`,
+);
 ok(
   '所有结果都是 not_eligible',
   await evalJs(`[...document.querySelectorAll('.card')].every(c => c.dataset.status === 'not_eligible')`),

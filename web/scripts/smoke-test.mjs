@@ -73,7 +73,7 @@ function ok(name, cond, detail = '') {
 
 console.log('\n[1] 数据集完整性');
 // 条数不写死：项目会一直加。这里守的是数据自洽，具体数字由
-// README / web/ACCEPTANCE.md 记录（那两处标注了取数日期）。
+// README 记录（那处标注了取数日期）。
 const TOTAL = index.length;
 const N_ELIGIBLE = index.filter((p) => p.status === 'eligible').length;
 const N_NOT = index.filter((p) => p.status === 'not_eligible').length;
@@ -121,8 +121,18 @@ const caseIns = applyFilters(index, { ...EMPTY_FILTERS, q: 'JAPAN' });
 ok('搜索大小写不敏感', caseIns.length >= 1);
 
 console.log('\n[4] 单维度筛选');
-ok('按地区 oceania = 2（au + nz）', applyFilters(index, { ...EMPTY_FILTERS, regions: ['oceania'] }).length === 2);
-ok('按类型 working_holiday = 7', applyFilters(index, { ...EMPTY_FILTERS, types: ['working_holiday'] }).length === 7);
+// 数字从数据派生，不写死：加项目不该让断言变红。
+const countWhere = (fn) => index.filter(fn).length;
+ok(
+  '按地区 oceania 与数据一致',
+  applyFilters(index, { ...EMPTY_FILTERS, regions: ['oceania'] }).length ===
+    countWhere((p) => p.region === 'oceania'),
+);
+ok(
+  '按类型 working_holiday 与数据一致',
+  applyFilters(index, { ...EMPTY_FILTERS, types: ['working_holiday'] }).length ===
+    countWhere((p) => p.program_type === 'working_holiday'),
+);
 ok(
   '按资格 eligible 条数与数据一致',
   applyFilters(index, { ...EMPTY_FILTERS, statuses: ['eligible'] }).length === N_ELIGIBLE,
@@ -134,7 +144,13 @@ ok(
 
 console.log('\n[5] 组合筛选（组间 AND / 组内 OR）');
 const combo = applyFilters(index, { ...EMPTY_FILTERS, regions: ['asia'], statuses: ['not_eligible'] });
-ok('亚洲 + 不可申 = jp/kr', combo.length === 2 && combo.every((p) => ['jp-working-holiday', 'kr-h1-working-holiday'].includes(p.id)), JSON.stringify(combo.map((p) => p.id)));
+ok(
+  '亚洲 + 不可申 组间 AND 生效',
+  combo.length >= 2 &&
+    combo.every((p) => p.region === 'asia' && p.status === 'not_eligible') &&
+    ['jp-working-holiday', 'kr-h1-working-holiday'].every((id) => combo.some((p) => p.id === id)),
+  JSON.stringify(combo.map((p) => p.id)),
+);
 const or = applyFilters(index, { ...EMPTY_FILTERS, regions: ['oceania', 'europe'] });
 // 组内 OR 应等于两个地区条数之和，不写死具体值
 ok(

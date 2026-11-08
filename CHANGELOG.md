@@ -8,8 +8,98 @@
 
 ## [未发布]
 
-> 以下均为仓库基础设施变更，**未改动任何数据文件**，因此不切版本号——
-> 数据集版本仍为 v0.2.0，待下次数据刷新时再发 v0.2.1 / v0.3.0。
+> 本次首次改动数据文件（新增 5 个项目），版本号按 v0.3.0 记。
+
+### 新增 — 5 个项目（2026-11-03）
+
+数据从 13 个项目扩到 18 个：可申 8 → 12、不可申 5 → 6，来源 51 → 72 条（尾数为后续复核新增的 22 CFR 22.1 与 INZ 英语分数表条目）。
+
+| 新增项目 | 大陆护照 | 官方依据 |
+|---|---|---|
+| `us-j1-intern` 美国 J-1 实习 | ✅ 可申 | j1visa.state.gov 项目页 + 22 CFR 62.22 |
+| `us-j1-trainee` 美国 J-1 培训 | ✅ 可申 | 同上，含 18 个月上限与「不得当作普通就业」的明文 |
+| `uk-graduate-visa` 英国毕业生签证 | ✅ 可申 | GOV.UK 概览与资格页，含 2026-12-31 前后 2 年 / 18 个月的差异 |
+| `de-chancenkarte` 德国机会卡 | ✅ 可申 | AufenthG §20a / §20b / Anlage 三段法条原文，6 分门槛 |
+| `sg-work-holiday-programme` 新加坡打工度假 | ❌ 不可申 | MOM 资格页原文名单只含 10 地，**无 China** |
+
+**为什么收录一条「不能申」的项目**：新加坡 WHP 的项目真实存在、资格页写得很清楚，而中文网络上有不少内容把它写成「大陆护照可申」。一条明确的 `not_eligible` 记录比只列能申的项目更有用。
+
+**`de-chancenkarte` 的取证限制**：`make-it-in-germany.com` 全站被 Radware 反爬挡住（直取返回 115 字符中间页，无头浏览器同样被拦），该页只作为项目存在与官方定位的佐证；所有具体条款以 `gesetze-im-internet.de` 的法条原文为准，并在 `sources[3].claim` 里写明了这一点。
+
+
+### 复核 — 日本打工度假主源改为可访问取得（2026-11-03）
+
+`jp-working-holiday` 的两条主源（`www.mofa.go.jp/j_info/visit/w_holiday/index.html` 与查証手数料页）此前被 Akamai 全站拦截（curl / 无头 Edge / 无头 Chrome 一律 `Access Denied`，Reference #18.…），只靠 `docs/audit/2026-10-30-ego-independent-verify.md` 的二手记录支撑。本次改用 ego-browser 真实浏览器通道读到原文并逐条核对，三处更正：
+
+- 协议国家/地区数 **32 → 33**（截至 2026-11-01）：新增 Malta、Italy、Panama 三个 2026 年生效的伙伴，名额分别为 100 / 500 / 100。
+- 年龄条款范围更正：原文 18-25 的例外国只有 **Australia、Canada、South Korea**，此前记录多列了 Ireland（原文未把爱尔兰列入该句）。
+- 页面顶部日期为 **November 1, 2026**，原记录的「截至 2026-04-01」已过期。
+
+中国大陆不含在名单内、台湾 10,000、香港 1,500、[NB2] 两次参与放宽名单等其余结论与原文一致，未改动。同时补齐 7 条译文（`web/i18n-src/chunk-21.json`）并清掉 6 条因措辞变更而失效的旧译文键。
+
+### 复核 — 新西兰 WHV 的英语分数线找回官方出处（2026-11-08）
+
+`nz-china-whv` 的 `eligibility.language` 原先整段标「⚠️ 未核实」，理由是主签证页只写「须能说并理解英语 + 递交后提供 acceptable English language test result」，不列分数，于是把 IELTS 5.5 / TOEFL 46 / PTE 42 / Cambridge 162 这组数字当无据删除。实际这些数字在 INZ 的另一个页面：
+
+- `English language requirements for some working holiday visas` 页里的 `Table 1: Test and minimum score required for the China Working Holiday Visa` 明文列出：`IELTS Overall score of 5.5 or more`、`TOEFL iBT Overall score of 46 or more`、`PTE Academic Overall score of 42 or more`、`B2 First Overall score of 162 or more`、`B2 First for Schools Overall score of 162 or more`、`OET Grade C or higher in all 4 skills`。
+- 同页另两条限制：`your result must be no more than 2 years old at the time you apply`、`Tests taken remotely outside of a test centre, such as 'at home' tests are not acceptable.`
+- 落盘：`eligibility.language.tests` 补 4 项数值（IELTS / TOEFL_iBT / PTE / Cambridge，`validity_months: 24`）；OET 按单项评级、无总分门槛，不塞进数值表，只在 note 说明。`documents[2]` 的英语成绩单 note 同步。新增一条 primary 来源。
+- 顺带修正 `timeline.processing_time`：官方签证页标 `80% within 2.5 weeks`，原记录「2-6 周」无出处，改为官方口径。
+
+**取证教训**：主签证页不列分数，不等于官方没有分数。INZ 把分数集中放在 `english-language-requirements-for-some-working-holiday-visas` 这个横跨多国的对照页里。查签证硬性数字时，除了项目主页，还要查该站按主题聚合的对照页。
+
+### 复核 — 美国 J-1 三个项目的签证费改为法规原文（2026-11-03）
+
+`us-j1-intern`、`us-j1-trainee`、`us-j1-camp-counselor` 原先都把签证费记为「未能核实」，理由是 `travel.state.gov` 对本机三个通道（curl / web_fetch / 无头 Edge / ego-browser）全部返回 403 与 Cloudflare 安全验证页。换一条法源后这条不再是缺口：
+
+- 22 CFR 22.1 第 21(a) 项：`Non-petition-based nonimmigrant visa (except E category) $185`。J-1 属非 petition 类非移民签证，按 $185 缴纳。
+- 该表是国务院领事收费的法定依据，eCFR 第 22 卷 `latest_amended_on` 为 2026-10-21、`up_to_date_as_of` 2026-10-30（`/api/versioner/v1/titles.json` 实查）。
+- 三个文件各新增一条 primary 来源（`https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-22/section-22.1`），`processing_time` 与相关 `risks` 描述同步改写，不再出现「未能核实」的签证费。
+- 未改动 SEVIS 费（$220 / $35），该数字来自 ICE 官方费率表，原本就有 A 级来源。
+
+**取证教训**：`travel.state.gov` 的 Cloudflare 挑战连真实浏览器通道也过不去，遇到这类站不要继续换 UA 或加等待，改从同一制度的法规原文取数——签证费在 CFR 里有法定条目，比签证信息页更稳。
+
+### 更正 — J-1 Camp Counselor 的 Sponsor 名单其实可读，此前结论错了（2026-11-08）
+
+2026-11-03 曾把这份名录记为「站点自身表格失效、当前不存在可读的完整名单」。该结论是错的，本轮推翻：
+
+- 原因不是站点坏了，是请求漏了 nonce。该表是 serverSide 分页的 wpDataTables，页面 HTML 里有隐藏字段 `wdtNonceFrontendServerSide_45`（本轮取到的值形如 `3b9baf0750`），POST 时必须一并带上。不带 nonce 直接打 `admin-ajax.php?action=get_wdtable&table_id=45` 才返回 400 / 3 字节。
+- 带上 nonce 后一次取到全表：`recordsTotal: 4133`，分页 `start=0..4000`、`length=800` 共六批全部 200，合计 4,133 行，无截断。
+- 按 Category 分组：Research Scholar 863 / Short-Term Scholar 833 / Student, College-University 785 / Professor 750 / Specialist 441 / Intern 110 / Trainee 94 / Teacher 72 / Student, Secondary 65 / Summer Work-Travel 37 / **Camp Counselor 26** / Government Visitor 26 / International Visitor 16 / Au Pair 14 / Alien Physician 1。
+- Camp Counselor 的 26 家含 CIEE、InterExchange、Intrax、CCUSA、Camp America（AIFS）、CAMP GROUP、IENA、Alliance Abroad 等。此前「第一页 100 行里没有 CIEE、InterExchange」被当成「只能看到第一页」的证据，实际只是排序不同——这一条推断当时也错了。
+- 落盘：`us-j1-camp-counselor` 的 `eligibility.passport_types.note`、`risks[2]`、`sources[5]` 全部重写，`last_verified` 改为 2026-11-08。仍未核实的是「哪家有面向中国大陆的报名入口」——名录只登记美国侧法人与其美国地址，不登记海外招募渠道。
+
+**取证教训**：wpDataTables 的 `get_wdtable` 端点在 serverSide + nonce 模式下，无 nonce 的 400 只说明「缺参数」，不说明「表格坏了」。判「站点功能失效」前，先去页面 HTML 里找 nonce / token / hidden input，再下结论。
+
+### 变更 — 学籍身份推导修正（2026-11-03）
+
+`web/scripts/sync-data.mjs` 的 `toIndexEntry()` 原先按「`enrollment_proof.required === true` → `required`」优先判断，把 J-1 Intern 这类「在读**或**毕业 12 个月内」的项目误判成「必须全程保持学籍」。现在先判 `enrolled_or_recent`（`education.note` 同时出现「在读/就读/在校」与「N 年内/已取得/毕业」），再退回 `required`。
+
+影响：`us-j1-intern` 与 `sg-work-holiday-programme` 的 `enrollment_scope` 由 `required` 改为 `enrolled_or_recent`，应届生不会被误判为不合格。
+
+### 变更 — 三处断言不再写死条数（2026-11-03）
+
+- `web/scripts/smoke-test.mjs`：「按地区 oceania = 2」「按类型 working_holiday = 7」改为与数据比对（`countWhere`），加项目不再变红。
+- `web/scripts/smoke-test.mjs`：「亚洲 + 不可申 = jp/kr」改为断言组间 AND 生效且 jp/kr 都在结果里，不再要求恰好 2 条。
+- `web/scripts/e2e-check.mjs`：「筛不可申 = 5 张」改为 `EXPECT_NOT_ELIGIBLE`，与其他断言一样从 `index.json` 派生。
+
+### 移除 — 过期文档与排查残留（2026-11-03）
+
+删除 5 份文件，均与本数据集无关或数字已过期（备份在 `default-workspace/backup-20261103/repo-cleanup/`）：
+
+- `PUSH_TO_GITHUB.md`（143 行）：2026-10 关于 GitHub 写权限的对话说明，全仓零引用
+- `docs/ACCEPTANCE.md`（145 行）：写于 2026-09-17，称「11 个项目」「26 条链接」
+- `docs/DSH-TASK.md`（81 行）：任务卡，写「12 文件 / 11 项目」
+- `docs/HANDOVER.md`（222 行）：交接基准 `382f590` v0.2.0，写「11 项目 / 41 tests」
+- `web/ACCEPTANCE.md`（96 行）：A2 写 `synced 11 programs`、`PASS 76·129`
+
+`docs/audit/` 五份审计报告与 `docs/architecture.png` 保留。
+
+### 变更 — README 重写与 web/README 修数（2026-11-03）
+
+`README.md` 从 203 行压到 176 行：去掉项目缘起的冗长叙事、与正文重复的三处表述、致谢段；新增「数据格式」一节，把 schema 八段与 A/B/C/D 来源分级写成表。统计口径同步为 18 / 12 / 6 / 72（A 62 / B 6 / C 4）。
+
+`web/README.md` 修掉一批过期数字：`11 个 program JSON` → 18、`chunk-1..7` → `chunk-*.json`（现为 21 个分片）、`programs.json 62.5 KB` → 190.2 KB、`index.json 9.0 KB` → 21.0 KB、`i18n.json 623 条 88.1 KB` → 1102 条 300.5 KB、`smoke-test 65 条` → 89、`e2e 84 条` → 148、首屏体积按 dist 实测更新；删掉指向已删 `ACCEPTANCE.md` 的链接。
 
 ### 变更 — 来源清单改为从数据生成（2026-10-31）
 

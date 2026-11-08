@@ -41,8 +41,13 @@
     },
     "language": {
       "required": true,
-      "tests": [],
-      "note": "⚠️ 未核实。官方 WHV 页面（2026-10-30 复核）只写三件事：须能说并理解英语、递交后会被要求提供 acceptable English language test result、成绩不得超过 2 年。**未列任何具体分数线**，因此不再保留「IELTS 5.5 / TOEFL 46 / PTE 42 / Cambridge 162」这组无官方依据的数字（原为旧记录，与澳加等国门槛量级一致但与本文不符）。递交前须向 INZ 或签证申请中心确认当年接受的考试与分数。"
+      "tests": [
+        { "test": "IELTS", "min_score": 5.5, "validity_months": 24 },
+        { "test": "TOEFL_iBT", "min_score": 46, "validity_months": 24 },
+        { "test": "PTE", "min_score": 42, "validity_months": 24 },
+        { "test": "Cambridge", "min_score": 162, "validity_months": 24 }
+      ],
+      "note": "以上任一项达标即可，成绩须在申请时 2 年内考取，且必须在考试中心现场考（不接受居家线上考试）。官方分数表：IELTS 总分 5.5（A/G 类均可）、TOEFL iBT 总分 46、PTE Academic 42、B2 First 162、B2 First for Schools 162；另有 OET：听说读写四项均须达 C 级或以上，因其按单项评级、没有总分门槛，未列入上方数值表。"
     },
     "funds": {
       "required": true,
@@ -128,13 +133,13 @@
         "refundable": false
       }
     ],
-    "processing_time": "2-6 周"
+    "processing_time": "官方口径：80% 的申请在 2.5 周内完成（2026-11-08 复核）。实际受抢名额后递交的材料完整度影响。"
   },
 
   "documents": [
     { "name": "有效护照", "required": true, "note": "入境时剩余有效期须 ≥ 15 个月", "prepare_days": 30 },
     { "name": "高中/大专/本科毕业证", "required": true, "note": "需中英文公证件", "prepare_days": 30 },
-    { "name": "英语成绩单", "required": true, "note": "雅思 5.5 / 托福 46 / PTE 42，2 年内有效", "prepare_days": 60 },
+    { "name": "英语成绩单", "required": true, "note": "雅思 5.5 / 托福 iBT 46 / PTE 42 / B2 First 162，2 年内有效，须在考试中心现场考", "prepare_days": 60 },
     { "name": "银行存款流水", "required": true, "note": "约 4,200 纽币等值", "prepare_days": 14 },
     { "name": "无犯罪记录公证", "required": true, "note": "需英文翻译", "prepare_days": 30 },
     { "name": "体检报告", "required": true, "note": "胸部 X 光，移民局指定体检机构", "prepare_days": 21 },
@@ -240,6 +245,15 @@
       "verified_by": "eddieye1004",
       "claim": "2026 年各国家/地区开放日期与配额（中国大陆 2026-07-02 开放 1,000 个；中国香港 03-19 开放 400 个；中国台湾 05-28 开放 600 个）",
       "note": "2026-10-30 复核未能读到正文：该站启用 Incapsula 人机验证，curl 返回 Request unsuccessful，无头浏览器需等 20 秒以上且不稳定。2026-10-16 的值保留，但未能在本轮重新确认。"
+    },
+    {
+      "type": "primary",
+      "name": "English language requirements for some working holiday visas（INZ 英语分数表）",
+      "url": "https://www.immigration.govt.nz/process-to-apply/applying-for-a-visa/providing-evidence-and-documents-to-support-your-visa-application/english-language-requirements/english-language-requirements-for-some-working-holiday-visas/",
+      "publisher": "Immigration New Zealand",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "中国打工度假签证的英语分数表原文：`IELTS Overall score of 5.5 or more`、`TOEFL iBT Overall score of 46 or more`、`PTE Academic Overall score of 42 or more`、`B2 First Overall score of 162 or more`、`B2 First for Schools Overall score of 162 or more`、`OET Grade C or higher in all 4 skills — listening, reading, writing and speaking.`；并规定 `your result must be no more than 2 years old at the time you apply`、`Tests taken remotely outside of a test centre, such as 'at home' tests are not acceptable.`"
     }
   ],
 

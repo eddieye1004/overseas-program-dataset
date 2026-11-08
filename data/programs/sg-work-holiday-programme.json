@@ -1,0 +1,246 @@
+{
+
+  "schema_version": "0.1.0",
+
+  "program": {
+    "id": "sg-work-holiday-programme",
+    "name": "新加坡打工度假计划",
+    "name_en": "Singapore Work Holiday Programme",
+    "country": "新加坡",
+    "country_code": "SG",
+    "region": "asia",
+    "program_type": "working_holiday",
+    "visa_code": "Work Holiday Pass",
+    "official_url": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/eligibility",
+    "authority": "Ministry of Manpower, Singapore（新加坡人力部）",
+    "summary": "新加坡面向青年学生与应届毕业生的短期打工度假准证，可在新加坡停留并工作最长 6 个月，同时在册持有者上限 2,000 人。⚠️ 官方资格名单只列澳大利亚、法国、德国、中国香港、日本、荷兰、新西兰、瑞士、英国、美国十地的大学，**中国大陆护照不在名单内**，且要求申请人就读于这十地的大学。",
+    "tags": [
+      "first_come_first_served",
+      "no_agency_needed",
+      "residency_required"
+    ],
+    "active": false
+  },
+
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "not_eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "not_eligible",
+      "note": "官方名单原文：`an undergraduate or graduate of a university in Australia, France, Germany, Hong Kong, Japan, Netherlands, New Zealand, Switzerland, United Kingdom or United States`。名单里是 Hong Kong 而非 China，且要求院校属这十地之一，因此中国大陆护照持有人不适用；中国台湾亦不在名单内。中国香港护照持有人若就读于上述十地之一的大学则符合。"
+    },
+    "age": {
+      "min": 18,
+      "max": 25,
+      "note": "官方原文 `You are aged 18 to 25 at the time of application.`，以递交申请当天计。这是本项目最窄的年龄区间之一。"
+    },
+    "education": {
+      "minimum_level": "bachelor_in_progress",
+      "major_restriction": [],
+      "note": "须为上述十地之一大学的在读本科生或毕业生，且该大学被对应政府承认。在读生另须在递交前已在该校全日制就读并居住至少 3 个月；毕业生须曾在读期间为该校全日制学生并居住于当地。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格页未列任何语言考试或分数要求。"
+    },
+    "funds": {
+      "required": false,
+      "note": "官方资格页未设存款证明门槛。但准证签发时须缴 S$175，另如需要多次入境签证加 S$30。"
+    },
+    "other_requirements": [
+      {
+        "type": "return_ticket",
+        "required": true,
+        "note": "官方 FAQ 明确问及返程机票是否必须回本国（`Must my return travel ticket be back to my home country?`），说明返程机票是准证条件之一。"
+      },
+      {
+        "type": "insurance",
+        "required": false,
+        "note": "官方资格页未把保险列为硬性条件；但准证签发须满足住房要求（`Singapore residential address, which must meet the housing requirements`）。"
+      }
+    ]
+  },
+
+  "timeline": {
+    "mechanism": "first_come_first_served",
+    "quota": 2000,
+    "quota_note": "官方原文 `The Work Holiday Programme has a capacity of 2,000 pass holders at any one time.` 这是「同时在册人数」上限，不是年度发放数——有人离境即可释放名额。",
+    "windows": [
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "官方不公布固定开放批次，按在册人数余量滚动受理，故记为未核实。递交前应先在人力部页面确认当前是否仍有余量。"
+      },
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年受理，无名额开放日。页面标注更新日期为 2025-12-26。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "Work Holiday Pass 签发费",
+        "amount": {
+          "local_amount": 175,
+          "currency": "SGD",
+          "cny_estimate": 950,
+          "note": "官方原文 $175 for each pass"
+        },
+        "refundable": false
+      },
+      {
+        "item": "多次入境签证费（如需）",
+        "amount": {
+          "local_amount": 30,
+          "currency": "SGD",
+          "cny_estimate": 165,
+          "note": "官方原文 $30 for each Multiple Journey Visa"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方原文：`It takes around 3 weeks to process an application.` 另注 `Within 4 weeks for most cases`，补充材料时会延长。"
+  },
+
+  "documents": [
+    {
+      "name": "有效护照个人资料页",
+      "required": true,
+      "note": "官方原文 `A copy of the personal particulars page of your passport.`",
+      "prepare_days": 7
+    },
+    {
+      "name": "在读证明或毕业证明",
+      "required": true,
+      "note": "须为名单内十地之一的大学出具；非英文材料须附学校认证的英文翻译",
+      "prepare_days": 30
+    },
+    {
+      "name": "在读时长证明（本科生）",
+      "required": true,
+      "note": "证明递交前已在该校全日制就读并居住至少 3 个月",
+      "prepare_days": 14
+    },
+    {
+      "name": "新加坡住址（符合住房要求）",
+      "required": true,
+      "note": "准证签发阶段须提供，且须满足人力部住房要求",
+      "prepare_days": 14
+    },
+    {
+      "name": "返程机票",
+      "required": true,
+      "note": "准证条件之一",
+      "prepare_days": 14
+    }
+  ],
+
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先核对国籍与就读院校",
+      "description": "两条同时成立才有资格：护照属名单内十地（含中国香港，不含中国大陆与中国台湾），且就读或毕业于这十地之一的大学。第一条不满足就到此为止。",
+      "duration": "5 分钟",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/eligibility"
+    },
+    {
+      "step_no": 2,
+      "title": "在线提交申请",
+      "description": "通过人力部在线申请门户提交。材料非英文时须附学校认证的英文翻译；单份文件不超过 2 MB。",
+      "duration": "1 天",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/apply-for-a-pass"
+    },
+    {
+      "step_no": 3,
+      "title": "等待原则批准（IPA）",
+      "description": "多数个案 4 周内出结果，官方另述约 3 周。需要补材料时会延长。IPA 有有效期，须在到期前完成准证签发。",
+      "duration": "约 3-4 周",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/apply-for-a-pass"
+    },
+    {
+      "step_no": 4,
+      "title": "缴 S$175 完成准证签发",
+      "description": "用 GIRO、Visa、Mastercard 或 Amex 缴费。无 Singpass 者须预约到 EPSC 柜台办理，可用 NETS 或 CashCard。如需多次入境签证另加 S$30。",
+      "duration": "1-3 天",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/apply-for-a-pass"
+    },
+    {
+      "step_no": 5,
+      "title": "（如需）登记指纹与照片",
+      "description": "准证签发后 2 周内完成，是否需要由通知信注明。",
+      "duration": "1 天",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/apply-for-a-pass"
+    }
+  ],
+
+  "work_conditions": {
+    "max_stay_months": 6,
+    "max_same_employer_months": 6,
+    "renewable": false,
+    "renewal_condition": "不可续签。若曾持有 Work Holiday Pass，须自上次准证失效之日起满 12 个月才能重新申请（官方原文 `you can only reapply for another Work Holiday Pass after 12 months from the day you last held the pass`）。",
+    "restricted_occupations": [],
+    "note": "准证允许在新加坡停留并工作最长 6 个月，工作类型官方未做限制。取得准证后须先领到通知信（notification letter）才能开始工作，该信自签发日起 1 个月有效。"
+  },
+
+  "risks": [
+    {
+      "level": "critical",
+      "description": "中国大陆护照不在官方资格名单内。名单原文是 Australia, France, Germany, Hong Kong, Japan, Netherlands, New Zealand, Switzerland, United Kingdom, United States——没有 China。任何「大陆护照可申新加坡打工度假」的说法都与官方页面冲突。"
+    },
+    {
+      "level": "critical",
+      "description": "即使是名单内国籍，还须就读于这十地之一的大学。国籍与院校两个条件必须同时成立。"
+    },
+    {
+      "level": "warning",
+      "description": "年龄区间只有 18-25，比澳新日韩的 18-30 窄得多，且以递交当天计。"
+    },
+    {
+      "level": "warning",
+      "description": "2,000 人是「同时在册」上限，不是年度名额。名额状况随时变化，官方不公布余量数字。"
+    },
+    {
+      "level": "warning",
+      "description": "只有 6 个月，不可续签，且重复申请须间隔 12 个月。适合短期体验，不是长期居留路径。"
+    },
+    {
+      "level": "info",
+      "description": "对照价值：这条是「显式排除」的典型样本——项目本身存在、页面公开可读、条件写得很清楚，但中国大陆护照就是不符合。收录它是为了让读者不必自己撞一次墙。"
+    }
+  ],
+
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Work Holiday Programme — Who is eligible（新加坡人力部）",
+      "url": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/eligibility",
+      "publisher": "Ministry of Manpower, Singapore",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "资格原文四条：`You are aged 18 to 25 at the time of application.`；`You are an undergraduate or graduate of a university in Australia, France, Germany, Hong Kong, Japan, Netherlands, New Zealand, Switzerland, United Kingdom or United States.`；`Your university is recognised by the government of the respective ten countries or regions.`；本科生 `you have been a resident and a full-time student of the university for at least 3 months before applying for the pass`。名额与时长：`The Work Holiday Programme has a capacity of 2,000 pass holders at any one time.`、`stay and work in Singapore for up to 6 months`。**全页未出现 China（中国大陆），名单中为 Hong Kong。**"
+    },
+    {
+      "type": "primary",
+      "name": "Work Holiday Programme — How to apply（申请流程与费用）",
+      "url": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/apply-for-a-pass",
+      "publisher": "Ministry of Manpower, Singapore",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "审理原文：`It takes around 3 weeks to process an application.`、`Within 4 weeks for most cases`。费用原文：`$175 for each pass`、`(If applicable) $30 for each Multiple Journey Visa`。材料原文：`A copy of the personal particulars page of your passport.`、`If the documents from your university are not in English, submit a copy of the original document and an official English translation certified by the university.`、`Each document's file size should not be more than 2MB.` 重复申请限制原文：`If you have held a Work Holiday Pass before, you can only reapply for another Work Holiday Pass after 12 months from the day you last held the pass.` 指纹登记：`Within 2 weeks after pass is issued (if required)`。"
+    },
+    {
+      "type": "primary",
+      "name": "Work Holiday Programme — 概览页（项目定位与返程机票 FAQ）",
+      "url": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme",
+      "publisher": "Ministry of Manpower, Singapore",
+      "last_verified": "2026-11-03",
+      "verified_by": "eddieye1004",
+      "claim": "项目定位原文：`The Work Holiday Programme allows eligible students and young graduates to work and holiday in Singapore for 6 months.` FAQ 中出现 `Must my return travel ticket be back to my home country?`，说明返程机票属准证条件。页面标注更新日期 `26 December 2025`。"
+    }
+  ],
+
+  "last_verified": "2026-11-03",
+
+  "verified_by": "eddieye1004"
+}

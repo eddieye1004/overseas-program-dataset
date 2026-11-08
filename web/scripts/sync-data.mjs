@@ -46,15 +46,19 @@ const GUIDES = ['age-wall.html', 'misinformation.html'];
   // 而实际上 AIESEC 的资格由各国分会与岗位自行决定。
   const enroll = (el.other_requirements ?? []).find((o) => o.type === 'enrollment_proof');
   const eduNote = el.education?.note ?? '';
+  // 「在读，或毕业 N 年内」要先判：J-1 Intern 这类项目同样要求提交学籍/学历证明
+  // （enrollment_proof.required = true），但官方口径是「在读或毕业 12 个月内」，
+  // 归到 required（全程保持学籍）会把应届生误判成不合格。
+  const isRecentGrad = /(在读|就读|在校)/.test(eduNote) && /(\d+\s*年内|已取得|毕业)/.test(eduNote);
   let enrollmentScope = 'none';
   if (/未核实/.test(eduNote)) {
     // 官方页没写清 → 不猜。这条必须排在前面，因为被标未核实的 note 里
     // 往往同时提到「在读」「毕业」，正则会被这些字样带偏。
     enrollmentScope = 'unknown';
+  } else if (isRecentGrad) {
+    enrollmentScope = 'enrolled_or_recent';
   } else if (enroll?.required === true) {
     enrollmentScope = 'required';
-  } else if (/(在读|就读|在校)/.test(eduNote) && /(\d+\s*年内|已取得|毕业)/.test(eduNote)) {
-    enrollmentScope = 'enrolled_or_recent';
   }
 
   return {
