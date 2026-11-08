@@ -1,0 +1,285 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "us-f1-opt",
+    "name": "美国 F-1 毕业后实习工作许可（OPT）",
+    "name_en": "Optional Practical Training (Post-completion OPT, F-1)",
+    "country": "美国",
+    "country_code": "US",
+    "region": "north_america",
+    "program_type": "short_term_work",
+    "visa_code": "F-1 OPT（I-765 / EAD）",
+    "official_url": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students",
+    "authority": "U.S. Citizenship and Immigration Services（USCIS，美国公民及移民服务局）",
+    "summary": "在美国读完学位的 F-1 学生，毕业后可申请最长 12 个月的工作许可，工作内容须与专业直接相关；STEM 专业可在此基础上再延 24 个月。不需要雇主担保，但要先拿到学校 DSO 的 I-20 推荐、再向 USCIS 递交 I-765。这是美国留学转工作的第一条桥，OPT 期间的失业天数有硬上限。",
+    "tags": [
+      "no_agency_needed",
+      "requires_degree",
+      "stem_friendly",
+      "high_demand"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "8 CFR 214.2(f) 只按 F-1 身份判定，不设国籍限制。真正的门槛是前置身份：必须已持 F-1 在 SEVP 认证院校完成至少一整个学年的全日制注册，并在申请时仍在 F-1 有效期内。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "法规未设年龄限制。0-99 表示「官方无年龄要求」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须已完成学位课程的全部课程要求（论文除外）。本科、硕士、博士均可，每个学历层级各 12 个月，读完更高一级可再用一次。工作内容必须与专业直接相关，由 DSO 在 I-20 上背书、USCIS 审核。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "OPT 本身不设语言考试。英语能力在学生签证阶段已核验（SEVP 认证院校的录取与 I-20 签发环节）。"
+    },
+    "funds": {
+      "required": false,
+      "note": "法规未设资金门槛，但 OPT 期间的失业天数有硬上限（见 work_conditions），实质上要求尽快找到工作。I-765 申请费另计。"
+    },
+    "other_requirements": [
+      {
+        "type": "government_support_letter",
+        "required": true,
+        "note": "须由学校 DSO 在 SEVIS 中录入 OPT 推荐并签发带推荐的 I-20。这是院校出具的官方支持文件，不是「在读证明」——post-completion OPT 恰恰是在完成学位课程要求之后才申请。I-20 上的推荐日期是申请窗口的起算点，递交必须在推荐后 30 天内完成。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "递交 I-765 时须在美国境内且持有效 F-1 身份。境外无法递交。"
+      },
+      {
+        "type": "no_dependents",
+        "required": false,
+        "note": "F-2 家属可继续随行，但不能凭 OPT 工作；F-2 自身不得就业。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "无名额上限，按个人毕业时间滚动申请。真正的约束是三个日期：毕业前 90 天起可递交、毕业后 60 天截止、DSO 推荐后 30 天内必须递交。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年按个人毕业时间滚动。初始 post-completion OPT 可在完成学位前 90 天起递交，最晚不超过完成后 60 天。"
+      },
+      {
+        "year": 2027,
+        "status": "open",
+        "note": "同上，规则不按年份变化。STEM 延期须在当前 OPT 到期前 90 天内、且 DSO 推荐后 60 天内递交 I-765。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "I-765 工作许可申请费（在线递交）",
+        "amount": {
+          "local_amount": 470,
+          "currency": "USD",
+          "cny_estimate": 3390,
+          "note": "USCIS 费用表 G-1055（2026-10-26 版）Appendix C：Online Filing $470"
+        },
+        "refundable": false
+      },
+      {
+        "item": "I-765 工作许可申请费（纸质递交）",
+        "amount": {
+          "local_amount": 520,
+          "currency": "USD",
+          "cny_estimate": 3750,
+          "note": "同表 Paper Filing $520。在线递交省 $50，无其他差别。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "USCIS 未承诺固定时限，官方只说明可用 I-907 申请加急（premium processing，费用另计、金额未能核实）。实务上从递交到拿到 EAD 常见 2-4 个月，因此上述三个日期必须留足余量。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "须覆盖整段 OPT 期间；护照到期会影响后续 H-1B 或出境再入境",
+      "prepare_days": 30
+    },
+    {
+      "name": "带 OPT 推荐的 I-20",
+      "required": true,
+      "note": "由 DSO 在 SEVIS 录入推荐后签发并签字。上面的推荐日期决定 30 天与 60 天两个窗口",
+      "prepare_days": 14
+    },
+    {
+      "name": "I-765 表",
+      "required": true,
+      "note": "在线递交走 myUSCIS 账号；纸质递交寄到对应州的 USCIS lockbox。选错通道会被退回",
+      "prepare_days": 7
+    },
+    {
+      "name": "护照照片",
+      "required": true,
+      "note": "USCIS 明确要求照片不得装裱、不得修图或数码美化，否则会拖慢审理甚至要求本人到场核验",
+      "prepare_days": 7
+    },
+    {
+      "name": "I-94 出入境记录",
+      "required": true,
+      "note": "从 CBP 官网打印，证明当前 F-1 身份与合法停留期",
+      "prepare_days": 1
+    },
+    {
+      "name": "此前所有 I-20 复印件",
+      "required": true,
+      "note": "若换过学校或升过学历层级，须一并提交，用于核算法定 12 个月额度",
+      "prepare_days": 7
+    },
+    {
+      "name": "I-983 培训计划（仅 STEM 延期）",
+      "required": false,
+      "note": "STEM 延期阶段必须由雇主签署，写明培训目标、监督方式与评估节奏。仅申请 12 个月基础 OPT 时不需要",
+      "prepare_days": 30
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认学历层级与剩余额度",
+      "description": "每个学历层级各 12 个月，用完不补。此前读过 pre-completion OPT 的，全日制 1 年扣满 12 个月、兼职 1 年扣 6 个月，先算清还剩多少。",
+      "duration": "10 分钟",
+      "official_link": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students"
+    },
+    {
+      "step_no": 2,
+      "title": "向 DSO 申请 OPT 推荐",
+      "description": "提交申请后 DSO 在 SEVIS 里录入推荐并签发带推荐的 I-20。推荐日期一落定，30 天内必须把 I-765 递出去，晚于 30 天 USCIS 直接拒。",
+      "duration": "1-2 周",
+      "official_link": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students"
+    },
+    {
+      "step_no": 3,
+      "title": "在窗口内递交 I-765",
+      "description": "初始 post-completion OPT：毕业前 90 天起可交，最晚毕业后 60 天。同时满足「推荐后 30 天内」。在线递交 $470，纸质 $520。",
+      "duration": "1 天",
+      "official_link": "https://www.uscis.gov/i-765"
+    },
+    {
+      "step_no": 4,
+      "title": "等待 EAD 并核对起止日期",
+      "description": "拿到 EAD（I-766）后才能开始工作，卡上起始日之前的任何工作都算非法就业。批准前不得开工。",
+      "duration": "2-4 个月",
+      "official_link": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students"
+    },
+    {
+      "step_no": 5,
+      "title": "入职并保证每周不少于 20 小时",
+      "description": "post-completion OPT 期间必须兼职（每周至少 20 小时）或全职。无薪实习若符合劳工法也可计入，但须与专业相关。",
+      "duration": "持续",
+      "official_link": "https://www.ecfr.gov/current/title-8/chapter-I/subchapter-B/part-214/section-214.2"
+    },
+    {
+      "step_no": 6,
+      "title": "STEM 专业申请 24 个月延期",
+      "description": "须在当前 post-completion OPT 有效期内、到期前 90 天起递交；雇主必须在 E-Verify 注册且保持良好状态，并签署 I-983。拿到延期后失业上限从 90 天放宽到 150 天。",
+      "duration": "2-4 个月",
+      "official_link": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-extension-for-stem-students-stem-opt"
+    },
+    {
+      "step_no": 7,
+      "title": "到期前后处理身份衔接",
+      "description": "OPT 结束后有 30 天准备离境或转换身份期。要留下就得在这段时间内让 H-1B 或其他身份生效，否则须离境。",
+      "duration": "30 天",
+      "official_link": "https://www.ecfr.gov/current/title-8/chapter-I/subchapter-B/part-214/section-214.2"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 12,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "同一学历层级不可重复申请 12 个月；读完更高一级学历可再用 12 个月。STEM 专业可在此之上申请一次 24 个月延期，条件是雇主在 E-Verify 注册、岗位与 STEM 学位直接相关、并签署 I-983 培训计划。",
+    "restricted_occupations": [
+      "与所学专业无关的任何岗位",
+      "未在 E-Verify 注册的雇主（仅 STEM 延期阶段受此限）",
+      "自雇或自主创业（无合资格的雇主—雇员关系，通常不被认可）"
+    ],
+    "note": "失业天数有硬上限：基础 post-completion OPT 累计不得超过 90 天；拿到 STEM 延期后，整个 OPT 期间累计不得超过 150 天。超限即失去 F-1 身份。工作须与专业直接相关，每周不少于 20 小时。转学或开始读同级/更低层级课程时，OPT 授权自动终止。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "三个日期环环相扣：DSO 推荐后 30 天内必须递交、毕业后 60 天内截止、毕业前 90 天起才可递交。错过任何一个都是直接拒件，没有补交通道。"
+    },
+    {
+      "level": "critical",
+      "description": "失业 90 天（STEM 延期后 150 天）是累计上限，不是连续上限。多次短期空档会被累加，很多人是算漏了才超限。超限当天 F-1 身份即失效。"
+    },
+    {
+      "level": "warning",
+      "description": "STEM 延期把雇主绑进 E-Verify，并要求雇主签 I-983、随时接受 DHS 实地查访（site visit）。雇主要是不愿配合，延期走不下去。"
+    },
+    {
+      "level": "warning",
+      "description": "8 CFR 214.2(f)(5)(ii)(C) 规定：2026-09-15 之后完成一个层级课程的人，不得再以同级或更低层级课程维持 F-1 身份。想靠「再读一个硕士」续命的路径在法规上已关闭，只有升到更高层级才成立。"
+    },
+    {
+      "level": "warning",
+      "description": "EAD 卡上的起始日之前一天都不能工作。不少人以为递交即可上班，这段空档期如被认定非法就业，会直接影响后续 H-1B 与绿卡。"
+    },
+    {
+      "level": "warning",
+      "description": "12 个月到期后没有自动延展。H-1B 抽签一年一次、中签率不由个人控制，OPT 到期与 H-1B 生效日之间可能出现身份空档。"
+    },
+    {
+      "level": "info",
+      "description": "优势：不需要雇主担保、不占名额、不限行业；在线递交比纸质省 $50。STEM 专业实际可用时长 36 个月，是留美找工作最长的一段合法窗口。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Optional Practical Training (OPT) for F-1 Students — USCIS",
+      "url": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students",
+      "publisher": "U.S. Citizenship and Immigration Services (USCIS)",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "时长原文：`Eligible students can apply to receive up to 12 months of OPT employment authorization before completing their academic studies (pre-completion) and/or after completing their academic studies (post-completion). However, all periods of pre-completion OPT will be deducted from the available period of post-completion OPT.` 折算规则：`If you spend one year in part-time pre-completion OPT, you will be deducted 6 months from your post-completion OPT. If you spend one year in full-time pre-completion OPT, you will be deducted 12 months ... and you will not have any remaining OPT.` 工时：pre-completion `you may work (20 hours or less per week) while school is in session. You may work full time when school is not in session.`；post-completion `you must work part time (at least 20 hours per week) or full time.` 递交窗口：`May apply up to 90 days before you complete your degree, but no later than 60 days after you complete your degree.` 与 `Must apply within 30 days after your DSO enters the recommendation`。流程：`Request that your designated school official (DSO) ... recommend the OPT`、`Properly file Form I-765, Application for Employment Authorization with USCIS`。"
+    },
+    {
+      "type": "primary",
+      "name": "Optional Practical Training Extension for STEM Students (STEM OPT) — USCIS",
+      "url": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-extension-for-stem-students-stem-opt",
+      "publisher": "U.S. Citizenship and Immigration Services (USCIS)",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "延期原文：`Certain F-1 students who receive science, technology, engineering, and mathematics (STEM) degrees may apply for a 24-month extension of their post-completion optional practical training (OPT).` 资格三条：`Have been granted OPT and currently be in a valid period of post-completion OPT`、`Have earned a bachelor's, master's, or doctoral degree from a school that is accredited by a U.S. Department of Education-recognized accrediting agency and is certified by the Student and Exchange Visitor Program (SEVP)`、雇主须 E-Verify。雇主义务：`Be enrolled in E-Verify`、`Remain a participant in good standing with E-Verify`、`Have a valid Employer Identification Number (EIN)`、`Report material changes ... by submitting a modified Form I-983 to the DSO`、`Report the STEM OPT student's termination of employment or departure to the DSO within 5 business days.`、`Provide an OPT opportunity that is commensurate with those of similarly situated U.S. workers in duties, hours, and compensation.` 查访：`DHS may, at its discretion, conduct a site visit of the employer`。培训计划：`The employer must attest to this fact by signing the Form I-983, Training Plan for STEM OPT Students.` 失业上限表：`Initial post-completion OPT only — Up to 90 days — 90 days`；`24-month extension — An additional 60 days — 150 days`。"
+    },
+    {
+      "type": "primary",
+      "name": "8 CFR 214.2(f) — Students in colleges, universities, and language training programs（美国联邦法规原文）",
+      "url": "https://www.ecfr.gov/current/title-8/chapter-I/subchapter-B/part-214/section-214.2",
+      "publisher": "U.S. Government Publishing Office / National Archives（eCFR）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "失业上限原文：`Students may not accrue an aggregate of more than 90 days of unemployment during any post-completion OPT period`；`Students granted a 24-month OPT extension ... may not accrue an aggregate of more than 150 days of unemployment during a total OPT period`。工时原文：`While school is in session, provided that practical training does not exceed 20 hours a week while school is in session`。完成期限：`A student must complete all practical training within a 14-month period following the completion of study, except that a 24-month extension ... does not need to be completed within such 14-month period.` 自动终止：`Authorization to engage in optional practical training employment is automatically terminated when the student transfers to another school or begins study at another educational level.` 离境准备期：`An F-1 student who has completed a course of study and any authorized practical training will be allowed an additional 30-day period from the program end date ... to prepare for departure from the United States`。学历层级限制：`An alien who has completed a program after September 15, 2026, in the United States as an F-1 student at one educational level may not maintain, be admitted, or otherwise be provided F-1 status through a program at the same educational level or a lower educational level.`"
+    },
+    {
+      "type": "primary",
+      "name": "Form G-1055 — Fee Schedule（USCIS 费用表，2026-10-26 版）",
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/g-1055.pdf",
+      "publisher": "U.S. Citizenship and Immigration Services (USCIS)",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "Appendix C（I-765）原文：`General filing for initial, replacement, or renewal Employment Authorization Document (EAD), unless noted below. Fee determined based on how form is submitted. Paper Filing: $520  Online Filing: $470`。表头标 `Form G-1055  Edition 10/26/26`，共 60 页。仅适用于多数常规 EAD 情形，特定类别（如难民、庇护、TPS）另有减免或附加费，OPT 与 STEM-OPT 不适用那些例外。"
+    }
+  ],
+  "last_verified": "2026-11-08",
+  "verified_by": "eddieye1004"
+}

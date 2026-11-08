@@ -62,8 +62,10 @@
 | AIESEC Global Talent | 全球 120+ 国 | 企业实习 | ✅ |
 | Graduate Visa | 英国 | 毕业后工作 | ✅ |
 | Short-term study visa | 英国 | 短期游学 | ✅ |
+| Job-search permit (§20) | 德国 | 毕业后求职 | ✅ |
+| Optional Practical Training (OPT) | 美国 | 毕业后工作 | ✅ |
 
-**18 个项目，大陆护照可申 12 / 不可申 6，共 72 条来源（A 级 62 / B 级 6 / C 级 4），其中 4 条 C 级仅作旁证。** 数字取于 2026-11-03，改数据后重跑 `python scripts/gen_sources.py`。
+**20 个项目，大陆护照可申 14 / 不可申 6，共 78 条来源（A 级 68 / B 级 6 / C 级 4），其中 4 条 C 级仅作旁证。** 数字取于 2026-11-08，改数据后重跑 `python scripts/gen_sources.py`。
 
 完整清单见 [`data/programs/`](data/programs/)，逐条来源见 [`data/sources.md`](data/sources.md)。
 

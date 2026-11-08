@@ -18,7 +18,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "not_eligible",
@@ -29,7 +28,7 @@
     "age": {
       "min": 18,
       "max": 35,
-      "note": "官方原文：18 至 35 岁（限澳大利亚、加拿大、新西兰、韩国）；其余签约国家/地区为 18 至 30 岁，含中国香港、中国台湾、日本、安道尔、冰岛、摩纳哥、圣马力诺、乌拉圭。判定以「签证生效时满 18 岁、递交申请时不超过上限」为准。max 取全体上限 35；中国香港/中国台湾申请人实际上限为 30。"
+      "note": "官方按来源地分两档：澳大利亚、加拿大、新西兰、韩国为 18-35 岁；其余签约地（含中国香港、中国台湾、日本、安道尔、冰岛、摩纳哥、圣马力诺、乌拉圭）为 18-30 岁。判定口径不是「递交时在区间内」，而是官方原文 `You must be aged 18 or over when your visa starts, or 35 or under when you apply for it.`（30 岁档同理）——即签证生效时满 18 岁、递交申请时不超过上限；可以先满 18 岁前递交，生效时超龄也不影响。这里的 max 取全体上限 35，港台实际是 30。"
     },
     "education": {
       "minimum_level": "any",
@@ -47,33 +46,32 @@
         "local_amount": 2530,
         "currency": "GBP",
         "cny_estimate": 23000,
-        "note": "约 2,530 英镑资金证明（用于支付初期生活费用）"
+        "note": "约 2,530 英镑，用于覆盖抵英初期生活费。须连续持有 28 天，第 28 天在递交前 31 天内"
       },
-      "note": "需在申请前连续持有 28 天以上"
+      "note": "官方原文 `You must have at least £2,530 in your bank account`，且 `You will need to have had the money available for at least 28 days in a row. Day 28 must be within 31 days of applying for this visa.`——28 天连续持有，且第 28 天必须落在递交前 31 天内。这条时间窗比金额更容易踩错。"
     },
     "other_requirements": [
       {
         "type": "insurance",
         "required": true,
-        "note": "需缴纳移民健康附加费（IHS），用于使用 NHS 医疗服务"
+        "note": "须缴移民健康附加费（IHS），YMS 档为每年 £776，2 年签证 £1,552，用于使用 NHS。"
       },
       {
         "type": "criminal_record",
         "required": false,
-        "note": "官方仅对部分国籍要求无犯罪记录证明：安道尔、冰岛（须为申请前 6 个月内签发）、圣马力诺（外交部 suitability 函）。中国香港、中国台湾申请人不需要无犯罪记录证明，但须提供内政部确认抽签中签的邮件。"
+        "note": "不做普遍要求。官方只点名三个来源地：安道尔（Andorran certificate of criminal records）、冰岛（Sakavottorð）、圣马力诺（外交部 suitability 函），且都要求签发日在申请前 6 个月内。中国香港、中国台湾申请人不交无犯罪记录，改为提交内政部确认抽签中签的邮件。"
       },
       {
         "type": "no_dependents",
         "required": true,
-        "note": "不可携带子女"
+        "note": "官方三条硬性排除：`children under the age of 18 who live with you`、`children you're financially responsible for`、`already been in the UK under the scheme`。前两条的措辞是「有未成年子女同住」或「负有抚养义务」，不只是「不带孩子过去」；第三条意味着一生只能参加一次。"
       }
     ]
   },
-
   "timeline": {
     "mechanism": "ballot",
     "quota": null,
-    "quota_note": "中国台湾 1,000 个/年、中国香港有独立配额；中国大陆不在名单内，无配额。",
+    "quota_note": "中国台湾 1,000 个/年、中国香港有独立配额，两者都须先通过 Youth Mobility Scheme ballot 抽签才能递交；日本、韩国、澳大利亚等按年度配额分配但不必抽签（名额满即止）。中国大陆不在名单内，无配额。",
     "windows": [
       {
         "year": 2026,
@@ -84,54 +82,117 @@
     "fees": [
       {
         "item": "签证申请费",
-        "amount": { "local_amount": 340, "currency": "GBP", "cny_estimate": 3100, "note": "官方原文：The application fee is £340." },
+        "amount": {
+          "local_amount": 340,
+          "currency": "GBP",
+          "cny_estimate": 3100,
+          "note": "官方原文：The application fee is £340."
+        },
         "refundable": false
       },
       {
         "item": "移民健康附加费（IHS）",
-        "amount": { "local_amount": 776, "currency": "GBP", "cny_estimate": 7000, "note": "按年计，2 年约 GBP 1,552" },
+        "amount": {
+          "local_amount": 776,
+          "currency": "GBP",
+          "cny_estimate": 7000,
+          "note": "按年计，2 年约 GBP 1,552"
+        },
         "refundable": false
       },
       {
         "item": "生物识别信息采集费",
-        "amount": { "local_amount": 19, "currency": "GBP", "cny_estimate": 170 },
+        "amount": {
+          "local_amount": 19,
+          "currency": "GBP",
+          "cny_estimate": 170
+        },
         "refundable": false
       }
     ],
     "processing_time": "约 3 周"
   },
-
   "documents": [
-    { "name": "有效护照", "required": true, "note": "须为签约国家/地区签发的护照", "prepare_days": 30 },
-    { "name": "资金证明", "required": true, "note": "约 2,530 英镑，连续持有 28 天以上", "prepare_days": 45 },
-    { "name": "无犯罪记录证明", "required": false, "note": "仅安道尔、冰岛、圣马力诺国籍申请人需要；中国香港/中国台湾申请人改提供抽签中签的官方邮件", "prepare_days": 30 },
-    { "name": "生物识别信息", "required": true, "note": "在签证申请中心采集", "prepare_days": 14 }
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "须为签约国家/地区签发的护照；香港须为 SAR 护照",
+      "prepare_days": 30
+    },
+    {
+      "name": "资金证明（银行流水）",
+      "required": true,
+      "note": "至少 £2,530，连续持有 28 天，第 28 天须在递交前 31 天内",
+      "prepare_days": 45
+    },
+    {
+      "name": "肺结核检测证明（部分来源地）",
+      "required": false,
+      "note": "来自英国列为需筛查的国家且拟停留 6 个月以上者须提供；中国大陆在筛查名单内。证明自 X 光检查日起 6 个月内有效",
+      "prepare_days": 21
+    },
+    {
+      "name": "抽签中签邮件（仅中国香港、中国台湾）",
+      "required": false,
+      "note": "内政部发出的中签确认邮件，是这两个来源地递交的前提",
+      "prepare_days": 0
+    },
+    {
+      "name": "无犯罪记录证明（仅安道尔、冰岛、圣马力诺）",
+      "required": false,
+      "note": "须为申请前 6 个月内签发；圣马力诺为外交部出具的 suitability 函",
+      "prepare_days": 30
+    },
+    {
+      "name": "生物识别信息",
+      "required": true,
+      "note": "在签证申请中心采集指纹与照片",
+      "prepare_days": 14
+    },
+    {
+      "name": "英文或威尔士文翻译件",
+      "required": false,
+      "note": "非英文/威尔士文的材料须提供 certified translation",
+      "prepare_days": 14
+    }
   ],
-
   "steps": [
     {
       "step_no": 1,
-      "title": "确认护照资格（第一步，也可能是终点）",
-      "description": "英国 YMS 仅对签约国家/地区开放。中国大陆不在名单内。若持中国大陆护照，此项目不可申请。",
+      "title": "确认护照来源地在名单内（第一步，也可能是终点）",
+      "description": "英国 YMS 只对签约国家/地区开放。18-35 岁档：澳大利亚、加拿大、新西兰、韩国。18-30 岁档：安道尔、冰岛、日本、摩纳哥、圣马力诺、乌拉圭，以及需先抽签的中国香港（SAR 护照）、中国台湾；另有 British overseas citizen 等三类英国海外身份。中国大陆不在任何一档内。",
       "duration": "5 分钟",
-      "official_link": "https://www.gov.uk/youth-mobility"
+      "official_link": "https://www.gov.uk/youth-mobility/eligibility"
     },
     {
       "step_no": 2,
-      "title": "等待抽签开放并注册",
-      "description": "（仅限合格护照持有人）YMS 对高需求地区采用抽签制或配额制，须在开放时提交申请。",
-      "duration": "不定",
-      "official_link": "https://www.gov.uk/youth-mobility"
+      "title": "中国香港 / 中国台湾：先参加抽签",
+      "description": "这两个来源地不能直接递交，须先被 Youth Mobility Scheme ballot 选中。官方原文 `You must be selected in the Youth Mobility Scheme ballot before you can apply for your visa`。中签后凭内政部邮件才能进入正式申请。抽签窗口一年开放数次，错过要等下一轮。",
+      "duration": "不定（按抽签轮次）",
+      "official_link": "https://www.gov.uk/youth-mobility/eligibility"
     },
     {
       "step_no": 3,
-      "title": "递交申请并缴费",
-      "description": "（仅限合格护照持有人）在线递交申请，缴纳签证费、IHS 及生物识别费。",
+      "title": "提前 28 天把 £2,530 存进账户并保持不动",
+      "description": "资金证明要求连续 28 天持有，且第 28 天须在递交前 31 天内。临时借入、中途取出、账户间转移都可能让这 28 天作废，需要重新计时。",
+      "duration": "28 天",
+      "official_link": "https://www.gov.uk/youth-mobility/eligibility"
+    },
+    {
+      "step_no": 4,
+      "title": "在线递交并缴签证费、IHS、生物识别费",
+      "description": "签证费 £340；IHS 每年 £776（2 年 £1,552）；生物识别 £19。合计约 £1,911。",
       "duration": "1 天",
+      "official_link": "https://www.gov.uk/youth-mobility"
+    },
+    {
+      "step_no": 5,
+      "title": "到签证中心采集生物信息并等结果",
+      "description": "常规约 3 周出结果。获批后按签证生效日入境，24 个月从生效日起算。",
+      "duration": "约 3 周",
       "official_link": "https://www.gov.uk/youth-mobility"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 24,
     "max_same_employer_months": 0,
@@ -142,27 +203,41 @@
       "职业运动员",
       "体育教练"
     ],
-    "note": "可为任意雇主工作，无需雇主担保。可自雇（部分限制）。"
+    "note": "可为任意雇主工作，无需雇主担保、无需先说好岗位。可自雇（部分限制）、可读书（最长 6 个月）、可出入境。明确禁止职业运动员与体育教练。一生只能参加一次，且不可在英境内转为其他签证类别；唯一例外是澳大利亚、加拿大、新西兰国籍者可在 2 年期满后再延 1 年。"
   },
-
   "risks": [
     {
       "level": "critical",
-      "description": "⚠️ 中国大陆护照不可申请。这是一个显式排除记录，用于纠正中文互联网上的错误信息。"
+      "description": "⚠️ 中国大陆护照不可申请。官方资格页按来源地逐一列出可申请的国家与地区，18-35 岁档与 18-30 岁档都不含 China。这是一条显式排除记录，用于纠正中文互联网上「英国打工度假对中国开放」的错误信息。"
+    },
+    {
+      "level": "critical",
+      "description": "中国香港（SAR 护照）与中国台湾不能直接递交，必须先通过 Youth Mobility Scheme ballot 抽签。抽签不在名单里就等于没有申请资格，与材料准备无关。"
+    },
+    {
+      "level": "warning",
+      "description": "资金证明的时间窗比金额更容易出错：£2,530 须连续持有 28 天，且第 28 天落在递交前 31 天内。账户中途有工资入账、转出、或换账户，都可能被要求重新计时。"
+    },
+    {
+      "level": "warning",
+      "description": "一生只能参加一次 YMS。官方把 `already been in the UK under the scheme` 列为不可申请情形，用过一次就没有第二次，也不能靠换护照来源地重来。"
+    },
+    {
+      "level": "warning",
+      "description": "有未成年子女同住、或对子女负有抚养义务的人不可申请。这不是「不带孩子就行」，而是身份本身不合格。"
     },
     {
       "level": "info",
-      "description": "中国台湾、中国香港护照持有者可申请。若用户持中国大陆护照但符合港澳台身份，需按对应护照规则申请。"
+      "description": "优势：不需要雇主担保、不需要先找到工作、无学历与英语门槛、可自雇。与毕业生签证相比不要求先在英国读书，是唯一「人还没到英国就能拿 2 年工作权」的路径——但只对签约地护照开放。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
       "name": "Youth Mobility Scheme visa",
       "url": "https://www.gov.uk/youth-mobility",
       "publisher": "UK Visas and Immigration",
-      "last_verified": "2026-10-30",
+      "last_verified": "2026-11-08",
       "verified_by": "eddieye1004",
       "claim": "YMS 参与国家/地区名单、年龄要求、资金要求 GBP 2,530、停留期 24 个月、费用结构"
     },
@@ -171,18 +246,18 @@
       "name": "Youth Mobility Scheme visa: eligible countries and territories",
       "url": "https://www.gov.uk/youth-mobility/eligibility",
       "publisher": "UK Visas and Immigration (GOV.UK)",
-      "last_verified": "2026-10-30",
+      "last_verified": "2026-11-08",
       "verified_by": "eddieye1004",
-      "claim": "YMS 参与国家/地区名单含 Hong Kong 与 Taiwan，不含 China（中国大陆）；中国大陆护照持有人不在可申请范围内"
+      "claim": "年龄分档原文：`You can apply for the visa if you're aged 18 to 35 and from: Australia, Canada, New Zealand, South Korea`；`You can apply for the visa if you're aged 18 to 30 and from: Andorra, Iceland, Japan, Monaco, San Marino, Uruguay`。判定口径：`You must be aged 18 or over when your visa starts, or 35 or under when you apply for it.` 抽签原文：`You must be selected in the Youth Mobility Scheme ballot before you can apply for your visa if you're from: Hong Kong, if you have an SAR passport; Taiwan`。排除情形：`children under the age of 18 who live with you`、`children you're financially responsible for`、`already been in the UK under the scheme`。资金原文：`You must have at least £2,530 in your bank account`、`You will need to have had the money available for at least 28 days in a row. Day 28 must be within 31 days of applying for this visa.` **全页未列 China（中国大陆）。**"
     },
     {
       "type": "primary",
       "name": "Youth Mobility Scheme visa: Documents you must provide",
       "url": "https://www.gov.uk/youth-mobility/documents-you-must-provide",
       "publisher": "UK Visas and Immigration (GOV.UK)",
-      "last_verified": "2026-10-30",
+      "last_verified": "2026-11-08",
       "verified_by": "eddieye1004",
-      "claim": "无犯罪记录证明仅对安道尔、冰岛、圣马力诺国籍要求；中国香港/中国台湾申请人须提供内政部抽签中签邮件；签证申请费 £340 载于 Overview 页"
+      "claim": "材料原文：`a valid passport or other document that shows your identity and nationality`、`a bank statement showing you have at least £2,530 in savings`、`your tuberculosis (TB) test results if you're from a country where you have to take the test`、`a certified translation of any documents that are not in English or Welsh`。按来源地追加：安道尔 `Andorran certificate of criminal records`、冰岛 `Icelandic criminal certificate for private use (called a Sakavottorð)`、圣马力诺外交部函、乌拉圭 `Uruguayan certificate of judicial records`，均须在申请前 6 个月内签发；中国香港/中国台湾须提供 `a valid email from the Home Office confirming you were successful in the Youth Mobility Scheme ballot`。"
     },
     {
       "type": "primary",
@@ -194,7 +269,6 @@
       "claim": "移民健康附加费（IHS）原文：`£776 per year for students, their dependants, and those on a Youth Mobility Scheme visa, for example £1,552 for a 2-year visa`。即 YMS 与 IHS 同价，2 年签证 1,552 英镑。"
     }
   ],
-
   "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

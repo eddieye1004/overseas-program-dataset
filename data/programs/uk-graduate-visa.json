@@ -1,7 +1,5 @@
 {
-
   "schema_version": "0.1.0",
-
   "program": {
     "id": "uk-graduate-visa",
     "name": "英国毕业生签证",
@@ -21,7 +19,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -61,7 +58,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "rolling",
     "quota": null,
@@ -101,7 +97,6 @@
     ],
     "processing_time": "官方原文：`you'll usually get a decision on your visa within 8 weeks`。等待期间可留在英国。"
   },
-
   "documents": [
     {
       "name": "有效护照",
@@ -126,9 +121,14 @@
       "required": true,
       "note": "按申请流程使用 UKVI 账号、人脸识别或到签证中心采集",
       "prepare_days": 7
+    },
+    {
+      "name": "ATAS 证明（如需）",
+      "required": false,
+      "note": "若持本签证去读或研究敏感课题（部分工程、材料、物理方向），需提前申请 Academic Technology Approval Scheme 证明。单纯求职与工作不需要",
+      "prepare_days": 30
     }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -159,16 +159,18 @@
       "official_link": "https://www.gov.uk/graduate-visa"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 24,
     "max_same_employer_months": 24,
     "renewable": false,
     "renewal_condition": "不可延期（官方原文 `You cannot extend your Graduate visa.`）。到期前可转其他类别，例如技术工人签证（Skilled Worker）。",
-    "restricted_occupations": [],
-    "note": "可从事绝大多数工作、可求职、可自雇、可做志愿工作、可出入境。唯一限制在学习：只有课程本身不符合学生签证条件时，才能用本签证去读。2026-12-31 前递交批 2 年，之后 18 个月，博士 3 年。"
+    "restricted_occupations": [
+      "职业运动员（professional sportsperson，含教练）",
+      "领取公共福利（public funds）与国家养老金"
+    ],
+    "note": "可从事绝大多数工作、可求职、可自雇、可做志愿工作、可出入境。三类明确禁止：职业运动员、领取公共福利（public funds）与国家养老金。学习受限——只有该课程本身不符合学生签证条件时，才能用本签证去读；若课程符合学生签证条件，应改为延长学生签证。研究敏感课题还可能需 ATAS 证明。志愿工作必须无偿，且只能为注册慈善机构、志愿组织、关联募款机构或法定机构做。2026-12-31 前递交批 2 年，之后 18 个月，博士 3 年。",
+    "max_study_months": 0
   },
-
   "risks": [
     {
       "level": "critical",
@@ -187,11 +189,14 @@
       "description": "费用合计不低：£937 申请费加每年 £1,035 医疗附加费，2 年档约 £3,007（约 2.8 万元人民币），不退。"
     },
     {
+      "level": "warning",
+      "description": "本签证能读的课程被限定为「不符合学生签证条件」的那一类。想借毕业生签证再读一个学位，若该课程本身可申学生签证，就必须改走延长学生签证，用毕业生签证读会被认定违规。"
+    },
+    {
       "level": "info",
       "description": "优势：不需要雇主担保、不限岗位、可自雇，是从留学转工作的最低摩擦路径；博士 3 年，时间更宽裕。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -212,8 +217,6 @@
       "claim": "四条须同时成立：`you're in the UK`、`your current visa is a Student visa or Tier 4 (General) student visa`、`you studied a UK bachelor's degree, postgraduate degree or other eligible course for a minimum period of time with your Student visa or Tier 4 (General) student visa`、`your education provider ... has told the Home Office you've successfully completed your course`。另：`You must apply before your Student visa or Tier 4 (General) student visa expires.` 与 `You do not have to wait until you've graduated or have been given a certificate.`。**该页与概览页均未设年龄限制、未要求单独提交语言成绩、未设存款门槛。**"
     }
   ],
-
   "last_verified": "2026-11-03",
-
   "verified_by": "eddieye1004"
 }

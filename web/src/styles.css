@@ -355,9 +355,12 @@ a:hover {
 .card {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  /* 6 个块之间 5px：同名项目里会有两行长标题（如 §20 那条），
+     卡片按行内最高者拉伸，要留出「标题多占一行」的余量，
+     否则一行里只要有一个长标题，整行就顶出首屏预算。 */
+  gap: 5px;
   height: 100%;
-  padding: 15px;
+  padding: 14px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);

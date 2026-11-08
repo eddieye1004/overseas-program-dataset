@@ -1,0 +1,235 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "de-20-job-search",
+    "name": "德国毕业后求职居留许可",
+    "name_en": "Residence Permit for Job Search after Graduation (Section 20, AufenthG)",
+    "country": "德国",
+    "country_code": "DE",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "§20 AufenthG",
+    "official_url": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html",
+    "authority": "德国联邦司法与消费者保护部（法条发布）/ 各地外国人管理局（Ausländerbehörde，实际签发）",
+    "summary": "依据 AufenthG §20，在德国读完学位、做完研究、完成职业培训或通过职业资格认定后，可申请最长 18 个月的求职居留许可，期间可合法找工作、也可从事任何工作。它和机会卡（§20a）不是一回事：§20 面向「已在德国完成学业的人」，§20a 面向「还没来德国、想进来找工作的第三国公民」。中国大陆护照持有人只要在德国完成学业即可申请。",
+    "tags": [
+      "no_agency_needed",
+      "requires_degree",
+      "no_quota_cap",
+      "stem_friendly"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "AufenthG §20 全条不设国籍限制，适用条件是「此前以哪类居留身份在德国停留」而非护照。中国大陆护照持有人只要走过 §16b/§16c 的学生居留等前置路径即可申请。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "法条未设年龄限制。0-99 表示「官方无年龄要求」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "§20 第 1 款列了五条路径，各自对应不同前置身份：①在德国以 §16b 或 §16c 居留完成学位；②以 §18d 或 §18f 居留完成研究活动；③以 §16a 居留完成合格职业培训；④在德国完成职业资格等同认定或取得执业许可（§16d）；⑤完成国家承认的护理/健康领域助理或助手培训。多数中国留学生走的是第①条。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "§20 本身不设语言考试。语言要求已在取得前置学生居留（§16b，通常需 B1/B2 德语或相应英语）时核验过。实际求职时德语水平决定岗位面，但不构成签发条件。"
+    },
+    "funds": {
+      "required": true,
+      "note": "§20 第 2 款明文要求生计保障：`Die Erteilung einer Aufenthaltserlaubnis nach Absatz 1 setzt die Lebensunterhaltssicherung voraus.` 实践中以存款、父母担保函、或已签的劳动合同证明。具体金额各地外管局口径不一（未能核实统一数额）。"
+    },
+    "other_requirements": [
+      {
+        "type": "health_check",
+        "required": false,
+        "note": "通常不需要体检。但须持有德国法定或同等医疗保险，这是签发居留的通行前提。"
+      },
+      {
+        "type": "criminal_record",
+        "required": false,
+        "note": "常规居留许可签发不要求无犯罪记录证明；涉及特定职业（如教师、护理）时雇主侧另有要求。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "须在德国境内、且前置居留（学生居留等）仍然有效时向外管局申请。毕业即离境再回来申请不成立。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "§20 不设年度名额上限，按个人毕业时间向当地外管局预约递交。真正的约束是前置居留的到期日：学生居留一到期，就失去在德国境内转换的资格。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动，按个人毕业时间在当地外管局预约。建议在毕业证书或成绩全部出齐后立即预约，不要等学生居留临近到期。"
+      },
+      {
+        "year": 2027,
+        "status": "open",
+        "note": "同上，法条未按年份调整。若 §20a 机会卡的配额授权被联邦政府行使（§20a 允许按年或更短期限限定名额），与本条无关——§20 不受配额限制。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "居留许可签发费",
+        "amount": {
+          "local_amount": 100,
+          "currency": "EUR",
+          "cny_estimate": 790,
+          "note": "按德国居留法收费条例的常规上限口径估算。各地外管局实际收费与减免政策不一，具体金额未能核实。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "各地外管局差异很大，预约排期从数天到数月不等，官方未公布统一时限（未能核实）。因为居留卡制作需另行等待，实务上应预留 6-8 周。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期须覆盖申请的居留期；护照剩余有效期不足时外管局可能只批到护照到期日",
+      "prepare_days": 30
+    },
+    {
+      "name": "学位证书或毕业证明",
+      "required": true,
+      "note": "须已完成全部学业要求。部分外管局接受学校的完成确认函，不必等正式证书",
+      "prepare_days": 14
+    },
+    {
+      "name": "在读期间的居留许可（居留卡）",
+      "required": true,
+      "note": "申请时该居留必须仍有效；这是 §20 第 1 款第 1 条成立的前提",
+      "prepare_days": 0
+    },
+    {
+      "name": "生计保障证明",
+      "required": true,
+      "note": "存款流水、父母担保函（Verpflichtungserklärung）、或已签劳动合同，三种任一。金额无全国统一标准",
+      "prepare_days": 30
+    },
+    {
+      "name": "医疗保险证明",
+      "required": true,
+      "note": "法定医保或同等商业医保。学生医保在毕业后通常失效，需要转为自愿投保或求职者保险",
+      "prepare_days": 14
+    },
+    {
+      "name": "租房合同或住址登记（Meldebescheinigung）",
+      "required": true,
+      "note": "德国居留申请必备，证明已在当地登记落户",
+      "prepare_days": 14
+    },
+    {
+      "name": "简历与求职计划",
+      "required": false,
+      "note": "非法条明文要求，但部分外管局会问求职方向。提前准备一份能说明目标岗位的材料可减少问询",
+      "prepare_days": 7
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认自己落在 §20 第 1 款的哪一条",
+      "description": "五条路径对应不同前置居留：学位（§16b/§16c）、研究（§18d/§18f）、职业培训（§16a）、资格认定（§16d）、护理助理培训。走错条会导致材料清单对不上。",
+      "duration": "10 分钟",
+      "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html"
+    },
+    {
+      "step_no": 2,
+      "title": "在学生居留到期前向外管局预约",
+      "description": "德国外管局普遍需要提前预约（Termin），热门城市排期可达数月。等居留快到期才预约，很可能约不到而被迫离境。",
+      "duration": "1 天（预约）",
+      "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html"
+    },
+    {
+      "step_no": 3,
+      "title": "备齐生计保障与保险",
+      "description": "§20 第 2 款把生计保障写成硬条件。学生医保毕业后失效，须提前转为求职者保险或自愿投保，否则面谈当天会被退回补材料。",
+      "duration": "2-4 周",
+      "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html"
+    },
+    {
+      "step_no": 4,
+      "title": "现场递交并录指纹",
+      "description": "按预约时间到场，提交材料、采集生物信息、缴费。居留卡随后邮寄，期间会给一张临时证明（Fiktionsbescheinigung）。",
+      "duration": "1 天",
+      "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html"
+    },
+    {
+      "step_no": 5,
+      "title": "在 18 个月内找到工作并转工作居留",
+      "description": "找到与学历匹配的岗位后，转为 §18b 欧盟蓝卡或 §18a 技术移民居留。§20 的 18 个月不能延长，到期未转就得离境。",
+      "duration": "最长 18 个月",
+      "official_link": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 18,
+    "max_same_employer_months": 18,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "明文不可延长：`Die Verlängerung nach Absatz 1 über diese Zeiträume hinaus ist ausgeschlossen.` 第 1 款第 1-4 条最长 18 个月；第 5 条（护理助理培训）最长 12 个月，可一次性延长最多 6 个月。到期须转为工作类居留（§18a / §18b）或离境。",
+    "restricted_occupations": [],
+    "note": "求职期间可以从事任何工作（包括与学历无关的），这一点与机会卡不同：§20a 明确把工作限定为「技术性就业」且每周不超过 20 小时，§20 没有这层限制。18 个月从居留卡签发日起算，不因找到工作而暂停。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "18 个月不可延长，法条写死 `Die Verlängerung ... ist ausgeschlossen`。到期没转成工作居留就必须离境，没有过渡身份可用。"
+    },
+    {
+      "level": "critical",
+      "description": "必须在前置学生居留仍有效时、在德国境内申请。毕业后回国再想回来走这条路不成立——境外只能走 §20a 机会卡，那是另一套条件（6 分门槛、限额、每周 20 小时）。"
+    },
+    {
+      "level": "warning",
+      "description": "生计保障是硬条件，不是软性说明。存款不足又拿不出担保函或劳动合同，外管局可以据此拒发。各地对金额的口径不统一，同一份材料在不同城市结果可能不同。"
+    },
+    {
+      "level": "warning",
+      "description": "外管局预约排队是真实的瓶颈。慕尼黑、柏林等大城市排期数月是常态，学生居留到期日不会因为约不到而顺延。"
+    },
+    {
+      "level": "warning",
+      "description": "学生医保在毕业后通常终止。空窗期内没有医保，既违反居留条件也可能在看病时产生高额自付。须提前转投求职者保险。"
+    },
+    {
+      "level": "info",
+      "description": "优势：无国籍限制、无名额上限、不需要雇主担保、求职期间可做任何工作。相比机会卡没有 6 分门槛，也不受每周 20 小时限制。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "AufenthG §20 — Arbeitsplatzsuche im Anschluss an Aufenthalte im Bundesgebiet（德文原文）",
+      "url": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "五条适用路径原文：`nach erfolgreichem Abschluss eines Studiums im Bundesgebiet im Rahmen eines Aufenthalts nach § 16b oder § 16c`、`nach Abschluss der Forschungstätigkeit ... § 18d oder § 18f`、`nach erfolgreichem Abschluss einer qualifizierten Berufsausbildung ... § 16a`、`nach der Feststellung der Gleichwertigkeit der Berufsqualifikation oder der Erteilung der Berufsausübungserlaubnis ... § 16d`、`nach erfolgreichem Abschluss einer Assistenz- oder Helferausbildung ... im Gesundheits- und Pflegewesen`。时长原文：`Sie wird in den Fällen des Absatzes 1 Nummer 1 bis 4 für einen Zeitraum von bis zu 18 Monaten erteilt. In den Fällen des Absatzes 1 Nummer 5 wird sie für einen Zeitraum von bis zu zwölf Monaten erteilt und kann einmalig um bis zu sechs Monate verlängert werden, wenn der Lebensunterhalt gesichert ist. Die Verlängerung nach Absatz 1 über diese Zeiträume hinaus ist ausgeschlossen.` 生计保障：`Die Erteilung einer Aufenthaltserlaubnis nach Absatz 1 setzt die Lebensunterhaltssicherung voraus.` **全条未设年龄与国籍限制。**"
+    },
+    {
+      "type": "primary",
+      "name": "AufenthG §20 — Foreigners seeking employment following stays in the federal territory（官方英文对照版）",
+      "url": "https://www.gesetze-im-internet.de/englisch_aufenthg/englisch_aufenthg.html",
+      "publisher": "Bundesministerium der Justiz（德国联邦司法部，gesetze-im-internet.de 英文版）",
+      "last_verified": "2026-11-08",
+      "verified_by": "eddieye1004",
+      "claim": "英文对照确认同一口径：`In the cases covered by subsection (1) nos. 1 to 4, the temporary residence permit is granted for a period of up to 18 months. In the cases covered by subsection (1) no. 5, it is granted for a period of up to 12 months and may be extended once by up to six months if the foreigner's subsistence is secured. It may not be extended beyond these maximum periods.` 以及 `The temporary residence permit is granted pursuant to subsection (1) on the condition that the foreigner's subsistence is secured.` 该页同时提供 §20a 机会卡英文，用于区分两条路径：§20a 允许 `to pursue employment of up to 20 hours per week`。"
+    }
+  ],
+  "last_verified": "2026-11-08",
+  "verified_by": "eddieye1004"
+}
