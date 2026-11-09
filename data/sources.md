@@ -13,14 +13,27 @@
 
 | 指标 | 数值 |
 |---|---|
-| 项目数 | 26 |
-| 来源条目 | 109（primary 103 / secondary 6） |
-| 去重后的 URL 数 | 99（另有 26 个 `official_url` 入口） |
-| 最近一次核实 | 2026-11-08 |
+| 项目数 | 27 |
+| 来源条目 | 111（primary 105 / secondary 6） |
+| 去重后的 URL 数 | 101（另有 27 个 `official_url` 入口） |
+| 最近一次核实 | 2026-11-09 |
 | 最早一次核实 | 2026-09-17 |
-| 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 52 天） |
+| 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 53 天） |
 
 每张表里的「分级」列由 `scripts/validate.py` 的 `classify_source()` 现算，不是人工标注 —— 规则见文末。
+
+---
+
+## 奥地利
+
+### 奥地利红白红卡（高资质）
+
+`at-rwr-card-vhq` · 官方入口 <https://www.migration.gv.at/en/types-of-immigration/permanent-immigration/very-highly-qualified-workers/>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Very Highly Qualified Workers（奥地利官方移民门户） | Republik Österreich — migration.gv.at（奥地利联邦政府官方移民门户） | <https://www.migration.gv.at/en/types-of-immigration/permanent-immigration/very-highly-qualified-workers/> | A · 政府/法律 | 2026-11-09 | 两条路径原文：`If you don't yet have a job offer, you can come to Austria on a job-seeker visa, valid for six months, to look for work.`；`To qualify for either the job-seeker visa or the Red-White-Red Card, you must score at least 70 points based on the following criteria`。积分表原文（上限与分值）：`Special qualifications and skills Maximum allowable points: 40`、`Graduation from an institution of higher education, minimum duration of programme: four years 20`、`in the subjects mathematics, informatics, natural sciences or technology (MINT subjects) 30`、`Post-doctoral qualification (habilitation) or PhD 40`、`Work experience (per half-year) 1`、`Six months of work experience in Austria 10`、`German or English language skills for the elementary use of the language on a basic level – (A1 level) 5`、`(A2 level) 10`、`Under 35 years of age Under 40 years of age Under 45 years of age 20 15 10`、`Sum total of maximum allowable points: 100`、`Required minimum: 70`。期限与换卡原文：`The Red-White-Red Card is generally issued for a period of 24 months.`；`if you were employed in accordance with the eligibility criteria for a minimum of 21 months during the preceding 24 months` 可申请 plus。换雇主原文：`may provisionally begin their new employment after a 45-day waiting period from the date the application to change the purpose of the permit ... is submitted`。费用原文：`Jobseeker Visa: € 195 Application fee: € 218`。官方示例原文：`A 30-year old Russian informatics graduate with over 6 years of work experience and very good English language skills ... She receives 72 points`。 |
+| 2 | primary | Red-White-Red Card — Frequently Asked Questions（奥地利官方移民门户 FAQ） | Republik Österreich — migration.gv.at（奥地利联邦政府官方移民门户） | <https://www.migration.gv.at/en/service/faq/> | A · 政府/法律 | 2026-11-09 | 找工作签证的性质与失效后果原文：`you may apply for a six-month residence visa for your job search (Job Seeker Visa)`；`If your visa expires before the application process is complete, you can wait for the outcome of the Red-White-Red Card application process in Austria if you submitted the application in person in Austria. Otherwise, you must leave the country and wait for the authorities' decision while abroad`。卡的性质原文：`The Red-White-Red Card is issued in the shape of a bank card and is a combination of residence permit and employment permit. It is valid for two years and entitles you as the holder to settlement and employment with a specific employer.`；换雇主原文：`If you change your employer within the first two years, you have to apply for a new Red-White-Red Card.`。plus 原文：`If you held a Red-White-Red Card for two years, you may apply for a Red-White-Red Card plus`（无限制就业，可随时换雇主）。积分计算器免责原文：`The points calculator is a tool for you to estimate your eligibility ... it does not constitute an application and does not replace the evaluation by the Austrian authorities.` 医疗保险原文：`The authorities will accept travel health insurance, provided it covers costs well above € 30,000 and includes a guarantee covering potential rescue and return costs.` |
 
 ---
 

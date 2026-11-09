@@ -70,8 +70,9 @@
 | High Potential Individual (HPI) | 英国 | 毕业后工作 | ✅ |
 | Research Scholar (J-1) | 美国 | 研究交流 | ✅ |
 | Orientation year (zoekjaar) | 荷兰 | 毕业后求职 | ✅ |
+| Red-White-Red Card (VHQ) | 奥地利 | 求职居留 | ✅ |
 
-**26 个项目，大陆护照可申 20 / 不可申 6，共 109 条来源（A 级 98 / B 级 6 / C 级 5），其中 5 条 C 级仅作旁证。** 数字取于 2026-11-08，改数据后重跑 `python scripts/gen_sources.py`。
+**27 个项目，大陆护照可申 21 / 不可申 6，共 111 条来源（A 级 100 / B 级 6 / C 级 5），其中 5 条 C 级仅作旁证。** 数字取于 2026-11-09，改数据后重跑 `python scripts/gen_sources.py`。
 
 完整清单见 [`data/programs/`](data/programs/)，逐条来源见 [`data/sources.md`](data/sources.md)。
 
