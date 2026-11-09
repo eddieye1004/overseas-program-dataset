@@ -48,6 +48,7 @@ export function SavedView({
       {list.length === 0 ? (
         <div className="state">
           <p className="state__title">{t('savedEmpty')}</p>
+          <p className="state__body">{t('savedEmptyBody')}</p>
           <a className="btn btn--primary" href="#/">
             {t('navBrowse')}
           </a>

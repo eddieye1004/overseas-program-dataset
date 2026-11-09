@@ -97,14 +97,18 @@ export function CompareView({ compareIds, onRemove, onClear }: Props) {
     <div className="page">
       <header className="page__head">
         <h1 className="page__title">{t('compareTitle')}</h1>
-        <p className="page__intro">
-          {items.length} / {COMPARE_MAX}
+        {/* 页头先说"这张表怎么读"，再给计数。原先只有 "0 / 4" 一个数字，
+            第一次进来的人既不知道这页干什么、也不知道怎么往里加东西。 */}
+        <p className="page__intro">{t('compareIntro')}</p>
+        <p className="page__meta">
+          {t('compareCountLabel')} {items.length} / {COMPARE_MAX}
         </p>
       </header>
 
       {items.length === 0 ? (
         <div className="state">
           <p className="state__title">{t('compareEmpty')}</p>
+          <p className="state__body">{t('compareEmptyBody')}</p>
           <a className="btn btn--primary" href="#/">
             {t('navBrowse')}
           </a>

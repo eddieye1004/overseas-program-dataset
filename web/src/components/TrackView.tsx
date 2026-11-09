@@ -63,6 +63,9 @@ export function TrackView({ track }: Props) {
       {rows.length === 0 ? (
         <div className="state">
           <p className="state__title">{t('trackEmpty')}</p>
+          {/* 空状态讲清"这里会发生什么"，而不是只说"没有内容"。
+              四行状态迁移和"只存本机"这两点，不写就没人知道。 */}
+          <p className="state__body">{t('trackEmptyBody')}</p>
           <a className="btn btn--primary" href="#/">
             {t('navBrowse')}
           </a>

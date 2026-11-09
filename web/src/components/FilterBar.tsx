@@ -72,9 +72,22 @@ function foldedCount(f: Filters): number {
     (f.criticalOnly ? 1 : 0)
   );
 }
+/** 学籍门槛的四个取值各有实义，不能走 ENUM_LABELS：
+ *  那里 'none' 已经表示「无」，放进「学籍门槛」组会读成「无学籍门槛」还是「无」分不清。
+ *  所以单独映射一次，文案集中放在 ui.ts 的 enroll* 键上。 */
+const ENROLL_LABEL_KEY = {
+  none: 'enrollNone',
+  enrolled_or_recent: 'enrollRecent',
+  required: 'enrollRequired',
+  unknown: 'enrollUnknown',
+} as const;
 
 export function FilterBar({ filters, facets, onChange, onReset, all }: Props) {
   const { t, te } = useI18n();
+  const teEnroll = (v: string) => {
+    const k = ENROLL_LABEL_KEY[v as keyof typeof ENROLL_LABEL_KEY];
+    return k ? t(k) : te(v);
+  };
 
   // 折叠区默认收起；但只要有条件生效就展开，否则用户看不到自己选了什么、也取消不掉
   const [open, setOpen] = useState(() => foldedCount(filters) > 0);
@@ -118,15 +131,31 @@ export function FilterBar({ filters, facets, onChange, onReset, all }: Props) {
           />
         </div>
 
-      {/* 第一组：我的资格。两栏大按钮，选中即实心。 */}
-      <ChipGroup
-        label={t('filterStatus')}
-        options={facets.statuses}
-        selected={filters.statuses}
-        onToggle={(v) => onChange({ ...filters, statuses: toggleValue(filters.statuses, v) })}
-        te={te}
-        pair
-      />
+      {/* 前两组并排：它们各自只有 2 项和 4 项，竖着叠会白吃掉一行高度。
+          合并成一行后首屏网格上移 81px，刚好把「桌面首屏露出 ≥2 张完整卡片」守住。 */}
+      <div className="filters__duo">
+        {/* 第一组：我的资格。两栏大按钮，选中即实心。 */}
+        <ChipGroup
+          label={t('filterStatus')}
+          options={facets.statuses}
+          selected={filters.statuses}
+          onToggle={(v) => onChange({ ...filters, statuses: toggleValue(filters.statuses, v) })}
+          te={te}
+          pair
+        />
+
+        {/* 第二组：学籍门槛。紧跟资格，因为「要不要先辞职/先读书」是紧接着的第二个问题。
+            它排在地区之前：想去哪个洲是偏好，能不能不脱产是硬约束。 */}
+        <ChipGroup
+          label={t('filterEnroll')}
+          options={facets.enrollment}
+          selected={filters.enrollment}
+          onToggle={(v) =>
+            onChange({ ...filters, enrollment: toggleValue(filters.enrollment, v) })
+          }
+          te={teEnroll}
+        />
+      </div>
 
       <ChipGroup
         label={t('filterRegion')}

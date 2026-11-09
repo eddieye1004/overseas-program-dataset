@@ -9,6 +9,12 @@ export interface Filters {
   types: string[];
   /** 资格状态筛选：'eligible' | 'not_eligible' | 'conditional' | 'unknown' */
   statuses: string[];
+  /**
+   * 学籍门槛筛选：'none' | 'required' | 'enrolled_or_recent' | 'unknown'。
+   * 这是 26 条里区分度最高的一维——「能不能在不辞职、不重新读书的前提下申请」
+   * 决定了绝大多数人的可行集合，但它此前只写在详情页里，列表页没法筛。
+   */
+  enrollment: string[];
   tags: string[];
   /** 只看年龄符合的（需要用户提供年龄才生效） */
   ageOnly: boolean;
@@ -24,6 +30,7 @@ export const EMPTY_FILTERS: Filters = {
   regions: [],
   types: [],
   statuses: [],
+  enrollment: [],
   tags: [],
   ageOnly: false,
   age: null,
@@ -137,6 +144,13 @@ export function matches(
   if (f.types.length > 0 && !f.types.includes(p.program_type)) return false;
   if (f.statuses.length > 0 && !f.statuses.includes(p.status)) return false;
 
+  // 学籍门槛：同一维多选之间 OR。缺失值按 'unknown' 参与比较，
+  // 这样「只看不要求学籍」不会意外把没标学籍的项目也放进来。
+  if (f.enrollment.length > 0) {
+    const scope = p.enrollment_scope ?? 'unknown';
+    if (!f.enrollment.includes(scope)) return false;
+  }
+
   // 标签是 AND 语义：选了「带薪」+「适合 STEM」，要同时满足（申请人的实际约束）
   if (f.tags.length > 0) {
     const own = new Set(p.tags ?? []);
@@ -174,8 +188,12 @@ export interface Facets {
   regions: { value: string; count: number }[];
   types: { value: string; count: number }[];
   statuses: { value: string; count: number }[];
+  enrollment: { value: string; count: number }[];
   tags: { value: string; count: number }[];
 }
+
+/** 学籍门槛的展示顺序。不要求学籍在最前（多数人的可行集合），未知值排最后、不隐藏。 */
+export const ENROLL_ORDER = ['none', 'enrolled_or_recent', 'required', 'unknown'];
 
 export function buildFacets(list: ProgramIndexEntry[]): Facets {
   const count = (
@@ -199,6 +217,10 @@ export function buildFacets(list: ProgramIndexEntry[]): Facets {
     regions: count((p) => p.region),
     types: count((p) => p.program_type),
     statuses: count((p) => p.status),
+    // 固定顺序有意义：不要求学籍在前（多数人的可行集合），须在读沉底
+    enrollment: count((p) => p.enrollment_scope ?? 'unknown').sort(
+      (a, b) => ENROLL_ORDER.indexOf(a.value) - ENROLL_ORDER.indexOf(b.value),
+    ),
     tags: count((p) => p.tags ?? []),
   };
 }

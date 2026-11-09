@@ -55,6 +55,20 @@ const { UI, ENUM_LABELS, MATCH_TEXT, TRACK_STATUS, TRACK_TEXT } = await import(
   `file://${outUi.replace(/\\/g, '/')}`
 );
 
+// 首访引导的判定规则也是纯函数（只吃一份快照、不碰 localStorage），
+// 所以能在无浏览器环境里直接断言「谁该看到引导、谁不该」。
+const outOnboard = join(WEB, '.tmp-onboard.mjs');
+await build({
+  entryPoints: [join(WEB, 'src/lib/onboarding.ts')],
+  bundle: true,
+  format: 'esm',
+  outfile: outOnboard,
+  platform: 'neutral',
+});
+const { ONBOARD_VERSION, shouldShowOnboarding } = await import(
+  `file://${outOnboard.replace(/\\/g, '/')}`
+);
+
 const index = JSON.parse(await readFile(join(WEB, 'public/data/index.json'), 'utf8'));
 const dict = JSON.parse(await readFile(join(WEB, 'public/data/i18n.json'), 'utf8'));
 const programs = JSON.parse(await readFile(join(WEB, 'public/data/programs.json'), 'utf8'));
@@ -140,6 +154,31 @@ ok(
 ok(
   '按资格 not_eligible 条数与数据一致',
   applyFilters(index, { ...EMPTY_FILTERS, statuses: ['not_eligible'] }).length === N_NOT,
+);
+
+// 学籍门槛这一维是列表页新加的筛选项：它决定「能不能不脱产申请」，
+// 是多数在职申请人第一道过滤。这里断言它按枚举精确匹配、且与数据条数一致。
+const ENROLL_VALUES = ['none', 'enrolled_or_recent', 'required', 'unknown'];
+for (const v of ENROLL_VALUES) {
+  ok(
+    `按学籍门槛 ${v} 与数据一致`,
+    applyFilters(index, { ...EMPTY_FILTERS, enrollment: [v] }).length ===
+      countWhere((p) => (p.enrollment_scope ?? 'unknown') === v),
+  );
+}
+ok(
+  '学籍门槛组内 OR：四值相加 = 总数',
+  ENROLL_VALUES.reduce(
+    (n, v) => n + applyFilters(index, { ...EMPTY_FILTERS, enrollment: [v] }).length,
+    0,
+  ) === TOTAL,
+  '每个项目必须恰好落在一个学籍门槛档里，否则筛选会漏或重复',
+);
+ok(
+  '学籍门槛与资格状态组间 AND 生效',
+  applyFilters(index, { ...EMPTY_FILTERS, enrollment: ['none'], statuses: ['eligible'] }).every(
+    (p) => (p.enrollment_scope ?? 'unknown') === 'none' && p.status === 'eligible',
+  ),
 );
 
 console.log('\n[5] 组合筛选（组间 AND / 组内 OR）');
@@ -447,7 +486,44 @@ ok(
 );
 ok('在职可申严格少于可申总数', workingEligible < index.filter((p) => p.status === 'eligible').length);
 
-console.log('\n[14] 界面词条双语对齐');
+console.log('\n[14] 首访引导判定');
+/** 造一份「全新访客」快照，再按用例改单项 */
+const blank = () => ({ onboarded: null, replay: null, saved: [], track: {}, profile: null });
+ok('全新访客显示引导', shouldShowOnboarding(blank()));
+ok(
+  '已看过当前版本的不再显示',
+  !shouldShowOnboarding({ ...blank(), onboarded: ONBOARD_VERSION }),
+);
+ok(
+  '看过旧版本的要再显示一次（文案改版后老用户能看到新版）',
+  shouldShowOnboarding({ ...blank(), onboarded: ONBOARD_VERSION - 1 }),
+);
+ok('点了重看立刻显示', shouldShowOnboarding({ ...blank(), replay: 1, onboarded: ONBOARD_VERSION }));
+ok(
+  '有收藏但没标记过的不打扰（已证明会用这个站）',
+  !shouldShowOnboarding({ ...blank(), saved: ['jp-working-holiday'] }),
+);
+ok(
+  '有申请进度但没标记过的不打扰',
+  !shouldShowOnboarding({ ...blank(), track: { 'au-462-work-holiday': { status: 'preparing' } } }),
+);
+ok(
+  '填过匹配条件但没标记过的不打扰',
+  !shouldShowOnboarding({ ...blank(), profile: { age: 24 } }),
+);
+// store 初始化时会写空值进 localStorage：这些不能被当成「有历史」
+ok('空收藏数组不算有历史', shouldShowOnboarding({ ...blank(), saved: [] }));
+ok('空进度对象不算有历史', shouldShowOnboarding({ ...blank(), track: {} }));
+ok(
+  '全 false / 空串的 profile 不算有历史',
+  shouldShowOnboarding({ ...blank(), profile: { age: null, regions: [], degree: '' } }),
+);
+ok(
+  'false 字段不算有历史（布尔条件默认关闭）',
+  shouldShowOnboarding({ ...blank(), profile: { paidOnly: false, agencyFree: false } }),
+);
+
+console.log('\n[15] 界面词条双语对齐');
 const zhKeys = Object.keys(UI.zh).sort();
 const enKeys = Object.keys(UI.en).sort();
 ok(
@@ -488,6 +564,7 @@ await import('node:fs/promises').then((fs) =>
     fs.rm(outfile, { force: true }),
     fs.rm(outMatch, { force: true }),
     fs.rm(outUi, { force: true }),
+    fs.rm(outOnboard, { force: true }),
   ]),
 );
 

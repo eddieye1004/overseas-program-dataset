@@ -169,7 +169,43 @@ export type UiKey =
   | 'noAgeLimit'
   | 'andUnder'
   | 'andOver'
-  | 'ageUnit';
+  | 'ageUnit'
+  // —— 新手引导（2026-11-09：首访说明模块用途与操作路径）——
+  | 'onboardStep1Title'
+  | 'onboardStep1Body'
+  | 'onboardStep2Title'
+  | 'onboardStep3Title'
+  | 'onboardNext'
+  | 'onboardSkip'
+  | 'onboardExpand'
+  | 'onboardCollapse'
+  | 'onboardStart'
+  | 'onboardReplay'
+  | 'onboardStepOf'
+  | 'onboardModuleCol'
+  | 'onboardPath1'
+  | 'onboardPath2'
+  | 'onboardPath3'
+  // —— 侧栏用途（桌面常驻，窄屏隐藏）——
+  | 'navBrowseHint'
+  | 'navMatchHint'
+  | 'navTrackHint'
+  | 'navSavedHint'
+  | 'navCompareHint'
+  | 'navDataHint'
+  // —— 学籍门槛筛选（在职者最需要的那一维）——
+  | 'filterEnroll'
+  | 'enrollNone'
+  | 'enrollRequired'
+  | 'enrollRecent'
+  | 'enrollUnknown'
+  // —— 空状态正文（标题复用既有 trackEmpty / savedEmpty / compareEmpty）——
+  | 'trackEmptyBody'
+  | 'savedEmptyBody'
+  | 'compareEmptyBody'
+  | 'emptyRecentCta'
+  | 'compareIntro'
+  | 'compareCountLabel';
 
 export const UI: Record<Lang, Record<UiKey, string>> = {
   zh: {
@@ -341,6 +377,44 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     andUnder: '岁及以下',
     andOver: '岁及以上',
     ageUnit: '岁',
+
+    // —— 新手引导 ——
+    onboardStep1Title: '这里只回答一个问题：大陆护照，你能申哪些？',
+    onboardStep1Body:
+      '收录 {n} 条，每条都挂着官方链接和核实日期。「可申」只代表护照资格——年龄、学历、在读状态写在每一条里面。',
+    onboardStep2Title: '六个模块分别做什么',
+    onboardStep3Title: '三步拿到第一条结论',
+    onboardNext: '下一步',
+    onboardSkip: '跳过',
+    onboardExpand: '展开看怎么用',
+    onboardCollapse: '收起',
+    onboardStart: '开始用',
+    onboardReplay: '重看新手引导',
+    onboardStepOf: '第 {i} 步 / 共 3 步',
+    onboardModuleCol: '模块 → 你在这里做什么',
+    onboardPath1: '点「我的资格」里的「大陆护照可申」，26 条会收窄到能申的那些',
+    onboardPath2: '点开一条，先读标题下面那行判定——它只讲护照资格，其余门槛在「申请资格」区',
+    onboardPath3: '拿不准就点星号收藏，回头在「收藏」里并排比',
+    navBrowseHint: '全量列表，按资格筛',
+    navMatchHint: '填条件，按匹配度排序',
+    navTrackHint: '记录每条申请进度',
+    navSavedHint: '想再看一眼的放这',
+    navCompareHint: '最多 4 条并排比',
+    navDataHint: '来源、核实日期、缺口',
+    filterEnroll: '学籍门槛',
+    enrollNone: '不要求学籍',
+    enrollRequired: '须在读',
+    enrollRecent: '在读或毕业不久',
+    enrollUnknown: '官方未公布',
+    trackEmptyBody:
+      '你在跟进的每条项目会占一行：一个状态（未开始 → 准备材料 → 已提交 → 面试中 → 已获录取 / 未通过）加一句备注。只存在这台设备。',
+    savedEmptyBody:
+      '收藏是给「还想再看一眼」的项目留位置，不是决定。卡片右下角的星号、详情页的「收藏」按钮都能加。',
+    compareEmptyBody:
+      '最多放 4 条，并排看年龄、停留期、资金证明、风险与核实日期。三条都差不多、只差细节时最有用。',
+    emptyRecentCta: '从最近看过的开始',
+    compareIntro: '同一行看同一字段，差异才会跳出来。最多 4 条。',
+    compareCountLabel: '已选',
   },
   en: {
     siteTitle: 'Overseas Program Dataset',
@@ -513,12 +587,52 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     andUnder: 'or under',
     andOver: 'or over',
     ageUnit: 'yrs',
+
+    // —— onboarding ——
+    onboardStep1Title: 'One question: which programs a mainland Chinese passport can actually apply to',
+    onboardStep1Body:
+      '{n} programs, each with an official link and the date it was checked. "Open" means passport eligibility only — age, degree and student status sit inside each entry.',
+    onboardStep2Title: 'What each section does',
+    onboardStep3Title: 'Three steps to your first answer',
+    onboardNext: 'Next',
+    onboardSkip: 'Skip',
+    onboardExpand: 'See how to use it',
+    onboardCollapse: 'Collapse',
+    onboardStart: 'Start',
+    onboardReplay: 'Show the intro again',
+    onboardStepOf: 'Step {i} of 3',
+    onboardModuleCol: 'Section → what you do there',
+    onboardPath1:
+      'Take "Open to mainland China" under My eligibility — the 26 entries narrow to the ones you can apply to',
+    onboardPath2:
+      'Open a program and read the verdict under its title — it covers passport eligibility only; the rest sits in the eligibility table',
+    onboardPath3:
+      'Unsure? Star it and compare side by side later under Saved',
+    navBrowseHint: 'All entries, filtered',
+    navMatchHint: 'Enter a profile, get a ranking',
+    navTrackHint: 'One status per program',
+    navSavedHint: 'Keep what you want to revisit',
+    navCompareHint: 'Up to 4, field by field',
+    navDataHint: 'Sources, dates, what is missing',
+    filterEnroll: 'Student status',
+    enrollNone: 'No enrolment needed',
+    enrollRequired: 'Must be enrolled',
+    enrollRecent: 'Enrolled or recent graduate',
+    enrollUnknown: 'Not stated officially',
+    trackEmptyBody:
+      'Each program you follow gets one row: a status (Not started → Preparing → Submitted → Interviewing → Offer / Unsuccessful) and a note. Stored on this device.',
+    savedEmptyBody:
+      'Saving keeps a program on your shortlist — it is not a decision. Use the star on a card, or Save on a program page.',
+    compareEmptyBody:
+      'Add up to 4 programs and read age, stay length, funds, risks and verification date across one row. Most useful when a few look alike and the difference is in the details.',
+    emptyRecentCta: 'Start from something you viewed',
+    compareIntro: 'Read one field across every column — that is where the difference shows. Up to 4.',
+    compareCountLabel: 'Selected',
   },
 };
 
 /** 枚举值 → 界面标签。数据里的枚举是机器可读英文，展示要本地化。 */
-export const ENUM_LABELS: Record<Lang, Record<string, string>> = {
-  zh: {
+export const ENUM_LABELS: Record<Lang, Record<string, string>> = {  zh: {
     oceania: '大洋洲',
     asia: '亚洲',
     europe: '欧洲',

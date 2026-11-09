@@ -2,9 +2,10 @@
 // 应用外壳：左侧固定导航 + 右侧内容区，形态参考 CampPilot 那类工作台。
 // 所有用户状态（收藏 / 对比 / 申请进度 / 最近浏览）在这一层持有再下发，
 // 好处是切路由时状态不丢，也不必让每个页面各自读一遍 localStorage。
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useI18n } from './i18n';
 import { useRoute } from './lib/router';
+import { loadIndex } from './lib/data';
 import { COMPARE_MAX, useCompare, useRecent, useSaved, useTrack } from './lib/store';
 import { ListView } from './components/ListView';
 import { DetailView } from './components/DetailView';
@@ -14,6 +15,7 @@ import { SavedView } from './components/SavedView';
 import { CompareView } from './components/CompareView';
 import { AboutView } from './components/AboutView';
 import { Sidebar } from './components/Sidebar';
+import { Onboarding } from './components/Onboarding';
 
 function LangSwitch() {
   const { lang, setLang, t } = useI18n();
@@ -42,6 +44,21 @@ export default function App() {
   const compare = useCompare();
   const recent = useRecent();
   const track = useTrack();
+
+  // 引导条要显示「收录 26 条」这个数字，但不该为了它把整份索引塞进外壳。
+  // 与 ListView 共用 loadIndex() 的模块级 Promise 缓存，重复调用不会重复请求。
+  const [programCount, setProgramCount] = useState<number | null>(null);
+  useEffect(() => {
+    let alive = true;
+    loadIndex()
+      .then((d) => alive && setProgramCount(d.length))
+      .catch(() => {
+        /* 拿不到条数时引导条显示 0 条以外的占位，不阻塞渲染 */
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   const toggleSave = saved.toggle;
   const toggleCompare = compare.toggle;
@@ -80,6 +97,10 @@ export default function App() {
         </header>
 
         <main className="main" id="main" tabIndex={-1}>
+          {/* 首访引导：任何路由都出现（含分享链接直接进详情页的场景）。
+              条子内联在内容之前，不使用遮罩——页面其余部分保持可交互。
+              等条数拿到再挂载，否则第 1 屏会闪一下「收录 0 条」。 */}
+          {programCount != null && <Onboarding programCount={programCount} />}
           {route.name === 'list' && (
             <ListView savedIds={saved.list} onToggleSave={toggleSave} />
           )}

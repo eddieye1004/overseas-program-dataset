@@ -8,6 +8,8 @@ import './styles.css';
 import './workbench.css';
 import './refine.css';
 import './ia.css';
+// 首访引导条：单独一份，避免把 90 行仅在首访生效的规则塞进上述任一分层
+import './onboard.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('#root not found');

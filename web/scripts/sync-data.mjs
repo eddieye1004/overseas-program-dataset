@@ -34,7 +34,13 @@ const GUIDES = ['age-wall.html', 'misinformation.html'];
   //   b) 「未核实」——note 以 ⚠️ 开头并写明官方未公布（如 global-aiesec）
   // 判据只能落在 note 上，因为数据里没有独立字段；这条规则一旦 schema 加了
   // age_verified 之类的字段就该删掉。
-  const ageUnknown = age.min === 0 && age.max === 99 && /未核实/.test(age.note ?? '');
+  //
+  // 2026-11-09 修正：原先用 /未核实/.test(note)，但像 ca-pgwp 那样写
+  // 「官方未设年龄限制。0-99 表示「无年龄要求」，不是「未核实」。」的 note
+  // 里恰好含「未核实」三个字，于是 12 个本来"无限制"的项目全被标成未核实，
+  // 卡片上显示「未核实」。改判「以 ⚠️ 开头」——数据里只有真正查不到的那两条
+  // （global-aiesec、us-j1-summer-work-travel）用这个前缀。
+  const ageUnknown = age.min === 0 && age.max === 99 && /^⚠️/.test((age.note ?? '').trim());
 
   // 「学籍门槛」是四档，不是两档。判据只能落在 other_requirements 与
   // education.note 上，因为 education.minimum_level 把多种身份要求压成了同一个值：
@@ -167,6 +173,10 @@ async function main() {
   // sitemap 也从数据生成，否则加一个项目就会漏一条 URL。
   // 2026-11-01 加 uk-short-term-study-visa 时手工维护的版本就漏了它，
   // 而 e2e 断言的是「恰好 12 条」，条数对得上、内容却少一条——断言没抓到。
+  //
+  // 2026-11-09：详情页 URL 从 `#/p/<id>` 换成真路径 `/p/<id>.html`。
+  // Google 官方明确「搜索通常不支持网址片段」，旧 sitemap 里 26 条 hash URL
+  // 等于 0 条可索引页。真页面由 scripts/gen-pages.mjs 生成。
   const SITE = 'https://eddieye1004.github.io/overseas-program-dataset';
   const newest = programs.reduce(
     (a, p) => (p.last_verified > a ? p.last_verified : a),
@@ -186,8 +196,10 @@ async function main() {
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     urlBlock(`${SITE}/`, newest, '1.0'),
     ...programs.map((p) =>
-      urlBlock(`${SITE}/#/p/${p.program.id}`, p.last_verified ?? newest, '0.8'),
+      urlBlock(`${SITE}/p/${p.program.id}.html`, p.last_verified ?? newest, '0.8'),
     ),
+    // 全部项目索引页：给 /p/ 一个入口，避免目录本身 404
+    urlBlock(`${SITE}/p/`, newest, '0.6'),
     // 长文页是独立静态 HTML，能被搜索引擎单独收录（hash 路由的详情页不行）。
     // 清单写在这里而不是扫目录，是为了让「加文章」必须显式改一行，
     // 不会因为某个草稿文件被丢进 public/ 就意外上线。

@@ -5,6 +5,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useI18n } from '../i18n';
 import { loadPrograms } from '../lib/data';
+import { requestReplay } from '../lib/onboarding';
+import { navigate } from '../lib/router';
 import { useDocumentTitle } from '../lib/useTitle';
 import type { ProgramRecord } from '../types';
 
@@ -125,8 +127,8 @@ export function AboutView() {
           </li>
           <li>
             {lang === 'en'
-              ? 'If a page does not state it, the field is left out or marked unverified — never filled with a guess.'
-              : '官方页面没写的字段，宁可不填或标注「未能核实」，也不填一个看起来合理的值。'}
+              ? 'If an official page does not state a field, it says who to ask instead — never filled with a plausible guess.'
+              : '官方页面没写的字段，写明「官方未规定、该向谁确认」，不填一个看起来合理的值。'}
           </li>
           <li>
             {lang === 'en'
@@ -139,6 +141,23 @@ export function AboutView() {
               : '本站是索引，不代办申请、不提供签证建议。提交前请自行复核官方页面。'}
           </li>
         </ul>
+      </section>
+
+      {/* 手动重看引导：唯一的入口在这里。挂在数据说明页而不是首屏，
+          因为首屏已经有引导条本身，再放一个按钮会让「跳过」这个决定显得可疑。 */}
+      <section className="sec">
+        <h2 className="sec__title">{t('onboardStep2Title')}</h2>
+        <button
+          type="button"
+          className="btn"
+          data-onboard-replay=""
+          onClick={() => {
+            requestReplay();
+            navigate('/');
+          }}
+        >
+          {t('onboardReplay')}
+        </button>
       </section>
     </div>
   );

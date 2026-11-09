@@ -17,6 +17,14 @@ interface Item {
     | 'navSaved'
     | 'navCompare'
     | 'navData';
+  /** 一句话说明这一格是干什么的。新手最常见的困惑是「六个名字看不出区别」。 */
+  hintKey:
+    | 'navBrowseHint'
+    | 'navMatchHint'
+    | 'navTrackHint'
+    | 'navSavedHint'
+    | 'navCompareHint'
+    | 'navDataHint';
   icon: string;
   count?: number;
 }
@@ -38,12 +46,33 @@ export function Sidebar({
   const active: NavName = route.name === 'detail' ? 'list' : (route.name as NavName);
 
   const items: Item[] = [
-    { name: 'list', path: '/', labelKey: 'navBrowse', icon: '▤' },
-    { name: 'match', path: '/match', labelKey: 'navMatch', icon: '◈' },
-    { name: 'track', path: '/track', labelKey: 'navTrack', icon: '✓', count: trackCount },
-    { name: 'saved', path: '/saved', labelKey: 'navSaved', icon: '★', count: savedCount },
-    { name: 'compare', path: '/compare', labelKey: 'navCompare', icon: '⇄', count: compareCount },
-    { name: 'about', path: '/about', labelKey: 'navData', icon: 'ⓘ' },
+    { name: 'list', path: '/', labelKey: 'navBrowse', hintKey: 'navBrowseHint', icon: '▤' },
+    { name: 'match', path: '/match', labelKey: 'navMatch', hintKey: 'navMatchHint', icon: '◈' },
+    {
+      name: 'track',
+      path: '/track',
+      labelKey: 'navTrack',
+      hintKey: 'navTrackHint',
+      icon: '✓',
+      count: trackCount,
+    },
+    {
+      name: 'saved',
+      path: '/saved',
+      labelKey: 'navSaved',
+      hintKey: 'navSavedHint',
+      icon: '★',
+      count: savedCount,
+    },
+    {
+      name: 'compare',
+      path: '/compare',
+      labelKey: 'navCompare',
+      hintKey: 'navCompareHint',
+      icon: '⇄',
+      count: compareCount,
+    },
+    { name: 'about', path: '/about', labelKey: 'navData', hintKey: 'navDataHint', icon: 'ⓘ' },
   ];
 
   return (
@@ -64,7 +93,11 @@ export function Sidebar({
               <span className="sidebar__icon" aria-hidden="true">
                 {it.icon}
               </span>
-              <span className="sidebar__label">{t(it.labelKey)}</span>
+              <span className="sidebar__text">
+                <span className="sidebar__label">{t(it.labelKey)}</span>
+                {/* 用途说明：桌面常驻小字，窄屏由 CSS 隐藏（顶部横滑条放不下） */}
+                <span className="sidebar__hint">{t(it.hintKey)}</span>
+              </span>
               {it.count != null && it.count > 0 && (
                 <span className="sidebar__count">{it.count}</span>
               )}

@@ -120,7 +120,7 @@ pnpm dev          # 本地开发
 pnpm build        # 产出静态站到 web/dist
 ```
 
-`pnpm dev` 前会先跑 `scripts/sync-data.mjs`，把 `data/programs/*.json` 合并成前端加载的三个 JSON。改完数据重跑一次即可，不用碰前端代码。
+`pnpm dev` 前会先跑 `scripts/sync-data.mjs`，把 `data/programs/*.json` 合并成前端加载的三个 JSON；同一命令链还会跑 `scripts/gen-pages.mjs`，为每个项目生成一个真实路径的静态页 `web/public/p/<id>.html`（不是 `#/p/<id>` 片段链接，搜索引擎能单独收录）。改完数据重跑一次即可，不用碰前端代码。
 
 **本地校验**
 
@@ -150,8 +150,9 @@ overseas-program-dataset/
 │   └── gen_sources.py           # 从 programs/*.json 生成 sources.md
 ├── tests/test_validate.py       # 校验器自身的测试
 ├── web/                         # 中英双语静态站（React + Vite）
-│   ├── src/                     # 页面、筛选、智能匹配、i18n
-│   └── scripts/                 # sync-data / smoke-test / e2e-check
+│   ├── src/                     # 页面、筛选、智能匹配、i18n、首访引导
+│   ├── public/p/                # gen-pages.mjs 生成的静态详情页（每项目一个真路径）
+│   └── scripts/                 # sync-data / gen-pages / smoke-test / e2e-check
 └── .github/workflows/           # validate.yml 每周校验 / pages.yml 部署
 ```
 

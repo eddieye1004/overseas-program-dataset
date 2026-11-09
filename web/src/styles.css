@@ -221,6 +221,15 @@ a:hover {
   margin: 0;
   padding: 0;
 }
+/* 「我的资格」+「学籍门槛」并排一行。
+   竖着叠会各占 69px（legend + 一行 chip），并排后两组共占 69px，
+   首屏网格上移约 81px —— 这是首屏能露出完整卡片的余量来源。 */
+.filters__duo {
+  display: grid;
+  gap: var(--s-2) var(--s-4);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: start;
+}
 .chips__legend {
   padding: 0;
   margin-bottom: 6px;
@@ -518,6 +527,18 @@ a:hover {
   color: var(--ink);
   margin: 0;
 }
+/* 空状态正文：讲清"这里会发生什么"。比标题弱一档，但仍是可读正文而不是灰噪点。 */
+.state__body {
+  max-width: 42ch;
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  text-align: left;
+}
+.state__body + .btn {
+  margin-top: 2px;
+}
 .muted {
   color: var(--ink-3);
   font-size: var(--fs-xs);
@@ -799,6 +820,11 @@ a:hover {
   }
   .filters .chips {
     grid-column: 1 / -1;
+  }
+  /* 并排组内部的 chips 要各自占一列，不能继承上一行的「通栏」——
+     否则两组又会被摊成上下两行，白丢 81px。 */
+  .filters .filters__duo .chips {
+    grid-column: auto;
   }
   .filters__age {
     grid-column: 1;

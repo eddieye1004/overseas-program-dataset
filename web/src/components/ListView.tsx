@@ -33,7 +33,7 @@ function activeChips(
 ): ActiveChip[] {
   const out: ActiveChip[] = [];
   const dropFrom =
-    (field: 'regions' | 'types' | 'statuses' | 'tags', v: string) =>
+    (field: 'regions' | 'types' | 'statuses' | 'enrollment' | 'tags', v: string) =>
     (d: Filters): Filters => ({ ...d, [field]: d[field].filter((x) => x !== v) });
 
   if (f.q) out.push({ key: 'q', label: `“${f.q}”`, without: (d) => ({ ...d, q: '' }) });
@@ -45,6 +45,9 @@ function activeChips(
   );
   f.statuses.forEach((v) =>
     out.push({ key: `s:${v}`, label: te(v), without: dropFrom('statuses', v) }),
+  );
+  f.enrollment.forEach((v) =>
+    out.push({ key: `e:${v}`, label: te(v), without: dropFrom('enrollment', v) }),
   );
   f.tags.forEach((v) =>
     out.push({ key: `g:${v}`, label: te(v), without: dropFrom('tags', v) }),
@@ -73,6 +76,7 @@ function filtersToHash(f: Filters, sort: SortMode): string {
   if (f.regions.length) sp.set('r', f.regions.join(','));
   if (f.types.length) sp.set('t', f.types.join(','));
   if (f.statuses.length) sp.set('s', f.statuses.join(','));
+  if (f.enrollment.length) sp.set('e', f.enrollment.join(','));
   if (f.tags.length) sp.set('g', f.tags.join(','));
   if (f.ageOnly && f.age != null) sp.set('a', String(f.age));
   if (f.savedOnly) sp.set('sv', '1');
@@ -101,6 +105,7 @@ function hashToState(): { filters: Filters; sort: SortMode } {
       regions: arr('r'),
       types: arr('t'),
       statuses: arr('s'),
+      enrollment: arr('e'),
       tags: arr('g'),
       ageOnly: a != null,
       age: a != null && a !== '' ? Number(a) : null,
@@ -184,7 +189,9 @@ export function ListView({ savedIds, onToggleSave }: Props) {
     <div className="page">
       <header className="page__head">
         <h1 className="page__title">{t('listTitle')}</h1>
-        <p className="page__intro">{t('listIntro')}</p>
+        {/* 这一行与首访引导条第一句说的是同一件事，引导条在时由 CSS 隐掉，
+            避免同一句话连出现两次（只隐列表页这一条，其它页的说明照常显示）。 */}
+        <p className="page__intro page__intro--list">{t('listIntro')}</p>
 
         {/* 结论条：可申 / 不可申两个数字对立摆放，比 11 张卡片平等排列
             更能让人 3 秒内知道「这事跟我有没有关系」。 */}

@@ -32,15 +32,19 @@ web/
 │   ├─ programs.json          26 条完整记录 338.3 KB（gzip 101.0 KB）
 │   ├─ index.json             卡片用轻量索引 31.9 KB（含来源计数）
 │   └─ i18n.json              1740 条词条 577.0 KB
+├─ public/p/                  gen-pages.mjs 生成：每项目一个真路径静态页 + 一个 /p/ 索引
+│                             （27 个 HTML，4.3–9.8 KB，均值 8.2 KB）
 ├─ scripts/
-│   ├─ sync-data.mjs          合并 data/programs/*.json → public/data/
-│   ├─ smoke-test.mjs         89 条纯逻辑断言（筛选/排序/匹配/词典对齐）
-│   ├─ e2e-check.mjs          148 条真实浏览器断言（CDP，无需 playwright）
-│   ├─ shots.mjs              一次跑完 15 张页面截图 + 横向溢出检测
+│   ├─ sync-data.mjs          合并 data/programs/*.json → public/data/ + 生成 sitemap
+│   ├─ gen-pages.mjs          生成 public/p/<id>.html 静态详情页（真路径，不是片段）
+│   ├─ smoke-test.mjs         106 条纯逻辑断言（筛选/排序/匹配/词典对齐/引导判定）
+│   ├─ e2e-check.mjs          165 条真实浏览器断言（CDP，无需 playwright）
+│   ├─ shots.mjs              一次跑完 13 张页面截图 + 横向溢出检测
 │   └─ screenshot.mjs         单页截图工具（真实手机视口）
 └─ src/
    ├─ main.tsx                StrictMode > I18nProvider > App
-   ├─ App.tsx                 侧边栏外壳 + 路由分发 + 四个本地状态 hook
+   ├─ App.tsx                 侧边栏外壳 + 路由分发 + 四个本地状态 hook + 引导条挂载
+   ├─ onboard.css             首访引导条样式（收起态一行 / 展开区两列）
    ├─ types.ts                与 data/schema.json 对齐的类型（枚举写成联合类型）
    ├─ tokens.css              设计令牌唯一定义处（81 个变量：色板/圆角/间距/字阶/阴影/焦点环）
    ├─ styles.css              基础样式，颜色与尺寸全部走 var()
@@ -51,13 +55,15 @@ web/
    │   ├─ filters.ts          筛选/排序纯函数，不读 localStorage，方便单测
    │   ├─ match.ts            匹配打分（资格 40 / 年龄 20 / 预算 10 / 学历 10 / 停留 10 / 偏好 10）
    │   ├─ router.ts           hash 路由
+   │   ├─ onboarding.ts       首访引导的显示判定（不 import store，避免 React 进纯逻辑测试）
    │   ├─ useTitle.ts         逐页写入 document.title
    │   └─ store.ts            收藏 / 对比 / 最近浏览 / 申请进度，localStorage + 跨标签同步
    ├─ i18n/
    │   ├─ index.tsx           I18nProvider，t() 界面词条、td() 数据词条、te() 枚举标签
    │   └─ ui.ts               界面词条 + 枚举标签 + 匹配理由模板 + 看板状态
    └─ components/             Sidebar / ListView / Card / FilterBar / DetailView /
-                              MatchView / TrackView / SavedView / CompareView / AboutView
+                              MatchView / TrackView / SavedView / CompareView / AboutView /
+                              Onboarding（首访引导条）
 ```
 
 ### 成本与限制
@@ -66,10 +72,10 @@ web/
 |---|---|
 | 托管 | GitHub Pages 免费（public 仓库 1 GB、月 100 GB 流量）；Cloudflare Pages 免费额度更大 |
 | 运行时费用 | 0 元。没有 Function、没有 KV、没有第三方 API |
-| 首屏体积 | HTML 3.2 KB（gzip 1.4 KB）+ CSS 29.4 KB（gzip 6.4 KB）+ JS 204.4 KB（gzip 66.7 KB）+ index.json 31.9 KB |
+| 首屏体积 | HTML 3.8 KB（gzip 1.3 KB）+ CSS 31.7 KB（gzip 6.7 KB）+ JS 212.0 KB（gzip 68.1 KB）+ index.json 31.9 KB（gzip 8.5 KB） |
 | 换设备 | 收藏/进度**不同步**，需要手工导出（本期没做导出，见「已知限制」） |
 | 数据更新 | 需要跑 `pnpm run sync:data` 再构建；Pages 工作流已包含这一步 |
-| SEO | hash 路由对搜索引擎不友好。要按详情页做 SEO 需换成真实路径 + 站点地图，属于下一阶段 |
+| SEO | 详情页已由 `gen-pages.mjs` 生成为真路径 `/p/<id>.html` 并进 sitemap；交互版仍是 hash 路由（`#/p/<id>`），两者并存互不影响 |
 
 ---
 
@@ -79,12 +85,14 @@ web/
 
 | 入口 | 解决的问题 | 关键交互 |
 |---|---|---|
-| **项目库** | 「有哪些项目、我能申哪个」 | 关键词同时匹配中英文名/国家/机构；地区·类型·资格·标签四组 chip（同维度 OR、跨维度 AND、标签之间 AND）；只看已收藏 / 只看有致命风险两个开关；年龄过滤；四种排序（默认 / 最近核实 / 停留期长 / 年龄上限高）；筛选状态写进 URL 可分享、刷新不丢 |
+| **项目库** | 「有哪些项目、我能申哪个」 | 关键词同时匹配中英文名/国家/机构；地区·类型·资格·学籍门槛·标签五组 chip（同维度 OR、跨维度 AND、标签之间 AND）；只看已收藏 / 只看有致命风险两个开关；年龄过滤；四种排序（默认 / 最近核实 / 停留期长 / 年龄上限高）；筛选状态写进 URL 可分享、刷新不丢 |
 | **智能匹配** | 「按我的条件，哪个最值得先看」 | 填一次画像（护照资格 / 年龄 / 学历 / 预算 / 最短停留 / 必须带薪 / 不希望中介 / 偏好地区），按分数降序，每张卡给出 3 条理由（✓ 通过 / × 硬性不符 / ? 数据缺失）。硬门槛不过的分数封顶 30，避免「分数还行但根本不能申」 |
 | **我的申请** | 「我申到哪一步了」 | 六个状态（未开始 / 准备材料 / 已提交 / 面试中 / 已获录取 / 未通过）+ 一句备注，顶部状态计数条 |
 | **收藏** | 「先存着」 | 卡片右下 ★ 或详情页按钮，任意页面可切换 |
 | **对比** | 「几个项目并排看」 | 上限 4 个，10 行字段（地区/类型/护照资格/年龄/停留/学历/语言/资金/风险/核实日期）；满 4 个后第 5 个按钮禁用 |
 | **数据说明** | 「这些数可信吗」 | 收录数 / 已标注核实日期 / 来源总数 / 超过 90 天未复核；11 行明细表；四条收录规则 |
+
+首访引导（`components/Onboarding.tsx`）：全新访客进入任何页面时，页头下方出现一条 44px 高的内联条，一句话说清「这个站只回答一个问题：大陆护照，你能申哪些」，右侧「展开看怎么用」展开成两列——左列六个模块各自的用途，右列三步拿到第一条结论。点「跳过」写 `opd.onboarded`，以后不再出现；「数据说明」页底部留「重看引导」入口，靠 `opd:replay-onboarding` 事件把已挂载的引导条叫回来（App 常驻、路由切换不重挂载，只改 localStorage 它读不到）。引导条刻意不用 `role="dialog"`：它是页面内容的一部分，不该拦截焦点，也不该在首屏吃掉卡片位置——实测 1280×900 下展开态仍露出 3 张完整卡片。
 
 跨页面一致性的三处设计：
 
@@ -231,9 +239,9 @@ python -m http.server 8099 --bind 127.0.0.1 -d dist   # 预览产物
 ### 三条自检命令
 
 ```bash
-node scripts/smoke-test.mjs                         # 65 条纯逻辑断言
-node scripts/e2e-check.mjs http://127.0.0.1:8099/   # 84 条真实浏览器断言
-node scripts/shots.mjs http://127.0.0.1:8099/ ./shots  # 15 张截图 + 三档视口溢出检测
+node scripts/smoke-test.mjs                         # 106 条纯逻辑断言
+node scripts/e2e-check.mjs http://127.0.0.1:8099/   # 165 条真实浏览器断言
+node scripts/shots.mjs http://127.0.0.1:8099/ ./shots  # 13 张截图 + 三档视口溢出检测
 ```
 
 再加两道视觉门（需要本机装了 impeccable skill）：
@@ -266,8 +274,8 @@ impeccable.cmd detect --json src dist/index.html                 # AI 痕迹检�
 
 ```bash
 pnpm run sync:data
-node scripts/smoke-test.mjs                        # PASS 89 / 89
-node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 148 / 148
+node scripts/smoke-test.mjs                        # PASS 106 / 106
+node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 165 / 165
 ```
 
 两套测试的条数从数据派生，不写死，所以加项目不会让它们变红。文档里出现的「26 个项目、可申 20 / 不可申 6、来源 109」是 2026-11-08 的取数，改 `data/programs/*.json` 后需重新取数。
@@ -275,7 +283,7 @@ node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 148 / 148
 ### 已知限制（不是缺陷）
 
 - 收藏、对比、申请进度、匹配画像只存 `localStorage`，换设备不同步，也没有导出/导入。
-- hash 路由导致 26 个详情页对爬虫是同一个 URL，SEO 收录价值有限；改 path 路由要动 404 回退与全部 e2e，因此未做。
+- 交互版仍是 hash 路由：`#/p/<id>` 对爬虫是同一个 URL。为此另生成了真路径静态页 `/p/<id>.html`（进 sitemap），但换掉应用内路由要动 404 回退与全部 e2e，因此没做。两份内容由 `sync-data` + `gen-pages` 保证同源。
 - 桌面端侧栏导航与语言切换 39px 高，小于 44px 触控标准——有意保留的鼠标密度；窄屏与 `pointer: coarse` 下补到 44px。
 - 「可申/不可申」左侧竖条未做：状态已由徽标与结论条数字表达，再加色条属重复，且 impeccable 会把 `side-tab` 判为 AI 界面痕迹。
 - 数据更新仍靠人工改 JSON + `sync:data` + push，没有定时抓取官方页的机制。

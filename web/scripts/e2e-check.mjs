@@ -206,6 +206,94 @@ ok(
   await evalJs(`!!document.querySelector('.sidebar__item--on[aria-current="page"]')`),
 );
 
+console.log('\n[1b] 首访引导（内联条，不是模态）');
+// [1] 刚清过 localStorage，所以这里必然是「全新访客」
+ok('全新访客看到引导条', await evalJs(`!!document.querySelector('[data-onboard]')`));
+// 收起态高度 <60px：高过这条线，首屏那排卡片就会被顶出去
+const obH = await evalJs(
+  `Math.round(document.querySelector('[data-onboard]')?.getBoundingClientRect().height ?? -1)`,
+);
+ok('收起态引导条 <60px，不顶掉首屏卡片', obH > 0 && obH < 60, `got ${obH}px`);
+ok(
+  '引导条未使用 dialog 语义（不是模态）',
+  await evalJs(
+    `(() => { const ob = document.querySelector('[data-onboard]'); return !!ob && ob.getAttribute('role') !== 'dialog' && !ob.hasAttribute('aria-modal'); })()`,
+  ),
+);
+ok('引导条不遮挡卡片链接', await evalJs(`!!document.querySelector('.card__link')`));
+ok(
+  '引导条一句话讲清这个站回答什么问题',
+  /能申|适用|eligib/i.test(await evalJs(`document.querySelector('[data-onboard]')?.textContent ?? ''`)),
+  (await evalJs(`document.querySelector('[data-onboard]')?.textContent ?? ''`)).slice(0, 40),
+);
+
+// 展开：六模块用途 + 三步路径都要出现，且每行的「做什么」不是空的
+await evalJs(`document.querySelector('[data-onboard-expand]')?.click()`);
+await sleep(350);
+ok(
+  '展开后显示六个模块的用途',
+  (await evalJs(`document.querySelectorAll('[data-onboard] [data-module]').length`)) === 6,
+  `got ${await evalJs(`document.querySelectorAll('[data-onboard] [data-module]').length`)}`,
+);
+ok(
+  '展开后显示三步路径',
+  (await evalJs(`document.querySelectorAll('[data-onboard] [data-path-step]').length`)) === 3,
+);
+ok(
+  '模块用途不是只重复模块名',
+  await evalJs(
+    `[...document.querySelectorAll('[data-onboard] [data-module]')].every(tr => (tr.querySelector('td')?.textContent||'').trim().length > 3)`,
+  ),
+);
+ok(
+  '展开态写明收录条数',
+  /\d+\s*(条|programs)/.test(await evalJs(`document.querySelector('[data-onboard]')?.textContent ?? ''`)),
+);
+
+// 跳过必须写盘，刷新后不再出现
+await evalJs(`document.querySelector('[data-onboard-expand]')?.click()`);
+await sleep(250);
+await evalJs(`document.querySelector('[data-onboard-skip]')?.click()`);
+await sleep(350);
+ok('点跳过后引导条消失', await evalJs(`!document.querySelector('[data-onboard]')`));
+ok(
+  '点跳过写入了已读标记',
+  await evalJs(`localStorage.getItem('opd.onboarded') !== null`),
+  await evalJs(`String(localStorage.getItem('opd.onboarded'))`),
+);
+await goto('#/');
+await sleep(700);
+ok('刷新后不再打扰（已读标记生效）', await evalJs(`!document.querySelector('[data-onboard]')`));
+ok(
+  '引导关掉后页面说明回来（老用户看到完整页头）',
+  await evalJs(
+    `(() => { const p = document.querySelector('.page__intro--list'); return !!p && getComputedStyle(p).display !== 'none'; })()`,
+  ),
+);
+
+// 数据说明页的「重看」入口：App 常驻，路由切换不会重挂载，靠事件叫回来
+await goto('#/about');
+await sleep(900);
+const replayBtn = await evalJs(`!!document.querySelector('[data-onboard-replay]')`);
+ok('数据说明页有「重看引导」入口', replayBtn === true);
+if (replayBtn) {
+  await evalJs(`document.querySelector('[data-onboard-replay]').click()`);
+  await sleep(800);
+  ok('点重看后引导条回到列表页并显示', await evalJs(`!!document.querySelector('[data-onboard]')`));
+  ok(
+    '重看标记读后即清（刷新不会每次弹）',
+    await evalJs(`String(localStorage.getItem('opd.replay')) === 'null'`),
+    await evalJs(`String(localStorage.getItem('opd.replay'))`),
+  );
+}
+
+// 收尾：清掉本轮写的标记，后续小节按「看过并关掉」的状态继续
+await evalJs(`localStorage.removeItem('opd.onboarded'); localStorage.removeItem('opd.replay');`);
+await goto('#/');
+await sleep(600);
+await evalJs(`document.querySelector('[data-onboard-skip]')?.click()`);
+await sleep(300);
+
 console.log('\n[2] 搜索交互（真实输入事件）');
 await evalJs(`(() => {
   const input = document.querySelector('input[type=search]');
@@ -700,20 +788,32 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
   ok('sitemap.xml 可访问', probe.sitemapOk === true);
   // 条数对不等于内容对：2026-11-01 加第 12 个项目时 sitemap 少一条 URL，
   // 但总数仍是 12（首页 + 11 个旧项目），只数条数的断言没抓到。
-  // 所以这里逐 id 比对：首页 + 每个 program.id 的详情页都必须出现。
+  // 所以这里逐 id 比对——但 id 列表从 INDEX 派生，不写死：
+  // 写死 12 个 id 的版本在 2026-11-08 加到 26 个项目后仍在检查早已删除的旧集合。
+  //
+  // 2026-11-09：详情页 URL 从 `#/p/<id>` 改成真路径 `/p/<id>.html`。
+  // hash 片段不被搜索引擎当作独立页面，旧 sitemap 里那 26 条等于 0 条可索引页。
   const smText = String(probe.sitemapText ?? '');
-  const smMissing = ['au-462-work-holiday', 'ca-iec-working-holiday', 'de-16e-internship', 'global-aiesec-global-talent', 'global-iaeste', 'ie-working-holiday-authorisation', 'jp-working-holiday', 'kr-h1-working-holiday', 'nz-china-whv', 'uk-short-term-study-visa', 'uk-youth-mobility-scheme', 'us-j1-summer-work-travel'].filter((id) => !smText.includes('#/p/' + id));
+  const smMissing = INDEX.map((p) => p.id).filter(
+    (id) => !smText.includes(`/p/${id}.html`),
+  );
   ok(
-    'sitemap 覆盖全部项目详情页',
+    'sitemap 覆盖全部项目详情页（真路径，非 hash）',
     smMissing.length === 0,
     `缺 ${smMissing.length} 条: ${smMissing.join(', ')}`,
   );
-  // 首页 + 每个项目详情页 + 每篇长文（长文条数由 sitemap 里的 /guides/ 计数派生，
-  // 这里只校验「不重复、不缺项目」，长文覆盖由 [27] 那一节负责）
+  // 反向也要查：不能再退回 hash 形式，否则等于没修
   ok(
-    'sitemap 条数 = 首页 + 项目数 + 长文数',
-    probe.sitemapUrls === 1 + EXPECT_TOTAL + GUIDE_COUNT,
-    `got ${probe.sitemapUrls}, 应为 ${1 + EXPECT_TOTAL + GUIDE_COUNT}（项目 ${EXPECT_TOTAL} + 长文 ${GUIDE_COUNT}）`,
+    'sitemap 不再使用 #/p/ 形式的片段 URL',
+    !smText.includes('#/p/'),
+    `仍有 ${(smText.match(/#\/p\//g) ?? []).length} 条 hash URL`,
+  );
+  // 首页 + 每个项目真页面 + /p/ 索引页 + 每篇长文（长文条数由 sitemap 里的
+  // /guides/ 计数派生，这里只校验「不重复、不缺项目」，长文覆盖由 [27] 负责）
+  ok(
+    'sitemap 条数 = 首页 + 项目数 + /p/ 索引页 + 长文数',
+    probe.sitemapUrls === 2 + EXPECT_TOTAL + GUIDE_COUNT,
+    `got ${probe.sitemapUrls}, 应为 ${2 + EXPECT_TOTAL + GUIDE_COUNT}（首页 + /p/ 索引 + 项目 ${EXPECT_TOTAL} + 长文 ${GUIDE_COUNT}）`,
   );
   ok('favicon.svg 是可解析的 SVG', probe.iconOk === true);
   ok('index.html 用真 favicon 而非空 data URI', probe.iconHref.includes('favicon.svg'), probe.iconHref);

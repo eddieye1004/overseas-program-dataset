@@ -94,12 +94,33 @@
   text-align: center;
   opacity: 0.85;
 }
-.sidebar__label {
+.sidebar__text {
+  display: flex;
   flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+}
+.sidebar__label {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+/* 用途说明：与标签同列的第二行小字。窄屏（顶部横滑条）隐藏，见下方断点。 */
+.sidebar__hint {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--on-dark-muted);
+  font-size: var(--fs-2xs);
+  font-weight: 400;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.72;
+}
+.sidebar__item--on .sidebar__hint {
+  opacity: 0.85;
 }
 .sidebar__count {
   flex: 0 0 auto;
@@ -170,6 +191,24 @@
   max-width: 62ch;
   color: var(--ink-2);
   font-size: var(--fs-sm);
+}
+/* 首访引导条在时，页面说明与引导条第一行说的是同一件事（按什么筛、每条带来源），
+   两条并存既啰嗦又白吃 26px 首屏。由引导组件在 <html> 上打 data-onboarding，
+   引导关掉后说明自然回来——老用户看到的是完整版页头。 */
+html[data-onboarding] .page__intro {
+  display: none;
+}
+/* 列表页例外：它的说明被引导条完全取代，其它页（匹配/申请/数据说明）的说明
+   讲的是各自模块怎么用，不能一起隐掉。所以覆盖回来——列表页那一行仍藏。 */
+html[data-onboarding] .page__intro:not(.page__intro--list) {
+  display: block;
+}
+/* 页头右侧的次要计数（如「已选 2 / 4」）。用 --ink-3 而不是 --ink-2：
+   它是状态回显，不该和说明文字抢同一层。 */
+.page__meta {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  font-size: var(--fs-xs);
 }
 
 /* ---------- 卡片新增部件：收藏按钮、匹配分、理由列表 ---------- */
@@ -596,6 +635,10 @@
     padding: 7px 11px;
     font-size: var(--fs-sm);
     white-space: nowrap;
+  }
+  /* 顶部横滑条里标签本来就是单行，第二行说明会撑高一倍，直接隐藏 */
+  .sidebar__hint {
+    display: none;
   }
   .shell__bar {
     position: static;

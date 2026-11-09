@@ -1,0 +1,160 @@
+/* src/onboard.css
+   ────────────────────────────────────────────────────────────────
+   首访引导条。设计约束（不是审美偏好，是验收线）：
+   1. 不遮内容、不要遮罩：站点唯一的「啊哈」是首屏那几个数字，模态会把它盖住。
+   2. 收起态高度必须与它替换掉的 page__intro 相当。1280×900 下筛选面板占 639px、
+      卡片 223px，留给引导的余量只有几十像素——一屏铺开的三步说明会让首屏
+      一张完整卡片都不剩（e2e 的「桌面首屏露出 ≥2 张完整卡片」会直接红）。
+      所以默认只渲染一行结论，六模块表与三步路径折进展开区。
+   3. 所有颜色、字号、间距取自 tokens.css，不写死值。
+   ──────────────────────────────────────────────────────────────── */
+
+.onboard {
+  max-width: var(--maxw);
+  /* 首屏高度是硬预算：90px 的引导条会顶掉一排卡片（详见组件头注释）。
+     用负下边距把自身高度吃回一半，让步进式布局的上边距不至于叠成双倍。 */
+  margin: 0 auto calc(var(--s-3) * -0.4);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--r-md);
+  /* 比卡片底色暖一档：它是「临时状态」，视觉上该与常驻内容区分开 */
+  background: var(--accent-soft);
+  color: var(--ink-2);
+}
+
+.onboard__bar {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+
+/* 结论 + 一句解释排在同一段里：两行文字比两块独立区块省一半高度 */
+.onboard__lead {
+  flex: 1 1 22ch;
+  min-width: 0;
+  margin: 0;
+  line-height: var(--lh-normal);
+}
+.onboard__title {
+  margin-right: var(--s-2);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+.onboard__text {
+  margin: 0 0 var(--s-2);
+  color: var(--ink-2);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
+}
+
+.onboard__toggle,
+.onboard__skip {
+  flex: 0 0 auto;
+  padding: 2px 6px;
+  border: 0;
+  border-radius: var(--r-xs);
+  background: none;
+  font: inherit;
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.onboard__toggle {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.onboard__toggle:hover {
+  color: var(--accent-hover);
+}
+.onboard__skip {
+  color: var(--ink-3);
+}
+.onboard__skip:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+/* ── 展开区：两列。左列六模块用途，右列三步路径 —— 并排比上下堆叠省一半高度 ── */
+.onboard__body {
+  margin-top: var(--s-2);
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--accent-line);
+}
+.onboard__cols {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+}
+.onboard__sub {
+  margin: 0 0 var(--s-1);
+  color: var(--ink);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.onboard__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-xs);
+}
+.onboard__table thead th {
+  padding: 0 0 var(--s-1);
+  border-bottom: 1px solid var(--accent-line);
+  color: var(--ink-3);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  text-align: left;
+}
+.onboard__table tbody th {
+  width: 6.5em;
+  padding: 2px var(--s-2) 2px 0;
+  color: var(--ink);
+  font-weight: 600;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.onboard__table tbody td {
+  padding: 2px 0;
+  color: var(--ink-2);
+  vertical-align: top;
+}
+
+.onboard__steps {
+  margin: 0 0 var(--s-2);
+  padding-left: 1.2em;
+  color: var(--ink-2);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
+}
+.onboard__steps li + li {
+  margin-top: 3px;
+}
+.onboard__body .btn {
+  min-height: 32px;
+  padding: 4px 12px;
+  font-size: var(--fs-xs);
+}
+
+/* 窄屏：两列并排会挤成一行三四个字，改单列；收起态允许换行 */
+@media (max-width: 720px) {
+  .onboard {
+    margin-bottom: var(--s-2);
+    padding: var(--s-2);
+  }
+  .onboard__cols {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+  .onboard__table thead {
+    display: none;
+  }
+  .onboard__table tbody th {
+    width: 5.5em;
+    white-space: normal;
+  }
+}
