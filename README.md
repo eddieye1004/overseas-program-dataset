@@ -122,6 +122,16 @@ pnpm build        # 产出静态站到 web/dist
 
 `pnpm dev` 前会先跑 `scripts/sync-data.mjs`，把 `data/programs/*.json` 合并成前端加载的三个 JSON；同一命令链还会跑 `scripts/gen-pages.mjs`，为每个项目生成一个真实路径的静态页 `web/public/p/<id>.html`（不是 `#/p/<id>` 片段链接，搜索引擎能单独收录）。改完数据重跑一次即可，不用碰前端代码。
 
+**装到手机主屏幕**
+
+站点带 PWA 清单，用手机浏览器打开后可以「添加到主屏幕」，之后像 App 一样全屏启动，不用记网址：
+
+- 安卓 Chrome / Samsung Internet：地址栏右侧出现安装图标，或菜单里「安装应用」
+- iOS Safari：分享 → 添加到主屏幕（iOS 不读 manifest 的 display，靠 `apple-mobile-web-app-capable`）
+- 微信内置浏览器不支持，得先「在浏览器中打开」
+
+没有 service worker，所以断网打不开——数据每天都在变，缓存一份旧的比打不开更误导。
+
 **本地校验**
 
 ```bash

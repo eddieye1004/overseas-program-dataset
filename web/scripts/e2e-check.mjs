@@ -750,13 +750,32 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
         return { ok: false, status: 0, text: '' };
       }
     };
-    const [robots, sitemap, icon, ogimg] = await Promise.all([
-      get('./robots.txt'),
-      get('./sitemap.xml'),
-      get('./favicon.svg'),
-      get('./og.png'),
-    ]);
+    const [robots, sitemap, icon, ogimg, manifest, icon192, icon512, maskable, apple] =
+      await Promise.all([
+        get('./robots.txt'),
+        get('./sitemap.xml'),
+        get('./favicon.svg'),
+        get('./og.png'),
+        get('./manifest.webmanifest'),
+        get('./icons/icon-192.png'),
+        get('./icons/icon-512.png'),
+        get('./icons/icon-maskable-512.png'),
+        get('./icons/apple-touch-icon.png'),
+      ]);
+    let mf = null;
+    try { mf = JSON.parse(manifest.text); } catch (e) { mf = null; }
+    // 只在内存里比对 PNG 魔数，不把二进制写进返回值
+    const isPng = (t) => t.startsWith('\\uFFFDPNG');
     return {
+      manifestOk: manifest.ok,
+      manifestJson: mf,
+      pngOk: isPng(icon192.text) && isPng(icon512.text) && isPng(maskable.text) && isPng(apple.text),
+      manifestHref: document.querySelector('link[rel="manifest"]')?.getAttribute('href') ?? '',
+      appleTouchHref:
+        document.querySelector('link[rel="apple-touch-icon"]')?.getAttribute('href') ?? '',
+      themeColor: document.querySelector('meta[name="theme-color"]')?.content ?? '',
+      pngIconHref:
+        document.querySelector('link[rel="icon"][sizes="192x192"]')?.getAttribute('href') ?? '',
       robotsOk: robots.ok,
       robotsSitemap: /Sitemap:\\s*https:\\/\\//i.test(robots.text),
       sitemapOk: sitemap.ok,
@@ -827,6 +846,35 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
   ok('og.png 是真实 PNG', probe.ogImageOk === true);
   ok('twitter:image 与 og:image 一致', probe.twImage === probe.ogImageTag);
   ok('JSON-LD @type 为 Dataset', probe.ldType === 'Dataset', probe.ldType);
+
+  console.log('\n[23b] 可安装（PWA manifest 与图标）');
+  // 目标不是「有个 manifest 文件」，而是 iOS / Android 都能「添加到主屏幕」并当独立应用打开。
+  // 缺 192 或 512 的 any 图标、缺 maskable、图标不是真 PNG，浏览器会静默降级成普通书签。
+  const mf = probe.manifestJson ?? {};
+  const icons = Array.isArray(mf.icons) ? mf.icons : [];
+  const has = (sizes, purpose) =>
+    icons.some((i) => i.sizes === sizes && (i.purpose ?? 'any') === purpose);
+  ok('manifest.webmanifest 可访问且是合法 JSON', probe.manifestOk === true && probe.manifestJson !== null);
+  ok('index.html 声明了 manifest', probe.manifestHref.includes('manifest.webmanifest'), probe.manifestHref);
+  ok('manifest 有 name 与 short_name', !!mf.name && !!mf.short_name, `${mf.name} / ${mf.short_name}`);
+  ok(
+    'manifest start_url 与 scope 都是站点内相对路径',
+    mf.start_url === './' && mf.scope === './',
+    `${mf.start_url} / ${mf.scope}`,
+  );
+  ok('manifest display 为 standalone', mf.display === 'standalone', String(mf.display));
+  ok('manifest theme_color 与页面一致', mf.theme_color === probe.themeColor && !!probe.themeColor, `${mf.theme_color} vs ${probe.themeColor}`);
+  ok('manifest 含 192×192 的 any 图标', has('192x192', 'any'));
+  ok('manifest 含 512×512 的 any 图标', has('512x512', 'any'));
+  // maskable 必须有独立一张、且尺寸缩到安全区内，否则安卓把 P 字裁掉
+  ok('manifest 含 maskable 图标', has('512x512', 'maskable'));
+  ok('四张图标都是真 PNG', probe.pngOk === true);
+  ok('apple-touch-icon 指向 180px PNG', probe.appleTouchHref.endsWith('apple-touch-icon.png'), probe.appleTouchHref);
+  ok('页面有 iOS standalone 声明', await evalJs(`!!document.querySelector('meta[name="apple-mobile-web-app-capable"], meta[name="mobile-web-app-capable"]')`) === true);
+  // 静态真路径页也带 manifest：从搜索结果直接落到详情页的人，同样能安装
+  const pHtml = await (await fetch(`${base}p/au-462-work-holiday.html`)).text();
+  ok('项目静态页也声明 manifest', /rel="manifest"/.test(pHtml));
+  ok('项目静态页也带 apple-touch-icon', /apple-touch-icon\.png/.test(pHtml));
 }
 
 console.log('\n[24] 未核实值不显示为假数字');

@@ -30,15 +30,18 @@ web/
 │                             merged.json 是本地合并中间产物，已 gitignore
 ├─ public/data/               sync:data 生成的产物，随构建拷进 dist
 │   ├─ programs.json          26 条完整记录 338.3 KB（gzip 101.0 KB）
-│   ├─ index.json             卡片用轻量索引 31.9 KB（含来源计数）
+│   ├─ index.json             卡片用轻量索引 31.9 KB（gzip 8.5 KB，含来源计数）
 │   └─ i18n.json              1740 条词条 577.0 KB
 ├─ public/p/                  gen-pages.mjs 生成：每项目一个真路径静态页 + 一个 /p/ 索引
-│                             （27 个 HTML，4.3–9.8 KB，均值 8.2 KB）
+│                             （27 个 HTML，4.4–10.0 KB，均值 8.3 KB）
+├─ public/manifest.webmanifest  PWA 清单：standalone + 192/512/maskable 图标 + 三个快捷方式
+├─ public/icons/              pwa-icons.mjs 生成的四张 PNG（192 / 512 / maskable 512 / apple 180）
 ├─ scripts/
 │   ├─ sync-data.mjs          合并 data/programs/*.json → public/data/ + 生成 sitemap
 │   ├─ gen-pages.mjs          生成 public/p/<id>.html 静态详情页（真路径，不是片段）
 │   ├─ smoke-test.mjs         106 条纯逻辑断言（筛选/排序/匹配/词典对齐/引导判定）
-│   ├─ e2e-check.mjs          165 条真实浏览器断言（CDP，无需 playwright）
+│   ├─ e2e-check.mjs          179 条真实浏览器断言（CDP，无需 playwright）
+│   ├─ pwa-icons.mjs          无头 Edge 截图生成 PWA 图标（不引 sharp / canvas）
 │   ├─ shots.mjs              一次跑完 13 张页面截图 + 横向溢出检测
 │   └─ screenshot.mjs         单页截图工具（真实手机视口）
 └─ src/
@@ -240,7 +243,7 @@ python -m http.server 8099 --bind 127.0.0.1 -d dist   # 预览产物
 
 ```bash
 node scripts/smoke-test.mjs                         # 106 条纯逻辑断言
-node scripts/e2e-check.mjs http://127.0.0.1:8099/   # 165 条真实浏览器断言
+node scripts/e2e-check.mjs http://127.0.0.1:8099/   # 179 条真实浏览器断言
 node scripts/shots.mjs http://127.0.0.1:8099/ ./shots  # 13 张截图 + 三档视口溢出检测
 ```
 
@@ -264,18 +267,30 @@ impeccable.cmd detect --json src dist/index.html                 # AI 痕迹检�
 - 输出目录：`web/dist`
 - 环境变量：不需要任何变量（没有 Key、没有 API）
 
+### 装到手机主屏幕（PWA）
+
+浏览器判断「可安装」的条件（MDN《Making PWAs installable》，2026-10-06 最后修改）：有 manifest、`name` 或 `short_name`、`icons` 里有 192 与 512、有 `start_url`、有 `display`、`prefer_related_applications` 不为 true，且站点走 https 或 localhost。本仓库全部满足，没有 service worker —— **离线不是目标**，数据每天在变，装一个会缓存旧数据的壳比不给装更糟。
+
+- `public/manifest.webmanifest`：`display: standalone`、`start_url`/`scope` 都是 `./`（同一份产物既能跑子路径也能跑根路径），三个快捷方式指向 `#/`、`#/match`、`#/track`。
+- `public/icons/`：192 / 512 / maskable-512 / apple-touch-180，四张 PNG 由 `node scripts/pwa-icons.mjs` 用无头 Edge 截图生成，不引 sharp / canvas。maskable 那张图形缩到 52% 是因为系统裁切的安全区只有中间 80%。
+- `index.html` 与 `gen-pages.mjs` 生成的 26 个静态页都声明 `manifest` 与 `apple-touch-icon`：从搜索结果直接落到详情页的人同样能装。
+- iOS 只认 `apple-touch-icon` 与 `apple-mobile-web-app-capable`，不读 manifest 的 `display`；安卓 Chrome / Samsung Internet 才把 manifest 当权威。
+- 微信内置浏览器不支持「添加到主屏幕」，其菜单里是「在浏览器中打开」。国内用户的实际路径是：微信里读到链接 → 右上角「在浏览器中打开」→ Safari/Chrome 加到桌面。这一步没法在页面里绕过。
+
+改配色时三处一起改：`src/tokens.css`、`public/favicon.svg`、`scripts/pwa-icons.mjs`（颜色值内联在脚本里，因为 Edge 截 SVG 需要一个能独立渲染的文档）。
+
 ---
 
 ## 五、验收清单
 
-验收按 A 可运行性 / B 双语完整性 / C 筛选与搜索正确性 / D 数据可信度展示 四组做：A 组跑下面三条命令 + 刷新 `#/p/<id>` 不 404；B 组切 EN 后翻完全部详情页无中文残留、刷新仍英文；C 组用国家 × 类型 × 护照判定 × 年龄 × 标签多维组合核对排序；D 组看「数据说明」页的收录数、核实日期、来源总数、超 90 天未复核四项是否与 `data/sources.md` 一致。
+验收按 A 可运行性 / B 双语完整性 / C 筛选与搜索正确性 / D 数据可信度展示 四组做：A 组跑下面三条命令 + 打开 `/p/<id>.html` 不 404（真路径，不是 `#/p/<id>` 片段）；B 组切 EN 后翻完全部详情页无中文残留、刷新仍英文；C 组用国家 × 类型 × 护照判定 × 年龄 × 标签多维组合核对排序；D 组看「数据说明」页的收录数、核实日期、来源总数、超 90 天未复核四项是否与 `data/sources.md` 一致。
 
 三条命令能覆盖 A/C/D 的大部分回归，日常改完先跑这三条：
 
 ```bash
 pnpm run sync:data
 node scripts/smoke-test.mjs                        # PASS 106 / 106
-node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 165 / 165
+node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 179 / 179
 ```
 
 两套测试的条数从数据派生，不写死，所以加项目不会让它们变红。文档里出现的「26 个项目、可申 20 / 不可申 6、来源 109」是 2026-11-08 的取数，改 `data/programs/*.json` 后需重新取数。

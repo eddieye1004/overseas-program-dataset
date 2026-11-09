@@ -4,13 +4,21 @@
 // 不用 canvas / sharp / 任何原生依赖，避免多装一个包。
 // 用法：node scripts/og-image.mjs
 import { spawn } from 'node:child_process';
-import { mkdtemp, writeFile, mkdir } from 'node:fs/promises';
+import { mkdtemp, writeFile, mkdir, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = resolve(__dirname, '..', 'public', 'og.png');
+
+// 收录数从数据派生，不写死——2026-11-09 之前这里硬编码「11」，项目加到 26 个后
+// 分享图还在说 11，属于最难发现的过期数字（图是二进制，grep 不到）。
+const INDEX = JSON.parse(
+  await readFile(resolve(__dirname, '..', 'public', 'data', 'index.json'), 'utf8'),
+);
+const TOTAL = INDEX.length;
+const ELIGIBLE = INDEX.filter((p) => p.status === 'eligible').length;
 
 const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 const port = 9700 + Math.floor(Math.random() * 200);
@@ -40,12 +48,12 @@ const HTML = `<!doctype html><html><head><meta charset="utf-8"><style>
   <div>
     <div class="kicker">OVERSEAS PROGRAM DATASET</div>
     <h1>先告诉你<em>哪些不能申</em></h1>
-    <div class="sub">面向中国大陆申请人的打工度假 / 海外实习数据库，每条结论都挂着官方来源与核实日期。</div>
+    <div class="sub">面向中国大陆申请人的打工度假 / 海外实习 / 毕业后工签数据库，每条结论都挂着官方来源与核实日期。</div>
   </div>
   <div class="foot">
     <div class="stats">
-      <div><div class="n">11</div><div class="l">收录项目</div></div>
-      <div><div class="n">2</div><div class="l">语言</div></div>
+      <div><div class="n">${TOTAL}</div><div class="l">收录项目</div></div>
+      <div><div class="n">${ELIGIBLE}</div><div class="l">护照可申</div></div>
       <div><div class="n">100<span style="font-size:32px">%</span></div><div class="l">标注官方来源</div></div>
     </div>
     <div class="url">eddieye1004.github.io<span class="dot">/</span>overseas-program-dataset</div>

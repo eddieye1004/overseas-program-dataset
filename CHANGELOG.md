@@ -36,6 +36,30 @@
 
 **测试**：smoke 89 → 106（新增学籍门槛四值校验、引导判定 11 条），e2e 148 → 165（新增引导条 21 条，含「收起态 <60px 不顶掉首屏卡片」「刷新不打扰」「重看能叫回来」）。sitemap 断言改为从数据派生 id，并新增反向断言「不再出现片段 URL」。
 
+### 新增 — 装到手机主屏幕（PWA manifest 与图标）（2026-11-09）
+
+站点一直能被搜索引擎收录，但用户在手机上只能靠浏览器书签找回来。这一节补上「装到桌面」的完整链路。
+
+**做了什么**
+
+- `web/public/manifest.webmanifest`：`display: standalone`、`start_url` 与 `scope` 都是 `./`（同一份产物既能跑 `/overseas-program-dataset/` 也能跑根路径）、三个快捷方式指向 `#/`、`#/match`、`#/track`。图标三张：192 any、512 any、512 maskable。
+- `web/public/icons/`：`icon-192.png`（2043 B）、`icon-512.png`（5669 B）、`icon-maskable-512.png`（4944 B）、`apple-touch-icon.png`（1893 B，180×180）。由新增的 `web/scripts/pwa-icons.mjs` 用无头 Edge + CDP 截图生成，不引 sharp / canvas —— 仓库里已经有 `og-image.mjs` 这套骨架，多一个原生依赖不值得。maskable 那张图形缩到 52% 是因为系统裁切的安全区只有中间 80%，按 66% 画会被切掉笔画。
+- `web/index.html`：补 `manifest`、`icons/apple-touch-icon.png`、`icons/icon-192.png`，以及 iOS standalone 三件套（`mobile-web-app-capable`、`apple-mobile-web-app-capable`、`apple-mobile-web-app-title`）。
+- `web/scripts/gen-pages.mjs`：26 个静态真路径页与 `/p/` 索引页同样声明 manifest 与 apple-touch-icon。从搜索结果直接落到 `/p/<id>.html` 的人，不该因为少一行 `<link>` 就装不了。
+- `web/package.json` 加 `icons` 脚本。
+
+**没做 service worker（刻意的）**
+
+数据每天都在变，装一个会缓存旧数据的壳比不给装更糟。MDN 的安装条件只要求 manifest + 图标 + `start_url` + `display` + https，离线不是必需项。
+
+**顺手修掉分享图里的过期数字**
+
+`web/scripts/og-image.mjs` 里「收录项目」硬编码成 `11`，项目加到 26 个之后分享图还在说 11。图是二进制，grep 不到，这类错只会出现在别人转发的时候。改为从 `public/data/index.json` 派生（现在显示 26 收录 / 20 护照可申），并把「语言」那格换成「护照可申」，信息量更大。
+
+**测试**：e2e 165 → 179，新增 `[23b] 可安装` 14 条：manifest 是合法 JSON、有 name/short_name、`start_url`/`scope` 为相对路径、`display` 为 standalone、`theme_color` 与页面一致、192/512/maskable 三种图标齐备、四张图标都是真 PNG（比对魔数）、apple-touch-icon 指向 180px PNG、页面有 iOS standalone 声明、静态真路径页也带 manifest 与图标。
+
+---
+
 ### 新增 — 荷兰毕业后求职居留（orientation year），26 个项目（2026-11-08）
 
 数据从 25 个项目扩到 26 个：可申 19 → 20、不可申仍为 6，来源 105 → 109 条（A 级 95 → 98）。这是此前记为「已知缺口」的那一条——荷兰的条件正文藏在国籍问答分流器里，静态 HTML 只有一句引导语，浏览器点击又报「元素无法接收输入」，一度判定无法取证。

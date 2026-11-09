@@ -1,0 +1,55 @@
+{
+  "id": "./",
+  "name": "海外项目数据库 · Overseas Program Dataset",
+  "short_name": "海外项目库",
+  "description": "26 个打工度假 / 海外实习 / 毕业后工签 / 文化交流项目，按护照 × 身份 × 年龄判定可申性，逐条标注官方来源与核实日期。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#faf9f5",
+  "theme_color": "#8f4630",
+  "categories": ["education", "travel", "productivity"],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "项目库",
+      "short_name": "项目库",
+      "description": "全部 26 个项目，按资格筛选",
+      "url": "./#/"
+    },
+    {
+      "name": "智能匹配",
+      "short_name": "匹配",
+      "description": "填条件，按匹配度排序",
+      "url": "./#/match"
+    },
+    {
+      "name": "我的申请",
+      "short_name": "申请",
+      "description": "记录每条申请进度",
+      "url": "./#/track"
+    }
+  ]
+}

@@ -177,6 +177,9 @@ function render(p, ctx) {
 <meta property="og:locale" content="zh_CN" />
 <meta property="og:image" content="${SITE}/og.png" />
 <link rel="icon" href="../favicon.svg" />
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="theme-color" content="#8f4630" />
 <link rel="stylesheet" href="../guides/guide.css" />
 <script type="application/ld+json">
 ${JSON.stringify(jsonld, null, 2)}
@@ -302,6 +305,9 @@ async function main() {
 <title>全部项目 · 海外项目数据库</title>
 <link rel="canonical" href="${SITE}/p/" />
 <link rel="icon" href="../favicon.svg" />
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="theme-color" content="#8f4630" />
 <link rel="stylesheet" href="../guides/guide.css" />
 </head>
 <body>
