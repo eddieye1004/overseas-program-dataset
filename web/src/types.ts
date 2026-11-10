@@ -62,6 +62,18 @@ export interface ProgramIndexEntry {
   funds_currency: string | null;
   risk_levels: RiskLevel[];
   last_verified: string | null;
+  /**
+   * 复核状态，由 sync-data.mjs 按 data/review-policy.json 算好。
+   * 前端不许自己拍一个「90 天」常数：仓库里的 data/FRESHNESS.md 用的是同一份策略，
+   * 两处各写一份，页面说「0 条超期」而台账列着 3 条该核时没人能判断谁对。
+   */
+  review_state: 'overdue' | 'due_soon' | 'fresh' | 'unknown';
+  /** 该记录的复核周期（天）：写死窗口的 90，其余 180 */
+  review_interval: number;
+  /** 下次该复核的日期（YYYY-MM-DD），缺核实日期时为 null */
+  review_due: string | null;
+  /** 距下次复核还有几天，已过期为负 */
+  review_days_left: number | null;
   /** 来源条数（事实性元数据，列表卡片据此显示可信度） */
   source_count: number;
   /** 其中标为 primary 的条数 */

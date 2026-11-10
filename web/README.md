@@ -39,8 +39,8 @@ web/
 ├─ scripts/
 │   ├─ sync-data.mjs          合并 data/programs/*.json → public/data/ + 生成 sitemap
 │   ├─ gen-pages.mjs          生成 public/p/<id>.html 静态详情页（真路径，不是片段）
-│   ├─ smoke-test.mjs         106 条纯逻辑断言（筛选/排序/匹配/词典对齐/引导判定）
-│   ├─ e2e-check.mjs          179 条真实浏览器断言（CDP，无需 playwright）
+│   ├─ smoke-test.mjs         128 条纯逻辑断言（筛选/排序/匹配/词典对齐/引导判定/下一步）
+│   ├─ e2e-check.mjs          184 条真实浏览器断言（CDP，无需 playwright）
 │   ├─ pwa-icons.mjs          无头 Edge 截图生成 PWA 图标（不引 sharp / canvas）
 │   ├─ shots.mjs              一次跑完 13 张页面截图 + 横向溢出检测
 │   └─ screenshot.mjs         单页截图工具（真实手机视口）
@@ -59,6 +59,7 @@ web/
    │   ├─ match.ts            匹配打分（资格 40 / 年龄 20 / 预算 10 / 学历 10 / 停留 10 / 偏好 10）
    │   ├─ router.ts           hash 路由
    │   ├─ onboarding.ts       首访引导的显示判定（不 import store，避免 React 进纯逻辑测试）
+   │   ├─ nextstep.ts         「下一步该做什么」判定：窗口关闭 / 备材料 / 开放中 / 已结束 / 无日期
    │   ├─ useTitle.ts         逐页写入 document.title
    │   └─ store.ts            收藏 / 对比 / 最近浏览 / 申请进度，localStorage + 跨标签同步
    ├─ i18n/
@@ -68,6 +69,28 @@ web/
                               MatchView / TrackView / SavedView / CompareView / AboutView /
                               Onboarding（首访引导条）
 ```
+
+### 复核台账
+
+数据会过期，而「昨天核过的」和「半年前核过的」在文件里长得一样。所以复核周期外置成数据，由仓库根的 `scripts/track.py` 算成台账：
+
+- `data/review-policy.json` 是唯一策略来源：窗口写死日期的项目 90 天（错过等一年），其余 180 天，剩余 25% 算「即将到期」。
+- 产物两份：`data/tracking.json`（机器读）与 `data/FRESHNESS.md`（人读），都在仓库根 `data/` 下，不在 `web/`。
+- `sync-data.mjs` 读同一份 policy，给索引每条加 `review_state` / `review_interval` / `review_due` / `review_days_left` 四个字段。**前端不许自己拍一个 90 天常数**——口径只有 policy 一处。
+
+### 看板的「下一步」
+
+`lib/nextstep.ts` 把每个在跟进的项目归成五态，按紧急度排序：
+
+| 状态 | 含义 | 依据 |
+|---|---|---|
+| `close` | 窗口开着，快截止 | `windows[].close_date` |
+| `prep` | 材料还没备齐，窗口在临近 | `close_date` 减去 `documents[].prepare_days` 之和 |
+| `open` | 窗口开着，时间充裕 | `open_date` / `close_date` |
+| `closed` | 上一轮已结束，下一轮没公布 | 只有历史 `open_date`，或 `close_date` 已过 |
+| `idle` | 官方从不公布日期 | 无任何日期字段 |
+
+`closed` 和 `idle` 必须分开：前者说明「错过了，该盯下一轮」，后者说明「本来就没有日期，随时可申」。混成一态，用户会把「等公告」和「立刻去办」搞反。
 
 ### 成本与限制
 
@@ -242,8 +265,8 @@ python -m http.server 8099 --bind 127.0.0.1 -d dist   # 预览产物
 ### 三条自检命令
 
 ```bash
-node scripts/smoke-test.mjs                         # 106 条纯逻辑断言
-node scripts/e2e-check.mjs http://127.0.0.1:8099/   # 179 条真实浏览器断言
+node scripts/smoke-test.mjs                         # 128 条纯逻辑断言
+node scripts/e2e-check.mjs http://127.0.0.1:8099/   # 184 条真实浏览器断言
 node scripts/shots.mjs http://127.0.0.1:8099/ ./shots  # 13 张截图 + 三档视口溢出检测
 ```
 
@@ -289,8 +312,8 @@ impeccable.cmd detect --json src dist/index.html                 # AI 痕迹检�
 
 ```bash
 pnpm run sync:data
-node scripts/smoke-test.mjs                        # PASS 106 / 106
-node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 179 / 179
+node scripts/smoke-test.mjs                        # PASS 128 / 128
+node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 184 / 184
 ```
 
 两套测试的条数从数据派生，不写死，所以加项目不会让它们变红。文档里出现的「29 个项目、可申 23 / 不可申 6、来源 117」是 2026-11-10 的取数，改 `data/programs/*.json` 后需重新取数。

@@ -19,7 +19,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -80,7 +79,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "appointment",
     "quota": null,
@@ -95,30 +93,82 @@
     "fees": [
       {
         "item": "签证申请费",
-        "amount": { "local_amount": 75, "currency": "EUR", "cny_estimate": 590 },
+        "amount": {
+          "local_amount": 75,
+          "currency": "EUR",
+          "cny_estimate": 590
+        },
         "refundable": false
       },
       {
         "item": "居留许可签发费",
-        "amount": { "local_amount": 100, "currency": "EUR", "cny_estimate": 790, "note": "特定条件下可减免" },
+        "amount": {
+          "local_amount": 100,
+          "currency": "EUR",
+          "cny_estimate": 790,
+          "note": "特定条件下可减免"
+        },
         "refundable": false
       }
     ],
     "processing_time": "签证约 1-2 个月"
   },
-
   "documents": [
-    { "name": "完整并签署的签证申请表", "required": true, "note": "", "prepare_days": 7 },
-    { "name": "材料真实性声明", "required": true, "note": "Declaration of genuineness", "prepare_days": 3 },
-    { "name": "有效护照", "required": true, "note": "有效期至少 6 个月，10 年内签发，至少 2 页空白页；需复印照片页及签证页", "prepare_days": 30 },
-    { "name": "生物识别照片", "required": true, "note": "3 张近照", "prepare_days": 7 },
-    { "name": "德国雇主实习合同", "required": true, "note": "Praktikumsvertrag", "prepare_days": 90 },
-    { "name": "简历 + 学位证书/在读证明", "required": true, "note": "", "prepare_days": 14 },
-    { "name": "资金证明", "required": true, "note": "阻塞账户每月 ≥ 752 欧元，或奖学金/担保声明", "prepare_days": 30 },
-    { "name": "旅行医疗保险", "required": true, "note": "覆盖全程，保额 ≥ 30,000 欧元", "prepare_days": 14 },
-    { "name": "联邦就业局预批", "required": false, "note": "如适用", "prepare_days": 45 }
+    {
+      "name": "完整并签署的签证申请表",
+      "required": true,
+      "note": "德国国家签证（D 类）申请表，VIDEX 在线填写后打印，须本人手写签名；签名与护照签名一致。",
+      "prepare_days": 7
+    },
+    {
+      "name": "材料真实性声明",
+      "required": true,
+      "note": "Declaration of genuineness",
+      "prepare_days": 3
+    },
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期至少 6 个月，10 年内签发，至少 2 页空白页；需复印照片页及签证页",
+      "prepare_days": 30
+    },
+    {
+      "name": "生物识别照片",
+      "required": true,
+      "note": "3 张近照",
+      "prepare_days": 7
+    },
+    {
+      "name": "德国雇主实习合同",
+      "required": true,
+      "note": "Praktikumsvertrag",
+      "prepare_days": 90
+    },
+    {
+      "name": "简历 + 学位证书/在读证明",
+      "required": true,
+      "note": "简历须体现与实习岗位相关的专业背景；在读生交在读证明，已毕业交学位证书，非德语/英语文件须附认证翻译。",
+      "prepare_days": 14
+    },
+    {
+      "name": "资金证明",
+      "required": true,
+      "note": "阻塞账户每月 ≥ 752 欧元，或奖学金/担保声明",
+      "prepare_days": 30
+    },
+    {
+      "name": "旅行医疗保险",
+      "required": true,
+      "note": "覆盖全程，保额 ≥ 30,000 欧元",
+      "prepare_days": 14
+    },
+    {
+      "name": "联邦就业局预批",
+      "required": false,
+      "note": "如适用",
+      "prepare_days": 45
+    }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -163,7 +213,6 @@
       "official_link": "https://verwaltung.bund.de/leistungsverzeichnis/en/leistung/NI/409271867"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 6,
     "max_same_employer_months": 6,
@@ -173,7 +222,6 @@
     "restricted_occupations": [],
     "note": "⚠️ 持该居留许可期间**不得从事任何雇佣工作**（This is an internship permit, not a work permit）。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -192,7 +240,6 @@
       "description": "优势：无名额限制、无年龄上限、中国大陆护照可申请、实习经历对欧洲求职或深造有加分。最长 6 个月，随实习合同期限。"
     }
   ],
-
   "sources": [
     {
       "type": "secondary",
@@ -241,7 +288,6 @@
       "claim": "§16e(2)：居留许可按实习协议期限签发，最长六个月（höchstens jedoch für sechs Monate）；第 3 项：须为申请前两年内取得高校学历，或正在攻读可获高校学历的学业"
     }
   ],
-
   "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

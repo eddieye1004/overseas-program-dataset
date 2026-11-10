@@ -504,6 +504,42 @@ ok(
   ),
 );
 
+console.log('\n[11b] 看板给出「下一步」');
+// 这一段守的是「看板不只是备忘录」：项目进了跟进列表后，
+// 页面必须自己算出什么时候该动手，而不是等人去翻窗口日期。
+ok(
+  '看板有今日待办区',
+  (await evalJs(`document.querySelectorAll('[data-nextup]').length`)) === 1,
+);
+ok(
+  '今日待办区有标题',
+  (await evalJs(
+    `(document.querySelector('[data-nextup] .nextup__title')?.textContent ?? '').trim().length > 3`,
+  )),
+);
+// jp-working-holiday 的 2026 窗口 10 月 30 日已关、2027 未公布 →
+// 必须落到「上一轮已结束」而不是什么都不说
+const jpNext = await evalJs(
+  `document.querySelector('.trackrow__next')?.textContent ?? ''`,
+);
+ok('未能给出具体动作的条目也会说明原因（不静默）', jpNext.trim().length > 0, jpNext);
+ok(
+  '已关闭的窗口会点出关闭日期',
+  /2026-10-30|10 月 30|已结束|closed/i.test(jpNext),
+  jpNext,
+);
+// 把一条有未来窗口的项目加进来，验证「今天先做这几件」真的会挑出来
+await goto('#/p/au-462-work-holiday');
+await evalJs(
+  `[...document.querySelectorAll('.detail__actions button')].find(b => /加入我的申请/.test(b.textContent))?.click()`,
+);
+await sleep(350);
+await goto('#/track');
+ok(
+  '两条跟进时时间轴仍只取最紧的（≤3 条）',
+  (await evalJs(`document.querySelectorAll('.nextup__item').length`)) <= 3,
+);
+
 console.log('\n[12] 智能匹配');
 await goto('#/match');
 ok('匹配页有条件表单', await evalJs(`!!document.querySelector('.profile')`));
@@ -573,7 +609,10 @@ await sleep(350);
 
 console.log('\n[13] 数据说明页');
 await goto('#/about');
-ok('四个统计数字', (await evalJs(`document.querySelectorAll('.stat').length`)) === 4);
+// 五格：收录 / 可申 / 不可申 / 来源数 / 即将到期。
+// 第五格是 2026-11-10 加复核台账时补的——数据说明页要能提前说
+// 「哪几条快到期了」，所以它不能是四格。
+ok('五个统计数字', (await evalJs(`document.querySelectorAll('.stat').length`)) === 5);
 ok(
   '数据表行数 = 数据条数',
   (await evalJs(`document.querySelectorAll('.dtable tbody tr').length`)) === EXPECT_TOTAL,

@@ -1,18 +1,16 @@
 // src/components/AboutView.tsx
-// 数据说明页：收录多少、核过多少、有多少条来源、哪些过期没复核。
+// 数据说明页：收录多少、核过多少、有多少条来源、哪些到期该复核。
 // 这一页的存在本身就是产品的一部分——它把「数据可信到什么程度」摆到台面上，
 // 而不是藏在 JSON 里等人发现。
 import { useEffect, useMemo, useState } from 'react';
 import { useI18n } from '../i18n';
-import { loadPrograms } from '../lib/data';
+import { loadIndex, loadPrograms } from '../lib/data';
 import { requestReplay } from '../lib/onboarding';
 import { navigate } from '../lib/router';
 import { useDocumentTitle } from '../lib/useTitle';
-import type { ProgramRecord } from '../types';
+import type { ProgramIndexEntry, ProgramRecord } from '../types';
 
-/** 距今超过这么多天就算过期未复核（与 CI 里的链接检查节奏对齐） */
-const STALE_DAYS = 90;
-
+/** 距今多少天。缺日期返回 null，不当作 0 处理。 */
 function daysSince(date: string | null | undefined): number | null {
   if (!date) return null;
   const t = Date.parse(date);
@@ -23,18 +21,35 @@ function daysSince(date: string | null | undefined): number | null {
 export function AboutView() {
   const { t, td, te, lang } = useI18n();
   const [recs, setRecs] = useState<ProgramRecord[] | null>(null);
+  const [idx, setIdx] = useState<ProgramIndexEntry[] | null>(null);
 
   useDocumentTitle([t('dataTitle'), t('pageTitleSuffix')]);
 
   useEffect(() => {
     let alive = true;
-    loadPrograms()
-      .then((d) => alive && setRecs(d))
-      .catch(() => alive && setRecs([]));
+    // 来源条数在完整记录里，复核状态在索引里（由 sync-data.mjs 按
+    // data/review-policy.json 算好）——两处各取所需，不在这里重算周期。
+    Promise.all([loadPrograms(), loadIndex()])
+      .then(([p, i]) => {
+        if (!alive) return;
+        setRecs(p);
+        setIdx(i);
+      })
+      .catch(() => {
+        if (!alive) return;
+        setRecs([]);
+        setIdx([]);
+      });
     return () => {
       alive = false;
     };
   }, []);
+
+  const reviewById = useMemo(() => {
+    const m = new Map<string, ProgramIndexEntry>();
+    for (const e of idx ?? []) m.set(e.id, e);
+    return m;
+  }, [idx]);
 
   const stats = useMemo(() => {
     const list = recs ?? [];
@@ -45,14 +60,29 @@ export function AboutView() {
       (n, r) => n + (r.sources ?? []).filter((s) => s.type === 'primary').length,
       0,
     );
-    const stale = list.filter((r) => {
-      const d = daysSince(r.last_verified);
-      return d != null && d > STALE_DAYS;
-    }).length;
-    return { total, verified, sources, primary, stale };
-  }, [recs]);
+    const entries = idx ?? [];
+    const overdue = entries.filter(
+      (e) => e.review_state === 'overdue' || e.review_state === 'unknown',
+    ).length;
+    const dueSoon = entries.filter((e) => e.review_state === 'due_soon').length;
+    return { total, verified, sources, primary, overdue, dueSoon };
+  }, [recs, idx]);
 
-  if (!recs) return <p className="state">{t('searchHint')}…</p>;
+  // 到期该核的那几条单独列出来。这一页的目标不是夸数据全，
+  // 而是让人能在一分钟内判断「我要用的那条是不是刚核过」。
+  const pending = useMemo(() => {
+    const entries = idx ?? [];
+    return entries
+      .filter(
+        (e) =>
+          e.review_state === 'overdue' ||
+          e.review_state === 'due_soon' ||
+          e.review_state === 'unknown',
+      )
+      .sort((a, b) => (a.review_days_left ?? 1e9) - (b.review_days_left ?? 1e9));
+  }, [idx]);
+
+  if (!recs || !idx) return <p className="state">{t('searchHint')}…</p>;
 
   return (
     <div className="page">
@@ -74,9 +104,13 @@ export function AboutView() {
           <span className="stat__num">{stats.sources}</span>
           <span className="stat__label">{t('dataSources')}</span>
         </li>
-        <li className={stats.stale > 0 ? 'stat stat--warn' : 'stat'}>
-          <span className="stat__num">{stats.stale}</span>
+        <li className={stats.overdue > 0 ? 'stat stat--warn' : 'stat'}>
+          <span className="stat__num">{stats.overdue}</span>
           <span className="stat__label">{t('dataStale')}</span>
+        </li>
+        <li className={stats.dueSoon > 0 ? 'stat stat--warn' : 'stat'}>
+          <span className="stat__num">{stats.dueSoon}</span>
+          <span className="stat__label">{t('dataDueSoon')}</span>
         </li>
       </ul>
 
@@ -88,12 +122,15 @@ export function AboutView() {
             <th>{t('passportCheck')}</th>
             <th>{t('sources')}</th>
             <th>{t('lastVerified')}</th>
+            <th>{t('dataNextReview')}</th>
           </tr>
         </thead>
         <tbody>
           {recs.map((r) => {
             const d = daysSince(r.last_verified);
-            const stale = d != null && d > STALE_DAYS;
+            const rv = reviewById.get(r.program.id);
+            const overdue = rv?.review_state === 'overdue' || rv?.review_state === 'unknown';
+            const soon = rv?.review_state === 'due_soon';
             return (
               <tr key={r.program.id}>
                 <td>
@@ -107,15 +144,47 @@ export function AboutView() {
                   {(r.sources ?? []).filter((s) => s.type === 'primary').length} /{' '}
                   {(r.sources ?? []).length}
                 </td>
-                <td className={stale ? 'dtable__stale' : undefined}>
+                <td className={overdue ? 'dtable__stale' : undefined}>
                   {r.last_verified ?? '—'}
-                  {stale ? ` (${d}d)` : ''}
+                  {d != null ? ` (${d}d)` : ''}
+                </td>
+                <td className={overdue || soon ? 'dtable__stale' : undefined}>
+                  {rv?.review_due ?? '—'}
+                  {rv?.review_days_left != null
+                    ? rv.review_days_left < 0
+                      ? ` (${t('dataOverdueBy').replace('{n}', String(-rv.review_days_left))})`
+                      : ` (${rv.review_days_left}d)`
+                    : ''}
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+
+      {/* 到期名单：把「该去核哪几条」直接摆在页面上，
+          这样「数据会过时」不是一句抽象的免责声明，而是一张有名字的清单。 */}
+      {pending.length > 0 && (
+        <section className="sec">
+          <h2 className="sec__title">{t('dataPendingTitle')}</h2>
+          <p className="sec__note">{t('dataPendingNote')}</p>
+          <ul className="ul">
+            {pending.map((e) => (
+              <li key={e.id}>
+                <a href={`#/p/${encodeURIComponent(e.id)}`}>
+                  {lang === 'en' ? e.name_en || e.name : e.name}
+                </a>
+                {' · '}
+                {e.review_state === 'overdue'
+                  ? t('dataOverdueBy').replace('{n}', String(Math.abs(e.review_days_left ?? 0)))
+                  : e.review_state === 'unknown'
+                    ? t('dataNoDate')
+                    : t('dataDueIn').replace('{n}', String(e.review_days_left ?? 0))}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="sec">
         <h2 className="sec__title">{t('dataRules')}</h2>

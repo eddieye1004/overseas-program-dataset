@@ -17,7 +17,41 @@ const PUBLIC_DIR = join(WEB_ROOT, 'public');
 /** 长文页清单。新增一篇就加一行，sitemap 会自动带上。 */
 const GUIDES = ['age-wall.html', 'misinformation.html'];
 
-/** 从单条 program 里抽出列表页需要的字段，避免把整份 97KB 数据塞进首屏。 */function toIndexEntry(p) {
+/**
+ * 复核周期策略。和 scripts/track.py 读同一份文件 —— 前端卡片上的「还剩几天」
+ * 和仓库里的 data/FRESHNESS.md 必须说同一件事，所以周期不许在这两处各写一份。
+ */
+const POLICY = JSON.parse(await readFile(resolve(WEB_ROOT, '..', 'data', 'review-policy.json'), 'utf8'));
+
+/** 申请窗口是否写死了具体日期 —— 这类项目一年只开一次窗口，复核要更勤。 */
+function hasDatedWindow(p) {
+  return (p.timeline?.windows ?? []).some(
+    (w) => w && (w.open_date || w.close_date || w.draw_period_end),
+  );
+}
+
+/**
+ * 一条记录的复核状态。算法与 scripts/track.py 的 classify() 一一对应：
+ * overdue 越过周期、due_soon 剩余不足 25%、fresh 还有余量、unknown 缺日期。
+ */
+function reviewState(p, today) {
+  const interval = hasDatedWindow(p)
+    ? POLICY.interval_dated_window_days
+    : POLICY.interval_default_days;
+  const lv = p.last_verified ? Date.parse(p.last_verified) : NaN;
+  if (Number.isNaN(lv)) {
+    return { review_interval: interval, review_due: null, review_days_left: null, review_state: 'unknown' };
+  }
+  const ageDays = Math.floor((today - lv) / 86400000);
+  const daysLeft = interval - ageDays;
+  const soonAt = Math.max(1, Math.floor(interval * POLICY.due_soon_ratio));
+  const state = daysLeft < 0 ? 'overdue' : daysLeft <= soonAt ? 'due_soon' : 'fresh';
+  const due = new Date(lv + interval * 86400000).toISOString().slice(0, 10);
+  return { review_interval: interval, review_due: due, review_days_left: daysLeft, review_state: state };
+}
+
+/** 从单条 program 里抽出列表页需要的字段，避免把整份 97KB 数据塞进首屏。 */
+function toIndexEntry(p, today) {
   const el = p.eligibility ?? {};
   const age = el.age ?? {};
   const funds = el.funds ?? {};
@@ -101,6 +135,8 @@ const GUIDES = ['age-wall.html', 'misinformation.html'];
     funds_currency: funds.amount?.currency ?? null,
     risk_levels: (p.risks ?? []).map((r) => r.level),
     last_verified: p.last_verified ?? null,
+    // 复核状态在索引层就算好，前端不用再各算一遍 90 天。
+    ...reviewState(p, today),
     // 列表卡片也要能看出「这条有几条官方主源」——核来源是核心路径的一环，
     // 藏在详情页里等于没有。只放计数，不放 URL，索引体积几乎不变。
     source_count: (p.sources ?? []).length,
@@ -164,7 +200,8 @@ async function main() {
 
   await mkdir(OUT_DIR, { recursive: true });
   const full = JSON.stringify(programs, null, 0);
-  const index = JSON.stringify(programs.map(toIndexEntry), null, 0);
+  const today = Date.now();
+  const index = JSON.stringify(programs.map((p) => toIndexEntry(p, today)), null, 0);
   const i18n = JSON.stringify(dict, null, 0);
   await writeFile(join(OUT_DIR, 'programs.json'), full, 'utf8');
   await writeFile(join(OUT_DIR, 'index.json'), index, 'utf8');

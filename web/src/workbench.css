@@ -450,6 +450,71 @@ html[data-onboarding] .page__intro:not(.page__intro--list) {
   color: var(--maybe);
 }
 
+/* ---------- 「今天先做这几件」 ---------- */
+
+/* 这一块存在的理由：看板其余部分都在等用户主动想起这个站，
+   只有它是主动把「什么时候该动手」推到他眼前。所以给它独立底色，
+   不混进列表。 */
+.nextup {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  background: var(--brand-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.nextup__title {
+  margin: 0 0 6px;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 0.01em;
+}
+.nextup__empty {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+.nextup__list {
+  margin: 0;
+  padding: 0 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.nextup__item {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+.nextup__name {
+  font-weight: 600;
+  color: var(--ink);
+}
+.nextup__what {
+  margin-left: 6px;
+}
+/* 只剩 N 天截止的那条，用告警色压过其余——它是唯一有时间代价的 */
+.nextup__item--close .nextup__what {
+  color: var(--no);
+  font-weight: 600;
+}
+.nextup__item--prep .nextup__what {
+  color: var(--maybe);
+}
+
+/* 列表行里的同一个结论，弱化处理：扫视时能看到，但不抢标题 */
+.trackrow__next {
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+.trackrow__next--close {
+  color: var(--no);
+  font-weight: 600;
+}
+.trackrow__next--prep {
+  color: var(--maybe);
+}
+
 /* ---------- 申请进度列表 ---------- */
 
 .tracklist {
@@ -670,8 +735,9 @@ html[data-onboarding] .page__intro:not(.page__intro--list) {
 }
 
 @media (min-width: 720px) {
+  /* 不写死列数：数据说明页 5 格、看板 6 格，写死 4 会多出一行孤零零的格子 */
   .statbar {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
 }
 

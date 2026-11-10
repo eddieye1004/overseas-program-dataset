@@ -1,7 +1,5 @@
 {
-
   "schema_version": "0.1.0",
-
   "program": {
     "id": "sg-work-holiday-programme",
     "name": "新加坡打工度假计划",
@@ -21,7 +19,6 @@
     ],
     "active": false
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "not_eligible",
@@ -61,7 +58,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "first_come_first_served",
     "quota": 2000,
@@ -102,7 +98,6 @@
     ],
     "processing_time": "官方原文：`It takes around 3 weeks to process an application.` 另注 `Within 4 weeks for most cases`，补充材料时会延长。"
   },
-
   "documents": [
     {
       "name": "有效护照个人资料页",
@@ -135,7 +130,6 @@
       "prepare_days": 14
     }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -173,16 +167,14 @@
       "official_link": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/apply-for-a-pass"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 6,
     "max_same_employer_months": 6,
     "renewable": false,
     "renewal_condition": "不可续签。若曾持有 Work Holiday Pass，须自上次准证失效之日起满 12 个月才能重新申请（官方原文 `you can only reapply for another Work Holiday Pass after 12 months from the day you last held the pass`）。",
     "restricted_occupations": [],
-    "note": "准证允许在新加坡停留并工作最长 6 个月，工作类型官方未做限制。取得准证后须先领到通知信（notification letter）才能开始工作，该信自签发日起 1 个月有效。"
+    "note": "准证允许在新加坡停留并工作最长 6 个月，工作类型官方未做限制。取得准证后须先领到通知信（notification letter）才能开始工作，该信自签发日起 1 个月有效。 官方页面未规定持证期间的学习时长上限，故不填数字；如需修课，按当地移民局对附带学习的口径确认。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -209,7 +201,6 @@
       "description": "对照价值：这条是「显式排除」的典型样本——项目本身存在、页面公开可读、条件写得很清楚，但中国大陆护照就是不符合。收录它是为了让读者不必自己撞一次墙。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -239,8 +230,6 @@
       "claim": "项目定位原文：`The Work Holiday Programme allows eligible students and young graduates to work and holiday in Singapore for 6 months.` FAQ 中出现 `Must my return travel ticket be back to my home country?`，说明返程机票属准证条件。页面标注更新日期 `26 December 2025`。"
     }
   ],
-
   "last_verified": "2026-11-03",
-
   "verified_by": "eddieye1004"
 }

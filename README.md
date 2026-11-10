@@ -140,9 +140,22 @@ pnpm build        # 产出静态站到 web/dist
 ```bash
 python scripts/validate.py                  # 数据完整性与格式（离线）
 python scripts/validate.py --check-links    # 同时检查官方链接存活（需网络）
-python -m pytest -q                         # 校验器自身的 70 个测试
+python -m pytest -q                         # 校验器与复核台账的 92 个测试
 node web/scripts/smoke-test.mjs             # 前端纯逻辑断言
+python scripts/track.py                     # 重算复核台账（写 data/tracking.json 与 data/FRESHNESS.md）
+python scripts/track.py --check             # 有过期记录就退出码 1（CI 定时任务用）
 ```
+
+**复核台账**
+
+数据会过期：签证费涨价、窗口改期、条款加严，官方页面改了而记录没改，这个数据集就从「有用」变成「误导」。所以每条记录都带核实日期，并由 `scripts/track.py` 按项目性质分配复核周期：
+
+| 项目性质 | 周期 | 理由 |
+|---|---|---|
+| 窗口写死日期、错过等一年（澳新打工度假、日本打工度假等） | 90 天 | 一年只开一次，晚核一周可能就误一整年 |
+| 其余 | 180 天 | 条款变动通常按年度调整，半年足够 |
+
+产物有两份，都在 `data/` 下：`tracking.json` 给程序读（每条含上次核实、已过天数、下次到期日、状态），`FRESHNESS.md` 给人读（按紧急度排序的待办清单）。`.github/workflows/validate.yml` 每周一跑一次，有过期记录会让构建变红——不是提醒，是拦住。
 
 ---
 
@@ -157,11 +170,15 @@ overseas-program-dataset/
 ├── data/
 │   ├── schema.json              # 数据字段定义（机器可读）
 │   ├── sources.md               # 官方来源清单（gen_sources.py 生成，勿手改）
+│   ├── tracking.json            # 复核台账，机器读（track.py 生成）
+│   ├── FRESHNESS.md             # 复核台账，人读（track.py 生成）
+│   ├── review-policy.json       # 复核周期的唯一来源（改周期改这里）
 │   └── programs/                # 每个项目一个 JSON
 ├── scripts/
 │   ├── validate.py              # 完整性 + 来源分级 + 链接存活
-│   └── gen_sources.py           # 从 programs/*.json 生成 sources.md
-├── tests/test_validate.py       # 校验器自身的测试
+│   ├── gen_sources.py           # 从 programs/*.json 生成 sources.md
+│   └── track.py                 # 生成复核台账 + --check 供 CI 判定
+├── tests/                       # validate.py 与 track.py 的测试
 ├── web/                         # 中英双语静态站（React + Vite）
 │   ├── src/                     # 页面、筛选、智能匹配、i18n、首访引导
 │   ├── public/p/                # gen-pages.mjs 生成的静态详情页（每项目一个真路径）

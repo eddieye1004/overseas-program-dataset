@@ -69,6 +69,21 @@ const { ONBOARD_VERSION, shouldShowOnboarding } = await import(
   `file://${outOnboard.replace(/\\/g, '/')}`
 );
 
+// 「下一步」也是纯函数：吃一条完整记录、吐一句话的依据。
+// 它的输入是窗口日期与材料准备期，输出决定看板顶部先推哪几条，
+// 算错了会让人错过一年一次的名额，所以边界必须逐条钉死。
+const outNext = join(WEB, '.tmp-next.mjs');
+await build({
+  entryPoints: [join(WEB, 'src/lib/nextstep.ts')],
+  bundle: true,
+  format: 'esm',
+  outfile: outNext,
+  platform: 'neutral',
+});
+const { nextAction, prepDaysOf, rankByUrgency } = await import(
+  `file://${outNext.replace(/\\/g, '/')}`
+);
+
 const index = JSON.parse(await readFile(join(WEB, 'public/data/index.json'), 'utf8'));
 const dict = JSON.parse(await readFile(join(WEB, 'public/data/i18n.json'), 'utf8'));
 const programs = JSON.parse(await readFile(join(WEB, 'public/data/programs.json'), 'utf8'));
@@ -523,7 +538,115 @@ ok(
   shouldShowOnboarding({ ...blank(), profile: { paidOnly: false, agencyFree: false } }),
 );
 
-console.log('\n[15] 界面词条双语对齐');
+console.log('\n[15] 下一步该做什么');
+// 基准日固定成一个具体的天数，避免用 Date.now() 让断言随运行时刻漂
+const D = (s) => Math.floor(Date.parse(s) / 86400000);
+const NOW = D('2026-11-10');
+
+/** 造一条只有窗口与材料的最小记录 */
+const rec = (open, close, prep) => ({
+  documents: prep == null ? [] : [{ prepare_days: prep }],
+  timeline: { windows: [{ year: 2026, status: 'open', note: '', open_date: open, close_date: close }] },
+});
+
+ok('材料准备期求和', prepDaysOf(rec('2026-11-01', '2026-11-30', 7)) === 7);
+ok('缺 prepare_days 时按 0 算，不猜平均值', prepDaysOf({ documents: [{}, { prepare_days: null }] }) === 0);
+
+// 1) 窗口现在开着 → 说截止日
+const inWindow = nextAction(rec('2026-10-19', '2026-10-30', 5), D('2026-10-25'));
+ok('窗口内的动作是 close', inWindow.kind === 'close', inWindow.kind);
+ok('窗口内算出剩余天数', inWindow.days === 5, String(inWindow.days));
+ok('窗口内给出截止日', inWindow.date === '2026-10-30', String(inWindow.date));
+
+// 2) 窗口还没开、但材料准备期已经压上来 → prep
+const prepNow = nextAction(rec('2026-11-20', '2026-11-30', 20), NOW);
+ok('准备期已压到窗口前时动作是 prep', prepNow.kind === 'prep', prepNow.kind);
+ok('prep 报告窗口还剩几天', prepNow.days === 10, String(prepNow.days));
+
+// 3) 窗口远、准备期还没压上来 → open
+const farOpen = nextAction(rec('2027-03-01', '2027-03-20', 5), NOW);
+ok('窗口还远时动作是 open', farOpen.kind === 'open', farOpen.kind);
+
+// 4) 没有窗口日期 → idle，且不硬编日期
+const noDates = nextAction({ documents: [{ prepare_days: 5 }], timeline: { windows: [{ year: 2026, status: 'unknown', note: '官方未公布' }] } }, NOW);
+ok('无窗口日期时动作是 idle', noDates.kind === 'idle', noDates.kind);
+ok('idle 不编造日期', noDates.date === null && noDates.days === null);
+
+// 4b) 上一轮已关、下一轮未公布 → closed，并交代错过的日期
+const closedPast = nextAction(
+  {
+    documents: [{ prepare_days: 5 }],
+    timeline: {
+      windows: [
+        { year: 2026, status: 'closed', note: '', open_date: '2026-06-04', close_date: '2026-06-25' },
+        { year: 2027, status: 'unknown', note: '日期未公布' },
+      ],
+    },
+  },
+  NOW,
+);
+ok('上一轮已关时动作是 closed', closedPast.kind === 'closed', closedPast.kind);
+ok('closed 交代错过的关闭日', closedPast.lastClosed === '2026-06-25', String(closedPast.lastClosed));
+ok('closed 不编造下一轮日期', closedPast.date === null && closedPast.days === null);
+
+// 5) 边界：开放当天算「开着」，关闭当天也算「开着」（最后一天还能交）
+ok('开放当天算窗口内', nextAction(rec('2026-11-10', '2026-11-30', 0), NOW).kind === 'close');
+ok('关闭当天仍算窗口内', nextAction(rec('2026-10-01', '2026-11-10', 0), NOW).kind === 'close');
+ok('关闭次日起不再算窗口内', nextAction(rec('2026-10-01', '2026-11-09', 0), NOW).kind !== 'close');
+
+// 6) 多个窗口：同时开着取最早关闭的那个
+const twoOpen = nextAction(
+  {
+    documents: [],
+    timeline: {
+      windows: [
+        { year: 2026, status: 'open', note: '', open_date: '2026-11-01', close_date: '2026-12-31' },
+        { year: 2026, status: 'open', note: '', open_date: '2026-11-05', close_date: '2026-11-20' },
+      ],
+    },
+  },
+  NOW,
+);
+ok('多窗口同时开着时取最早截止', twoOpen.date === '2026-11-20', String(twoOpen.date));
+
+// 7) 排序：close 先于 prep 先于 open 先于 closed 先于 idle
+const rankedNext = rankByUrgency(
+  [
+    { id: 'idle', program: { documents: [], timeline: { windows: [] } } },
+    { id: 'closed', program: rec('2026-03-01', '2026-03-20', 1) },
+    { id: 'open', program: rec('2027-03-01', '2027-03-20', 1) },
+    { id: 'prep', program: rec('2026-11-20', '2026-11-30', 20) },
+    { id: 'close', program: rec('2026-11-01', '2026-11-15', 1) },
+  ],
+  NOW,
+);
+ok(
+  '紧急度排序 close > prep > open > closed > idle',
+  rankedNext.map((r) => r.id).join(',') === 'close,prep,open,closed,idle',
+  rankedNext.map((r) => r.id).join(','),
+);
+ok(
+  '同档内按剩余天数升序',
+  rankByUrgency(
+    [
+      { id: 'b', program: rec('2026-11-01', '2026-11-30', 0) },
+      { id: 'a', program: rec('2026-11-01', '2026-11-12', 0) },
+    ],
+    NOW,
+  )
+    .map((r) => r.id)
+    .join(',') === 'a,b',
+);
+
+// 8) 真实数据：带写死窗口的三条必须给出可执行结论
+const datedIds = ['au-462-work-holiday', 'jp-working-holiday', 'nz-china-whv'];
+for (const id of datedIds) {
+  const p = programs.find((x) => x.program?.id === id) ?? programs.find((x) => x.id === id);
+  const a = nextAction(p ?? {}, NOW);
+  ok(`真实数据 ${id} 能算出具体动作（不是 idle）`, a.kind !== 'idle', a.kind);
+}
+
+console.log('\n[16] 界面词条双语对齐');
 const zhKeys = Object.keys(UI.zh).sort();
 const enKeys = Object.keys(UI.en).sort();
 ok(
@@ -565,6 +688,7 @@ await import('node:fs/promises').then((fs) =>
     fs.rm(outMatch, { force: true }),
     fs.rm(outUi, { force: true }),
     fs.rm(outOnboard, { force: true }),
+    fs.rm(outNext, { force: true }),
   ]),
 );
 

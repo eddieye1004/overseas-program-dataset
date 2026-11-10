@@ -1,0 +1,1389 @@
+{
+  "generated_for": "2026-11-10",
+  "policy": {
+    "interval_dated_window_days": 90,
+    "interval_default_days": 180,
+    "due_soon_ratio": 0.25,
+    "note": "windows 里写死了 open_date / close_date 的项目，一年只开一次窗口，错过就要再等一年；晚一天发现就等于让人白等一年，所以按 90 天核。 其余项目的资格条件、费用、材料不会因为跨年而失效，180 天足够，太勤只会把精力花在没变的东西上。"
+  },
+  "summary": {
+    "total": 29,
+    "overdue": 0,
+    "due_soon": 0,
+    "fresh": 29,
+    "unknown": 0
+  },
+  "programs": [
+    {
+      "id": "au-462-work-holiday",
+      "name": "澳大利亚打工与度假签证（462类别）",
+      "country": "澳大利亚",
+      "file": "au-462-work-holiday.json",
+      "last_verified": "2026-10-30",
+      "age_days": 11,
+      "interval_days": 90,
+      "due": "2027-01-28",
+      "days_left": 79,
+      "state": "fresh",
+      "dated_window": true,
+      "sources": [
+        {
+          "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-16",
+          "age_days": 25,
+          "state": "fresh"
+        },
+        {
+          "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462/first-work-holiday-462",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://immi.homeaffairs.gov.au/what-we-do/whm-program/latest-news/new-work-and-holiday-subclass-462-visa-pre-application-process",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.australia.com/en/youth-travel/working-holiday-visa/faq.html",
+          "type": "secondary",
+          "grade": null,
+          "last_verified": "2026-10-16",
+          "age_days": 25,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "nz-china-whv",
+      "name": "新西兰打工度假签证（中国名额）",
+      "country": "新西兰",
+      "file": "nz-china-whv.json",
+      "last_verified": "2026-10-30",
+      "age_days": 11,
+      "interval_days": 90,
+      "due": "2027-01-28",
+      "days_left": 79,
+      "state": "fresh",
+      "dated_window": true,
+      "sources": [
+        {
+          "url": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.immigration.govt.nz/about-us/news-centre/2026-opening-dates-for-capped-working-holiday-schemes-confirmed",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-16",
+          "age_days": 25,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.immigration.govt.nz/process-to-apply/applying-for-a-visa/providing-evidence-and-documents-to-support-your-visa-application/english-language-requirements/english-language-requirements-for-some-working-holiday-visas/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "jp-working-holiday",
+      "name": "日本打工度假签证",
+      "country": "日本",
+      "file": "jp-working-holiday.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 90,
+      "due": "2027-02-06",
+      "days_left": 88,
+      "state": "fresh",
+      "dated_window": true,
+      "sources": [
+        {
+          "url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.mofa.go.jp/mofaj/toko/visa/tetsuzuki/pagew_000001_02672.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.koryu.or.jp/tw/visa/taipei/working/guide2026/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.koryu.or.jp/tw/visa/taipei/working/guide2026/guide-detail1/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.koryu.or.jp/tw/visa/taipei/working/FAQ/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "de-16e-internship",
+      "name": "德国与学业相关实习居留许可",
+      "country": "德国",
+      "file": "de-16e-internship.json",
+      "last_verified": "2026-10-30",
+      "age_days": 11,
+      "interval_days": 180,
+      "due": "2027-04-28",
+      "days_left": 169,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.make-it-in-germany.com/en/visa/kinds-of-visa/internship/",
+          "type": "secondary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://verwaltung.bund.de/leistungsverzeichnis/en/leistung/NI/409271867",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://hongkong.diplo.de/blob/1475188/fbefe8a21616b8939186927e96dceb01/internship-visa-data.pdf",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://home-affairs.ec.europa.eu/policies/migration-and-asylum/eu-immigration-portal/trainee-germany_en",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthg_2004/__16e.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "uk-youth-mobility-scheme",
+      "name": "英国青年流动计划",
+      "country": "英国",
+      "file": "uk-youth-mobility-scheme.json",
+      "last_verified": "2026-10-30",
+      "age_days": 11,
+      "interval_days": 180,
+      "due": "2027-04-28",
+      "days_left": 169,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.gov.uk/youth-mobility",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/youth-mobility/eligibility",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/youth-mobility/documents-you-must-provide",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/healthcare-immigration-application/how-much-pay",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-31",
+          "age_days": 10,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "us-j1-summer-work-travel",
+      "name": "美国 J-1 暑期带薪实习项目",
+      "country": "美国",
+      "file": "us-j1-summer-work-travel.json",
+      "last_verified": "2026-10-30",
+      "age_days": 11,
+      "interval_days": 180,
+      "due": "2027-04-28",
+      "days_left": 169,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://j1visa.state.gov/programs/summer-work-travel/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://oice.xaut.edu.cn/info/1146/2290.htm",
+          "type": "secondary",
+          "grade": null,
+          "last_verified": "2026-10-16",
+          "age_days": 25,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "sg-work-holiday-programme",
+      "name": "新加坡打工度假计划",
+      "country": "新加坡",
+      "file": "sg-work-holiday-programme.json",
+      "last_verified": "2026-11-03",
+      "age_days": 7,
+      "interval_days": 180,
+      "due": "2027-05-02",
+      "days_left": 173,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/eligibility",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/apply-for-a-pass",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "uk-graduate-visa",
+      "name": "英国毕业生签证",
+      "country": "英国",
+      "file": "uk-graduate-visa.json",
+      "last_verified": "2026-11-03",
+      "age_days": 7,
+      "interval_days": 180,
+      "due": "2027-05-02",
+      "days_left": 173,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.gov.uk/graduate-visa",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/graduate-visa/eligibility",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "au-485-graduate",
+      "name": "澳洲毕业生临时签证",
+      "country": "澳大利亚",
+      "file": "au-485-graduate.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work#About",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/meeting-the-temporary-graduate-visa-subclass-485-study-requirement",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/english-language",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/english-language/competent-english",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "ca-iec-working-holiday",
+      "name": "加拿大国际经验计划（IEC 打工度假）",
+      "country": "加拿大",
+      "file": "ca-iec-working-holiday.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility/eligibility-by-country.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "ca-pgwp",
+      "name": "加拿大毕业后工签",
+      "country": "加拿大",
+      "file": "ca-pgwp.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/about.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/eligibility.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/apply.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/after-you-apply.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://ircc.canada.ca/english/information/fees/fees.asp",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "de-20-job-search",
+      "name": "德国毕业后求职居留许可",
+      "country": "德国",
+      "file": "de-20-job-search.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gesetze-im-internet.de/englisch_aufenthg/englisch_aufenthg.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthv/__45.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthv/__46.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "de-chancenkarte",
+      "name": "德国机会卡（求职居留许可）",
+      "country": "德国",
+      "file": "de-chancenkarte.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthg_2004/__20a.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthg_2004/__20b.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthg_2004/anlage.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.make-it-in-germany.com/en/working-in-germany/visa/opportunity-card",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthv/__45.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gesetze-im-internet.de/aufenthv/__46.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "global-aiesec-global-talent",
+      "name": "AIESEC 全球人才计划（企业实习）",
+      "country": "全球（120+ 国家和地区）",
+      "file": "global-aiesec-global-talent.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://aiesec.org/global-talent",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.opportunitynest.org/opportunity/aiesec-global-talent-global",
+          "type": "secondary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "global-iaeste",
+      "name": "IAESTE 国际大学生技术实习交流计划",
+      "country": "全球（100+ 国家/地区）",
+      "file": "global-iaeste.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://iaeste.org/student-faqs",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.iaeste.org/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.iaeste.de/application-process/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.iaeste.at?p=1254/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-09-17",
+          "age_days": 54,
+          "state": "fresh"
+        },
+        {
+          "url": "https://gao.um.edu.mo?lang=zh-hant&p=7735/",
+          "type": "secondary",
+          "grade": null,
+          "last_verified": "2026-09-17",
+          "age_days": 54,
+          "state": "fresh"
+        },
+        {
+          "url": "https://iaeste.org/member-countries/china-hlg",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "ie-working-holiday-authorisation",
+      "name": "爱尔兰打工度假授权",
+      "country": "爱尔兰",
+      "file": "ie-working-holiday-authorisation.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/working-holidays-in-ireland/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ireland.ie/en/dfa/visas-for-ireland/working-holiday-authorisation/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.irishimmigration.ie/wp-content/uploads/2026/11/2027-EN_Guidance-Note.pdf",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.irishimmigration.ie/wp-content/uploads/2026/11/WHA-2027-Application-Form-November-2026.pdf",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "kr-h1-working-holiday",
+      "name": "韩国 H-1 打工度假签证",
+      "country": "韩国",
+      "file": "kr-h1-working-holiday.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://overseas.mofa.go.kr/au-sydney-en/brd/m_2367/view.do?seq=760608&page=1",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://whic.mofa.go.kr/contents.do?menuNo=90&contentsNo=38",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-10-30",
+          "age_days": 11,
+          "state": "fresh"
+        },
+        {
+          "url": "https://whic.mofa.go.kr/upload/temp/kr_workingholiday_english.pdf",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "nl-orientation-year",
+      "name": "荷兰毕业后求职居留",
+      "country": "荷兰",
+      "file": "nl-orientation-year.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://ind.nl/en/requirements-that-apply-to-everyone",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://ind.nl/en/fees-costs-of-an-application",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.internationalstudy.nl/wp-content/uploads/2026/06/Language-Test-Appendix-to-the-Code-of-Conduct-October-2026.pdf",
+          "type": "secondary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "nz-post-study-work",
+      "name": "新西兰毕业后工签",
+      "country": "新西兰",
+      "file": "nz-post-study-work.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "uk-hpi-visa",
+      "name": "英国高潜力人才签证",
+      "country": "英国",
+      "file": "uk-hpi-visa.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.gov.uk/high-potential-individual-visa",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/high-potential-individual-visa/eligibility",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/high-potential-individual-visa/how-much-it-costs",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/government/publications/high-potential-individual-visa-global-universities-list/high-potential-individual-visa-global-universities-list-2026",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "uk-short-term-study-visa",
+      "name": "英国短期学习签证（英语课程）",
+      "country": "英国",
+      "file": "uk-short-term-study-visa.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.gov.uk/visa-to-study-english",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-01",
+          "age_days": 9,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/visa-to-study-english/eligibility",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-01",
+          "age_days": 9,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/visa-to-study-english/your-course",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-01",
+          "age_days": 9,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/visa-to-study-english/documents-you-must-provide",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-01",
+          "age_days": 9,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/visa-to-study-english/apply",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-01",
+          "age_days": 9,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/tb-test-visa/countries-where-you-need-a-tb-test-to-enter-the-uk",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-01",
+          "age_days": 9,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.gov.uk/standard-visitor",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-01",
+          "age_days": 9,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "us-f1-opt",
+      "name": "美国 F-1 毕业后实习工作许可（OPT）",
+      "country": "美国",
+      "file": "us-f1-opt.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-extension-for-stem-students-stem-opt",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-8/chapter-I/subchapter-B/part-214/section-214.2",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.uscis.gov/sites/default/files/document/forms/g-1055.pdf",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "us-j1-camp-counselor",
+      "name": "美国 J-1 营地辅导员项目",
+      "country": "美国",
+      "file": "us-j1-camp-counselor.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://j1visa.state.gov/programs/camp-counselor/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.30",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.14",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ice.gov/sevis/i901/faq",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://j1visa.state.gov/camp-counselor-program-resource-page/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://j1visa.state.gov/sponsors/designated-sponsor-list-by-program/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-22/section-22.1",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "us-j1-intern",
+      "name": "美国 J-1 实习项目",
+      "country": "美国",
+      "file": "us-j1-intern.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://j1visa.state.gov/programs/intern/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.22",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.14",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ice.gov/sevis/i901/faq",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-22/section-22.1",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "us-j1-research-scholar",
+      "name": "美国 J-1 研究学者",
+      "country": "美国",
+      "file": "us-j1-research-scholar.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://j1visa.state.gov/programs/research-scholar/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/api/renderer/v1/content/enhanced/current/title-22?part=62&section=62.20",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/api/renderer/v1/content/enhanced/current/title-22?part=62&section=62.10",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ice.gov/sevis/i901/faq",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/api/renderer/v1/content/enhanced/current/title-22?part=22&section=22.1",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-08",
+          "age_days": 2,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "us-j1-trainee",
+      "name": "美国 J-1 培训项目",
+      "country": "美国",
+      "file": "us-j1-trainee.json",
+      "last_verified": "2026-11-08",
+      "age_days": 2,
+      "interval_days": 180,
+      "due": "2027-05-07",
+      "days_left": 178,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://j1visa.state.gov/programs/trainee/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.22",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-62/subpart-B/section-62.14",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ice.gov/sevis/i901/faq",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-G/part-22/section-22.1",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-03",
+          "age_days": 7,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "at-rwr-card-vhq",
+      "name": "奥地利红白红卡（高资质）",
+      "country": "奥地利",
+      "file": "at-rwr-card-vhq.json",
+      "last_verified": "2026-11-09",
+      "age_days": 1,
+      "interval_days": 180,
+      "due": "2027-05-08",
+      "days_left": 179,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.migration.gv.at/en/types-of-immigration/permanent-immigration/very-highly-qualified-workers/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-09",
+          "age_days": 1,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.migration.gv.at/en/service/faq/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-09",
+          "age_days": 1,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "no-skilled-worker",
+      "name": "挪威技术工人居留",
+      "country": "挪威",
+      "file": "no-skilled-worker.json",
+      "last_verified": "2026-11-10",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-09",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-10",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.udi.no/en/word-definitions/fees/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-10",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.udi.no/en/want-to-apply/work-immigration/job-seekers/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-10",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ]
+    },
+    {
+      "id": "se-look-for-work",
+      "name": "瑞典毕业后求职居留",
+      "country": "瑞典",
+      "file": "se-look-for-work.json",
+      "last_verified": "2026-11-10",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-09",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-or-start-a-business.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-10",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.migrationsverket.se/en/you-want-to-apply/work/employee-or-self-employed/employees.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-10",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-after-completing-your-studies-in-sweden.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-10",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ]
+    }
+  ]
+}

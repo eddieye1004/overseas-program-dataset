@@ -139,6 +139,24 @@ export type UiKey =
   | 'dataSources'
   | 'dataStale'
   | 'dataRules'
+  // —— 复核台账（2026-11-10：复核周期由 data/review-policy.json 定义）——
+  | 'dataDueSoon'
+  | 'dataNextReview'
+  | 'dataOverdueBy'
+  | 'dataDueIn'
+  | 'dataNoDate'
+  | 'dataPendingTitle'
+  | 'dataPendingNote'
+  | 'statsDueSoon'
+  // —— 申请看板的「下一步」（2026-11-10：窗口与材料准备期由数据算）——
+  | 'nextUpTitle'
+  | 'nextUpEmpty'
+  | 'nextClose'
+  | 'nextCloseUnknown'
+  | 'nextPrep'
+  | 'nextOpen'
+  | 'nextClosed'
+  | 'nextIdle'
   // —— 信息架构与来源可视化（2026-10-29 追加）——
   | 'listTitle'
   | 'listIntro'
@@ -345,8 +363,25 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     dataTotal: '收录项目',
     dataVerified: '已标注核实日期',
     dataSources: '来源总数',
-    dataStale: '超过 90 天未复核',
+    dataStale: '已超复核周期',
     dataRules: '收录规则',
+    dataDueSoon: '即将到期',
+    dataNextReview: '下次复核',
+    dataOverdueBy: '已超 {n} 天',
+    dataDueIn: '还剩 {n} 天',
+    dataNoDate: '缺核实日期',
+    dataPendingTitle: '该重新核这些了',
+    dataPendingNote:
+      '复核周期写在仓库的 data/review-policy.json 里：窗口写死到具体日期的项目 90 天核一次，其余 180 天。周期到了不一定会变，但没核过就不能说它还准。',
+    statsDueSoon: '即将到期',
+    nextUpTitle: '今天先做这几件',
+    nextUpEmpty: '眼下没有要动手的事。窗口开放前这里会亮起来。',
+    nextClose: '窗口还剩 {n} 天，{date} 截止——材料没交就来不及了',
+    nextCloseUnknown: '窗口已开，官方没写截止日',
+    nextPrep: '窗口 {n} 天后（{date}）开放，材料要 {prep} 天准备，现在就该动手',
+    nextOpen: '窗口 {n} 天后（{date}）开放，材料准备期还没压上来',
+    nextClosed: '上一轮 {date} 已结束，下一轮日期未公布——先备材料，别等公告',
+    nextIdle: '窗口日期官方未公布，只能盯官网',
 
     listTitle: '项目库',
     listIntro: '按国家、地区、项目类型与标签筛选，每条都标注官方来源与核实日期。',
@@ -554,8 +589,25 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     dataTotal: 'Programs listed',
     dataVerified: 'With a verification date',
     dataSources: 'Sources',
-    dataStale: 'Not re-checked in 90 days',
+    dataStale: 'Past the re-check date',
     dataRules: 'Inclusion rules',
+    dataDueSoon: 'Due soon',
+    dataNextReview: 'Next re-check',
+    dataOverdueBy: '{n} days overdue',
+    dataDueIn: '{n} days left',
+    dataNoDate: 'No verification date',
+    dataPendingTitle: 'These need re-checking',
+    dataPendingNote:
+      'The schedule lives in data/review-policy.json: entries with hard-coded application windows are re-checked every 90 days, the rest every 180. Nothing is guaranteed to have changed by then — but an entry past its date cannot claim to still be current.',
+    statsDueSoon: 'due soon',
+    nextUpTitle: 'Do these first',
+    nextUpEmpty: 'Nothing to do right now. This lights up before a window opens.',
+    nextClose: '{n} days left — closes {date}. Prepare or wait a year',
+    nextCloseUnknown: 'Window is open; the authority did not publish a closing date',
+    nextPrep: 'Opens in {n} days ({date}). Documents take {prep} days — start now',
+    nextOpen: 'Opens in {n} days ({date}); preparation has not become urgent yet',
+    nextClosed: 'Last round closed {date}. Next dates unpublished — prepare now, do not wait',
+    nextIdle: 'No published window dates — watch the official site',
 
     listTitle: 'Programs',
     listIntro:

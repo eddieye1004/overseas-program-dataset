@@ -658,6 +658,16 @@ a:hover {
   color: var(--ink-3);
 }
 
+/* 小节里的一句说明。与 .sec__title 的小字号 + 大写不同，
+   这里是正常句子，读得出来；限制行宽避免一行铺满 1280。 */
+.sec__note {
+  max-width: 68ch;
+  margin: 0 0 10px;
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
 .kvs {
   margin: 0;
   display: flex;

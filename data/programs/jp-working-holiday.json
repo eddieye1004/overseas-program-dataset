@@ -137,7 +137,7 @@
     {
       "name": "返程机票或购票资金证明",
       "required": true,
-      "note": "",
+      "note": "二者择一：已出票的返程机票，或足以购买回程机票的资金证明；与 8 万台币存款证明分开计。",
       "prepare_days": 14
     },
     {
@@ -225,7 +225,7 @@
       "赌博场所",
       "影响公共道德的其他场所"
     ],
-    "note": "打工是度假的附带活动，用于补充旅费（官方原文 engage in employment as an incidental activity of their holidays for the purpose of supplementing their travel funds），不是以工作为目的的签证。台湾窗口 FAQ 明确：工作的时间并无特定限制（原文「有關工作的時間並無特定限制」），内容上不得在酒吧等风化场所及特殊营业场所打工，违反者可能被逮捕、强制遣返并影响日后入境。大学生赴日实习若属教育课程一部分，须办其他签证，不能走打工度假。"
+    "note": "打工是度假的附带活动，用于补充旅费（官方原文 engage in employment as an incidental activity of their holidays for the purpose of supplementing their travel funds），不是以工作为目的的签证。台湾窗口 FAQ 明确：工作的时间并无特定限制（原文「有關工作的時間並無特定限制」），内容上不得在酒吧等风化场所及特殊营业场所打工，违反者可能被逮捕、强制遣返并影响日后入境。大学生赴日实习若属教育课程一部分，须办其他签证，不能走打工度假。 官方页面未规定持证期间的学习时长上限，故不填数字；如需修课，按当地移民局对附带学习的口径确认。"
   },
   "risks": [
     {

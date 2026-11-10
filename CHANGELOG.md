@@ -8,6 +8,44 @@
 
 ## [未发布]
 
+### 新增 — 复核台账与看板的「下一步」，并把 29 条记录的缺口补上（2026-11-10）
+
+这一轮不加国家，只解决两件让数据集「用起来」比「堆得高」更要紧的事：**数据会过期而没人知道该核哪几条**，以及**用户来了看一眼就走**。
+
+**复核台账（`scripts/track.py`）**
+
+- 新增 `data/review-policy.json` 作为复核周期的唯一来源：窗口写死日期的项目 90 天（一年一开、错过等一年），其余 180 天，剩余 25% 计为「即将到期」。策略写在数据里而不是代码里，理由是改周期不该改代码、也不该让前端另拍一个常数。
+- `scripts/track.py` 产出两份：`data/tracking.json`（机器读，每条含上次核实、已过天数、下次到期日、状态）与 `data/FRESHNESS.md`（人读，按紧急度排序的待办）。`--check` 有超期记录即退出码 1。
+- `.github/workflows/validate.yml` 加「复核到期必须被看见」步骤：每次都重算台账，**定时任务（每周一）跑 `--check`，超期就红**；push/PR 不阻断，免得一次与数据无关的文档修改被半年前的项目卡住。两份产物一并作为 artifact 上传。此前「陈旧」只是 `validate.py` 一条不落盘的告警，红一次就过去了，没人知道该去核哪几条。
+- 边界实测（写进 `tests/test_track.py`，22 个用例）：`classify(180,180)` 返回 `due_soon` 而不是 `overdue`（到期当天不该闪红）；90 天周期的四分之一线向下取整为 22，所以 68 天算「即将到期」、67 天算「在周期内」；`--today 2027-02-15 --check` 恰好三条 90 天周期的项目转红（澳、新、日），证明策略真的生效而不只是打印。
+
+**前端：口径只取一处**
+
+- `sync-data.mjs` 读同一份 policy，给索引每条加 `review_state` / `review_interval` / `review_due` / `review_days_left` 四个字段。`ListView` 删掉本地写死的 `Date.now() - 90 * 86400000`，`AboutView` 删掉本地 `STALE_DAYS = 90`——**两个各自拍一个常数，迟早和台账打架**。
+- 「数据说明」页 statbar 从 4 格扩到 5 格（新增「即将到期」），表格加「下次复核」列并标出剩余/超期天数，底部列出「该重新核这些了」的待办清单。
+
+**看板：下一步该做什么**
+
+- 新增 `web/src/lib/nextstep.ts`（纯函数，不 import React，能被 smoke-test 的 esbuild 打包）：把在跟进的项目归成 `close / prep / open / closed / idle` 五态，按紧急度排序，`prep` 由 `windows[].close_date` 减去 `documents[].prepare_days` 之和算出。
+- **`closed` 与 `idle` 必须分开**：澳、日、新三国的真实窗口都已关闭，若只认「未来窗口」，它们会全落进 `idle`，界面上与「官方从不公布日期」的项目长得一样——一个该盯下一轮，一个随时可申，混成一态会让用户把两件事搞反。
+- 看板顶部新增「今天先做这几件」，取紧急度前 3（跳过 `idle`）；每行右侧标出该干什么。
+
+**数据细化（29 条的缺口）**
+
+- 9 条缺学习时长上限的（`ca-iec`、`jp`、`us-j1-trainee`、`at-rwr-card-vhq`、`sg-work-holiday-programme`、`us-j1-intern`、`de-chancenkarte`、`us-j1-camp-counselor`、`nz-post-study-work`）：官方页面确实不写，**不填一个看起来合理的数字**，改写为「官方未规定持卡期间的学习时长上限，按当地移民局对附带学习的口径确认」。
+- 7 条 `documents[].note` 为空补齐（`de-16e` 2 条、`kr-h1` 2 条、`nz-china-whv`、`global-aiesec`、`jp`）。
+- `ie-working-holiday-authorisation` 的 risks 从 2 条补到 4 条：补「先办打工度假入境再转身份不成立」与「按护照签发地给额度，名单外的人学历/资金/语言一条都不会被审核」。
+- `nz-post-study-work` 仍只有 1 条 primary 来源（全库最薄）。本轮试过补第二条，`immigration.govt.nz` 对 curl/urllib 返回 200 但正文 0 字符（Incapsula 壳），真浏览器打开主签证页也是 0 字符（SPA 未渲染），二级路径大量返回「Page not found — We have made updates to our website」。**没补上是事实，记在这里而不是假装补过。**
+
+**顺手修的一处旧 bug**
+
+- `sync-data.mjs` 的 `ageUnknown` 原本用 `/未核实/` 匹配年龄备注，而 12 个「无年龄限制」项目的备注里有「0-99 表示无年龄要求，**不是「未核实」**」——句中带那三个字，于是全被标成「未核实」，卡片上直接显示「未核实」。改为 `/^⚠️/` 匹配警告前缀后，只剩 `global-aiesec-global-talent` 与 `us-j1-summer-work-travel` 两条真未核实。
+
+**门禁**
+
+- `validate.py` 30 文件 / 29 项目，错误 0 / 警告 0；`gen_sources.py --check` OK（117 条）；`pytest -q` **92 passed**（原 70 + 台账 22）；`track.py` 29 条全在周期内；`sync-data.mjs` coverage 100%（1933 条）；`smoke-test.mjs` **128/128**；`tsc -b --force` 通过；`vite build` 通过；`e2e-check.mjs` **184/184**。
+
+---
 ### 新增 — 瑞典毕业后求职居留与挪威技术工人居留，29 个项目（2026-11-10）
 
 数据从 27 个项目扩到 29 个：可申 21 → 23、不可申仍为 6，来源 111 → 117 条（A 级 100 → 106）。这两个项目构成一组对照，补上了「北欧怎么去」这个缺口：瑞典给「先入境再找」，挪威只给「先有 offer 再入境」。

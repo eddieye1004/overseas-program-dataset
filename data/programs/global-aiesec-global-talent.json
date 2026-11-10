@@ -88,7 +88,7 @@
     {
       "name": "简历（CV）",
       "required": true,
-      "note": "",
+      "note": "英文简历，须体现与所申请实习方向相关的课程、项目或工作经历；由 AIESEC 分会按岗位要求初筛。",
       "prepare_days": 14
     },
     {

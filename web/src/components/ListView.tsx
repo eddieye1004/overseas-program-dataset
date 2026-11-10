@@ -161,11 +161,9 @@ export function ListView({ savedIds, onToggleSave }: Props) {
   // 这三个数直接从数据算，不硬编码；数据变化时自动跟着变。
   const stats = useMemo(() => {
     if (!all) return null;
-    const cut = Date.now() - 90 * 86400000;
-    const stale = all.filter((p) => {
-      const t = p.last_verified ? Date.parse(p.last_verified) : NaN;
-      return Number.isNaN(t) || t < cut;
-    }).length;
+    // 复核状态由 sync-data.mjs 按 data/review-policy.json 算好写进索引，
+    // 前端不再自己拍一个 90 天常数 —— 否则列表页说「0 条超期」，
+    // 仓库里的 data/FRESHNESS.md 可能同时列着 3 条该核，两个数字对着说。
     return {
       eligible: all.filter((p) => p.status === 'eligible').length,
       notEligible: all.filter((p) => p.status === 'not_eligible').length,
@@ -175,7 +173,8 @@ export function ListView({ savedIds, onToggleSave }: Props) {
         (p) => p.status === 'eligible' && p.enrollment_scope === 'none',
       ).length,
       sources: all.reduce((n, p) => n + (p.source_count ?? 0), 0),
-      stale,
+      stale: all.filter((p) => p.review_state === 'overdue' || p.review_state === 'unknown').length,
+      dueSoon: all.filter((p) => p.review_state === 'due_soon').length,
     };
   }, [all]);
 
@@ -210,6 +209,9 @@ export function ListView({ savedIds, onToggleSave }: Props) {
             </span>
             <span className="statsbar__item statsbar__item--muted">
               {t('sourceCount')} {stats.sources} · {stats.stale} {t('statsStale')}
+              {/* 「即将到期」只在真有的时候说。每条都挂一个 0 会把结论条变成仪表盘，
+                  而这里要回答的只是「我现在能不能信这些数字」。 */}
+              {stats.dueSoon > 0 ? ` · ${stats.dueSoon} ${t('statsDueSoon')}` : ''}
             </span>
           </p>
         )}

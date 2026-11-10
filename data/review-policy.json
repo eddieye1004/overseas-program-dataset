@@ -1,0 +1,11 @@
+{
+  "$comment": "复核周期的唯一来源。scripts/track.py 与 web/scripts/sync-data.mjs 都读这个文件，任何一端都不许再写死 90/180。",
+  "interval_dated_window_days": 90,
+  "interval_default_days": 180,
+  "due_soon_ratio": 0.25,
+  "why": {
+    "dated": "windows 里写死了 open_date / close_date 的项目，一年只开一次窗口，错过就要再等一年；晚一天发现就等于让人白等一年，所以按 90 天核。",
+    "default": "其余项目的资格条件、费用、材料不会因为跨年而失效，180 天足够，太勤只会把精力花在没变的东西上。",
+    "due_soon": "剩余不足周期的 25% 时提前标为「即将到期」，避免昨天还绿今天就红。"
+  }
+}

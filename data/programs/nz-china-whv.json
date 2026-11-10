@@ -21,7 +21,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -42,10 +41,26 @@
     "language": {
       "required": true,
       "tests": [
-        { "test": "IELTS", "min_score": 5.5, "validity_months": 24 },
-        { "test": "TOEFL_iBT", "min_score": 46, "validity_months": 24 },
-        { "test": "PTE", "min_score": 42, "validity_months": 24 },
-        { "test": "Cambridge", "min_score": 162, "validity_months": 24 }
+        {
+          "test": "IELTS",
+          "min_score": 5.5,
+          "validity_months": 24
+        },
+        {
+          "test": "TOEFL_iBT",
+          "min_score": 46,
+          "validity_months": 24
+        },
+        {
+          "test": "PTE",
+          "min_score": 42,
+          "validity_months": 24
+        },
+        {
+          "test": "Cambridge",
+          "min_score": 162,
+          "validity_months": 24
+        }
       ],
       "note": "以上任一项达标即可，成绩须在申请时 2 年内考取，且必须在考试中心现场考（不接受居家线上考试）。官方分数表：IELTS 总分 5.5（A/G 类均可）、TOEFL iBT 总分 46、PTE Academic 42、B2 First 162、B2 First for Schools 162；另有 OET：听说读写四项均须达 C 级或以上，因其按单项评级、没有总分门槛，未列入上方数值表。"
     },
@@ -97,7 +112,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "first_come_first_served",
     "quota": 1000,
@@ -124,30 +138,81 @@
     "fees": [
       {
         "item": "签证审理费",
-        "amount": { "local_amount": 670, "currency": "NZD", "cny_estimate": 2900 },
+        "amount": {
+          "local_amount": 670,
+          "currency": "NZD",
+          "cny_estimate": 2900
+        },
         "refundable": false
       },
       {
         "item": "入境旅游税（IVL）",
-        "amount": { "local_amount": 100, "currency": "NZD", "cny_estimate": 430 },
+        "amount": {
+          "local_amount": 100,
+          "currency": "NZD",
+          "cny_estimate": 430
+        },
         "refundable": false
       }
     ],
     "processing_time": "官方口径：80% 的申请在 2.5 周内完成（2026-11-08 复核）。实际受抢名额后递交的材料完整度影响。"
   },
-
   "documents": [
-    { "name": "有效护照", "required": true, "note": "入境时剩余有效期须 ≥ 15 个月", "prepare_days": 30 },
-    { "name": "高中/大专/本科毕业证", "required": true, "note": "需中英文公证件", "prepare_days": 30 },
-    { "name": "英语成绩单", "required": true, "note": "雅思 5.5 / 托福 iBT 46 / PTE 42 / B2 First 162，2 年内有效，须在考试中心现场考", "prepare_days": 60 },
-    { "name": "银行存款流水", "required": true, "note": "约 4,200 纽币等值", "prepare_days": 14 },
-    { "name": "无犯罪记录公证", "required": true, "note": "需英文翻译", "prepare_days": 30 },
-    { "name": "体检报告", "required": true, "note": "胸部 X 光，移民局指定体检机构", "prepare_days": 21 },
-    { "name": "全年境外医疗保险保单", "required": true, "note": "覆盖 12 个月停留期", "prepare_days": 14 },
-    { "name": "白底电子证件照", "required": true, "note": "符合新西兰签证规格", "prepare_days": 7 },
-    { "name": "往返机票或购票资金证明", "required": true, "note": "", "prepare_days": 14 }
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "入境时剩余有效期须 ≥ 15 个月",
+      "prepare_days": 30
+    },
+    {
+      "name": "高中/大专/本科毕业证",
+      "required": true,
+      "note": "需中英文公证件",
+      "prepare_days": 30
+    },
+    {
+      "name": "英语成绩单",
+      "required": true,
+      "note": "雅思 5.5 / 托福 iBT 46 / PTE 42 / B2 First 162，2 年内有效，须在考试中心现场考",
+      "prepare_days": 60
+    },
+    {
+      "name": "银行存款流水",
+      "required": true,
+      "note": "约 4,200 纽币等值",
+      "prepare_days": 14
+    },
+    {
+      "name": "无犯罪记录公证",
+      "required": true,
+      "note": "需英文翻译",
+      "prepare_days": 30
+    },
+    {
+      "name": "体检报告",
+      "required": true,
+      "note": "胸部 X 光，移民局指定体检机构",
+      "prepare_days": 21
+    },
+    {
+      "name": "全年境外医疗保险保单",
+      "required": true,
+      "note": "覆盖 12 个月停留期",
+      "prepare_days": 14
+    },
+    {
+      "name": "白底电子证件照",
+      "required": true,
+      "note": "符合新西兰签证规格",
+      "prepare_days": 7
+    },
+    {
+      "name": "往返机票或购票资金证明",
+      "required": true,
+      "note": "二者择一：已出票的往返机票，或能覆盖回程票价的资金证明（与 NZD 4,200 生活费证明分开计）。",
+      "prepare_days": 14
+    }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -192,7 +257,6 @@
       "official_link": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 12,
     "max_same_employer_months": 6,
@@ -202,7 +266,6 @@
     "restricted_occupations": [],
     "note": "可为同一雇主工作不超过 6 个月。学习或培训总计最多 6 个月。持有效签证期间可多次往返新西兰。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -225,7 +288,6 @@
       "description": "常见工作类型：农业采摘、农场工作、服务业（餐厅/咖啡店/酒店）、旅游业、滑雪场。避开奥克兰等大城市更容易找到工作。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -256,7 +318,6 @@
       "claim": "中国打工度假签证的英语分数表原文：`IELTS Overall score of 5.5 or more`、`TOEFL iBT Overall score of 46 or more`、`PTE Academic Overall score of 42 or more`、`B2 First Overall score of 162 or more`、`B2 First for Schools Overall score of 162 or more`、`OET Grade C or higher in all 4 skills — listening, reading, writing and speaking.`；并规定 `your result must be no more than 2 years old at the time you apply`、`Tests taken remotely outside of a test centre, such as 'at home' tests are not acceptable.`"
     }
   ],
-
   "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

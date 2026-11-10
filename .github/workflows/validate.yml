@@ -72,6 +72,22 @@ jobs:
         continue-on-error: true
         run: python scripts/validate.py --check-links --timeout 20
 
+      - name: 复核到期必须被看见
+        # 「数据会过时」原本只是一句免责声明：validate.py 会在 180 天后告警，
+        # 但告警不落盘、不进仓库、不产生待办，CI 红一次也就过去了，
+        # 谁也不知道该去核哪几条。这里把复核周期变成一道真的闸门：
+        # 定时任务（schema 里的 cron）跑 --check，有记录越过周期就退出码 1；
+        # push / PR 不阻断 —— 一次文档修改不该因为数据该复核了而失败。
+        #
+        # 顺带把台账写进 artifact：人不再需要自己算「哪条最久没核」。
+        env:
+          IS_SCHEDULE: ${{ github.event_name == 'schedule' }}
+        run: |
+          python scripts/track.py
+          if [ "$IS_SCHEDULE" = "true" ]; then
+            python scripts/track.py --check
+          fi
+
       - name: 生成 JSON 报告（供归档）
         if: always()
         run: python scripts/validate.py --json > validate-report.json || true
@@ -81,7 +97,10 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
         with:
           name: validate-report
-          path: validate-report.json
+          path: |
+            validate-report.json
+            data/tracking.json
+            data/FRESHNESS.md
           retention-days: 30
 
       - name: 检查是否有数据文件遗失来源标注
