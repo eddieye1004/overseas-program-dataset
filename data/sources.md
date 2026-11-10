@@ -13,12 +13,12 @@
 
 | 指标 | 数值 |
 |---|---|
-| 项目数 | 27 |
-| 来源条目 | 111（primary 105 / secondary 6） |
-| 去重后的 URL 数 | 101（另有 27 个 `official_url` 入口） |
-| 最近一次核实 | 2026-11-09 |
+| 项目数 | 29 |
+| 来源条目 | 117（primary 111 / secondary 6） |
+| 去重后的 URL 数 | 107（另有 29 个 `official_url` 入口） |
+| 最近一次核实 | 2026-11-10 |
 | 最早一次核实 | 2026-09-17 |
-| 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 53 天） |
+| 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 54 天） |
 
 每张表里的「分级」列由 `scripts/validate.py` 的 `classify_source()` 现算，不是人工标注 —— 规则见文末。
 
@@ -217,6 +217,20 @@
 
 ---
 
+## 挪威
+
+### 挪威技术工人居留
+
+`no-skilled-worker` · 官方入口 <https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Skilled workers（挪威移民局官方页） | UDI（挪威移民局） | <https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/> | A · 政府/法律 | 2026-11-10 | 资格原文：`If you have completed higher education or have completed vocational training, you can apply for a residence permit as a skilled worker. You must normally already have received a job offer, or have your own business.`；三条路径 `a completed vocational training programme of at least three years at upper secondary school level ... There must be a corresponding vocational training programme in Norway.` / `completed education or degree from a university/ university college, for example a bachelor's degree as an engineer or nurse.` / `special qualifications are skills acquired through long professional experience ... Generally, you must have at least six years of work experience.`；聘用 `You must have received a concrete job offer from one specific employer in Norway.`、`The job must normally be full-time. If you have been offered at least an 80% position, we will accept this.`、`The pay and working conditions must not be poorer than is normal in Norway.`；期限 `you can normally get a residence permit for up to three years at a time`、`After three years, you can apply for a permanent residence permit in Norway.`；换岗与失业 `If you are later going to change employers, but work in the same type of position, you do not need to apply for a new residence permit.`、`If you lose your job, you can stay in Norway for up to six months to look for a new job. You must notify the police where you live within seven days.`；远程工作限制 `You are not allowed to work remotely unless it is part of the job you have been granted a residence permit to do.`；中国警示 `This currently applies in particular to applications for work as a chef, car mechanic, carpenter, painter, bricklayer, or hairdresser where the documentation submitted to attest to educational qualifications or the like were issued in Bangladesh, China, India, Iran, Kosovo, Nepal, Pakistan, Türkiye or Vietnam.` |
+| 2 | primary | Fees（UDI 官方费用表） | UDI（挪威移民局） | <https://www.udi.no/en/word-definitions/fees/> | A · 政府/法律 | 2026-11-10 | 费用原文条目：`Residence permits for work for applicants over the age of 18 (also renewals)   NOK 6 300`；`Group permit for employers (per worker)   NOK 6 300`；`Residence permits for work for applicants under the age of 18 (also renewals)   NOK 3 150`。同页另有家庭团聚 `First-time application for family immigration for adults   NOK 11900`、永居 `Permanent residence permit for adults   NOK 4 000`。 |
+| 3 | primary | Job seekers（挪威移民局官方页，说明求职居留不对境外开放） | UDI（挪威移民局） | <https://www.udi.no/en/want-to-apply/work-immigration/job-seekers/> | A · 政府/法律 | 2026-11-10 | 原文：`You must normally have received a job offer in Norway before you can apply for a residence permit for work purposes. If you are a skilled worker, you may in some exceptional cases get a residence permit to stay in Norway while you look for work.`；在挪威毕业者分支 `You must have completed your degree/education in Norway.`——即求职居留只对在挪威毕业或研究者开放。 |
+
+---
+
 ## 新西兰
 
 ### 新西兰打工度假签证（中国名额）
@@ -236,6 +250,20 @@
 | # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
 |---|---|---|---|---|---|---|---|
 | 1 | primary | Post Study Work Visa（新西兰移民局官方签证页） | Immigration New Zealand | <https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa> | A · 政府/法律 | 2026-11-08 | 总述与资格原文：`Apply for this visa if you want to work in New Zealand soon after you have completed your studies here. It allows you to stay and work in New Zealand for up to 3 years, depending on what you studied.`；`have recently finished studying in New Zealand for an approved qualification`；`have at least NZD $5,000 to pay your living expenses`。学历与就业原文：`work in New Zealand if you have a degree level 7 or higher qualification`；`a degree level 7 or higher qualification — level 8 postgraduate Diploma, level 9 masters degree or level 10 doctoral degree`；`If you have studied a degree level 7 or higher qualification, you must have studied it full-time for at least 30 weeks in New Zealand.`；非学位层级 `a non-degree level 7 or lower qualification that is on the list of qualifications eligible for a Post Study Work Visa — you must intend to work in a job that is related to what you studied`。一次性限制：`You can only have this visa once.` 申请窗口：`apply no later than 3, 6 or 12 months after your student visa expires`；`a doctoral degree, you must apply for a PSWV no later than 6 months after your student visa expires`。2026-11-16 变化：`From 16 November 2026, we will no longer accept paper applications for this visa. All applications from 16 November must be submitted online.`；`From 16 November 2026, Post Study Work Visa eligibility will be extended to applicants who have: an NZQCF level 7 graduate diploma that they studied full-time for in New Zealand, and a bachelor's degree that they completed in New Zealand or overseas.` 费用与审理：页面 `Cost` 栏 `NZD $1670`、`Processing time` 栏 `3.5 weeks`。体检与无犯罪：`If you will stay in New Zealand for more than 6 months, you must have a chest X-ray if you: are a citizen of a country that does not have a low incidence of tuberculosis (TB)`；`You must provide police certificates that are less than 6 months old when you apply if: your total time in New Zealand will be 24 months or longer.` |
+
+---
+
+## 瑞典
+
+### 瑞典毕业后求职居留
+
+`se-look-for-work` · 官方入口 <https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-or-start-a-business.html>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Look for work or start a business（瑞典移民局官方页） | Migrationsverket（瑞典移民局） | <https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-or-start-a-business.html> | A · 政府/法律 | 2026-11-10 | 资格与条件原文：`You have completed studies equivalent to a second-cycle qualification and want to come to Sweden to look for work or explore the possibilities for starting your own business here.`；第二周期定义 `it must correspond to either a 60-credit Master's degree, a 120-credit Master's degree, a professional degree worth 60–330 credits, or a postgraduate/PhD-level degree`；资金 `you must demonstrate that you have bank assets equivalent to at least SEK 13,000 for each month for which you are applying for a residence permit`；地点 `You must currently be located outside of Sweden`；期限 `You can be granted a residence permit for a maximum of nine months, but never for longer than your passport is valid.`；费用 `Fee: SEK 2,200`；审理 `Complete applications 75% of recently decided cases have been decided within: 5 months`；境内转工作许可 `If you get a job in Sweden during the permit period, you can apply for a work permit from within the country. You are not allowed to start working before you have applied for the new permit.` |
+| 2 | primary | Employees — work permit（瑞典移民局官方页，用于转工作许可的薪资门槛） | Migrationsverket（瑞典移民局） | <https://www.migrationsverket.se/en/you-want-to-apply/work/employee-or-self-employed/employees.html> | A · 政府/法律 | 2026-11-10 | 薪资门槛原文：`you must have a monthly salary or wages of at least SEK 34,470`；同页新闻 `2026-06-16 New median salary affects the salary requirement for work permits Statistics Sweden (SCB) has now updated the median salary in Sweden. As of 16 June, the median salary is SEK 38,300, which means that you must have a salary/wages of at least SEK 34,470 (90 per cent of the median salary) a month in order to be granted a work permit.`；另有 `Certain professions are exempt from the salary requirement`，豁免后按中位薪资的 75% 计。 |
+| 3 | primary | Look for work after completing your studies in Sweden（在瑞典毕业者的另一条路径） | Migrationsverket（瑞典移民局） | <https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-after-completing-your-studies-in-sweden.html> | A · 政府/法律 | 2026-11-10 | 区分两条路径的原文：`If you have completed higher education studies in Sweden, you can apply for a residence permit to look for work or explore the possibilities of starting your own business.`——在瑞典毕业的人走这条，可从境内申请；本条记录收录的是「在境外完成学业、要来瑞典找工作」那条，两者条件不同。 |
 
 ---
 

@@ -12,7 +12,7 @@
 |---|---|---|
 | 构建 | Vite 5 | 产物是纯静态文件，`dist/` 丢任何静态托管都能跑；不引入 SSR，因为没有需要服务端的东西 |
 | UI | React 18 + TypeScript | 筛选用例多、状态跨页面复用（收藏/对比/看板），手写 DOM 会失控；TS 用来钉住 schema 的枚举，改数据时类型会报错 |
-| 数据 | 构建期预生成 JSON | `scripts/sync-data.mjs` 把仓库 27 个 program JSON 合并成 3 个静态 JSON。浏览器只发静态请求，没有 API、没有数据库、没有 Key |
+| 数据 | 构建期预生成 JSON | `scripts/sync-data.mjs` 把仓库 29 个 program JSON 合并成 3 个静态 JSON。浏览器只发静态请求，没有 API、没有数据库、没有 Key |
 | 双语 | 离线词典（key = 中文原串） | 运行时调翻译 API 会产生费用且要联网；词典在构建期生成，访客翻页零延迟。缺词回落中文并 console.warn |
 | 路由 | hash（`#/p/<id>`） | GitHub Pages 不支持 SPA fallback rewrite，hash 路由不需要服务端配置，刷新不会 404 |
 | 个人状态 | localStorage | 没有账号体系，收藏/对比/进度/画像只存本机。换设备不同步——这是为「零成本 + 不收集数据」付的代价 |
@@ -29,9 +29,9 @@ web/
 ├─ i18n-src/                  翻译源（chunk-*.json），构建期不参与打包
 │                             merged.json 是本地合并中间产物，已 gitignore
 ├─ public/data/               sync:data 生成的产物，随构建拷进 dist
-│   ├─ programs.json          27 条完整记录 354.0 KB（gzip 106.4 KB）
-│   ├─ index.json             卡片用轻量索引 33.2 KB（gzip 9.0 KB，含来源计数）
-│   └─ i18n.json              1799 条词条 602.8 KB（gzip 202.7 KB）
+│   ├─ programs.json          29 条完整记录 385.6 KB（gzip 116.2 KB）
+│   ├─ index.json             卡片用轻量索引 35.9 KB（gzip 9.7 KB，含来源计数）
+│   └─ i18n.json              1917 条词条 656.5 KB（gzip 217.9 KB）
 ├─ public/p/                  gen-pages.mjs 生成：每项目一个真路径静态页 + 一个 /p/ 索引
 │                             （28 个 HTML，4.4–10.0 KB，均值 8.4 KB）
 ├─ public/manifest.webmanifest  PWA 清单：standalone + 192/512/maskable 图标 + 三个快捷方式
@@ -75,7 +75,7 @@ web/
 |---|---|
 | 托管 | GitHub Pages 免费（public 仓库 1 GB、月 100 GB 流量）；Cloudflare Pages 免费额度更大 |
 | 运行时费用 | 0 元。没有 Function、没有 KV、没有第三方 API |
-| 首屏体积 | HTML 3.8 KB（gzip 1.3 KB）+ CSS 31.7 KB（gzip 6.7 KB）+ JS 212.0 KB（gzip 68.1 KB）+ index.json 31.9 KB（gzip 8.5 KB） |
+| 首屏体积 | HTML 3.7 KB（gzip 1.6 KB）+ CSS 32.5 KB（gzip 6.9 KB）+ JS 212.6 KB（gzip 69.9 KB）+ index.json 35.9 KB（gzip 9.7 KB） |
 | 换设备 | 收藏/进度**不同步**，需要手工导出（本期没做导出，见「已知限制」） |
 | 数据更新 | 需要跑 `pnpm run sync:data` 再构建；Pages 工作流已包含这一步 |
 | SEO | 详情页已由 `gen-pages.mjs` 生成为真路径 `/p/<id>.html` 并进 sitemap；交互版仍是 hash 路由（`#/p/<id>`），两者并存互不影响 |
@@ -273,7 +273,7 @@ impeccable.cmd detect --json src dist/index.html                 # AI 痕迹检�
 
 - `public/manifest.webmanifest`：`display: standalone`、`start_url`/`scope` 都是 `./`（同一份产物既能跑子路径也能跑根路径），三个快捷方式指向 `#/`、`#/match`、`#/track`。
 - `public/icons/`：192 / 512 / maskable-512 / apple-touch-180，四张 PNG 由 `node scripts/pwa-icons.mjs` 用无头 Edge 截图生成，不引 sharp / canvas。maskable 那张图形缩到 52% 是因为系统裁切的安全区只有中间 80%。
-- `index.html` 与 `gen-pages.mjs` 生成的 27 个静态页都声明 `manifest` 与 `apple-touch-icon`：从搜索结果直接落到详情页的人同样能装。
+- `index.html` 与 `gen-pages.mjs` 生成的 29 个静态页都声明 `manifest` 与 `apple-touch-icon`：从搜索结果直接落到详情页的人同样能装。
 - iOS 只认 `apple-touch-icon` 与 `apple-mobile-web-app-capable`，不读 manifest 的 `display`；安卓 Chrome / Samsung Internet 才把 manifest 当权威。
 - 微信内置浏览器不支持「添加到主屏幕」，其菜单里是「在浏览器中打开」。国内用户的实际路径是：微信里读到链接 → 右上角「在浏览器中打开」→ Safari/Chrome 加到桌面。这一步没法在页面里绕过。
 
@@ -293,7 +293,7 @@ node scripts/smoke-test.mjs                        # PASS 106 / 106
 node scripts/e2e-check.mjs http://127.0.0.1:8099/  # PASS 179 / 179
 ```
 
-两套测试的条数从数据派生，不写死，所以加项目不会让它们变红。文档里出现的「27 个项目、可申 21 / 不可申 6、来源 111」是 2026-11-09 的取数，改 `data/programs/*.json` 后需重新取数。
+两套测试的条数从数据派生，不写死，所以加项目不会让它们变红。文档里出现的「29 个项目、可申 23 / 不可申 6、来源 117」是 2026-11-10 的取数，改 `data/programs/*.json` 后需重新取数。
 
 ### 已知限制（不是缺陷）
 

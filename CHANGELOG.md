@@ -8,6 +8,41 @@
 
 ## [未发布]
 
+### 新增 — 瑞典毕业后求职居留与挪威技术工人居留，29 个项目（2026-11-10）
+
+数据从 27 个项目扩到 29 个：可申 21 → 23、不可申仍为 6，来源 111 → 117 条（A 级 100 → 106）。这两个项目构成一组对照，补上了「北欧怎么去」这个缺口：瑞典给「先入境再找」，挪威只给「先有 offer 再入境」。
+
+**瑞典：毕业后求职居留（`se-look-for-work`）**
+
+- 第二周期学历（`it must correspond to either a 60-credit Master's degree, a 120-credit Master's degree, a professional degree worth 60–330 credits, or a postgraduate/PhD-level degree`）毕业后可申请最长 9 个月，用于找工作或调研创业。
+- 硬条件三条：必须在入境前、且人在瑞典境外时递交（`You must currently be located outside of Sweden`）；按月数证明资金，每月 SEK 13,000，9 个月即 SEK 117,000（含回程开销）；综合医疗保险须覆盖急诊与其他医疗、住院、急诊牙科、医疗送返四项。
+- 费用 SEK 2,200；官方只给统计不给天数：材料完整的案子 75% 在 5 个月内决定，不完整的 4 个月。
+- 期间找到工作可在瑞典境内直接申请工作许可，但**递交前不得上班**（`You are not allowed to start working before you have applied for the new permit.`）。工作许可自 2026-06-16 起要求月薪不低于 SEK 34,470（当月中位薪资 SEK 38,300 的 90%），这条写进了 risks。
+
+**挪威：技术工人居留（`no-skilled-worker`）**
+
+- 三条资格路径：高中层级三年制职业培训（且挪威有对应项目）、大学/大学学院学位、或 6 年以上工作经验走「特殊技能」。岗位须全职或至少 80%。
+- 不要求资金证明，改按「薪酬与条件不得低于挪威常规水平」审定（`The pay and working conditions must not be poorer than is normal in Norway.`）。
+- 期限：大学学位层级一次 3 年、职业培训层级一次 1 年；满 3 年可申请永居。同类型岗位换雇主免重新申请；失业可留 6 个月但须 7 日内通知警察；不允许远程为境外雇主工作。
+- 费用 NOK 6 300（18 岁以下 NOK 3 150）。
+- **官方点名中国**：`it may be difficult to obtain a residence permit to work as a skilled worker at a vocational level ... This currently applies in particular to applications for work as a chef, car mechanic, carpenter, painter, bricklayer, or hairdresser where the documentation submitted to attest to educational qualifications or the like were issued in Bangladesh, China, India, Iran, Kosovo, Nepal, Pakistan, Türkiye or Vietnam.` 这句话放进 risks 的第一条（critical），因为它是这条路径对大陆申请人最实际的约束。
+
+**取数与收录判断（本轮踩过的路）**
+
+- **葡萄牙不收录**：`vistos.mne.gov.pt` 的 Skilled Job Seeker Visa 页面写着 `SKILLED JOB SEEKER VISA — NOT YET AVAILABLE AT PORTUGUESE CONSULAR OFFICES — Waiting for the necessary regulation of Article 57-A of the Foreigners' Law.` 法条有、执行未开。收录一个申不了的通道会误导，宁可空着。
+- 捷克 `mzv.cz` 与 `ipc.gov.cz`、波兰 `gov.pl/web/udsc/...`（被重定向回门户首页）、丹麦 `nyidanmark.dk`（英文路径大改，子页全 404）、芬兰 `migri.fi`（403）、西班牙/意大利/卢森堡对应页（404）本轮都拿不到可落盘正文。
+- **`gov.pl`、`vistos.mne.gov.pt`、`aima.gov.pt`、`migri.fi` 直连一律失败，走 `127.0.0.1:3067` 代理才 200。** 抓取脚本改成 proxy 优先、direct 兜底之后才拿到正文，这条记在这里以免下次重踩。
+- `validate.py` 的 `OFFICIAL_GOV_FRAGMENTS` 新增两项：`migrationsverket.se`（瑞典所有居留许可的唯一受理机关）与 `udi.no`（挪威唯一受理机关）。两国的关键操作口径——瑞典的 9 个月上限与工作许可薪资门槛、挪威的 80% 岗位下限与对中国等九国的职业资格警示——都只写在各自移民局站点上，法条不含这些数字。
+
+**文档与长文同步到 29 项目口径**
+
+- `README.md` 覆盖表加 `Look for work or start a business | 瑞典` 与 `Skilled workers | 挪威`；统计句改为「29 个项目，大陆护照可申 23 / 不可申 6，共 117 条来源（A 级 106 / B 级 6 / C 级 5）」。
+- `web/index.html` 三处描述、`web/README.md` 七处数字（含 385.6 KB / gzip 116.2 KB、35.9 KB / gzip 9.7 KB、1917 条 656.5 KB / gzip 217.9 KB）、`guides/misinformation.html` 两处全部改到实算值。
+- `guides/age-wall.html`：年龄分档重算（16–17 岁 18 个、18–30 岁 23 个、31–35 岁 21 个、36 岁以上 20 个）；「官方明说不限」由 13 个变 15 个，名单补入瑞典与挪威；31 岁以上那张表从 19 行扩到 21 行，瑞典与挪威都标「能」；「剩下 11 个能从大陆直接申请」，其中新增两条代价说明——瑞典要先备 9 个月生活费、挪威要先拿到 offer。
+- 新增 `web/i18n-src/chunk-34.json`（118 条），`i18n coverage 100%` / 1917 entries / 656.5 KB。
+
+---
+
 ### 新增 — 奥地利红白红卡（高资质通道），27 个项目（2026-11-09）
 
 数据从 26 个项目扩到 27 个：可申 20 → 21、不可申仍为 6，来源 109 → 111 条（A 级 98 → 100）。选奥地利是因为它与德国机会卡构成一组对照：同样是打分制求职通道，一个是「先入境找工作、每周限 20 小时」，一个是「分数门槛更高、但拿到就是可全职就业的 24 个月工作居留」。

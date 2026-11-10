@@ -1,0 +1,237 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "no-skilled-worker",
+    "name": "挪威技术工人居留",
+    "name_en": "Residence Permit for Skilled Workers (Norway)",
+    "country": "挪威",
+    "country_code": "NO",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Residence permit for skilled workers",
+    "official_url": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/",
+    "authority": "挪威移民局（UDI, Utlendingsdirektoratet）",
+    "summary": "拿到挪威具体雇主的 offer 后，按学历或职业资格申请工作居留：大学毕业通常一次给 3 年，职业培训（高中层级三年以上）一次给 1 年，特殊技能路径要求 6 年以上工作经验。工作须全职或至少 80% 岗位，薪资与条件不得低于挪威常规水平。3 年后可申请永居。中国大陆申请人要注意：官方点名说明中国等国出具的职业资格文件常被认定造假，职业层级（厨师、汽修、木工等）审核会明显更严。",
+    "tags": [
+      "requires_degree",
+      "no_agency_needed",
+      "rolling",
+      "high_demand"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "taiwan_china": "eligible",
+      "note": "法规未按国籍设限，中国大陆护照持有人可申，且不设配额。但官方在资格页面明确写了针对若干国家（含中国）职业资格文件的真实性警示，见风险一栏——这不影响资格，影响的是职业层级申请的实际通过率。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方未设年龄上下限。0-99 表示「无年龄门槛」，不是「未核实」。年龄只通过「工作经验年限」间接影响得分——特殊技能路径要求 6 年以上相关经验。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "三条路径任选其一：①完成高中层级不少于三年的职业培训，且挪威存在对应的职业培训项目（`a completed vocational training programme of at least three years at upper secondary school level ... There must be a corresponding vocational training programme in Norway.`）；②完成大学/大学学院的教育或学位，例如工程师或护理学士（`completed education or degree from a university/ university college, for example a bachelor's degree as an engineer or nurse.`）；③特殊技能——通过长期职业实践获得的技能，一般要求至少 6 年工作经验（`special qualifications are skills acquired through long professional experience ... Generally, you must have at least six years of work experience.`）。专业不限，但岗位须与学历或资格对应。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格清单里没有语言门槛，不要求提交雅思/托福或挪威语成绩。语言实际由雇主在招聘时把关。"
+    },
+    "funds": {
+      "required": false,
+      "note": "不要求存款证明或保证金。取而代之的是薪资条件：`The pay and working conditions must not be poorer than is normal in Norway.` 即薪酬与工作条件不得低于挪威同类岗位的常规水平，这一条在审件时按雇佣合同与行业标准核对，不看你账上有多少钱。"
+    },
+    "other_requirements": [
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "必须有具体雇主的具体聘用：`You must have received a concrete job offer from one specific employer in Norway.` 且岗位通常须全职，`If you have been offered at least an 80% position, we will accept this.` 低于 80% 的岗位一般不接受。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": false,
+        "note": "可从境外申请（须先由雇主在系统里提交聘用确认并给你一个代码，之后你才能填表），也可在挪威境内持有效居留时转换。没有「必须人在境外」的限制。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota": null,
+    "quota_note": "不设名额上限，也没有开放窗口，全年滚动受理。实际约束是「先有雇主 offer」——雇主不先提交确认，申请人连表都填不了。",
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动受理。流程顺序固定：雇主先在 UDI 系统提交聘用确认 → 申请人拿到代码 → 才能递交申请。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "规则沿用至 2027 年未见变动公告。费用与材料按 UDI 页面当期版本执行。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "工作居留许可申请费（18 岁以上，含续签）",
+        "amount": {
+          "local_amount": 6300,
+          "currency": "NOK",
+          "cny_estimate": 4400,
+          "note": "UDI 费用表原文条目：`Residence permits for work for applicants over the age of 18 (also renewals)   NOK 6 300`。18 岁以下为 NOK 3 150。集团许可（Group permit for employers）按每名工人 NOK 6 300 另计。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "UDI 在单独的 waiting time 页面按类别公布当期处理进度，资格页本身不给天数。递交前应到该页核对当期数字——服务点所在国不同、材料是否齐全都会显著影响时长，官方不承诺固定时限。"
+  },
+  "documents": [
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期须覆盖计划居留期。",
+      "prepare_days": 30
+    },
+    {
+      "name": "雇主聘用确认与代码",
+      "required": true,
+      "note": "最关键的一份。官方原文：`If you are applying on your own from abroad, your employer must submit confirmation of the job offer before you can submit the application form. You will receive a code from your employer that you must enter in the application form.` 顺序不能颠倒——没有这个代码，申请表填不下去。",
+      "prepare_days": 14
+    },
+    {
+      "name": "雇佣合同",
+      "required": true,
+      "note": "须写明岗位、薪资、工时比例。岗位须全职或至少 80%；薪酬与条件不得低于挪威常规水平。",
+      "prepare_days": 14
+    },
+    {
+      "name": "学历或职业资格证明",
+      "required": true,
+      "note": "按所选路径提交：三年制职业培训证书、大学/大学学院学位，或用于证明特殊技能的 6 年以上工作经历材料。非挪威语/英语材料须附认证翻译。",
+      "prepare_days": 60
+    },
+    {
+      "name": "受管制职业的认定文件",
+      "required": false,
+      "note": "仅在岗位属需要认定或授权的职业时需要：`If you are going to work in an occupation for which recognition or authorisation is required ... you must have such recognition or authorisation.` 医疗、教师一类岗位属此列。",
+      "prepare_days": 90
+    },
+    {
+      "name": "护照照片与生物信息",
+      "required": true,
+      "note": "到使领馆或警务站递交时现场采集，用于制作居留卡。",
+      "prepare_days": 7
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先确定自己走哪条资格路径",
+      "description": "三条路里选一条，材料完全不同：①高中层级三年制职业培训 + 挪威有对应项目；②大学/大学学院学位（工程师、护理这类最好对）；③6 年以上工作经历走「特殊技能」。岗位还要与资格对得上——有学位但应聘无关岗位，一样过不了。",
+      "duration": "1 天",
+      "official_link": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/"
+    },
+    {
+      "step_no": 2,
+      "title": "拿到具体雇主的 offer",
+      "description": "官方原文：`You must have received a concrete job offer from one specific employer in Norway.` 岗位须全职或至少 80%。薪资与条件不得低于挪威常规水平——这条在中小企业最容易踩，签合同前先确认对方给的数在当地站得住。",
+      "duration": "视求职而定",
+      "official_link": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/"
+    },
+    {
+      "step_no": 3,
+      "title": "让雇主先提交聘用确认，拿到代码",
+      "description": "顺序不能反：雇主必须在 UDI 系统里先提交聘用确认，你才会收到一个代码（`You will receive a code from your employer that you must enter in the application form.`）。没有代码就填不了表。境外申请时这一步是前置条件。",
+      "duration": "3 天",
+      "official_link": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/"
+    },
+    {
+      "step_no": 4,
+      "title": "在线填表，交 NOK 6 300",
+      "description": "18 岁以上申请人申请费 NOK 6 300（含续签）。填表时可选择就近的使领馆或警务站办理后续手续。",
+      "duration": "1 天",
+      "official_link": "https://www.udi.no/en/word-definitions/fees/"
+    },
+    {
+      "step_no": 5,
+      "title": "到使领馆或警务站交材料、采集生物信息",
+      "description": "带齐护照、雇佣合同、学历/资格证明，现场采集照片与指纹。材料不全是最常见的延误原因，UDI 不承诺固定处理时长。",
+      "duration": "1 天",
+      "official_link": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/"
+    },
+    {
+      "step_no": 6,
+      "title": "获批后入境，3 年后可申请永居",
+      "description": "大学毕业层级一次给 3 年（`you can normally get a residence permit for up to three years at a time`），职业培训层级一次给 1 年。3 年后可申请挪威永居（`After three years, you can apply for a permanent residence permit in Norway.`）。同岗位换雇主不需重新申请居留。",
+      "duration": "1 天",
+      "official_link": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 36,
+    "max_same_employer_months": 36,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "大学学位层级一次给 3 年，可续；职业培训层级一次给 1 年，可续。同类型岗位换雇主不需重新申请（`If you are later going to change employers, but work in the same type of position, you do not need to apply for a new residence permit.`）。失业可留 6 个月找工作，但须在 7 日内通知所在地警察（`You must notify the police where you live within seven days.`）。满 3 年可申请永居。",
+    "restricted_occupations": [],
+    "note": "许可与「岗位类型」绑定而非与某家公司永久绑定：同类岗位换雇主免申请，换岗位类型要重新申请。不允许远程为境外雇主工作——`You are not allowed to work remotely unless it is part of the job you have been granted a residence permit to do.` 受管制职业（医疗、教师等）须先完成资格认定。",
+    "max_stay_months_note": ""
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "官方点名中国：`it may be difficult to obtain a residence permit to work as a skilled worker at a vocational level ... This currently applies in particular to applications for work as a chef, car mechanic, carpenter, painter, bricklayer, or hairdresser where the documentation submitted to attest to educational qualifications or the like were issued in Bangladesh, China, India, Iran, Kosovo, Nepal, Pakistan, Türkiye or Vietnam.` 走职业层级（厨师、汽修、木工、油漆、砌砖、理发）时，中国出具的职业资格文件会被重点核查，实务上常常过不了。走大学学位层级不在这段警示的范围内。"
+    },
+    {
+      "level": "critical",
+      "description": "必须先有挪威具体雇主的 offer，不能先入境找工作。挪威的求职居留只给在挪威毕业的人或研究者（`You must have completed your degree/education in Norway.`），不从境外开放。所以顺序只能是先远程拿到 offer，再谈签证。"
+    },
+    {
+      "level": "warning",
+      "description": "岗位须全职或至少 80%（`If you have been offered at least an 80% position, we will accept this.`）。兼职、小时工、项目制合同一般不满足，这一点和「有 offer 就行」的直觉不一样。"
+    },
+    {
+      "level": "warning",
+      "description": "薪酬与工作条件不得低于挪威常规水平，这条没有公开数字，由审件时按行业标准判断。雇主给的市场价偏低时，即使拿到 offer 也可能卡在审件环节。"
+    },
+    {
+      "level": "info",
+      "description": "与瑞典、荷兰的取舍：挪威不做「毕业后求职居留」，只有雇主担保这一条路，好处是一次给 3 年、3 年后可申永居、不设资金门槛；坏处是没有 offer 就没有任何入境找工作的合法通道。瑞典、荷兰则是先入境再找，但期限只有 9 个月到 1 年。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Skilled workers（挪威移民局官方页）",
+      "url": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/",
+      "publisher": "UDI（挪威移民局）",
+      "last_verified": "2026-11-10",
+      "verified_by": "eddieye1004",
+      "claim": "资格原文：`If you have completed higher education or have completed vocational training, you can apply for a residence permit as a skilled worker. You must normally already have received a job offer, or have your own business.`；三条路径 `a completed vocational training programme of at least three years at upper secondary school level ... There must be a corresponding vocational training programme in Norway.` / `completed education or degree from a university/ university college, for example a bachelor's degree as an engineer or nurse.` / `special qualifications are skills acquired through long professional experience ... Generally, you must have at least six years of work experience.`；聘用 `You must have received a concrete job offer from one specific employer in Norway.`、`The job must normally be full-time. If you have been offered at least an 80% position, we will accept this.`、`The pay and working conditions must not be poorer than is normal in Norway.`；期限 `you can normally get a residence permit for up to three years at a time`、`After three years, you can apply for a permanent residence permit in Norway.`；换岗与失业 `If you are later going to change employers, but work in the same type of position, you do not need to apply for a new residence permit.`、`If you lose your job, you can stay in Norway for up to six months to look for a new job. You must notify the police where you live within seven days.`；远程工作限制 `You are not allowed to work remotely unless it is part of the job you have been granted a residence permit to do.`；中国警示 `This currently applies in particular to applications for work as a chef, car mechanic, carpenter, painter, bricklayer, or hairdresser where the documentation submitted to attest to educational qualifications or the like were issued in Bangladesh, China, India, Iran, Kosovo, Nepal, Pakistan, Türkiye or Vietnam.`"
+    },
+    {
+      "type": "primary",
+      "name": "Fees（UDI 官方费用表）",
+      "url": "https://www.udi.no/en/word-definitions/fees/",
+      "publisher": "UDI（挪威移民局）",
+      "last_verified": "2026-11-10",
+      "verified_by": "eddieye1004",
+      "claim": "费用原文条目：`Residence permits for work for applicants over the age of 18 (also renewals)   NOK 6 300`；`Group permit for employers (per worker)   NOK 6 300`；`Residence permits for work for applicants under the age of 18 (also renewals)   NOK 3 150`。同页另有家庭团聚 `First-time application for family immigration for adults   NOK 11900`、永居 `Permanent residence permit for adults   NOK 4 000`。"
+    },
+    {
+      "type": "primary",
+      "name": "Job seekers（挪威移民局官方页，说明求职居留不对境外开放）",
+      "url": "https://www.udi.no/en/want-to-apply/work-immigration/job-seekers/",
+      "publisher": "UDI（挪威移民局）",
+      "last_verified": "2026-11-10",
+      "verified_by": "eddieye1004",
+      "claim": "原文：`You must normally have received a job offer in Norway before you can apply for a residence permit for work purposes. If you are a skilled worker, you may in some exceptional cases get a residence permit to stay in Norway while you look for work.`；在挪威毕业者分支 `You must have completed your degree/education in Norway.`——即求职居留只对在挪威毕业或研究者开放。"
+    }
+  ],
+  "last_verified": "2026-11-10",
+  "verified_by": "eddieye1004"
+}
