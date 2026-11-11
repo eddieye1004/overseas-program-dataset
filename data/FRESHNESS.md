@@ -68,8 +68,8 @@
 
 | 项目 | 国家 | 缺什么 |
 | --- | --- | --- |
-| `at-rwr-card-vhq` 奥地利红白红卡（高资质） | 奥地利 | 红白红卡部分类别按奥地利《定居与居留法》受年度配额（Bundeshöchstzahl）约束，但 very highly qualified 这一档的具体数字未在 migration.gv.at 的高资质人才页与 FAQ 页上找到，本次复核（2026-11-11）两页均无相关表述。待核实：该通道当年是否列入配额、数字多少，须向受理机关（维也纳 MA 35 或州政府）或 ris.bka.gv.at 的当年 Verordnung 确认。 |
-| `de-chancenkarte` 德国机会卡（求职居留许可） | 德国 | §20a Abs.7 AufenthG 明文授权联邦政府以行政法规按年度或更短周期限制尚未在德人士的机会卡发放数量，但截至复核日（2026-11-11）未在 gesetze-im-internet.de 的 §20a/§20b 条文页上见到已生效的数量限制公告；make-it-in-germany 的机会卡页对抓取返回反爬中间页，未能读到正文。待核实：是否已依 §20a Abs.7 发布限额法规。 |
+| `at-rwr-card-vhq` 奥地利红白红卡（高资质） | 奥地利 | 奥地利按《定居与居留法》（NAG）设有联邦最高限额（Bundeshöchstzahl）制度，部分居留类别受年度配额约束；但 very highly qualified（红白红卡高资质档）是否被列入、当年数字多少，仍未从官方一手来源确认。已逐页排查（2026-11-11）：① migration.gv.at 的高资质人才页（含积分表全文）；② 同站 FAQ 页；③ 同站「永久居留」总览页——三页均未出现 quota / Bundeshöchstzahl / contingent 一类表述；④ BMI（内政部）的居留事务页亦无配额内容。⑤ 权威法律数据库 ris.bka.gv.at 本次访问被 Myra 安全验证拦截（HTTP 503 挑战页），无法读取 NAG 条文原文，故未能从法条侧确证。卡点：需读到当年 NAG 的 Bundeshöchstzahl 条例（Verordnung）原文，或将问题直接提交受理机关（维也纳 MA 35／州政府）书面确认；在拿到其中任一项之前不填数字，也不据「没找到」推断为无配额。 |
+| `de-chancenkarte` 德国机会卡（求职居留许可） | 德国 | §20a Abs.7 AufenthG 只作**授权**，本身不设数字。条文原文：`Zur Steuerung der Erwerbsmigration wird die Bundesregierung ermächtigt, durch Rechtsverordnung, die nicht der Zustimmung des Bundesrates bedarf, die Zahl der Chancenkarten ... jährlich oder für einen kürzeren Zeitraum zu begrenzen.` （为调控劳动移民，联邦政府被授权通过无需联邦参议院同意的行政法规，按年度或更短周期限制发放给尚未在德居留的外国人的机会卡数量。）逐项排查结果（2026-11-11）：① §20a 的条目名本身就是「Chancenkarte; Verordnungsermächtigung」，标题与正文都只有授权、无数字；② 联邦法律库中不存在名为 Chancenkarte 的配套条例（gesetze-im-internet.de/chancenkartev/ 返回 404）；③ 居留法实施条例（AufenthV）全文检索「Chancenkarte」命中 0 次。因此判断：**截至核实日未有依 §20a Abs.7 生效的数量限制法规**。仍记 unverified 而不记 no_quota 的理由：条文保留了随时颁布限额的授权，「现在没有」不等于「制度上无上限」——把它写成 no_quota 会抹掉这个区别。卡点：若要确证「至今未颁」，还需查联邦法律公报（BGBl）的年度索引，该库需交互式检索，本次未能覆盖。 |
 
 ---
 

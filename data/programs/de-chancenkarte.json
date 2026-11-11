@@ -62,7 +62,7 @@
     "mechanism": "rolling",
     "quota_status": "unverified",
     "quota": null,
-    "quota_note": "§20a Abs.7 AufenthG 明文授权联邦政府以行政法规按年度或更短周期限制尚未在德人士的机会卡发放数量，但截至复核日（2026-11-11）未在 gesetze-im-internet.de 的 §20a/§20b 条文页上见到已生效的数量限制公告；make-it-in-germany 的机会卡页对抓取返回反爬中间页，未能读到正文。待核实：是否已依 §20a Abs.7 发布限额法规。",
+    "quota_note": "§20a Abs.7 AufenthG 只作**授权**，本身不设数字。条文原文：`Zur Steuerung der Erwerbsmigration wird die Bundesregierung ermächtigt, durch Rechtsverordnung, die nicht der Zustimmung des Bundesrates bedarf, die Zahl der Chancenkarten ... jährlich oder für einen kürzeren Zeitraum zu begrenzen.` （为调控劳动移民，联邦政府被授权通过无需联邦参议院同意的行政法规，按年度或更短周期限制发放给尚未在德居留的外国人的机会卡数量。）逐项排查结果（2026-11-11）：① §20a 的条目名本身就是「Chancenkarte; Verordnungsermächtigung」，标题与正文都只有授权、无数字；② 联邦法律库中不存在名为 Chancenkarte 的配套条例（gesetze-im-internet.de/chancenkartev/ 返回 404）；③ 居留法实施条例（AufenthV）全文检索「Chancenkarte」命中 0 次。因此判断：**截至核实日未有依 §20a Abs.7 生效的数量限制法规**。仍记 unverified 而不记 no_quota 的理由：条文保留了随时颁布限额的授权，「现在没有」不等于「制度上无上限」——把它写成 no_quota 会抹掉这个区别。卡点：若要确证「至今未颁」，还需查联邦法律公报（BGBl）的年度索引，该库需交互式检索，本次未能覆盖。",
     "schedule": {
       "type": "rolling",
       "status": "always_open",

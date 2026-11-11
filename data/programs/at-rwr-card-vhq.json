@@ -68,7 +68,7 @@
     "mechanism": "rolling",
     "quota_status": "unverified",
     "quota": null,
-    "quota_note": "红白红卡部分类别按奥地利《定居与居留法》受年度配额（Bundeshöchstzahl）约束，但 very highly qualified 这一档的具体数字未在 migration.gv.at 的高资质人才页与 FAQ 页上找到，本次复核（2026-11-11）两页均无相关表述。待核实：该通道当年是否列入配额、数字多少，须向受理机关（维也纳 MA 35 或州政府）或 ris.bka.gv.at 的当年 Verordnung 确认。",
+    "quota_note": "奥地利按《定居与居留法》（NAG）设有联邦最高限额（Bundeshöchstzahl）制度，部分居留类别受年度配额约束；但 very highly qualified（红白红卡高资质档）是否被列入、当年数字多少，仍未从官方一手来源确认。已逐页排查（2026-11-11）：① migration.gv.at 的高资质人才页（含积分表全文）；② 同站 FAQ 页；③ 同站「永久居留」总览页——三页均未出现 quota / Bundeshöchstzahl / contingent 一类表述；④ BMI（内政部）的居留事务页亦无配额内容。⑤ 权威法律数据库 ris.bka.gv.at 本次访问被 Myra 安全验证拦截（HTTP 503 挑战页），无法读取 NAG 条文原文，故未能从法条侧确证。卡点：需读到当年 NAG 的 Bundeshöchstzahl 条例（Verordnung）原文，或将问题直接提交受理机关（维也纳 MA 35／州政府）书面确认；在拿到其中任一项之前不填数字，也不据「没找到」推断为无配额。",
     "schedule": {
       "type": "rolling",
       "status": "always_open",
