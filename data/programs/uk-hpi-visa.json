@@ -13,11 +13,11 @@
     "authority": "UK Visas and Immigration（英国内政部签证与移民局）",
     "summary": "不需要先在英国读书、也不需要雇主担保的英国工作签证：只要近 5 年内从英国内政部认可的境外大学毕业，就能申请 2 年（博士 3 年），期间可自由工作、求职、自雇。2026 年度名单收了 82 所境外院校，其中中国大陆 8 所、香港 5 所，是全球少数对大陆护照持有人直接开放、且不要求已有 offer 的发达国家长期居留路径。每人一生只能申请一次。",
     "tags": [
-        "no_agency_needed",
+      "no_agency_needed",
       "requires_degree",
       "english_required",
       "high_demand"
-      ],
+    ],
     "active": true
   },
   "eligibility": {
@@ -76,6 +76,14 @@
     "quota": null,
     "quota_source": "https://www.gov.uk/high-potential-individual-visa",
     "quota_note": "官方明说设年度限额但不公布数字，原文：`There is a yearly limit on applications for this visa. The application year runs between 1 November and 31 October. If the limit has been reached, you'll be told when you apply online.` 名额是否用尽只能在在线申请时才知道，无法提前查询。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无开放窗口，但存在年度限额（官方未公布数字），限额用尽只能等下一个申请年度（11-01 至次年 10-31）。",
+      "lead_time_days": 60,
+      "note": "rolling：按个人条件随时可申。注意这条的「窗口」不是开放期而是限量：官方明确 `There is a yearly limit on applications for this visa`，额度用尽后在线申请时才会被告知。lead_time_days=60：需 Ecctis 学历认证（约 252 英镑、需数周）。"
+    },
     "windows": [
       {
         "year": 2026,

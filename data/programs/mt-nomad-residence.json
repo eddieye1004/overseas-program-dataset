@@ -1,0 +1,267 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "mt-nomad-residence",
+    "name": "马耳他数字游民居留许可（Nomad Residence Permit）",
+    "name_en": "Malta Nomad Residence Permit",
+    "country": "马耳他",
+    "country_code": "MT",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Nomad Residence Permit",
+    "official_url": "https://nomad.residencymalta.gov.mt/nomad-eligibility/",
+    "authority": "Residency Malta Agency",
+    "summary": "给「工作地点不依赖所在地」的远程工作者用的居留许可：人在马耳他住，为外国雇主或外国客户远程工作，首次给 1 年、可申请续。核心门槛是年毛收入不低于 €42,000，且必须是三类远程工作形态之一（受雇于外国雇主、在外国公司持股、或为外国客户提供自由职业/咨询服务）。它是居留许可不是工作许可——不能用来给马耳他本地雇主打工。",
+    "tags": [
+      "no_quota_cap",
+      "high_wage",
+      "no_agency_needed",
+      "renewable"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方资格是「第三国国民（非欧盟、非欧洲经济区、非瑞士）」，并单列了一份排除名单。中国大陆不在排除名单内，可申。排除的国家/地区为：阿富汗、朝鲜、伊朗、刚果民主共和国、索马里、南苏丹、苏丹、也门、委内瑞拉，以及与这些国家有密切联系者；俄罗斯联邦与白俄罗斯的申请另有额外限制。"
+    },
+    "age": {
+      "min": 18,
+      "max": 99,
+      "note": "官方原文：`18 years and over`。只有下限，没有上限；99 表示「无上限」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "any",
+      "major_restriction": [],
+      "note": "官方资格清单里没有学历门槛，门槛落在「能否证明远程工作」与「收入是否达标」上。不需要学位证，但需要能证明雇佣关系或客户合同。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格清单未设语言考试要求。材料需以英文提交，实际需要具备处理英文合同与官方表格的能力，但这不是一项被单独审核的资格条件。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 42000,
+        "currency": "EUR",
+        "cny_estimate": 330000,
+        "note": "年毛收入下限 €42,000（`a minimum gross yearly income of €42,000`）。这是「年收入」而非存款余额，需用合同、工资单或客户发票证明。2024-04-01 之前递交的申请沿用旧标准 €32,400，新申请一律按 €42,000。人民币估算按 2026-11 汇率粗估，仅供参考。"
+      },
+      "note": "官方原文：`an applicant must have a minimum gross yearly income of €42,000`。另需有效旅行证件、覆盖欧盟（含马耳他）与英国的医疗保险、有效的租房或购房合同、无犯罪记录证明，并通过背景核查。"
+    },
+    "other_requirements": [
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "须证明属于三类远程工作形态之一：①受雇于在外国注册的雇主并有劳动合同；②在外国注册的公司中持股/为合伙人并从事经营；③为常设机构在外国、且与其签有合同的客户提供自由职业或咨询服务。官方明确排除一种情形：受外国公司雇佣、但服务对象是该公司的马耳他子公司——这种不算。"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "须持覆盖欧盟风险（含马耳他）与英国的医疗保险。官方原文：`have health insurance covering risks in the European Union (including Malta) and the UK`。"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "须提供警察品行证明（police conduct certificate），并通过背景核查（background verification check）。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "须持有效的租房或购房合同（`a valid property rental or purchase agreement`）。这是一项居留地址要求，不是投资门槛。"
+      },
+      {
+        "type": "return_ticket",
+        "required": false,
+        "note": "官方资格清单未单列返程机票；但须持有效旅行证件，并按申根签证的一般规则处理入境。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://nomad.residencymalta.gov.mt/nomad-eligibility/",
+    "quota_note": "官方资格与流程页面均未设名额上限、没有开放窗口或抽签，全年滚动受理。按公开信息判断这是「符合条件即受理」的通道，但官方没有用「no cap」这样的措辞，此处按「未见名额条款」记录。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口，全年受理；官方给的审理周期是从收到 €300 起 30 个工作日。",
+      "lead_time_days": 60,
+      "note": "rolling：官方资格与流程页均无窗口或名额条款。lead_time_days=60：需备年收入 €42,000 的证明、覆盖欧盟与英国的保险、租房合同与品行证明。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动接受申请，通过官方在线系统递交。官方给出的处理周期是收到付款凭证后 30 个工作日。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "规则按官方页面当期版本执行，无年度开放窗口。收入门槛在 2024-04-01 从 €32,400 上调到 €42,000，说明该数字会调整，须在递交前复核。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "行政费（不可退）",
+        "amount": {
+          "local_amount": 300,
+          "currency": "EUR",
+          "note": "官方原文：`a €300 non-refundable administrative fee for each applicant`，按每位申请人计，银行转账支付。收到款项后才开始审理。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方原文：`Application processing is expected to take 30 working days starting from the issuance of the receipt of funds`——30 个工作日，从财务部门出具收款凭证起算，不含背景核查可能额外需要的时间。"
+  },
+  "documents": [
+    {
+      "name": "有效旅行证件",
+      "required": true,
+      "note": "官方要求 `hold a valid travel document`。有效期须覆盖拟停留期。",
+      "prepare_days": 14
+    },
+    {
+      "name": "远程工作证明（劳动合同 / 持股证明 / 客户合同）",
+      "required": true,
+      "note": "按三类形态之一提供：外国雇主的劳动合同、外国公司的股东/合伙人证明、或与外国客户签订的服务合同。这是整个申请的核心材料。",
+      "prepare_days": 30
+    },
+    {
+      "name": "年收入证明（≥ €42,000）",
+      "required": true,
+      "note": "工资单、雇佣合同、客户发票或完税证明，需能体现年毛收入达到门槛。",
+      "prepare_days": 30
+    },
+    {
+      "name": "覆盖欧盟与英国的医疗保险",
+      "required": true,
+      "note": "保单须明确覆盖马耳他与英国。普通申根旅行险未必满足，需核对保单地域范围与保额。",
+      "prepare_days": 21
+    },
+    {
+      "name": "租房或购房合同",
+      "required": true,
+      "note": "须为有效合同（`a valid property rental or purchase agreement`）。这是居留地址证明，不是投资要求。",
+      "prepare_days": 30
+    },
+    {
+      "name": "警察品行证明",
+      "required": true,
+      "note": "即无犯罪记录证明，通常需本国出具并附英文翻译。",
+      "prepare_days": 30
+    },
+    {
+      "name": "付款凭证（€300）",
+      "required": true,
+      "note": "官方在受理后发出缴费指引，须以银行转账方式支付，并从官方账户直接划付；收到款项后才开始 30 个工作日的审理计时。",
+      "prepare_days": 3
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先判断自己属于三类远程工作形态的哪一类",
+      "description": "受雇于外国雇主 / 在外国公司持股 / 为外国客户提供自由职业或咨询服务。特别注意排除项：受外国公司雇佣但服务其马耳他子公司，不算。",
+      "duration": "1 天",
+      "official_link": "https://nomad.residencymalta.gov.mt/nomad-eligibility/"
+    },
+    {
+      "step_no": 2,
+      "title": "核对年毛收入是否达到 €42,000",
+      "description": "这是硬门槛，按年计算。2024-04-01 前递交的旧申请适用 €32,400，新申请一律 €42,000。",
+      "duration": "1 天",
+      "official_link": "https://nomad.residencymalta.gov.mt/nomad-eligibility/"
+    },
+    {
+      "step_no": 3,
+      "title": "备齐保险、住址与品行证明",
+      "description": "保险要覆盖欧盟与英国；住址要有效租房或购房合同；品行证明要能通过背景核查。",
+      "duration": "1–2 个月",
+      "official_link": "https://nomad.residencymalta.gov.mt/nomad-eligibility/"
+    },
+    {
+      "step_no": 4,
+      "title": "在线递交并缴 €300",
+      "description": "通过官方在线申请系统提交。收到受理回执后按指引银行转账 €300 行政费，官方收到款项才开始审理。",
+      "duration": "1 天",
+      "official_link": "https://nomad.residencymalta.gov.mt/new-faqs/"
+    },
+    {
+      "step_no": 5,
+      "title": "等 30 个工作日，期间做背景核查",
+      "description": "官方给的审理周期是收到款项后 30 个工作日；背景核查可能另占时间。获批后首次签发 1 年。",
+      "duration": "约 30 个工作日",
+      "official_link": "https://nomad.residencymalta.gov.mt/new-faqs/"
+    },
+    {
+      "step_no": 6,
+      "title": "到期前申请续期",
+      "description": "官方原文：许可签发 1 年，可在仍符合条件的前提下申请续期，是否续由 Residency Malta 裁量。家属只能在续期时加入（新生儿除外）。",
+      "duration": "1 天",
+      "official_link": "https://nomad.residencymalta.gov.mt/new-faqs/"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "官方原文：`The permit will be issued for one year and can be renewed upon application at the discretion of Residency Malta, as long as the applicant still meets the set eligibility criteria.` 即 1 年期、可申请续，但续期是裁量而非权利，且仍需满足当时的资格条件。",
+    "restricted_occupations": [],
+    "note": "这是居留许可，不是工作许可：允许的是「为外国雇主/客户远程工作」，不允许为马耳他本地雇主工作。家属不能与首次申请一起加入，只能在续期时加入（新生儿除外）。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "它不是工作签证。拿它去马耳他本地公司上班属于违反许可条件；它允许的是「人住在马耳他、工作在境外」。理解错这一点会导致身份失效。"
+    },
+    {
+      "level": "critical",
+      "description": "收入门槛会调整：2024-04-01 从 €32,400 上调到 €42,000。写死在攻略里的旧数字会让人按错误标准准备材料。"
+    },
+    {
+      "level": "warning",
+      "description": "续期是裁量（at the discretion of Residency Malta），不是满足条件就自动续。首次只给 1 年，意味着长期规划要按「每年可能被拒续」来准备。"
+    },
+    {
+      "level": "warning",
+      "description": "家属不能随首次申请一起加入，只能等续期时加入（新生儿除外）。对带家庭的人来说，这意味着第一年要单独过去。"
+    },
+    {
+      "level": "warning",
+      "description": "€300 行政费不可退，且是在受理后才缴、缴了才开始审理。即使最终被拒，这笔钱也不退。"
+    },
+    {
+      "level": "info",
+      "description": "与其它欧洲数字游民签证的比较：马耳他的门槛（€42,000 年收入）在欧洲属中等；它的特点是英文为官方语言、审批周期明确（30 个工作日）、并且明确排除「服务本地子公司」这种灰色形态。数据库里目前只有这一条数字游民类通道，横向比较需要更多样本。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Nomad Residence Permit — Eligibility（Residency Malta Agency 官方页）",
+      "url": "https://nomad.residencymalta.gov.mt/nomad-eligibility/",
+      "publisher": "Residency Malta Agency",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "资格原文：`Applicants must also be third country nationals (non-EU, non-EEA, and non-Swiss nationals)`；三类形态 `work for an employer registered in a foreign country and have a contract of work`、`conduct business activities for a company registered in a foreign country and of which applicant is partner/shareholder`、`offer freelance or consulting services, to clients whose permanent establishments are in a foreign country`；排除项 `Persons contracted by a foreign company and giving services to the company's Maltese subsidiary are not eligible`；收入 `an applicant must have a minimum gross yearly income of €42,000`，旧标准 `Applicants who submitted their application prior to 1st April 2024 will still retain the same annual gross income requirement of €32,400`；其他 `hold a valid travel document`、`have health insurance covering risks in the European Union (including Malta) and the UK`、`hold a valid property rental or purchase agreement`、`provide a police conduct certificate`、`pass a background verification check`。"
+    },
+    {
+      "type": "primary",
+      "name": "Nomad Residence Permit — FAQs（费用、周期、续期与家属规则）",
+      "url": "https://nomad.residencymalta.gov.mt/new-faqs/",
+      "publisher": "Residency Malta Agency",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "费用与周期原文：`a €300 non-refundable administrative fee for each applicant, via bank transfer`；`Application processing is expected to take 30 working days starting from the issuance of the receipt of funds`；资格补述 `18 years and over`、`a Third Country National, excluding EU, EEA and Switzerland`；排除名单 `Afghanistan, North Korea, Iran, Democratic Republic of Congo, Somalia, South Sudan, Sudan, Yemen and Venezuela are not eligible`，俄罗斯与白俄罗斯另有额外限制；家属 `this is not possible. However, dependants may be added when the MA is applying for renewal. Newborns are the sole exception`。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

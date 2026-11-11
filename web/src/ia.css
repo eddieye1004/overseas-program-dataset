@@ -344,3 +344,216 @@
     display: inline-flex;
   }
 }
+
+/* ---------- 窗口日历（#/calendar） ---------- */
+/* 三档确定性用不同的左侧色条与底色区分。这不是装饰：
+   它要让人在扫一眼时就知道「这块是官方日期，那块不是」。 */
+.cal {
+  max-width: 78ch;
+  margin: 0 auto;
+}
+
+.cal__head {
+  margin-bottom: 18px;
+}
+
+.cal__lede {
+  margin: 10px 0 0;
+  color: var(--ink-2);
+  line-height: 1.65;
+  font-size: var(--fs-sm);
+}
+
+.cal__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 22px;
+}
+
+.cal__lg {
+  font-size: var(--fs-2xs);
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid currentcolor;
+}
+
+.cal__lg--ok {
+  color: var(--ink-1);
+}
+
+.cal__lg--warn {
+  color: var(--ink-2);
+  border-style: dashed;
+}
+
+.cal__lg--mute {
+  color: var(--ink-3);
+  border-style: dotted;
+}
+
+.cal__sec {
+  margin: 0 0 26px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.cal__sec--ok {
+  border-left: 4px solid var(--ink-1);
+}
+
+.cal__sec--warn {
+  border-left: 4px dashed var(--ink-2);
+}
+
+.cal__sec--mute {
+  border-left: 4px dotted var(--ink-3);
+}
+
+.cal__secTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: var(--fs-md);
+}
+
+.cal__secHint {
+  font-size: var(--fs-2xs);
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+.cal__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cal__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) auto minmax(0, 1.1fr) auto auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+}
+
+.cal__row:first-child {
+  border-top: 0;
+}
+
+.cal__list--mute .cal__row {
+  opacity: 0.78;
+}
+
+.cal__name {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  color: var(--ink-1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cal__name:hover {
+  text-decoration: underline;
+}
+
+.cal__country {
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+.cal__status {
+  font-size: var(--fs-2xs);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid currentcolor;
+  white-space: nowrap;
+}
+
+.cal__status--open {
+  color: var(--ink-1);
+  font-weight: 600;
+}
+
+.cal__status--closed,
+.cal__status--always_open,
+.cal__status--upcoming,
+.cal__status--unknown {
+  color: var(--ink-2);
+}
+
+.cal__dates {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: var(--fs-2xs);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.cal__nodate {
+  font-family: inherit;
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.cal__lead,
+.cal__remind {
+  font-size: var(--fs-2xs);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.cal__due {
+  color: var(--ink-1);
+}
+
+.cal__soon {
+  font-size: var(--fs-2xs);
+  color: var(--ink-1);
+  border: 1px solid currentcolor;
+  border-radius: var(--r-xs);
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+.cal__empty {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+}
+
+.cal__foot {
+  margin: 6px 0 0;
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+
+/* 窄屏：把六列压成两行（名称 + 状态 / 日期与提醒），不横向滚动 */
+@media (max-width: 680px) {
+  .cal__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 10px;
+  }
+
+  .cal__dates,
+  .cal__lead,
+  .cal__remind,
+  .cal__soon {
+    grid-column: span 1;
+  }
+
+  .cal__dates {
+    grid-column: 1 / -1;
+  }
+}

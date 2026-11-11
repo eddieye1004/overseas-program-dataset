@@ -85,6 +85,7 @@ export type UiKey =
   // —— 工作台导航 ——
   | 'navBrowse'
   | 'navMatch'
+  | 'navCalendar'
   | 'navTrack'
   | 'navSaved'
   | 'navCompare'
@@ -213,6 +214,31 @@ export type UiKey =
   // —— 侧栏用途（桌面常驻，窄屏隐藏）——
   | 'navBrowseHint'
   | 'navMatchHint'
+  | 'navCalendarHint'
+  | 'calTitle'
+  | 'calLede'
+  | 'calLegendConfirmed'
+  | 'calLegendInferred'
+  | 'calLegendUnknown'
+  | 'calSecConfirmed'
+  | 'calSecConfirmedHint'
+  | 'calSecInferred'
+  | 'calSecInferredHint'
+  | 'calSecUnknown'
+  | 'calSecUnknownHint'
+  | 'calStatusOpen'
+  | 'calStatusUpcoming'
+  | 'calStatusClosed'
+  | 'calStatusAlways'
+  | 'calStatusUnknown'
+  | 'calNoDate'
+  | 'calDays'
+  | 'calShouldPrepare'
+  | 'calInDays'
+  | 'calClosingSoon'
+  | 'calEmpty'
+  | 'calFoot'
+  | 'calFootLink'
   | 'navTrackHint'
   | 'navSavedHint'
   | 'navCompareHint'
@@ -315,6 +341,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
 
     navBrowse: '项目库',
     navMatch: '智能匹配',
+    navCalendar: '窗口日历',
     navTrack: '我的申请',
     navSaved: '收藏',
     navCompare: '对比',
@@ -444,6 +471,31 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     onboardPath3: '拿不准就点星号收藏，回头在「收藏」里并排比',
     navBrowseHint: '全量列表，按资格筛',
     navMatchHint: '填条件，按匹配度排序',
+    navCalendarHint: '什么时候开、什么时候该准备',
+    calTitle: '窗口日历',
+    calLede: '每个项目的开放窗口，按「这个日期可不可信」分成三块。官方公布的和按规律推断的永远分开显示——把推断出来的日期摆在官方日期旁边，读者分不出来，就一定会有人按错的日子准备材料。',
+    calLegendConfirmed: '官方已公布',
+    calLegendInferred: '按规律推断',
+    calLegendUnknown: '无从判断',
+    calSecConfirmed: '① 官方已公布日期',
+    calSecConfirmedHint: '可以直接按这个安排',
+    calSecInferred: '② 按往年规律推断',
+    calSecInferredHint: '只作参考，不是官方日期',
+    calSecUnknown: '③ 无从判断 / 无窗口',
+    calSecUnknownHint: '只能盯官方页面，不给日期',
+    calStatusOpen: '开放中',
+    calStatusUpcoming: '未开始',
+    calStatusClosed: '已关闭',
+    calStatusAlways: '随时可申',
+    calStatusUnknown: '未知',
+    calNoDate: '无确定日期',
+    calDays: '天',
+    calShouldPrepare: '现在就该准备',
+    calInDays: '还有',
+    calClosingSoon: '两周内截止',
+    calEmpty: '暂无',
+    calFoot: '提醒日 = 开放日 − 建议提前天数。这个算法只有一处实现（scripts/build_calendar.py），页面不另算一套。想让某个项目的准备期更宽，改数据里的 lead_time_days，不要改这里。',
+    calFootLink: '看一个例子：新西兰打工度假',
     navTrackHint: '记录每条申请进度',
     navSavedHint: '想再看一眼的放这',
     navCompareHint: '最多 4 条并排比',
@@ -547,6 +599,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
 
     navBrowse: 'Programs',
     navMatch: 'Smart match',
+    navCalendar: 'Calendar',
     navTrack: 'My applications',
     navSaved: 'Saved',
     navCompare: 'Compare',
@@ -680,6 +733,31 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
       'Unsure? Star it and compare side by side later under Saved',
     navBrowseHint: 'All entries, filtered',
     navMatchHint: 'Enter a profile, get a ranking',
+    navCalendarHint: 'When windows open, and when to prepare',
+    calTitle: 'Application calendar',
+    calLede: 'Every program application window, split into three blocks by how much the date can be trusted. Officially published dates never sit next to inferred ones — mixing them is how people end up preparing against the wrong day.',
+    calLegendConfirmed: 'Officially published',
+    calLegendInferred: 'Inferred from past years',
+    calLegendUnknown: 'Not determinable',
+    calSecConfirmed: '1. Officially published dates',
+    calSecConfirmedHint: 'Safe to plan against',
+    calSecInferred: '2. Inferred from previous years',
+    calSecInferredHint: 'Reference only — not official dates',
+    calSecUnknown: '3. Not determinable / no window',
+    calSecUnknownHint: 'Watch the official page; no dates given',
+    calStatusOpen: 'Open',
+    calStatusUpcoming: 'Not yet open',
+    calStatusClosed: 'Closed',
+    calStatusAlways: 'Always open',
+    calStatusUnknown: 'Unknown',
+    calNoDate: 'No confirmed date',
+    calDays: 'days',
+    calShouldPrepare: 'Start preparing now',
+    calInDays: 'in',
+    calClosingSoon: 'Closes within 2 weeks',
+    calEmpty: 'None',
+    calFoot: 'Reminder date = opening date minus lead time. That calculation lives in one place only (scripts/build_calendar.py); this page does not re-derive it. To widen the prep window for a program, change lead_time_days in the data, not here.',
+    calFootLink: 'See an example: New Zealand working holiday',
     navTrackHint: 'One status per program',
     navSavedHint: 'Keep what you want to revisit',
     navCompareHint: 'Up to 4, field by field',

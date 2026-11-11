@@ -81,6 +81,14 @@
     "quota": null,
     "quota_source": "https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-or-start-a-business.html",
     "quota_note": "官方未设名额上限，也没有开放窗口。唯一的时间约束是「拿到第二周期学历之后」——官方没有写毕业到申请之间的期限上限，这一点与荷兰（3 年内）不同。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；唯一时间约束是「拿到第二周期学历之后」，且须在瑞典境外递交。",
+      "lead_time_days": 60,
+      "note": "rolling：无开放窗口。lead_time_days=60：需备 9 个月×SEK13,000 的资金证明、覆盖四项的综合医疗保险、UHR 学历核查授权书。"
+    },
     "windows": [
       {
         "year": 2026,

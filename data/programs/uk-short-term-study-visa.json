@@ -12,7 +12,11 @@
     "official_url": "https://www.gov.uk/visa-to-study-english",
     "authority": "UK Visas and Immigration (UKVI), Home Office（英国内政部签证与移民局）",
     "summary": "英国为 6 个月以上、11 个月以内的英语语言课程设的短期学习签证。16 岁以上即可申请，不看学籍、不需要担保机构出 CAS，只要求课程所在的学校是官方认证机构。可停留课程时长 + 30 天。这是在职人士少数能合法在英国待满近一年的路径，代价是期间的任何工作都被明文禁止。",
-    "tags": ["no_quota_cap", "no_agency_needed", "low_cost"],
+    "tags": [
+      "no_quota_cap",
+      "no_agency_needed",
+      "low_cost"
+    ],
     "active": true
   },
   "eligibility": {
@@ -65,6 +69,14 @@
     "quota": null,
     "quota_source": "https://www.gov.uk/visa-to-study-english",
     "quota_note": "官方未设年度名额限制，符合条件即可申请。真正的约束来自课程本身：须为认证机构开设的 6–11 个月纯英语课程。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；真正的约束是课程本身须为 6–11 个月纯英语课程。",
+      "lead_time_days": 45,
+      "note": "rolling：全年可申。lead_time_days=45：需先拿到认证机构的课程录取，再备资金证明。"
+    },
     "windows": [
       {
         "year": 2026,

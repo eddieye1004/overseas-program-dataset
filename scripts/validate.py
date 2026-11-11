@@ -99,6 +99,16 @@ VALID_WINDOW_STATUS = {"upcoming", "open", "closed", "unknown"}
 VALID_QUOTA_STATUS = {"capped", "no_quota", "not_published", "unverified"}
 VALID_QUOTA_BASIS = {"annual", "concurrent"}
 
+# 窗口日历（timeline.schedule）。这一块是「名额雷达」的数据地基，纪律只有一条：
+# 区分「官方写了的日期」与「按往年规律推的日期」，且不许互相冒充。
+#   fixed_dates   每年由官方逐次公布、不遵循固定月日（抽签制、放完即止）
+#   annual_cycle  每年在相近月份重开，可据往年推断
+#   rolling       全年滚动，无窗口概念
+#   no_window     项目不开放申请或对本护照不开放
+VALID_SCHEDULE_TYPE = {"fixed_dates", "annual_cycle", "rolling", "no_window"}
+VALID_SCHEDULE_STATUS = {"open", "closed", "upcoming", "always_open", "unknown"}
+VALID_DATE_CONFIDENCE = {"confirmed", "inferred", "unknown"}
+
 VALID_REQUIREMENT_TYPES = {
     "health_check", "criminal_record", "insurance", "no_dependents",
     "return_ticket", "government_support_letter", "enrollment_proof",
@@ -169,6 +179,14 @@ OFFICIAL_GOV_FRAGMENTS = (
     # 资格路径、80% 岗位下限、以及对中国等九国职业资格文件的真实性警示，
     # 都只写在 udi.no 上，法规原文不含这些操作口径。
     "udi.no",
+    # 丹麦移民局（nyidanmark.dk）：丹麦居留与工作许可的官方办理门户，由
+    # The Danish Immigration Service 与 SIRI 共同维护。打工度假的参与国名单
+    # 只在这一页写（七个签约国，不含中国大陆），法条不含国别名单。
+    "nyidanmark.dk",
+    # 马耳他居留局（residencymalta.gov.mt）：数字游民居留许可的唯一受理与
+    # 签发机构。收入门槛（2024-04-01 起 €42,000）、排除国名单、€300 行政费
+    # 与 30 个工作日周期只写在这一站；域名含 .gov.mt 但不以 .gov 开头，故点名。
+    "residencymalta.gov.mt",
 )
 
 # B 级：项目本体国际组织官网
@@ -576,6 +594,8 @@ def validate_program(rep, fname, doc):
         if "quota_status" in tl:
             _check_quota(rep, p, tl, doc)
 
+        _check_schedule(rep, p, tl)
+
         windows = tl.get("windows", [])
         if not isinstance(windows, list):
             rep.error(p, "timeline.windows", "必须是数组")
@@ -785,6 +805,83 @@ def _check_quota(rep, fname, tl, doc):
                           f"quota_source 指向的是一条 {s.get('type')} 来源。"
                           f"配额结论须由 primary 官方来源支撑。")
             break
+
+
+def _check_schedule(rep, fname, tl):
+    """窗口日历：校验「确定性」这条纪律。
+
+    这是整块日历最容易被注水的地方——写一个看起来合理的日期，读者无法分辨
+    它是官方写的还是猜的。所以规则是硬的：推断（inferred）不许携带具体日期。
+    """
+    sch = tl.get("schedule")
+    if sch is None:
+        return
+    if not isinstance(sch, dict):
+        rep.error(fname, "timeline.schedule", "必须是对象")
+        return
+
+    check_required(rep, fname, sch, ["type", "status", "date_confidence", "lead_time_days", "note"],
+                   prefix="timeline.schedule.")
+
+    typ = sch.get("type")
+    status = sch.get("status")
+    conf = sch.get("date_confidence")
+    open_d = sch.get("open_date")
+    close_d = sch.get("close_date")
+    lead = sch.get("lead_time_days")
+    note = sch.get("note")
+
+    if typ is not None:
+        check_enum(rep, fname, "timeline.schedule.type", typ, VALID_SCHEDULE_TYPE)
+    if status is not None:
+        check_enum(rep, fname, "timeline.schedule.status", status, VALID_SCHEDULE_STATUS)
+    if conf is not None:
+        check_enum(rep, fname, "timeline.schedule.date_confidence", conf, VALID_DATE_CONFIDENCE)
+
+    if not isinstance(note, str) or len(note.strip()) < 8:
+        rep.error(fname, "timeline.schedule.note",
+                  "缺少判断依据（至少 8 个字符）。日期从哪来、lead_time_days 为什么取这个数，都要写清。")
+
+    if not isinstance(lead, int) or isinstance(lead, bool) or lead < 0 or lead > 365:
+        rep.error(fname, "timeline.schedule.lead_time_days",
+                  f"必须是 0–365 的整数，实际 {lead!r}")
+
+    # 核心纪律：具体日期只能由 confirmed 携带。
+    if conf in ("inferred", "unknown"):
+        for field, val in (("open_date", open_d), ("close_date", close_d)):
+            if val is not None:
+                rep.error(fname, f"timeline.schedule.{field}",
+                          f"date_confidence={conf} 时不得填写具体日期（{val}）。"
+                          f"推断或未知都必须留 null，把规律写进 cycle_note / next_window_hint。")
+
+    if conf == "confirmed" and typ == "rolling":
+        rep.error(fname, "timeline.schedule.date_confidence",
+                  "rolling 类项目没有开放/截止日期，不应标 confirmed（它不需要日期就是确定的）")
+
+    # annual_cycle + inferred 必须给出往年序列，否则「规律」两个字没有依据。
+    if typ == "annual_cycle" and conf == "inferred":
+        cyc = sch.get("cycle_note")
+        if not cyc or len(str(cyc).strip()) < 8:
+            rep.error(fname, "timeline.schedule.cycle_note",
+                      "annual_cycle 且推断时，必须写下往年实际日期序列作为依据")
+
+    # rolling / no_window 不该有具体日期——它们本来就没有窗口。
+    if typ in ("rolling", "no_window") and (open_d or close_d):
+        rep.error(fname, "timeline.schedule",
+                  f"type={typ} 的项目不应填写 open_date / close_date")
+
+    # 日期格式还要单独校验（check_required 不管这些可选字段）
+    for field, val in (("open_date", open_d), ("close_date", close_d)):
+        if val is not None:
+            check_date(rep, fname, f"timeline.schedule.{field}", val)
+
+    if open_d and close_d and isinstance(open_d, str) and isinstance(close_d, str):
+        try:
+            if datetime.strptime(close_d, "%Y-%m-%d") < datetime.strptime(open_d, "%Y-%m-%d"):
+                rep.error(fname, "timeline.schedule.close_date",
+                          f"截止日 {close_d} 早于开放日 {open_d}")
+        except ValueError:
+            pass  # 格式错误已由 check_date 报过
 
 
 def _check_money(rep, fname, field, amt):

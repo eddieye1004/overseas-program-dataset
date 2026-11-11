@@ -22,7 +22,6 @@
     ],
     "active": true
   },
-
   "eligibility": {
     "passport_types": {
       "mainland_china": "eligible",
@@ -44,10 +43,26 @@
     "language": {
       "required": true,
       "tests": [
-        { "test": "IELTS", "min_score": 4.5, "validity_months": 12 },
-        { "test": "PTE", "min_score": 30, "validity_months": 12 },
-        { "test": "TOEFL_iBT", "min_score": 32, "validity_months": 12 },
-        { "test": "Cambridge", "min_score": 147, "validity_months": 12 }
+        {
+          "test": "IELTS",
+          "min_score": 4.5,
+          "validity_months": 12
+        },
+        {
+          "test": "PTE",
+          "min_score": 30,
+          "validity_months": 12
+        },
+        {
+          "test": "TOEFL_iBT",
+          "min_score": 32,
+          "validity_months": 12
+        },
+        {
+          "test": "Cambridge",
+          "min_score": 147,
+          "validity_months": 12
+        }
       ],
       "note": "以上任一项达标即可。成绩须在递交前 12 个月内考取。雅思 A 类或 G 类均可。"
     },
@@ -99,7 +114,6 @@
       }
     ]
   },
-
   "timeline": {
     "mechanism": "ballot",
     "quota_status": "capped",
@@ -107,6 +121,17 @@
     "quota_basis": "annual",
     "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
     "quota_note": "中国大陆护照年度发放上限 5,000 个（官方 Status of country caps 页逐国列出 Annual grant cap：China 5,000、India 1,000、Vietnam 1,500）。名额走年度发放上限，但中国护照须先参加 ballot 被随机抽中才能递交正式申请，抽中不等于获批。",
+    "schedule": {
+      "type": "fixed_dates",
+      "status": "closed",
+      "date_confidence": "confirmed",
+      "open_date": "2026-06-04",
+      "close_date": "2026-06-25",
+      "cycle_note": "2026-27 财年的注册窗口为 2026-06-04 至 2026-06-25（约 3 周），中签后 28 天内须递交正式申请；抽签选择期持续到 2027-04-30。",
+      "next_window_hint": "2027-28 财年的注册窗口官方尚未公布。参照 2026-27 安排在 6 月上旬开放、为期约 3 周，但这是参照而非承诺。",
+      "lead_time_days": 60,
+      "note": "日期取自内政部 462 页面与公告（open_date/close_date 为 2026 年度已发生的窗口，故 status=closed）。type 记为 fixed_dates：抽签制的注册窗口每年由官方单独公布，不遵循固定月日，不能按「每年 6 月」直接推断出下一年。lead_time_days=60 的依据：需要提前完成 ImmiAccount 注册、护照与资金证明（AUD5,000）准备，且中签后只有 28 天递交窗口，错过即作废。"
+    },
     "windows": [
       {
         "year": 2026,
@@ -126,37 +151,102 @@
     "fees": [
       {
         "item": "抽签注册费",
-        "amount": { "local_amount": 25, "currency": "AUD", "cny_estimate": 120 },
+        "amount": {
+          "local_amount": 25,
+          "currency": "AUD",
+          "cny_estimate": 120
+        },
         "refundable": false
       },
       {
         "item": "签证申请费（首次）",
-        "amount": { "local_amount": 840, "currency": "AUD", "cny_estimate": 4000 },
+        "amount": {
+          "local_amount": 840,
+          "currency": "AUD",
+          "cny_estimate": 4000
+        },
         "refundable": false
       },
       {
         "item": "签证申请费（第二/三次）",
-        "amount": { "local_amount": 1000, "currency": "AUD", "cny_estimate": 4700 },
+        "amount": {
+          "local_amount": 1000,
+          "currency": "AUD",
+          "cny_estimate": 4700
+        },
         "refundable": false
       }
     ],
     "processing_time": "官方预计约 3 个月（2026 年起为管理 WHM 项目高需求而延长处理时长）"
   },
-
   "documents": [
-    { "name": "有效护照", "required": true, "note": "有效期须超过 6 个月，首页彩色扫描件", "prepare_days": 30 },
-    { "name": "高等教育学历证明 / 在读证明", "required": true, "note": "需学信网中英文认证", "prepare_days": 30 },
-    { "name": "英语成绩单", "required": true, "note": "雅思/PTE/托福/Cambridge，12 个月内有效", "prepare_days": 60 },
-    { "name": "银行存款证明", "required": true, "note": "约 5,000 澳元等值，建议多准备 30%", "prepare_days": 14 },
-    { "name": "无犯罪记录证明", "required": true, "note": "需公证及英文翻译", "prepare_days": 30 },
-    { "name": "体检报告", "required": true, "note": "移民局指定医院出具", "prepare_days": 21 },
-    { "name": "中国政府支持信", "required": true, "note": "由 CICETE 出具，办理周期 2 周至 3 个月", "prepare_days": 90 },
-    { "name": "证件照", "required": true, "note": "符合澳洲签证规格的电子照片", "prepare_days": 7 },
-    { "name": "返程机票资金证明", "required": true, "note": "或等额存款", "prepare_days": 14 },
-    { "name": "1208 号表格（打工与度假签证申请表）", "required": true, "note": "中英文填写", "prepare_days": 7 },
-    { "name": "54 号表格（家庭成员表）", "required": true, "note": "中英文填写", "prepare_days": 7 }
+    {
+      "name": "有效护照",
+      "required": true,
+      "note": "有效期须超过 6 个月，首页彩色扫描件",
+      "prepare_days": 30
+    },
+    {
+      "name": "高等教育学历证明 / 在读证明",
+      "required": true,
+      "note": "需学信网中英文认证",
+      "prepare_days": 30
+    },
+    {
+      "name": "英语成绩单",
+      "required": true,
+      "note": "雅思/PTE/托福/Cambridge，12 个月内有效",
+      "prepare_days": 60
+    },
+    {
+      "name": "银行存款证明",
+      "required": true,
+      "note": "约 5,000 澳元等值，建议多准备 30%",
+      "prepare_days": 14
+    },
+    {
+      "name": "无犯罪记录证明",
+      "required": true,
+      "note": "需公证及英文翻译",
+      "prepare_days": 30
+    },
+    {
+      "name": "体检报告",
+      "required": true,
+      "note": "移民局指定医院出具",
+      "prepare_days": 21
+    },
+    {
+      "name": "中国政府支持信",
+      "required": true,
+      "note": "由 CICETE 出具，办理周期 2 周至 3 个月",
+      "prepare_days": 90
+    },
+    {
+      "name": "证件照",
+      "required": true,
+      "note": "符合澳洲签证规格的电子照片",
+      "prepare_days": 7
+    },
+    {
+      "name": "返程机票资金证明",
+      "required": true,
+      "note": "或等额存款",
+      "prepare_days": 14
+    },
+    {
+      "name": "1208 号表格（打工与度假签证申请表）",
+      "required": true,
+      "note": "中英文填写",
+      "prepare_days": 7
+    },
+    {
+      "name": "54 号表格（家庭成员表）",
+      "required": true,
+      "note": "中英文填写",
+      "prepare_days": 7
+    }
   ],
-
   "steps": [
     {
       "step_no": 1,
@@ -208,7 +298,6 @@
       "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462"
     }
   ],
-
   "work_conditions": {
     "max_stay_months": 12,
     "max_same_employer_months": 6,
@@ -218,7 +307,6 @@
     "restricted_occupations": [],
     "note": "可从事全职、兼职、临时及轮班工作。可为同一雇主工作不超过 6 个月。可学习不超过 4 个月。"
   },
-
   "risks": [
     {
       "level": "critical",
@@ -241,7 +329,6 @@
       "description": "出发前总预算建议准备人民币 1.2-1.7 万元（含签证费、机票、保险、落地首月生活）。澳洲最低时薪约 AUD 23-24/小时。"
     }
   ],
-
   "sources": [
     {
       "type": "primary",
@@ -280,7 +367,6 @@
       "claim": "旅游推广性质的 462 / 417 类别说明与常见问题（非移民局官方页，仅作辅证）"
     }
   ],
-
   "last_verified": "2026-10-30",
   "verified_by": "eddieye1004"
 }

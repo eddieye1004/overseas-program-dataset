@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { useI18n } from '../i18n';
 import { navigate, type Route } from '../lib/router';
 
-export type NavName = 'list' | 'match' | 'track' | 'saved' | 'compare' | 'about';
+export type NavName = 'list' | 'match' | 'calendar' | 'track' | 'saved' | 'compare' | 'about';
 
 interface Item {
   name: NavName;
@@ -13,6 +13,7 @@ interface Item {
   labelKey:
     | 'navBrowse'
     | 'navMatch'
+    | 'navCalendar'
     | 'navTrack'
     | 'navSaved'
     | 'navCompare'
@@ -21,6 +22,7 @@ interface Item {
   hintKey:
     | 'navBrowseHint'
     | 'navMatchHint'
+    | 'navCalendarHint'
     | 'navTrackHint'
     | 'navSavedHint'
     | 'navCompareHint'
@@ -48,6 +50,13 @@ export function Sidebar({
   const items: Item[] = [
     { name: 'list', path: '/', labelKey: 'navBrowse', hintKey: 'navBrowseHint', icon: '▤' },
     { name: 'match', path: '/match', labelKey: 'navMatch', hintKey: 'navMatchHint', icon: '◈' },
+    {
+      name: 'calendar',
+      path: '/calendar',
+      labelKey: 'navCalendar',
+      hintKey: 'navCalendarHint',
+      icon: '◷',
+    },
     {
       name: 'track',
       path: '/track',

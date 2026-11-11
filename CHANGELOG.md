@@ -8,6 +8,42 @@
 
 ## [未发布]
 
+### 变更 — 扩覆盖到 34 个项目 + 窗口日历成为一等公民（2026-11-11）
+
+两件事并行：补版图空白（C1），以及把「什么时候开」从一句备注变成可被机器读的结构（C2）。
+
+**C1 · 新增 5 个项目（29 → 34）**
+
+| 项目 | 国家 | 定位 |
+|---|---|---|
+| `au-407-training` | 澳大利亚 | 培训签证（407）：先有担保与提名才能递签，最长 2 年 |
+| `mt-nomad-residence` | 马耳他 | 数字游民居留：年收入 €42,000、1 年期可续 |
+| `sg-s-pass` | 新加坡 | S 准证：面向所有国籍，受雇主配额与劳工税约束 |
+| `sg-employment-pass` | 新加坡 | 就业准证：两阶段（薪资 + COMPASS），薪资按年龄分档，2027-01-01 起上调 |
+| `dk-working-holiday` | 丹麦 | 打工度假：**仅七个参与国，中国大陆不可申**——收录为排除记录 |
+
+- 现 **34 个项目 / 大陆护照可申 27 / 不可申 7 / 124 条来源**（A 113 / B 6 / C 5）。
+- quota 四态分布更新为 **capped 4 / no_quota 27 / not_published 1 / unverified 2**（合计 34）。新增的两个 capped 中，新加坡 S Pass 的 `quota_basis` 记 `concurrent`：它的配额是「雇主在职员工的比例上限」，不是年度发放数，与澳 462、新西兰 WHV 的年度名额是两种口径。
+- `validate.py` 的官方域名白名单新增 `nyidanmark.dk`（丹麦移民局）与 `residencymalta.gov.mt`（马耳他居留局）。两者都是该国居留的唯一受理机构，规则与既有 `migrationsverket.se`、`udi.no` 的先例一致。
+- 诚实说明缺口：本轮目标是约 11 个，实际只落了 5 个。卡点不是主题判断，是**可达性**——法国（france-visas，Cloudflare 503 挑战页）、西班牙（exteriores.gob.es，403/404）、意大利（esteri.it，Radware 验证码）、芬兰（migri.fi，Cloudflare）、冰岛（island.is，CDN 拒绝）在脚本与真实浏览器两条通道下都拿不到正文；葡萄牙与丹麦虽有打工度假/青年流动通道，但参与国名单不含中国大陆（葡萄牙为阿根廷、澳大利亚、加拿大、智利、日本、新西兰、秘鲁、韩国、美国、乌拉圭；丹麦为七国）。按「宁可少而实，不要多而注水」的纪律，没有为凑数写不可核实的条目。
+
+**C2 · 窗口日历结构化（`timeline.schedule`）**
+
+背景：这套数据后续要长出一个「名额雷达」——盯各项目开放窗口、提前提醒。雷达的前提是数据能区分「官方公布的日期」与「按规律推的日期」，否则会把人叫错时间。所以 C2 不是附属页面，是先补数据结构。
+
+- schema 新增必填字段 `timeline.schedule`，含 `type`（fixed_dates / annual_cycle / rolling / no_window）、`status`、`date_confidence`（confirmed / inferred / unknown）、`open_date`、`close_date`、`cycle_note`、`next_window_hint`、`lead_time_days`。
+- **一条硬纪律，由 `validate.py` 强制**：`inferred` 与 `unknown` 不许携带任何具体日期。推断值一律只写 `cycle_note`（往年实际日期序列）与 `next_window_hint`（文字预告）。`annual_cycle` + `inferred` 还必须给出往年序列，否则「规律」二字没有依据。
+- 34 个项目全部回填。**覆盖率：确定日期 3 / 规律推定 2 / unknown 29**。三个确定日期是澳 462（2026-06-04～06-25）、英 YMS（2026-07-14～07-16 抽签）、爱尔兰 WHA（2026-11-01 起）；两个推断是日本 WH（每年 4 月下旬与 10 月中下旬两期）与新西兰 WHV（2025、2026 均在 7 月初开放）。
+- 新增 `scripts/build_calendar.py` 派生 `data/calendar.json`：每条含提醒日（= 开放日 − `lead_time_days`）、剩余天数、确定性分档。提醒日的算法只在这一处实现，页面与台账都读它，不各算一套。
+- 人读视图三处同源：`data/FRESHNESS.md` 新增「窗口日历」一节（由 `track.py` 调用 `build_calendar` 生成，跟着例行流程走）、站点新增 `#/calendar` 页（左侧导航第 3 项）、`data/calendar.json` 机器读。
+- 前端 `CalendarView` 把三档做成**硬分区**：官方已公布 / 按规律推断 / 无从判断三块分开渲染，不按日期混排。e2e 有一条断言专门盯这个——推断区块里出现任何 `<time>` 就失败。
+- `lead_time_days` 的取值不是拍一个万能数字，而是按材料耗时定：需考语言 60 天、需无犯罪/学历认证/资金流水 30 天、需雇主或担保方先行动 90 天、不适用（对中国护照不开放）取 0 并说明「不给人虚假的准备期」。依据逐条写进 `note`。
+
+**门禁**
+
+- `validate.py --strict` 35 文件 / 34 项目，错误 0 / 警告 0；`pytest -q` **135 passed**（118 + 日历 17）；`gen_sources.py --check` OK（124 条）；`track.py` 34 条全在周期内；`tsc -b --force` 通过；`smoke-test.mjs` 128/128；`vite build` 通过；`e2e-check.mjs` **212/212**（新增 9 条日历断言，侧栏数 6→7 同步）；i18n 覆盖率 100%（本轮新增 299 条译文，分三批补齐）。
+
+---
 ### 新增 — 仓库门面素材与结构化纠错入口（2026-11-11）
 
 只做仓库内能落盘的部分：推广内容不在本单，GitHub 设置本身也没有改（About / topics / social preview 只能在仓库设置页或 PATCH API 写，本机 keyring 在 session-0 读不到，gh 无法认证）。

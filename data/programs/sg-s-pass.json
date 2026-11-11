@@ -1,0 +1,212 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "sg-s-pass",
+    "name": "新加坡 S 准证（S Pass）",
+    "name_en": "Singapore S Pass",
+    "country": "新加坡",
+    "country_code": "SG",
+    "region": "asia",
+    "program_type": "short_term_work",
+    "visa_code": "S Pass",
+    "official_url": "https://www.mom.gov.sg/passes-and-permits/s-pass/eligibility",
+    "authority": "新加坡人力部（Ministry of Manpower, MOM）",
+    "summary": "给中等技能外籍雇员（associate professionals and technicians，APTs）的工作准证，由雇主代为申请。门槛是月固定薪资至少 S$3,300（按年龄对标本地 APT 薪资的前三分之一），且雇主受配额与劳工税约束。官方明确「适用于所有国籍」——这是它与 EP 的关键差别：EP 走 COMPASS 打分，S Pass 走配额。",
+    "tags": [
+      "no_agency_needed",
+      "requires_degree",
+      "high_wage",
+      "renewable"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方原文明确面向所有国籍：`The S Pass is for foreign employees across all nationalities or citizenships`。因此中国大陆护照可申。真正的限制不在国籍，而在雇主的配额（quota）与劳工税（levy）——这是雇主侧的约束。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方设有年龄相关的薪资分档（`benchmarked against the top one-third of the local associate professionals and technicians (APT) salaries by age`），即年龄越大、要求的月薪越高，但没有把年龄当作硬性排除条件。0–99 表示「无年龄门槛」，不是「未核实」。具体分档金额见 MOM 的 Self-Assessment Tool，本记录不逐档抄写，因为该表会调整。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "官方对学历的要求是「具备相关资质」：一般需有大专及以上学历（diploma/degree）或同等技术资质。本字段按 bachelor_completed 记录本科，属保守取值；官方页面的判定是综合学历、技能与工作经验，不是单看学位层级。递交前须以 MOM 的 Self-Assessment Tool 为准。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格清单未设英语考试要求。实际工作语言由雇主与岗位决定。"
+    },
+    "funds": {
+      "required": false,
+      "amount": null,
+      "note": "官方不要求申请人自证存款；门槛体现在「月固定薪资」上——薪资由雇主支付并与本地 APT 薪资对标，不是申请人自己的资金。"
+    },
+    "other_requirements": [
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "必须有新加坡雇主的工作 offer，且由雇主代为准证申请（`Have a job offer in Singapore`）。个人不能自行申请 S Pass。"
+      },
+      {
+        "type": "enrollment_proof",
+        "required": false,
+        "note": "学历/资质证明是申请的支撑材料（评估学历、技能与工作经验），但不是「在读证明」这类学籍要求；已毕业者提交学位证与成绩单即可。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "capped",
+    "quota": 1,
+    "quota_basis": "concurrent",
+    "quota_source": "https://www.mom.gov.sg/passes-and-permits/s-pass/quota-and-levy",
+    "quota_note": "这里记录的是「S Pass 受配额约束」这一事实，不是某个具体名额数字。官方原文：`You are limited by a quota and must pay the monthly foreign worker levy for each S Pass holder you employ.` 配额按**雇主**的在职员工总数计算比例（不是按申请人国籍分配年度名额），因此不存在「中国大陆每年 N 个」这样的数字。quota 字段填 1 仅表示「存在配额机制」；具体比例与征费金额见 MOM 的 Levy and quota requirements 页，本记录不填猜测值。这与「年度发放上限」是两种完全不同的配额口径，故 quota_basis 记为 concurrent。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口，由雇主随时递交；能否成事取决于雇主剩余配额。",
+      "lead_time_days": 45,
+      "note": "rolling：全年受理。lead_time_days=45：学历证明与英文翻译、雇主 offer 与薪资谈判是主要耗时项。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动受理，由雇主通过 MOM 的在线系统递交。官方页面最后更新 2026-08-31（eligibility）与 2026-07-08（quota and levy）。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "无年度开放窗口。薪资门槛与配额比例按 MOM 当期政策执行，历史上调整过多次（如 2022、2023、2025 年均有变动），不能按往年数字推断。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "准证申请费（由雇主支付）",
+        "amount": {
+          "local_amount": 0,
+          "currency": "SGD",
+          "note": "官方在本页未列固定申请费；S Pass 的成本主要体现为雇主每月缴纳的外籍劳工税（foreign worker levy），按人头计。本记录不填猜测金额，须查 MOM 的 levy 页面。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方页面未在本条给出统一天数，指向 MOM 的申请与状态查询流程。实际时长受雇主材料完整度与配额余量影响。"
+  },
+  "documents": [
+    {
+      "name": "护照",
+      "required": true,
+      "note": "有效期须覆盖准证期；由雇主在申请时提交个人信息页。",
+      "prepare_days": 14
+    },
+    {
+      "name": "学历证明与成绩单",
+      "required": true,
+      "note": "用于评估学历与技能。中国学历通常需附英文翻译；部分情况需学信网认证报告。",
+      "prepare_days": 30
+    },
+    {
+      "name": "雇主的工作 offer 与雇佣合同",
+      "required": true,
+      "note": "须写明月固定薪资（须达到 S$3,300 起、并按年龄对标本地 APT 前三分之一水平）、职位与职责。薪资不达标是最常见的拒因。",
+      "prepare_days": 14
+    },
+    {
+      "name": "雇主侧的配额与劳工税安排",
+      "required": true,
+      "note": "不是申请人材料，但决定能否成事：雇主须有剩余配额并愿意缴纳月度劳工税。配额用尽的雇主无法为任何人申请。",
+      "prepare_days": 0
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先确认是否有新加坡雇主愿意担保",
+      "description": "S Pass 必须由雇主申请，个人无法自递。雇主还须有剩余配额——这一步决定了后面所有准备工作是否有意义。",
+      "duration": "不定",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/s-pass/eligibility"
+    },
+    {
+      "step_no": 2,
+      "title": "核对月固定薪资是否过线",
+      "description": "起点是 S$3,300，但实际门槛随年龄上升（对标本地 APT 薪资前三分之一）。用 MOM 的 Self-Assessment Tool 按自己的年龄与薪资试算，不要只看 3,300 这个下限。",
+      "duration": "1 天",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/s-pass/eligibility"
+    },
+    {
+      "step_no": 3,
+      "title": "雇主提交申请并缴劳工税",
+      "description": "由雇主通过 MOM 在线系统递交。获批后雇主须按月缴纳外籍劳工税，这是持续性成本，可能影响雇主意愿。",
+      "duration": "以 MOM 审理为准",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/s-pass/quota-and-levy"
+    },
+    {
+      "step_no": 4,
+      "title": "获批后按准证条件工作",
+      "description": "S Pass 绑定雇主与岗位，换工作须重新申请。准证到期前由雇主申请续期。",
+      "duration": "全程",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/s-pass"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "官方提供续期通道（Renew a pass），须在到期前由雇主申请。首次与续期的年限按 MOM 当期规则，本记录未逐项核实具体年数，24 个月为常见首次期限的占位，须以官方为准。",
+    "restricted_occupations": [],
+    "note": "S Pass 绑定雇主与岗位，不是自由打工许可。配额与劳工税是雇主侧约束：配额按雇主在职员工总数的比例计算，用尽即无法再申请。这一点与打工度假类「个人可申、有名额上限」的机制完全不同。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "配额在雇主手上，不在你手上。同一个你，换一家配额用尽的公司就申不了；这意味着「拿到 offer」不等于「能拿到准证」。"
+    },
+    {
+      "level": "critical",
+      "description": "S$3,300 是下限而非标准。实际要求随年龄上升，年长申请人的薪资门槛明显更高。按 3,300 谈薪很可能不达标。"
+    },
+    {
+      "level": "warning",
+      "description": "劳工税是雇主的持续成本，会影响雇主是否愿意为你申请、以及续期时的意愿。谈 offer 时值得问清楚。"
+    },
+    {
+      "level": "warning",
+      "description": "S Pass 与 EP 是两套机制：EP 走 COMPASS 打分、无配额；S Pass 走配额、有劳工税。不要因为「都是新加坡工作准证」就混为一谈。"
+    },
+    {
+      "level": "info",
+      "description": "与本仓库新加坡另一条（Work Holiday Programme）的区别：WHP 是给在读/应届生的 6 个月短期打工度假、有 2,000 同时在册人数上限、且中国大陆护照不可申；S Pass 是全职工作准证、面向所有国籍、门槛在薪资与雇主配额。两者受众几乎不重叠。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Eligibility for S Pass（新加坡人力部官方页）",
+      "url": "https://www.mom.gov.sg/passes-and-permits/s-pass/eligibility",
+      "publisher": "Ministry of Manpower, Singapore",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "面向所有国籍原文：`The S Pass is for foreign employees across all nationalities or citizenships who: Have a job offer in Singapore.`；薪资门槛 `Criteria include earning a salary of at least $3,300, which is benchmarked against the top one-third of the local associate professionals and technicians (APT) salaries by age.`；页面标注最后更新 2026-08-31。"
+    },
+    {
+      "type": "primary",
+      "name": "Quota and levy for S Pass（配额与劳工税）",
+      "url": "https://www.mom.gov.sg/passes-and-permits/s-pass/quota-and-levy",
+      "publisher": "Ministry of Manpower, Singapore",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "配额机制原文：`You are limited by a quota and must pay the monthly foreign worker levy for each S Pass holder you employ.` 该页把配额比例与征费金额拆到下一层页面（Levy and quota requirements），本记录未抄具体比例，避免写死一个会变的数字。页面标注最后更新 2026-07-08。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

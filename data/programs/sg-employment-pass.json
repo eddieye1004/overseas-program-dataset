@@ -1,0 +1,204 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "sg-employment-pass",
+    "name": "新加坡就业准证（Employment Pass）",
+    "name_en": "Singapore Employment Pass",
+    "country": "新加坡",
+    "country_code": "SG",
+    "region": "asia",
+    "program_type": "short_term_work",
+    "visa_code": "Employment Pass",
+    "official_url": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility",
+    "authority": "新加坡人力部（Ministry of Manpower, MOM）",
+    "summary": "给外籍专业人士、经理与高管（PMET）的全职工作准证，由雇主申请，无国籍限制。两阶段资格：第一关是薪资——月薪须达到按年龄分档的 EP 门槛（23 岁及以下 S$5,600 起，45 岁及以上 S$10,700），第二关是 COMPASS 打分。两关都过才有资格。2027-01-01 起门槛上调一档（23 岁及以下 S$6,000 起、45 岁及以上 S$11,500），正在谈薪资的人必须看新表。",
+    "tags": [
+      "no_quota_cap",
+      "high_wage",
+      "requires_degree",
+      "renewable"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "EP 的两阶段资格按薪资与 COMPASS 打分判定，未按国籍设限；中国大陆护照可申。真正的约束是「有没有新加坡雇主愿意按达标薪资雇佣你」以及 COMPASS 的分数，这两项都与雇主绑在一起。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方不设年龄上下限，但年龄直接决定薪资门槛：23 岁及以下最低 S$5,600，之后每长一岁门槛按固定档位上升，45 岁及以上为 S$10,700。所以年龄不是「能不能申」的问题，是「要拿多少钱才够格」的问题。0–99 表示无年龄门槛，不是未核实。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "官方资格判定不单看学历，而是综合薪资与 COMPASS（含学历项）。本字段按 bachelor_completed 记录，属保守取值：实践中有学位者才比较可能达到薪资与打分要求，但官方未把「必须有本科」写成硬性单条。递交前须用 MOM 的 Self-Assessment Tool 试算。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格清单未设英语考试要求。COMPASS 的语言相关项（如员工国籍多样性）是雇主侧的多样性指标，不是申请人的语言成绩。"
+    },
+    "funds": {
+      "required": false,
+      "amount": null,
+      "note": "不要求申请人自证存款。门槛全部体现在「雇主支付的月薪」上，见 timeline 与 risks 里的分档。"
+    },
+    "other_requirements": [
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "须有新加坡雇主提供的工作 offer 并由雇主递交申请。雇主还须先满足公平考量框架（Fair Consideration Framework）的招聘广告要求：`Employers must continue to meet the Fair Consideration Framework (FCF) job advertising requirement before submitting new EP applications.`"
+      },
+      {
+        "type": "enrollment_proof",
+        "required": false,
+        "note": "学历证明是 COMPASS 打分与材料审核的一部分，不是「在读」要求；已毕业者提交学位证与成绩单即可。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility",
+    "quota_note": "EP 与同国 S Pass 的关键差别就在这里：官方对 EP 未设配额门槛，用的是「薪资 + COMPASS 打分」双关；S Pass 才是「受配额 + 劳工税」约束。因此 EP 记 no_quota，S Pass 记 capped（concurrent）。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "next_window_hint": "无窗口，由雇主随时递交；但有一个与日期强相关的政策节点：2027-01-01 起薪资门槛整体上调一档。",
+      "lead_time_days": 60,
+      "note": "rolling：官方无开放窗口或名额。lead_time_days=60 的依据：雇主须先走 FCF 招聘广告流程（通常 14 天公示），再准备 COMPASS 打分材料与学历认证，合计预留 2 个月较稳。date_confidence 记 unknown 是因为「无窗口」不需要日期可信度，不是因为没查清。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动受理。当前（2026-11-11 核实）薪资门槛为：23 岁及以下 S$5,600，45 岁及以上 S$10,700，中间逐年递增；金融服务业另高一档（S$6,200 至 S$11,800）。"
+      },
+      {
+        "year": 2027,
+        "status": "upcoming",
+        "note": "**2027-01-01 起门槛上调**：新申请一律按新表（23 岁及以下 S$6,000、45 岁及以上 S$11,500；金融服务业 S$6,600 至 S$12,700）。旧标准只适用于「2027-01-01 前递交的新申请」与「2028-01-01 前到期的续期」。这是本条记录里唯一有确定日期的政策节点，须据此安排递交时点。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "准证申请费（由雇主支付）",
+        "amount": {
+          "local_amount": 0,
+          "currency": "SGD",
+          "note": "官方资格页未列固定申请费；EP 的成本主要是雇主侧的薪资承诺，不是一笔签证费。本记录不填猜测金额。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方资格页未给统一天数。实际时长受 FCF 招聘广告期、COMPASS 打分与材料完整度影响。"
+  },
+  "documents": [
+    {
+      "name": "护照",
+      "required": true,
+      "note": "有效期须覆盖准证期；由雇主在申请时提交个人信息页。",
+      "prepare_days": 14
+    },
+    {
+      "name": "学位证与成绩单",
+      "required": true,
+      "note": "用于 COMPASS 的学历项打分。中国学历通常需附英文翻译或学信网认证报告。",
+      "prepare_days": 30
+    },
+    {
+      "name": "雇主 offer 与雇佣合同（含月薪）",
+      "required": true,
+      "note": "月薪须达到按年龄对应的 EP 门槛，且是「固定月薪」口径。这是最容易卡住的一步：谈薪前先按年龄查表。",
+      "prepare_days": 14
+    },
+    {
+      "name": "雇主侧的 FCF 招聘广告证明",
+      "required": true,
+      "note": "雇主须先在 MyCareersFuture 刊登招聘广告并公平考虑本地候选人，才能递交 EP 申请。不是申请人材料，但会决定时间线。",
+      "prepare_days": 0
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先按年龄查薪资门槛，再谈 offer",
+      "description": "门槛按月龄分档：23 岁及以下 S$5,600，45 岁及以上 S$10,700，中间逐年递增。如果谈的是 2027 年入职，要按 2027-01-01 起的新表（S$6,000 起）谈，否则可能签完约才发现不达标。",
+      "duration": "1 天",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility"
+    },
+    {
+      "step_no": 2,
+      "title": "确认 COMPASS 能不能过",
+      "description": "第一关过了不代表能申——还须通过 COMPASS 打分（除非豁免）。用 MOM 的 Self-Assessment Tool 让雇主先试算，比事后被拒省事。",
+      "duration": "1 天",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility"
+    },
+    {
+      "step_no": 3,
+      "title": "雇主完成 FCF 招聘广告",
+      "description": "雇主须先在 MyCareersFuture 刊登广告并公平考虑本地候选人，才能递交 EP。这一步通常要 14 天，会直接推后递交时点。",
+      "duration": "约 14 天",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility"
+    },
+    {
+      "step_no": 4,
+      "title": "雇主递交申请，等结果",
+      "description": "由雇主通过 MOM 在线系统提交。获批后准证绑定雇主与岗位。",
+      "duration": "以 MOM 审理为准",
+      "official_link": "https://www.mom.gov.sg/passes-and-permits/employment-pass"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "可续期，但续期同样要过薪资门槛。特别注意：2028-01-01 起到期的续期按新表（更高）审，所以现在按旧门槛办下来的人，续期时可能因门槛上涨而不合格。官方原文口径为 `renewal of passes expiring from 1 Jan 2028` 适用新标准。",
+    "restricted_occupations": [],
+    "note": "EP 绑定雇主与岗位，换工作须重新申请。与 S Pass 的区别：EP 无配额、无劳工税，但有 COMPASS 打分；S Pass 有配额与劳工税、无 COMPASS。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "薪资门槛按年龄分档，不是一个固定数字。23 岁 S$5,600、45 岁 S$10,700——差别接近一倍。只看「5,600」就去谈薪，年长申请人很可能白谈。"
+    },
+    {
+      "level": "critical",
+      "description": "2027-01-01 起门槛上调一档（起薪 S$6,000、上限 S$11,500）。如果 offer 在 2026 年谈成、2027 年才递交，按新表审——谈薪时必须用对表。"
+    },
+    {
+      "level": "warning",
+      "description": "续期会被新门槛追上：2028-01-01 起到期的续期适用新标准。现在刚好达标的人，两年后可能因门槛上涨不再达标。"
+    },
+    {
+      "level": "warning",
+      "description": "FCF 招聘广告是硬前置：雇主没在 MyCareersFuture 刊登并公平考虑本地人，就递不了 EP。这会额外增加约两周，且不在申请人控制内。"
+    },
+    {
+      "level": "info",
+      "description": "与 S Pass 的取舍：达不到 EP 薪资门槛时，S Pass 是备选（门槛 S$3,300 起），但 S Pass 受雇主配额与劳工税约束；EP 无配额但有 COMPASS。两条路的瓶颈不同：EP 卡在薪资与打分，S Pass 卡在雇主配额。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Eligibility for Employment Pass（新加坡人力部官方页，含薪资分档表）",
+      "url": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility",
+      "publisher": "Ministry of Manpower, Singapore",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "两阶段框架原文：`To qualify for EP applications, candidates will need to pass a 2-stage eligibility framework`；`Stage 1 Earn at least the EP qualifying salary, which is benchmarked to the top 1/3 of local PMET salaries by age.`；`Stage 2 Unless exempted, pass the points-based Complementarity Assessment Framework (COMPASS).`；硬性先后 `Candidates who do not meet stage 1 will not be eligible for an EP, regardless of the points they would have scored under COMPASS.`；FCF `Employers must continue to meet the Fair Consideration Framework (FCF) job advertising requirement before submitting new EP applications.`；薪资分档表（非金融业）当前 23 岁及以下 `$5,600`、45 岁及以上 `$10,700`，自 2027-01-01 起 `$6,000` 与 `$11,500`；金融服务业当前 `$6,200` 至 `$11,800`，新表 `$6,600` 至 `$12,700`；适用范围 `Minimum qualifying salary for new applications from 1 Jan 2027, and for renewal of passes expiring from 1 Jan 2028`；页面标注最后更新 2026-11-03。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

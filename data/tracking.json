@@ -7,10 +7,10 @@
     "note": "windows 里写死了 open_date / close_date 的项目，一年只开一次窗口，错过就要再等一年；晚一天发现就等于让人白等一年，所以按 90 天核。 其余项目的资格条件、费用、材料不会因为跨年而失效，180 天足够，太勤只会把精力花在没变的东西上。"
   },
   "summary": {
-    "total": 29,
+    "total": 34,
     "overdue": 0,
     "due_soon": 0,
-    "fresh": 29,
+    "fresh": 34,
     "unknown": 0,
     "quota_unverified": 2
   },
@@ -1573,6 +1573,167 @@
       "quota_basis": null,
       "quota_note": "官方未设名额上限，也没有开放窗口。唯一的时间约束是「拿到第二周期学历之后」——官方没有写毕业到申请之间的期限上限，这一点与荷兰（3 年内）不同。",
       "quota_source": "https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-or-start-a-business.html"
+    },
+    {
+      "id": "au-407-training",
+      "name": "澳大利亚培训签证（407 类别）",
+      "country": "澳大利亚",
+      "file": "au-407-training.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方签证页的资格清单里没有名额条款，全年滚动受理，不设排队或抽签。实际能否成行取决于担保方是否愿意提名——这是「雇主侧的名额」，不受移民局公布数字约束。",
+      "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407"
+    },
+    {
+      "id": "dk-working-holiday",
+      "name": "丹麦打工度假居留（Working Holiday）",
+      "country": "丹麦",
+      "file": "dk-working-holiday.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方页面未出现名额上限或抽签的表述，按滚动受理记录。由于本项目对中国大陆护照不分配名额，配额对本仓库主要读者没有实际意义；此处的 no_quota 指「该安排本身没有公布名额上限」，不是「中国人能申且无名额限制」。",
+      "quota_source": "https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday"
+    },
+    {
+      "id": "mt-nomad-residence",
+      "name": "马耳他数字游民居留许可（Nomad Residence Permit）",
+      "country": "马耳他",
+      "file": "mt-nomad-residence.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://nomad.residencymalta.gov.mt/nomad-eligibility/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://nomad.residencymalta.gov.mt/new-faqs/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方资格与流程页面均未设名额上限、没有开放窗口或抽签，全年滚动受理。按公开信息判断这是「符合条件即受理」的通道，但官方没有用「no cap」这样的措辞，此处按「未见名额条款」记录。",
+      "quota_source": "https://nomad.residencymalta.gov.mt/nomad-eligibility/"
+    },
+    {
+      "id": "sg-employment-pass",
+      "name": "新加坡就业准证（Employment Pass）",
+      "country": "新加坡",
+      "file": "sg-employment-pass.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "EP 与同国 S Pass 的关键差别就在这里：官方对 EP 未设配额门槛，用的是「薪资 + COMPASS 打分」双关；S Pass 才是「受配额 + 劳工税」约束。因此 EP 记 no_quota，S Pass 记 capped（concurrent）。",
+      "quota_source": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility"
+    },
+    {
+      "id": "sg-s-pass",
+      "name": "新加坡 S 准证（S Pass）",
+      "country": "新加坡",
+      "file": "sg-s-pass.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.mom.gov.sg/passes-and-permits/s-pass/eligibility",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.mom.gov.sg/passes-and-permits/s-pass/quota-and-levy",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "capped",
+      "quota": 1,
+      "quota_basis": "concurrent",
+      "quota_note": "这里记录的是「S Pass 受配额约束」这一事实，不是某个具体名额数字。官方原文：`You are limited by a quota and must pay the monthly foreign worker levy for each S Pass holder you employ.` 配额按**雇主**的在职员工总数计算比例（不是按申请人国籍分配年度名额），因此不存在「中国大陆每年 N 个」这样的数字。quota 字段填 1 仅表示「存在配额机制」；具体比例与征费金额见 MOM 的 Levy and quota requirements 页，本记录不填猜测值。这与「年度发放上限」是两种完全不同的配额口径，故 quota_basis 记为 concurrent。",
+      "quota_source": "https://www.mom.gov.sg/passes-and-permits/s-pass/quota-and-levy"
     }
   ]
 }

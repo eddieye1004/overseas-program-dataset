@@ -13,12 +13,12 @@
     "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
     "summary": "J-1 下的在职者培训类别：在美企业接受与既有专业方向一致的系统培训，最长 18 个月（农业与酒店旅游类别为 12 个月）。与 Intern 的分界线是：Trainee 面向已毕业且有一年以上相关工作经验的人，Intern 面向在读生与毕业 12 个月内的人。这是已经工作几年、又想出国积累一段海外经历时最直接的一类 J-1。",
     "tags": [
-        "no_quota_cap",
+      "no_quota_cap",
       "requires_agency",
       "english_required",
       "rolling",
       "requires_degree"
-      ],
+    ],
     "active": true
   },
   "eligibility": {
@@ -66,6 +66,14 @@
     "quota": null,
     "quota_source": "https://j1visa.state.gov/programs/trainee/",
     "quota_note": "官方未设年度名额上限，报名与岗位安置日历由各 Sponsor 自行设定。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；报名与岗位安置日历由各 Sponsor 自定。",
+      "lead_time_days": 90,
+      "note": "rolling：无统一窗口。lead_time_days=90：同 J-1 Intern，Sponsor 侧流程是瓶颈。"
+    },
     "windows": [
       {
         "year": 2027,

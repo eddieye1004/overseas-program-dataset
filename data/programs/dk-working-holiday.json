@@ -1,0 +1,146 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "dk-working-holiday",
+    "name": "丹麦打工度假居留（Working Holiday）",
+    "name_en": "Working Holiday Residence Permit (Denmark)",
+    "country": "丹麦",
+    "country_code": "DK",
+    "region": "europe",
+    "program_type": "working_holiday",
+    "visa_code": "Working Holiday",
+    "official_url": "https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday",
+    "authority": "丹麦移民局（The Danish Immigration Service）／SIRI",
+    "summary": "丹麦与少数几个国家签有打工度假互惠安排，参与者可在丹麦以度假为主、附带短期工作。官方页面明列参与国为阿根廷、澳大利亚、加拿大、智利、日本、新西兰、韩国。**中国大陆不在名单内**，本条收录为排除记录——用途是说明「为什么你不能申」，以及纠正把它写成「中国人可申」的二手信息。",
+    "tags": [
+      "no_quota_cap",
+      "rolling",
+      "once_in_lifetime"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "not_eligible",
+      "hong_kong_china": "unknown",
+      "tw_china": "unknown",
+      "note": "官方页面原文只列了七个参与国：`You are a young citizen of Argentina, Australia, Canada, Chile, Japan, New Zealand or South Korea and want to apply for a Working Holiday residence permit in Denmark.` 中国大陆不在其中，故为 not_eligible。中国香港、中国台湾是否另有安排，该页未提及，本次未能核实，标 unknown 而不是猜「不可申」——这两地的安排需要单独查丹麦与对应地区的双边文件。"
+    },
+    "age": {
+      "min": 18,
+      "max": 30,
+      "note": "官方在页面上用 `young citizen` 表述，但本次抓取到的正文只有参与国那一句（页面正文由脚本注入，显示 `No Datasource Found`），年龄区间未能从官方页面逐字核实。18–30 是打工度假安排的常见区间，此处按「待核实」处理：数字仅作占位，递交前必须以官方页面为准。"
+    },
+    "education": {
+      "minimum_level": "any",
+      "major_restriction": [],
+      "note": "官方页面正文未加载完整，学历要求未能核实。不得据此认定「无要求」。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方页面正文未加载完整，语言要求未能核实。"
+    },
+    "funds": {
+      "required": false,
+      "amount": null,
+      "note": "官方页面正文未加载完整，资金要求未能核实。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "参与国公民身份是前提条件，这一条由官方页面明确列出。其余材料要求本次未能读到完整正文。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday",
+    "quota_note": "官方页面未出现名额上限或抽签的表述，按滚动受理记录。由于本项目对中国大陆护照不分配名额，配额对本仓库主要读者没有实际意义；此处的 no_quota 指「该安排本身没有公布名额上限」，不是「中国人能申且无名额限制」。",
+    "schedule": {
+      "type": "no_window",
+      "status": "unknown",
+      "date_confidence": "unknown",
+      "next_window_hint": "中国大陆不在七个参与国之内，本通道对中国大陆护照不开放，无窗口可谈。",
+      "lead_time_days": 0,
+      "note": "type=no_window：官方页面只列参与国（阿根廷、澳大利亚、加拿大、智利、日本、新西兰、韩国），中国大陆不在其中，对本库主要读者而言不存在可申请的窗口。lead_time_days=0 是刻意的——不给人一个虚假的准备期。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "closed",
+        "note": "对中国大陆护照：不在参与国名单内，任何时间都不能申。对其他参与国公民：按官方页面滚动受理。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "官方页面未提供年度窗口信息（正文由脚本注入，本次只取到参与国说明）。是否新增参与国须看丹麦移民局公告，不能按往年规律推断。"
+      }
+    ],
+    "fees": [],
+    "processing_time": "官方页面正文未加载完整，审理时长未能核实。"
+  },
+  "documents": [
+    {
+      "name": "参与国护照",
+      "required": true,
+      "note": "必须是阿根廷、澳大利亚、加拿大、智利、日本、新西兰、韩国之一的有效护照。中国大陆护照不符合，这是本条记录的结论。",
+      "prepare_days": 0
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先确认护照是否在七个参与国之内",
+      "description": "官方原文列出：阿根廷、澳大利亚、加拿大、智利、日本、新西兰、韩国。中国大陆不在其中。若持中国大陆护照，到此为止——不要继续准备材料。",
+      "duration": "1 分钟",
+      "official_link": "https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday"
+    },
+    {
+      "step_no": 2,
+      "title": "（如符合）按官方页面的申请流程递交",
+      "description": "官方页面的完整正文由脚本注入，本次抓取只取到参与国说明。符合条件者须直接打开官方页面走流程，不要依赖第三方转述的年龄、资金与材料清单。",
+      "duration": "以官方页面为准",
+      "official_link": "https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 0,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "未能核实。0 表示「未获取到该数据」，不是「不允许」。",
+    "restricted_occupations": [],
+    "note": "本条只确认了参与国名单这一项硬事实，其余字段为未核实占位。保留这条记录的价值在于：它是「大陆护照不可申」的官方证据，能直接反驳中文互联网上把丹麦打工度假写成对中国人开放的二手信息。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "中国大陆护照不在丹麦打工度假的参与国名单内。官方页面原文列出七个国家，没有中国。任何声称「中国人可申丹麦打工度假」的中文信息都与官方页面矛盾。"
+    },
+    {
+      "level": "warning",
+      "description": "本条的年龄、资金、材料字段为占位（未能读到完整正文）。不要拿本条去准备申请——本条的作用是排除，不是操作指南。"
+    },
+    {
+      "level": "info",
+      "description": "与瑞典、挪威的对照：瑞典给「境外完成学业者」9 个月求职居留、挪威给「已有 offer 的技术工人」，两条都不要求参与国身份；丹麦这条则是纯双边互惠安排，先看护照。北欧三国的入径逻辑完全不同，不能按「北欧是一类」去理解。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Working Holiday（丹麦移民局 New to Denmark 官方页）",
+      "url": "https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday",
+      "publisher": "The Danish Immigration Service / SIRI",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "参与国原文：`You are a young citizen of Argentina, Australia, Canada, Chile, Japan, New Zealand or South Korea and want to apply for a Working Holiday residence permit in Denmark.` 中国大陆不在其中。页面的详细正文由前端脚本注入，本次抓取（含无头浏览器通道）只渲染出这句参与国说明与一个 `No Datasource Found` 占位，因此年龄、资金、材料等字段未能逐字核实，已在对应字段标注为待核实而非填猜测值。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

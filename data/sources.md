@@ -13,12 +13,12 @@
 
 | 指标 | 数值 |
 |---|---|
-| 项目数 | 29 |
-| 来源条目 | 117（primary 111 / secondary 6） |
-| 去重后的 URL 数 | 107（另有 29 个 `official_url` 入口） |
-| 最近一次核实 | 2026-11-10 |
+| 项目数 | 34 |
+| 来源条目 | 124（primary 118 / secondary 6） |
+| 去重后的 URL 数 | 114（另有 34 个 `official_url` 入口） |
+| 最近一次核实 | 2026-11-11 |
 | 最早一次核实 | 2026-09-17 |
-| 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 54 天） |
+| 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 55 天） |
 
 每张表里的「分级」列由 `scripts/validate.py` 的 `classify_source()` 现算，不是人工标注 —— 规则见文末。
 
@@ -38,6 +38,14 @@
 ---
 
 ## 澳大利亚
+
+### 澳大利亚培训签证（407 类别）
+
+`au-407-training` · 官方入口 <https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Training visa (subclass 407)（澳大利亚内政部官方页） | Australian Department of Home Affairs | <https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407> | A · 政府/法律 | 2026-11-11 | 资格清单原文：`Have an approved sponsor`；`Your sponsor must have nominated you for a program of occupational training unless they are an Australian Commonwealth Government agency.`；`We must approve this nomination before you can apply for this visa.`；`Usually, you must be 18 years old or older at the time we decide your visa application.`；`From 12 November 2026, you must be outside Australia when you apply for the visa and when we grant it. Your application will be invalid if you apply while in Australia.`；`You must maintain adequate health cover for the whole of your stay if you are granted this visa.`；停留期 `We might grant you a visa allowing you to stay in Australia for up to 2 years.`；提名费 `AUD170.00 to nominate`；页面最后更新 2026-10-30。 |
 
 ### 澳大利亚打工与度假签证（462类别）
 
@@ -130,6 +138,18 @@
 
 ---
 
+## 丹麦
+
+### 丹麦打工度假居留（Working Holiday）
+
+`dk-working-holiday` · 官方入口 <https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Working Holiday（丹麦移民局 New to Denmark 官方页） | The Danish Immigration Service / SIRI | <https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday> | A · 政府/法律 | 2026-11-11 | 参与国原文：`You are a young citizen of Argentina, Australia, Canada, Chile, Japan, New Zealand or South Korea and want to apply for a Working Holiday residence permit in Denmark.` 中国大陆不在其中。页面的详细正文由前端脚本注入，本次抓取（含无头浏览器通道）只渲染出这句参与国说明与一个 `No Datasource Found` 占位，因此年龄、资金、材料等字段未能逐字核实，已在对应字段标注为待核实而非填猜测值。 |
+
+---
+
 ## 国际实习平台
 
 ### AIESEC 全球人才计划（企业实习）
@@ -202,6 +222,19 @@
 
 ---
 
+## 马耳他
+
+### 马耳他数字游民居留许可（Nomad Residence Permit）
+
+`mt-nomad-residence` · 官方入口 <https://nomad.residencymalta.gov.mt/nomad-eligibility/>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Nomad Residence Permit — Eligibility（Residency Malta Agency 官方页） | Residency Malta Agency | <https://nomad.residencymalta.gov.mt/nomad-eligibility/> | A · 政府/法律 | 2026-11-11 | 资格原文：`Applicants must also be third country nationals (non-EU, non-EEA, and non-Swiss nationals)`；三类形态 `work for an employer registered in a foreign country and have a contract of work`、`conduct business activities for a company registered in a foreign country and of which applicant is partner/shareholder`、`offer freelance or consulting services, to clients whose permanent establishments are in a foreign country`；排除项 `Persons contracted by a foreign company and giving services to the company's Maltese subsidiary are not eligible`；收入 `an applicant must have a minimum gross yearly income of €42,000`，旧标准 `Applicants who submitted their application prior to 1st April 2024 will still retain the same annual gross income requirement of €32,400`；其他 `hold a valid travel document`、`have health insurance covering risks in the European Union (including Malta) and the UK`、`hold a valid property rental or purchase agreement`、`provide a police conduct certificate`、`pass a background verification check`。 |
+| 2 | primary | Nomad Residence Permit — FAQs（费用、周期、续期与家属规则） | Residency Malta Agency | <https://nomad.residencymalta.gov.mt/new-faqs/> | A · 政府/法律 | 2026-11-11 | 费用与周期原文：`a €300 non-refundable administrative fee for each applicant, via bank transfer`；`Application processing is expected to take 30 working days starting from the issuance of the receipt of funds`；资格补述 `18 years and over`、`a Third Country National, excluding EU, EEA and Switzerland`；排除名单 `Afghanistan, North Korea, Iran, Democratic Republic of Congo, Somalia, South Sudan, Sudan, Yemen and Venezuela are not eligible`，俄罗斯与白俄罗斯另有额外限制；家属 `this is not possible. However, dependants may be added when the MA is applying for renewal. Newborns are the sole exception`。 |
+
+---
+
 ## 荷兰
 
 ### 荷兰毕业后求职居留
@@ -268,6 +301,23 @@
 ---
 
 ## 新加坡
+
+### 新加坡就业准证（Employment Pass）
+
+`sg-employment-pass` · 官方入口 <https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Eligibility for Employment Pass（新加坡人力部官方页，含薪资分档表） | Ministry of Manpower, Singapore | <https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility> | A · 政府/法律 | 2026-11-11 | 两阶段框架原文：`To qualify for EP applications, candidates will need to pass a 2-stage eligibility framework`；`Stage 1 Earn at least the EP qualifying salary, which is benchmarked to the top 1/3 of local PMET salaries by age.`；`Stage 2 Unless exempted, pass the points-based Complementarity Assessment Framework (COMPASS).`；硬性先后 `Candidates who do not meet stage 1 will not be eligible for an EP, regardless of the points they would have scored under COMPASS.`；FCF `Employers must continue to meet the Fair Consideration Framework (FCF) job advertising requirement before submitting new EP applications.`；薪资分档表（非金融业）当前 23 岁及以下 `$5,600`、45 岁及以上 `$10,700`，自 2027-01-01 起 `$6,000` 与 `$11,500`；金融服务业当前 `$6,200` 至 `$11,800`，新表 `$6,600` 至 `$12,700`；适用范围 `Minimum qualifying salary for new applications from 1 Jan 2027, and for renewal of passes expiring from 1 Jan 2028`；页面标注最后更新 2026-11-03。 |
+
+### 新加坡 S 准证（S Pass）
+
+`sg-s-pass` · 官方入口 <https://www.mom.gov.sg/passes-and-permits/s-pass/eligibility>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Eligibility for S Pass（新加坡人力部官方页） | Ministry of Manpower, Singapore | <https://www.mom.gov.sg/passes-and-permits/s-pass/eligibility> | A · 政府/法律 | 2026-11-11 | 面向所有国籍原文：`The S Pass is for foreign employees across all nationalities or citizenships who: Have a job offer in Singapore.`；薪资门槛 `Criteria include earning a salary of at least $3,300, which is benchmarked against the top one-third of the local associate professionals and technicians (APT) salaries by age.`；页面标注最后更新 2026-08-31。 |
+| 2 | primary | Quota and levy for S Pass（配额与劳工税） | Ministry of Manpower, Singapore | <https://www.mom.gov.sg/passes-and-permits/s-pass/quota-and-levy> | A · 政府/法律 | 2026-11-11 | 配额机制原文：`You are limited by a quota and must pay the monthly foreign worker levy for each S Pass holder you employ.` 该页把配额比例与征费金额拆到下一层页面（Levy and quota requirements），本记录未抄具体比例，避免写死一个会变的数字。页面标注最后更新 2026-07-08。 |
 
 ### 新加坡打工度假计划
 

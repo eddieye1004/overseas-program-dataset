@@ -12,7 +12,11 @@
     "official_url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
     "authority": "日本外务省（MOFA）/ 日本驻华大使馆、总领事馆",
     "summary": "日本与 33 个国家和地区签订的青年文化交流签证，允许 18-30 岁青年在日本停留最长 1 年并合法打工以补充旅费。⚠️ 日本外务省公布的协议名单中未包含中国大陆，中日之间未签订打工度假协议，中国大陆护照持有人无法申请。",
-    "tags": ["no_quota_cap", "once_in_lifetime", "no_agency_needed"],
+    "tags": [
+      "no_quota_cap",
+      "once_in_lifetime",
+      "no_agency_needed"
+    ],
     "active": false
   },
   "eligibility": {
@@ -80,6 +84,17 @@
     "quota": null,
     "quota_source": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
     "quota_note": "中国大陆不在日本打工度假协议名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。其他协议对象各有年度签发上限，例如中国台湾 10,000、中国香港 1,500——那些数字属于其他护照，不可当作大陆护照可用的名额。",
+    "schedule": {
+      "type": "annual_cycle",
+      "status": "closed",
+      "date_confidence": "inferred",
+      "open_date": null,
+      "close_date": null,
+      "cycle_note": "日台之间 2026 年度分两期：前期 2026-04-20～04-30、后期 2026-10-19～10-30（2026 年已全部结束）。往年为每年两期，约 4 月下旬与 10 月中下旬。",
+      "next_window_hint": "2027 年度受理日程尚未公告。按往年两期规律，预计 2027 年 4 月下旬与 10 月中下旬各开一期；官方公布前不得当作确定日期。",
+      "lead_time_days": 60,
+      "note": "type=annual_cycle 而非 fixed_dates：往年稳定在 4 月与 10 月两期，规律性明显；但 2027 年具体日期未公布，故 date_confidence=inferred 且 open_date/close_date 留空——推断不许携带具体日期。lead_time_days=60 的依据：需备存款证明（8 万台币以上、1 个月内开具的存折/对账单）、履历书须用当年最新格式、并须本人到窗口办理。"
+    },
     "windows": [
       {
         "year": 2026,

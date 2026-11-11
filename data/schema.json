@@ -238,7 +238,7 @@
     "timeline": {
       "type": "object",
       "description": "时间窗口。用于'当年/次年'筛选与倒计时提醒。",
-      "required": ["mechanism", "quota_status", "quota", "quota_note", "windows"],
+      "required": ["mechanism", "quota_status", "quota", "quota_note", "schedule", "windows"],
       "additionalProperties": false,
       "properties": {
         "mechanism": {
@@ -288,6 +288,56 @@
               "draw_period_end": { "$ref": "#/definitions/date", "description": "抽签制项目的抽签期结束日" },
               "lodgement_window_days": { "type": "integer", "description": "中签后递交窗口（天）" },
               "note": { "type": "string" }
+            }
+          }
+        },
+        "schedule": {
+          "type": "object",
+          "description": "窗口日历的结构化模型，必填。windows[] 记的是「某一年具体怎样」，本字段记的是「这个项目的时间规律是什么」——前者会逐年追加，后者长期稳定，是「名额雷达」做提前提醒的依据。两者不可互相替代。",
+          "required": ["type", "status", "date_confidence", "lead_time_days", "note"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["fixed_dates", "annual_cycle", "rolling", "no_window"],
+              "description": "fixed_dates=每年日期由官方逐次公布、不遵循固定月日（如抽签制、按名额放完即止）；annual_cycle=每年在相近月份重开、可据往年推断（如「每年 1 月前后公布」）；rolling=全年滚动受理、无窗口概念；no_window=项目本身不开放申请或对本护照不开放，窗口无意义。"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["open", "closed", "upcoming", "always_open", "unknown"],
+              "description": "当前状态。always_open 专给 rolling 类项目：随时可申，不适用开/关。"
+            },
+            "date_confidence": {
+              "type": "string",
+              "enum": ["confirmed", "inferred", "unknown"],
+              "description": "**确定性标记，本字段是整块日历的可信度开关。** confirmed=开放/截止日期由官方页面明确写出，可直接采信；inferred=官方未公布具体日期，按往年规律推断（必须在 note 里写明推断依据与往年日期）；unknown=连规律都无从判断，不得填任何具体日期。任何声称 inferred 的记录都不许在 open_date/close_date 里出现具体日期——具体日期只能由 confirmed 携带。"
+            },
+            "open_date": {
+              "$ref": "#/definitions/date",
+              "description": "当前或下一次已知的开放日。仅 date_confidence=confirmed 时允许填写；inferred 与 unknown 必须为 null。"
+            },
+            "close_date": {
+              "$ref": "#/definitions/date",
+              "description": "当前或下一次已知的截止日。仅 date_confidence=confirmed 时允许填写。"
+            },
+            "cycle_note": {
+              "type": "string",
+              "description": "annual_cycle 类必填：写下往年实际发生过的月份/日期序列（例如「2024-07-02、2025-07-01、2026-07-02 均在 7 月初开放」），这是 inferred 的依据来源。fixed_dates 类可选，用于说明为何无法推断。"
+            },
+            "next_window_hint": {
+              "type": "string",
+              "description": "下一次窗口的文字预告，仅在有依据时填。例：「按往年 7 月初开放的规律，2027 年窗口预计在 2027 年 7 月上旬；官方尚未公布」。不得在此写具体日期冒充已知。"
+            },
+            "lead_time_days": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 365,
+              "description": "建议提前准备天数：从「决定要申」到「材料齐备可递交」需要预留的时间。用于雷达倒推提醒时点（提醒日 = 开放日 − lead_time_days）。取值依据写进 note。"
+            },
+            "note": {
+              "type": "string",
+              "minLength": 8,
+              "description": "必填。写清这个判断的依据：官方页面怎么写的、往年日期从哪来、lead_time_days 为什么取这个数。"
             }
           }
         },

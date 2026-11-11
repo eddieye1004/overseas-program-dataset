@@ -81,6 +81,14 @@
     "quota": null,
     "quota_source": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year",
     "quota_note": "官方未设名额上限，也没有统一开放窗口。约束是「毕业/完成研究之日起 3 年内」这个个人时间窗，越早递交越好。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；约束是「毕业/完成研究之日起 3 年内」。",
+      "lead_time_days": 30,
+      "note": "rolling：全年滚动，无统一开放窗口。lead_time_days=30：材料以学位证、护照与资金证明为主。"
+    },
     "windows": [
       {
         "year": 2026,

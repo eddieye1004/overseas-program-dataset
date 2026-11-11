@@ -10,6 +10,7 @@ export type Route =
   | { name: 'track' }
   | { name: 'saved' }
   | { name: 'compare' }
+  | { name: 'calendar' }
   | { name: 'about' };
 
 function parse(hash: string): Route {
@@ -24,6 +25,7 @@ function parse(hash: string): Route {
   if (clean === 'track') return { name: 'track' };
   if (clean === 'saved') return { name: 'saved' };
   if (clean === 'compare') return { name: 'compare' };
+  if (clean === 'calendar') return { name: 'calendar' };
   if (clean === 'about') return { name: 'about' };
   return { name: 'list' };
 }

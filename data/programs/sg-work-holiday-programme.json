@@ -65,6 +65,14 @@
     "quota_basis": "concurrent",
     "quota_source": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/eligibility",
     "quota_note": "官方原文 `The Work Holiday Programme has a capacity of 2,000 pass holders at any one time.` 这是「同时在册人数」上限，不是年度发放数——有人离境即可释放名额。",
+    "schedule": {
+      "type": "fixed_dates",
+      "status": "unknown",
+      "date_confidence": "unknown",
+      "next_window_hint": "中国大陆不在 WHP 的合资格高校/国籍名单内（该资格为 not_eligible），窗口无实际意义。",
+      "lead_time_days": 0,
+      "note": "WHP 有 2,000 同时在册人数上限、满即止，因此第一年结束后没有固定的年度重开日。本记录服务中国大陆读者，该通道不适用，故 unknown。"
+    },
     "windows": [
       {
         "year": 2027,

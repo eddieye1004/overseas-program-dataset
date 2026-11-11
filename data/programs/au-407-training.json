@@ -1,0 +1,262 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "au-407-training",
+    "name": "澳大利亚培训签证（407 类别）",
+    "name_en": "Training Visa (Subclass 407)",
+    "country": "澳大利亚",
+    "country_code": "AU",
+    "region": "oceania",
+    "program_type": "internship_visa",
+    "visa_code": "407",
+    "official_url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407",
+    "authority": "澳大利亚内政部（Department of Home Affairs）",
+    "summary": "给需要到澳大利亚参加职业培训、或去做与专业相关的结构化工作培训的人用的临时签证，最长 2 年。核心是「先有担保、再有提名」：澳洲雇主（或联邦政府机构）必须先获批为担保方，并为你的培训项目单独提交提名、获内政部批准，之后你才能递交签证申请。培训期间可以做与培训直接相关的工作，但不能当成单纯打工。2026-11-12 起，递交与获批时人都必须在澳大利亚境外。",
+    "tags": [
+      "no_quota_cap",
+      "requires_agency",
+      "english_required",
+      "renewable"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方资格清单按「担保 + 提名 + 个人条件」判定，未按国籍设限；中国大陆护照持有人可申。真正的约束是先拿到澳洲担保方的提名，这在很大程度上由雇主而非护照决定。"
+    },
+    "age": {
+      "min": 18,
+      "max": 99,
+      "note": "官方原文：`Usually, you must be 18 years old or older at the time we decide your visa application.` 只有下限 18 岁，没有上限。这里的 99 表示「无上限」，不是「未核实」。未满 18 岁的申请会被单独按「未成年人最佳利益」评估，不是绝对禁止，但条件更严。"
+    },
+    "education": {
+      "minimum_level": "any",
+      "major_restriction": [],
+      "note": "官方对学历不做统一硬性规定，门槛落在「培训项目本身」上：须属于三类之一——① 为在你当前职业或专业领域取得注册/执照所需的职业培训；② 结构化的工作场所培训（含学校组织的实习、或为提升技能而安排的培训）；③ 在澳期间的专业发展培训。是否认可取决于提名材料里的培训计划，而非学位层级。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "官方要求具备「功能性英语（functional English）」，并在资格清单里单列为一条；具体认可的成绩与分数见内政部英语要求页。数据库未逐项登记分数，因为这些分数会随政策调整，递交前须按当期官方页面核对。"
+    },
+    "funds": {
+      "required": false,
+      "amount": null,
+      "note": "官方资格清单里没有单独的资金门槛条款。但需满足健康、品行、真实临时入境者（genuine temporary entrant）等要求，实际需要能覆盖在澳期间的开销；培训期间的报酬由担保方按培训安排支付，不能假定足以覆盖全部生活成本。"
+    },
+    "other_requirements": [
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "须有已获批的担保方（approved sponsor）与已获批的提名（approved nomination）。官方原文：`Your sponsor must have nominated you for a program of occupational training unless they are an Australian Commonwealth Government agency.` 以及 `We must approve this nomination before you can apply for this visa.` 也就是说顺序是「担保方获批 → 提名获批 → 你递签」，跳步会直接不合格。"
+      },
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "申请人及随行家庭成员须满足健康要求（meet our health requirement）。"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "申请人及随行 16 岁及以上家庭成员须满足品行要求（meet our character requirement）。"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "官方明确在澳期间的医疗费用由本人承担，须为整个停留期维持足够的医疗保险（`You must maintain adequate health cover for the whole of your stay`）。"
+      },
+      {
+        "type": "return_ticket",
+        "required": false,
+        "note": "官方资格清单未单列返程机票；但须是「真实临时入境者」，即只打算临时停留、只做签证允许的事、并在此前实质性遵守过所持签证的条件。"
+      },
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "2026-11-12 起：递交签证申请时、以及获批时，人都必须在澳大利亚境外（`From 12 November 2026, you must be outside Australia when you apply for the visa and when we grant it. Your application will be invalid if you apply while in Australia.`）。官方特别提醒：即使 ImmiAccount 允许你在境内递交，申请仍然无效。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407",
+    "quota_note": "官方签证页的资格清单里没有名额条款，全年滚动受理，不设排队或抽签。实际能否成行取决于担保方是否愿意提名——这是「雇主侧的名额」，不受移民局公布数字约束。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口概念，全年可递交；但必须先拿到担保方提名，实际排期取决于雇主。",
+      "lead_time_days": 90,
+      "note": "rolling：官方签证页无窗口或抽签条款，全年受理。date_confidence 记 unknown 是因为「没有窗口」不存在日期可信度问题——不是没查清，而是不需要日期。lead_time_days=90 取得偏大：担保方获批、提名获批这两步都在申请人控制之外，官方明确须先有提名批准才能递签。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动递交，官方页最后更新 2026-10-30。2026-11-12 起新增「递交与获批时须在境外」的限制。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "滚动制没有年度开放窗口，规则按内政部页面当期版本执行；该页在 2026-10-30 更新过，建议每季度回看一次。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费（Visa application charge）",
+        "amount": {
+          "local_amount": 0,
+          "currency": "AUD",
+          "note": "官方页面把金额写成由前端脚本注入的 `BasePrice` 占位符（`From <span data-svpattribute=\"BasePrice\" ...>`），直接抓页面拿不到数字，需在内政部 Visa Pricing Estimator 里按 407 与当期币种查询。本记录不填一个猜测值。"
+        },
+        "refundable": false
+      },
+      {
+        "item": "担保方提名费（由雇主支付，非申请人）",
+        "amount": {
+          "local_amount": 170,
+          "currency": "AUD",
+          "note": "官方原文 `AUD170.00 to nominate`。这笔是担保方为提名你而付的费用，不是申请人付的签证费；有的雇主会转嫁给申请人，属于双方约定，不是官方收费。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方不给固定天数，只把申请人指向 Visa processing time guide：该工具展示近期已决案件的处理时间，官方明说「只是一个参考，不针对你的具体申请」。审理时长受提名材料完整度影响最大。"
+  },
+  "documents": [
+    {
+      "name": "担保方获批证明与提名批准",
+      "required": true,
+      "note": "签证的前置条件，不是申请人自己准备的材料：担保方须先获批（approved sponsor），再为你的培训项目提交提名并获批。递签时用提名编号关联。",
+      "prepare_days": 60
+    },
+    {
+      "name": "培训计划（training plan）",
+      "required": true,
+      "note": "提名的核心材料，须说清培训属于三类中的哪一类、培训内容与你的职业/专业如何相关、由谁指导、周期多长。这一项写得含糊是提名被拒的主要原因。",
+      "prepare_days": 30
+    },
+    {
+      "name": "英语能力证明",
+      "required": true,
+      "note": "须满足功能性英语（functional English）。认可的成绩与分数按内政部当期英语要求页，数据库未登记具体分数。",
+      "prepare_days": 60
+    },
+    {
+      "name": "护照",
+      "required": true,
+      "note": "有效期需覆盖拟停留期；官方未在本页写额外的最短有效期要求，按澳大利亚签证的一般惯例准备。",
+      "prepare_days": 14
+    },
+    {
+      "name": "健康检查",
+      "required": true,
+      "note": "按内政部要求到指定体检机构完成，结果有效期与体检项目由官方按国籍与停留期决定。",
+      "prepare_days": 30
+    },
+    {
+      "name": "无犯罪记录证明",
+      "required": true,
+      "note": "16 岁及以上申请人及随行家庭成员须提供，以满足品行要求。中国申请人通常需办《无犯罪记录证明》并做英文翻译/公证。",
+      "prepare_days": 30
+    },
+    {
+      "name": "医疗保险",
+      "required": true,
+      "note": "须覆盖整个停留期。官方强调医疗费用由本人承担，保险是降低财务风险的手段。",
+      "prepare_days": 14
+    },
+    {
+      "name": "澳大利亚价值观声明",
+      "required": true,
+      "note": "18 岁及以上申请人须已阅读（或被解释过）澳大利亚价值观声明，并在申请中确认。",
+      "prepare_days": 1
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先确认走的是哪一类培训",
+      "description": "三类：①取得职业注册/执照所需的培训；②结构化的工作场所培训（含校方安排的实习）；③在澳的专业发展培训。如果只是「想去澳洲打工」，这一类不适用——407 要求培训是主线，工作是培训的一部分。",
+      "duration": "1 天",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407"
+    },
+    {
+      "step_no": 2,
+      "title": "找到愿意担保并提名的雇主",
+      "description": "担保方须先获批为 approved sponsor；随后为你的培训项目提交提名。若担保方是澳大利亚联邦政府机构，可免提名。这一步最耗时间，且不由申请人单方面推进。",
+      "duration": "1–3 个月",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407"
+    },
+    {
+      "step_no": 3,
+      "title": "等提名获批，再准备自己的材料",
+      "description": "官方明确须先拿到提名批准才能递签。同时准备英语成绩、体检、无犯罪记录、保险。",
+      "duration": "1–2 个月",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407"
+    },
+    {
+      "step_no": 4,
+      "title": "确认自己在境外，再递交",
+      "description": "2026-11-12 起，递交与获批时人都必须在澳大利亚境外。官方特别说明：即使 ImmiAccount 允许你在境内提交，申请仍然无效——不要以为系统让你交就等于合规。",
+      "duration": "1 天",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407"
+    },
+    {
+      "step_no": 5,
+      "title": "在澳期间只做与培训相关的事",
+      "description": "签证允许的是培训及与培训直接相关的工作。换培训项目需重新提名；换担保方需重新申请签证。官方页面对「改变培训项目/换雇主」分别写了处理方式。",
+      "duration": "全程",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "官方原文：签证最长可获批 2 年（`We might grant you a visa allowing you to stay in Australia for up to 2 years`）。是否可续取决于培训项目是否延长并重新提名；官方页面写了「stay longer」的入口，但未在本页给出统一的续签年限。此处按「需重新提名/重新申请」理解。",
+    "restricted_occupations": [],
+    "note": "407 的定位是培训而不是就业，所以没有「同雇主上限」这类为打工度假设的条款。工作权限与培训项目绑定：做培训范围外的工作属于违反签证条件。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "顺序不能颠倒：担保方获批 → 提名获批 → 递签。很多人先递了签证再找雇主，结果是必然被拒，且留下拒签记录。"
+    },
+    {
+      "level": "critical",
+      "description": "2026-11-12 起，境内递交的 407 申请无效。官方特意提醒「即使 ImmiAccount 让你交」也算无效。已在澳的人不要指望用这条通道转身份。"
+    },
+    {
+      "level": "warning",
+      "description": "把 407 当成「便宜的工作签证」是常见误解。签证条件绑定培训项目，做与培训无关的工作会被认定违反条件，影响后续任何澳大利亚签证申请。"
+    },
+    {
+      "level": "warning",
+      "description": "签证费在官方页面由脚本动态渲染，第三方攻略里的数字很容易过期。递签前必须去 Visa Pricing Estimator 按 407 查当期金额，不要按本文或任何攻略的数字准备。"
+    },
+    {
+      "level": "info",
+      "description": "与 462 打工度假的取舍：462 是先抽签再申请、允许自由打工度假且有中国大陆年度名额；407 不抽签、不设名额，但必须有雇主担保与培训项目。前者适合「想去打工度假」，后者适合「有明确的培训/实习机会」。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Training visa (subclass 407)（澳大利亚内政部官方页）",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407",
+      "publisher": "Australian Department of Home Affairs",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "资格清单原文：`Have an approved sponsor`；`Your sponsor must have nominated you for a program of occupational training unless they are an Australian Commonwealth Government agency.`；`We must approve this nomination before you can apply for this visa.`；`Usually, you must be 18 years old or older at the time we decide your visa application.`；`From 12 November 2026, you must be outside Australia when you apply for the visa and when we grant it. Your application will be invalid if you apply while in Australia.`；`You must maintain adequate health cover for the whole of your stay if you are granted this visa.`；停留期 `We might grant you a visa allowing you to stay in Australia for up to 2 years.`；提名费 `AUD170.00 to nominate`；页面最后更新 2026-10-30。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

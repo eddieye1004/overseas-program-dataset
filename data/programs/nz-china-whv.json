@@ -119,6 +119,17 @@
     "quota_basis": "annual",
     "quota_source": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
     "quota_note": "中国大陆护照年度名额 1,000 个，名额开放后先到先得、满额即关闭。若上一年度有剩余名额，将继续开放直至满额，然后重置为新年度的 1,000 个。",
+    "schedule": {
+      "type": "annual_cycle",
+      "status": "closed",
+      "date_confidence": "inferred",
+      "open_date": null,
+      "close_date": null,
+      "cycle_note": "2025 年开放日 2025-07-02、2026 年开放日 2026-07-02，均在 7 月初；INZ 每年 1 月前后公布当年各打工度假计划的开放日期与名额表。2026 年名额已用尽，官方页面状态为 closed。",
+      "next_window_hint": "2027 年开放日期未公布。按 2025、2026 均在 7 月初开放的规律，预计 2027 年 7 月初；INZ 通常在当年 1 月前后公布确切日期，应在那时复核。",
+      "lead_time_days": 60,
+      "note": "type=annual_cycle：两年都在 7 月 2 日开放，规律清楚；但 2027 年日期未公布，故 inferred 且不填具体日期（2026-07-02 已作为历史写在 windows[] 里，不在 schedule 重复）。lead_time_days=60 的依据：名额极少（历史上 10 分钟至 30 分钟内抢完），必须在开放前把英语成绩、NZD4,200 资金证明、体检全部备好，开放当天只需提交。"
+    },
     "windows": [
       {
         "year": 2027,

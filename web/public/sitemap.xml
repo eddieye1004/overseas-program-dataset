@@ -2,13 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/p/at-rwr-card-vhq.html</loc>
     <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/au-407-training.html</loc>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -55,6 +61,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/dk-working-holiday.html</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/p/global-aiesec-global-talent.html</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -85,6 +97,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/mt-nomad-residence.html</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/p/nl-orientation-year.html</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -111,6 +129,18 @@
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/p/se-look-for-work.html</loc>
     <lastmod>2026-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/sg-employment-pass.html</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/sg-s-pass.html</loc>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -182,19 +212,19 @@
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/p/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/guides/age-wall.html</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/guides/misinformation.html</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

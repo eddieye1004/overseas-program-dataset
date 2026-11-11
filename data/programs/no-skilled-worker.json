@@ -13,12 +13,12 @@
     "authority": "挪威移民局（UDI, Utlendingsdirektoratet）",
     "summary": "拿到挪威具体雇主的 offer 后，按学历或职业资格申请工作居留：大学毕业通常一次给 3 年，职业培训（高中层级三年以上）一次给 1 年，特殊技能路径要求 6 年以上工作经验。工作须全职或至少 80% 岗位，薪资与条件不得低于挪威常规水平。3 年后可申请永居。中国大陆申请人要注意：官方点名说明中国等国出具的职业资格文件常被认定造假，职业层级（厨师、汽修、木工等）审核会明显更严。",
     "tags": [
-        "no_quota_cap",
+      "no_quota_cap",
       "requires_degree",
       "no_agency_needed",
       "rolling",
       "high_demand"
-      ],
+    ],
     "active": true
   },
   "eligibility": {
@@ -66,6 +66,14 @@
     "quota": null,
     "quota_source": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/",
     "quota_note": "官方未设名额上限，也没有开放窗口，全年滚动受理。实际约束是「先有雇主 offer」——雇主不先提交确认，申请人连表都填不了。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；真正的门槛是「先有挪威雇主提交确认」，雇主不动，申请人无法开始。",
+      "lead_time_days": 90,
+      "note": "rolling：全年受理。lead_time_days=90 取得偏大：雇主须先在挪威提交确认（offer 与雇佣条件审核），这一步通常比申请人自己的材料更慢。"
+    },
     "windows": [
       {
         "year": 2026,

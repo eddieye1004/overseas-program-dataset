@@ -81,6 +81,14 @@
     "quota": null,
     "quota_source": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa",
     "quota_note": "官方未设名额上限，按个人毕业时间滚动递交。真正的约束是申请窗口：一般须在学生签证到期后 3 个月内递交，博士为 6 个月，特定「先读低阶再读高阶但高阶不足 30 周」的情形可放宽到 12 个月。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；真正的约束是申请窗口——一般须在学生签证到期后 3 个月内递交，博士 6 个月。",
+      "lead_time_days": 30,
+      "note": "rolling：官方未设名额与开放窗口。lead_time_days=30：核心材料是毕业证明与学签状态证明，多数在毕业时已齐备。"
+    },
     "windows": [
       {
         "year": 2026,

@@ -70,6 +70,14 @@
     "quota": null,
     "quota_source": "https://aiesec.org/global-talent",
     "quota_note": "官方未设统一名额上限。岗位由企业合作伙伴滚动发布，无固定申请周期，因此不存在可比的年度配额。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；岗位由企业合作伙伴滚动发布，无固定申请周期。",
+      "lead_time_days": 60,
+      "note": "rolling：无固定周期。lead_time_days=60：需通过分会匹配岗位，匹配时长不确定。"
+    },
     "windows": [
       {
         "year": 2026,

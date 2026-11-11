@@ -75,6 +75,14 @@
     "quota": null,
     "quota_source": "https://www.iaeste.org/",
     "quota_note": "官方未设统一名额上限。官方口径为 1948 年至今累计派出 374,000+ 名学生，按年派出量只给累计口径、不公布单一年份数字；实习岗位由各国委员会按接收机构需求滚动提供。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无统一窗口；但岗位集中发布在 11 月、1 月、4 月的国际交流会议后，实际申请节奏随之起伏。",
+      "lead_time_days": 60,
+      "note": "rolling：官方未设统一开放窗口。lead_time_days=60：需备在读证明、成绩单、英语证书（3 年内有效），并在 Exchange Platform 注册验证。"
+    },
     "windows": [
       {
         "year": 2026,

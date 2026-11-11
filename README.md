@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| **收录规模** | 29 个项目 / 117 条官方来源。大陆护照可申 23，不可申 6（不可申也是收录内容，不是缺口） |
+| **收录规模** | 34 个项目 / 124 条官方来源。大陆护照可申 27，不可申 7（不可申也是收录内容，不是缺口） |
 | **数据怎么保鲜** | 每条记录带 `last_verified`。复核周期按项目性质分档：窗口写死到具体日期的 90 天，其余 180 天，剩余不足 25% 提前标「即将到期」。`scripts/track.py` 生成台账，每周一 CI 跑一次，超期就让构建变红并另开一张 issue 列清单 |
 | **怎么纠错** | 用 [数据纠错模板](.github/ISSUE_TEMPLATE/data-correction.yml) 提 issue，必须附官方来源 URL。CI 会校验来源等级与链接存活，二手来源与自媒体一律拦下 |
 | **数据长什么样** | 每个项目一个 JSON，字段定义见 [`data/schema.json`](data/schema.json)；逐条来源见 [`data/sources.md`](data/sources.md)（由脚本生成，勿手改） |
@@ -83,7 +83,7 @@
 | Skilled workers | 挪威 | 工作居留 | ✅ |
 | Red-White-Red Card (VHQ) | 奥地利 | 求职居留 | ✅ |
 
-**29 个项目，大陆护照可申 23 / 不可申 6，共 117 条来源（A 级 106 / B 级 6 / C 级 5），其中 5 条 C 级仅作旁证。** 数字取于 2026-11-10，改数据后重跑 `python scripts/gen_sources.py`。
+**34 个项目，大陆护照可申 27 / 不可申 7，共 124 条来源（A 级 113 / B 级 6 / C 级 5），其中 5 条 C 级仅作旁证。** 数字取于 2026-11-11，改数据后重跑 `python scripts/gen_sources.py`。
 
 完整清单见 [`data/programs/`](data/programs/)，逐条来源见 [`data/sources.md`](data/sources.md)。
 
@@ -112,6 +112,26 @@
 | B | 项目本体国际组织官网（IAESTE、AIESEC 等） | 可作为旁证 |
 | C | 高校官方部门、其他可核验机构 | ❌ 仅旁证 |
 | D | 百科、自媒体、商业博客、来源不明 | ❌ 出现即 CI 失败 |
+
+### 窗口怎么表示（`timeline.schedule`）
+
+配额回答「你能拿多少」，`schedule` 回答「什么时候能拿」——它是「名额雷达」的数据地基，因此是必填项，且**必须能区分「官方写的日期」与「按规律推的日期」**：
+
+| 字段 | 取值 | 作用 |
+|---|---|---|
+| `type` | `fixed_dates` / `annual_cycle` / `rolling` / `no_window` | 每年由官方逐次公布 / 每年相近月份重开 / 全年滚动 / 不开放 |
+| `status` | `open` / `closed` / `upcoming` / `always_open` / `unknown` | 当前状态。`always_open` 专给滚动类 |
+| `date_confidence` | `confirmed` / `inferred` / `unknown` | **整块日历的可信度开关** |
+| `open_date` / `close_date` | ISO 日期 | **仅 `confirmed` 允许填写** |
+| `cycle_note` | 往年日期序列 | `annual_cycle` + `inferred` 时必填，是推断的依据 |
+| `next_window_hint` | 文字预告 | 仅在有依据时写，不得冒充已知日期 |
+| `lead_time_days` | 0–365 | 建议提前准备天数；提醒日 = 开放日 − 该值 |
+
+一条硬纪律由 `validate.py` 强制：**`inferred` 与 `unknown` 不许携带任何具体日期**。推断出来的日期一旦和官方日期并排显示，读者就分不出来，雷达就会把人叫错时间——所以两者在数据层就分开，不靠展示层去补。
+
+产物：`data/calendar.json`（机器读，由 `scripts/build_calendar.py` 派生）+ `data/FRESHNESS.md` 的「窗口日历」一节（人读）+ 站点 `#/calendar` 页。三处同源。
+
+---
 
 ### 配额怎么表示（`timeline.quota_status`）
 
@@ -169,6 +189,7 @@ python scripts/validate.py --check-links    # 同时检查官方链接存活（�
 python -m pytest -q                         # 校验器、复核台账与 issue 同步的 118 个测试
 node web/scripts/smoke-test.mjs             # 前端纯逻辑断言
 python scripts/track.py                     # 重算复核台账（写 data/tracking.json 与 data/FRESHNESS.md）
+python scripts/build_calendar.py            # 重算窗口日历（写 data/calendar.json）
 python scripts/track.py --check             # 有过期记录就退出码 1（CI 定时任务用）
 python scripts/sync_issue.py --dry-run      # 预览将要写进 issue 的正文（不调 API）
 ```
@@ -201,6 +222,7 @@ overseas-program-dataset/
 │   ├── schema.json              # 数据字段定义（机器可读）
 │   ├── sources.md               # 官方来源清单（gen_sources.py 生成，勿手改）
 │   ├── tracking.json            # 复核台账，机器读（track.py 生成）
+│   ├── calendar.json            # 窗口日历，机器读（build_calendar.py 生成）
 │   ├── FRESHNESS.md             # 复核台账，人读（track.py 生成）
 │   ├── review-policy.json       # 复核周期的唯一来源（改周期改这里）
 │   └── programs/                # 每个项目一个 JSON

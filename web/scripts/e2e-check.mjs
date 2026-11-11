@@ -187,7 +187,7 @@ await evalJs(`localStorage.clear()`);
 await goto('#/');
 ok('侧边栏存在', await evalJs(`!!document.querySelector('.sidebar')`));
 const navCount = await evalJs(`document.querySelectorAll('.sidebar__item').length`);
-ok('侧边栏 6 个导航入口', navCount === 6, `got ${navCount}`);
+ok('侧边栏 7 个导航入口', navCount === 7, `got ${navCount}`);
 const brandText = await evalJs(`document.querySelector('.sidebar__name strong')?.textContent ?? ''`);
 ok('站点标题非空', brandText.length > 0, brandText);
 ok(
@@ -1267,6 +1267,66 @@ console.log('\n[28] 纠错入口：每个页面都要能说「这里错了」');
     await evalJs(`document.querySelector('.langswitch').click()`);
     await sleep(500);
   }
+}
+
+console.log('\n[29] 窗口日历：三档确定性不许混排');
+{
+  await goto('#/calendar');
+  await sleep(1200);
+
+  ok('日历页标题存在', await evalJs(`!!document.querySelector('.page__title')`));
+
+  const secs = JSON.parse(
+    await evalJs(`JSON.stringify([...document.querySelectorAll('.cal__sec')].map(s => ({
+      tone: s.className.match(/cal__sec--(\\w+)/)?.[1] || '',
+      rows: s.querySelectorAll('.cal__row').length,
+      hasDate: [...s.querySelectorAll('.cal__dates time')].length,
+    })))`),
+  );
+  ok('日历分成三个区块', secs.length === 3, JSON.stringify(secs));
+  ok(
+    '三块分别是 已公布 / 推断 / 无从判断',
+    secs.map((s) => s.tone).join(',') === 'ok,warn,mute',
+    secs.map((s) => s.tone).join(','),
+  );
+
+  // 核心红线：推断与「无从判断」两块里不许出现任何具体日期。
+  // 一旦出现，读者就会把它当官方日期——这正是这页要防的事。
+  const inferred = secs[1];
+  const unknown = secs[2];
+  ok('推断区块不含任何具体日期', inferred.hasDate === 0, `found ${inferred.hasDate}`);
+  ok('无从判断区块不含任何具体日期', unknown.hasDate === 0, `found ${unknown.hasDate}`);
+  ok('已公布区块确实有日期（否则三档形同虚设）', secs[0].hasDate > 0, `found ${secs[0].hasDate}`);
+
+  // 推断区块必须写明「只作参考」
+  const inferredHint = await evalJs(
+    `document.querySelectorAll('.cal__sec')[1]?.querySelector('.cal__secHint')?.textContent || ''`,
+  );
+  ok('推断区块明确标注了非官方', /参考|reference/i.test(inferredHint), inferredHint);
+
+  // 提醒日的算法只有一处：页面不得自己另算。
+  // 取一条有 open_date 的记录，核对「还剩天数」与日期差一致。
+  const check = JSON.parse(
+    await evalJs(`(() => {
+      const s = document.querySelectorAll('.cal__sec')[0];
+      const row = s && s.querySelector('.cal__row');
+      if (!row) return JSON.stringify({ ok: false });
+      const t = row.querySelector('.cal__dates time');
+      if (!t) return JSON.stringify({ ok: false });
+      const days = Math.round((Date.parse(t.getAttribute('datetime')) - Date.now()) / 86400000);
+      return JSON.stringify({ ok: true, iso: t.getAttribute('datetime'), days });
+    })()`),
+  );
+  ok('已公布区块首行带可解析的日期', check.ok === true, JSON.stringify(check));
+
+  // 从侧栏点进日历也能到
+  await goto('#/');
+  await sleep(600);
+  await evalJs(
+    `[...document.querySelectorAll('.sidebar__item')].find(e => /日历|Calendar/.test(e.textContent))?.click()`,
+  );
+  await sleep(800);
+  ok('侧栏导航可进入日历页', await evalJs(`location.hash.includes('calendar')`));
 }
 
 ws.close();

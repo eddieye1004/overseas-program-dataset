@@ -139,6 +139,15 @@ function toIndexEntry(p, today) {
     quota_status: p.timeline?.quota_status ?? null,
     quota: p.timeline?.quota ?? null,
     quota_basis: p.timeline?.quota_basis ?? null,
+    // 窗口日历。只透传判断所需的字段，不把 note 塞进索引（体积）。
+    // date_confidence 必须一起带过来：它是「这个日期能不能信」的开关，
+    // 少了它，前端就只能把推断日期当官方日期展示——那正是要防的事。
+    schedule_type: p.timeline?.schedule?.type ?? null,
+    schedule_status: p.timeline?.schedule?.status ?? null,
+    date_confidence: p.timeline?.schedule?.date_confidence ?? null,
+    window_open: p.timeline?.schedule?.open_date ?? null,
+    window_close: p.timeline?.schedule?.close_date ?? null,
+    lead_time_days: p.timeline?.schedule?.lead_time_days ?? null,
     last_verified: p.last_verified ?? null,
     // 复核状态在索引层就算好，前端不用再各算一遍 90 天。
     ...reviewState(p, today),

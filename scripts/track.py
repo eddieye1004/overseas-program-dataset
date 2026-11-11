@@ -311,6 +311,23 @@ def render_md(tracking):
     L.append("")
     L.append("---")
     L.append("")
+    # ---- 窗口日历 ----
+    # 由 build_calendar.py 生成，这里只负责把它接进例行流程——日历不是另开的
+    # 一份文档，跑一次台账就该跟着更新，否则它迟早与数据脱节。
+    try:
+        import build_calendar
+        cal = build_calendar.build(date.fromisoformat(tracking["generated_for"]))
+        L.extend(build_calendar.render_md(cal))
+        L.append("---")
+        L.append("")
+    except Exception as exc:  # noqa: BLE001
+        # 日历生成失败不该让整份台账写不出来：复核清单本身仍是可用的。
+        L.append("## 窗口日历")
+        L.append("")
+        L.append(f"生成失败：{type(exc).__name__}: {exc}")
+        L.append("")
+        L.append("---")
+        L.append("")
     L.append("## 复核该做什么")
     L.append("")
     L.append("按顺序核这四件事，任何一项对不上就改数据，不要只改日期：")

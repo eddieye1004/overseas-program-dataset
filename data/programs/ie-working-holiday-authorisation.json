@@ -12,7 +12,11 @@
     "official_url": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/working-holidays-in-ireland/",
     "authority": "Immigration Service Delivery, Ireland（爱尔兰移民服务局）",
     "summary": "爱尔兰与部分国家和地区签订的打工度假协议，允许 18-30 岁青年在爱尔兰停留最长 12 个月（加拿大公民 24 个月）并合法工作，期间可参加不超过 6 个月的短期课程。⚠️ 中国大陆不在协议名单内，仅限中国香港、中国台湾及其他签约国家/地区。官方原文：Places are limited and you cannot apply if you are already in Ireland。2027 年度申请于 2026-11-01 09:00（台北时间）开放，按收件先后受理，前 400 份合格申请在 2027 年初签发。",
-    "tags": ["no_quota_cap", "no_agency_needed", "high_wage"],
+    "tags": [
+      "no_quota_cap",
+      "no_agency_needed",
+      "high_wage"
+    ],
     "active": true
   },
   "eligibility": {
@@ -71,6 +75,17 @@
     "quota": null,
     "quota_source": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/working-holidays-in-ireland/",
     "quota_note": "中国大陆不在爱尔兰 WHA 的 11 个签约国家/地区名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。中国台湾 400 个名额/年（官方原文 an annual quota of 400 WHAs），中国香港等其他国家/地区官方只写 Places are limited、未公布数字。",
+    "schedule": {
+      "type": "fixed_dates",
+      "status": "open",
+      "date_confidence": "confirmed",
+      "open_date": "2026-11-01",
+      "close_date": null,
+      "cycle_note": "2027 年度自 2026-11-01 09:00（台北时间）起接受申请，按收件先后受理，前 400 份合格申请在 2027 年初签发。",
+      "next_window_hint": "2027 年度已开放（自 2026-11-01 起），无名额即止的明确截止日，前 400 份即满。",
+      "lead_time_days": 45,
+      "note": "中国大陆护照不在 WHA 的 11 个签约名单内（该资格为 not_eligible），但本条记录同时服务持香港/台湾护照的读者，故仍给出真实窗口：open_date 取自官方 2027 年度公告。close_date 留空——官方写的是「按收件先后、前 400 份」，不是固定截止日。lead_time_days=45：需备 €2,500/€4,000 资金证明、保险与护照全本复印件。"
+    },
     "windows": [
       {
         "year": 2027,

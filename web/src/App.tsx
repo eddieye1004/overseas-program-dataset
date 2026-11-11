@@ -16,6 +16,7 @@ import { CompareView } from './components/CompareView';
 import { AboutView } from './components/AboutView';
 import { Sidebar } from './components/Sidebar';
 import { Onboarding } from './components/Onboarding';
+import { CalendarView } from './components/CalendarView';
 
 function LangSwitch() {
   const { lang, setLang, t } = useI18n();
@@ -130,6 +131,7 @@ export default function App() {
               onClear={compare.clear}
             />
           )}
+          {route.name === 'calendar' && <CalendarView />}
           {route.name === 'about' && <AboutView />}
         </main>
 

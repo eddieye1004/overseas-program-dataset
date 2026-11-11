@@ -71,6 +71,22 @@ export interface ProgramIndexEntry {
   quota: number | null;
   /** 配额口径：annual=年度发放上限；concurrent=同时在册人数上限 */
   quota_basis: 'annual' | 'concurrent' | null;
+  /**
+   * 窗口日历（由 sync-data.mjs 从 timeline.schedule 透传）。
+   * date_confidence 是「这个日期能不能信」的开关：
+   *   confirmed 官方已公布 → 可以按此安排
+   *   inferred  按往年规律推的 → 只能当参考，不许当官方日期展示
+   *   unknown   无从判断 → 不显示日期
+   */
+  schedule_type: 'fixed_dates' | 'annual_cycle' | 'rolling' | 'no_window' | null;
+  schedule_status: 'open' | 'closed' | 'upcoming' | 'always_open' | 'unknown' | null;
+  date_confidence: 'confirmed' | 'inferred' | 'unknown' | null;
+  /** 开放日，仅 date_confidence='confirmed' 时有值 */
+  window_open: string | null;
+  /** 截止日，仅 date_confidence='confirmed' 时有值 */
+  window_close: string | null;
+  /** 建议提前准备天数：提醒日 = 开放日 − 这个数 */
+  lead_time_days: number | null;
   last_verified: string | null;
   /**
    * 复核状态，由 sync-data.mjs 按 data/review-policy.json 算好。

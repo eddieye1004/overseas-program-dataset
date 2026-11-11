@@ -13,11 +13,11 @@
     "authority": "德国联邦政府 / 各地外国人管理局（Ausländerbehörde）",
     "summary": "面向非欧盟高校在读生（或毕业不超过 2 年）的实习居留许可，允许在德国企业进行最长 6 个月、与所学专业相关的实习。中国大陆在读学生可申请。需先获得德国雇主实习合同。",
     "tags": [
-        "no_quota_cap",
+      "no_quota_cap",
       "requires_degree",
       "stem_friendly",
       "no_agency_needed"
-      ],
+    ],
     "active": true
   },
   "eligibility": {
@@ -86,6 +86,14 @@
     "quota": null,
     "quota_source": "https://www.gesetze-im-internet.de/aufenthg_2004/__16e.html",
     "quota_note": "§16e AufenthG 未设名额限制（该条按实习协议期限签发，最长六个月）。真正的门槛是先获得德国雇主实习合同。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；须先获得德国雇主的实习合同，排期取决于合同与使领馆预约。",
+      "lead_time_days": 60,
+      "note": "rolling + appointment：官方按实习协议期限签发（最长 6 个月），无年度窗口。lead_time_days=60：需先签实习合同，再约使领馆，两者都不可压缩。"
+    },
     "windows": [
       {
         "year": 2026,

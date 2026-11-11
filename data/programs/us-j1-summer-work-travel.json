@@ -87,6 +87,14 @@
     "quota": null,
     "quota_source": "https://j1visa.state.gov/programs/summer-work-travel/",
     "quota_note": "官方未设年度名额上限。全球每年约 10 万名大学生参加。但单个 Sponsor 机构的岗位名额有限，建议尽早报名。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "next_window_hint": "无窗口；但与暑期用工周期绑定，岗位一般在年初至春季放出。",
+      "lead_time_days": 60,
+      "note": "rolling：无统一窗口。lead_time_days=60：须先由 Sponsor 落实暑期岗位并审查。"
+    },
     "windows": [
       {
         "year": 2026,
