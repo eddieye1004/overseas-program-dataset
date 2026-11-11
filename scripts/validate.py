@@ -82,6 +82,8 @@ VALID_CURRENCIES = {
     "AUD", "NZD", "JPY", "KRW", "USD", "EUR", "GBP",
     "CNY", "HKD", "TWD", "SGD", "PLN", "DKK", "SEK", "NOK",
     "CAD", "CHF", "THB", "MYR", "VND", "IDR", "ILS", "TRY",
+    # 冰岛克朗：毕业后求职居留的生活费与申请费都以 ISK 计价，官方不折欧元。
+    "ISK",
 }
 
 VALID_LANGUAGE_TESTS = {
@@ -187,6 +189,25 @@ OFFICIAL_GOV_FRAGMENTS = (
     # 签发机构。收入门槛（2024-04-01 起 €42,000）、排除国名单、€300 行政费
     # 与 30 个工作日周期只写在这一站；域名含 .gov.mt 但不以 .gov 开头，故点名。
     "residencymalta.gov.mt",
+    # 西班牙国家官方公报（boe.es）：西班牙法规与官收费标准的法定公布渠道。
+    # 居留授权的费项编号与金额（如 Orden PJC/617/2025 的 2.1.6 = €10.94）只在
+    # BOE 上有法律效力；部委页面只给流程，不给费率表。与德国
+    # gesetze-im-internet.de（同样非 .gov 域名）的处理一致。
+    "boe.es",
+    # 意大利内政部移民门户（portaleimmigrazione.it）：居留许可费用表
+    # （marca da bollo / 卡制作费 / 贡献金 / 邮局费）只在这一站的 Tabelle Costi
+    # 上逐项列出，条文只写法源不给金额。域名不含 .gov 但确为内政部运营。
+    "portaleimmigrazione.it",
+    # 芬兰移民局（migri.fi）：芬兰居留许可的唯一受理与签发机构。毕业后求职
+    # 居留的条件（学位/研究、5 年回溯、最长 2 年分 3 段、€800/月、无限制工作权）
+    # 与费率表都只写在这一站，法条（ulkomaalaislaki）不给这些操作口径。
+    # 与挪威 udi.no、瑞典 migrationsverket.se 同构。
+    "migri.fi",
+    # 冰岛移民局（island.is/o/directorate-of-immigration）：冰岛居留许可的
+    # 官方发布渠道（冰岛把大量政府服务放在 island.is 这一个门户下，移民局
+    # 是其下的一个机构分区）。毕业后求职居留的 18 个月上限、旧规 3 年已废止、
+    # 以及费率表都只在这一站；法条（útlendingalög）不给这些操作数字。
+    "island.is",
 )
 
 # B 级：项目本体国际组织官网

@@ -8,6 +8,46 @@
 
 ## [未发布]
 
+### 新增 — 五国毕业后求职居留，补上 C1 的版图缺口（34 → 39，2026-11-11）
+
+C1 那一轮想补法/西/意/北欧，卡在「这五国的打工度假不对大陆护照开放」且官方站取不到正文。这一轮换思路：**收录它们的「毕业后求职居留」**——与已收录的英国 Graduate、爱尔兰 Stamp 1G 同类，且五条都对大陆护照开放、都是资格制。
+
+| 项目 | 国家 | 定位 |
+|---|---|---|
+| `fr-recherche-emploi` | 法国 | Carte de séjour / VLS-TS « recherche d'emploi / création d'entreprise »：1 年不可续，可带条件工作 |
+| `es-busqueda-empleo` | 西班牙 | Autorización de residencia para búsqueda de empleo：最长 24 个月不可延，**期间禁止工作** |
+| `it-ricerca-lavoro` | 意大利 | Permesso di soggiorno per ricerca lavoro o imprenditorialità：9–12 个月，Cutro 后脱离 flussi 配额 |
+| `fi-look-for-work` | 芬兰 | Residence permit to look for work or start a business：最长 2 年分 3 段，**无限制工作权** |
+| `is-job-search-after-graduation` | 冰岛 | 学生居留续签求职：**18 个月**（2026-07-08 修法，旧规 3 年已废） |
+
+- 现 **39 个项目 / 大陆护照可申 32 / 不可申 7 / 134 条来源**（A 123 / B 6 / C 5）。
+- quota 四态更新为 **capped 4 / no_quota 32 / not_published 1 / unverified 2**（合计 39）。五条全记 `no_quota`：资格制，无名额与抽签（西班牙、法国、芬兰、冰岛官方明示无配额；意大利 Decreto Cutro 后转换脱离 flussi 配额）。
+- 日历覆盖 **confirmed 3 / inferred 2 / unknown 34**（新增 5 条均为 unknown）：五条都无年度固定窗口，申请时点跟着学生许可到期节点走，按 C2 规则不编日期。
+- 五条的共同口径写进 `eligibility.passport_types.note`：**国籍不是门槛，前置身份才是**——须在该国完成学位并持当地学生居留。没有一条写成「无条件可申」。
+
+**三个易错点已按事实包落地**
+
+1. **西班牙期间禁止工作**。这是五条里唯一明文禁止的，部委 Hoja 原文 `no se está autorizado a trabajar`，已写进 `work_conditions.note`、`risks[0].critical` 与 README 表格备注。对照：法国允许带条件工作（须与所学相关且月薪税前 > €2,800.53）、芬兰给无限制工作权、意大利凭转换申请回执可工作。
+2. **法国命名**。用现行官方名 «recherche d'emploi / création d'entreprise»，并在 `risks` 里显式区分 **APS**（autorisation provisoire de séjour）——APS 是给与法国签有移民流动协议国家的「首次职业经验」通道，不是本条。中文资料里两者常被混为一谈。
+3. **冰岛 18 个月**。官方原文 `may now renew their student residence permit for up to 18 months after graduation` 且 `Previously, this was possible for up to three years.` 已在 summary、`work_conditions`、`risks[0].critical` 三处强调旧规已废。
+
+**本次核实的两处成本口径修正**
+
+- 西班牙费用：费项 **2.1.6** 经 BOE Orden PJC/617/2025 原文逐字核对，条目正是 `Autorización de residencia para estudiante para la búsqueda de empleo o para emprender un proyecto empresarial (DA 17.ª L. 14/2013)`，金额 `10,94`——与事实包一致。
+- 意大利费用：按事实包记 **€76.46**（卡费 30.46 + 印花 16 + 邮局 30），并在 note 里写明 **€40 贡献金是否收取存在 Questura 口径差异**（若收则合计 €116.46）。已用 portaleimmigrazione 官方费用表逐项核对。
+
+**schema 与校验的小幅扩展**
+
+- `money.currency` 枚举新增 **ISK**（冰岛克朗）：冰岛的生活费与申请费都以 ISK 计价，官方不折欧元。
+- `validate.py` 官方域名白名单新增 5 个，均按既有先例（非 .gov 但确为该国唯一官方经办方）：`boe.es`（西班牙国家官方公报）、`portaleimmigrazione.it`（意大利内政部移民门户）、`migri.fi`（芬兰移民局）、`island.is`（冰岛政府门户下的移民局分区）。
+
+**诚实说明核实边界**：西班牙部委页（inclusion.gob.es 返回 `Acceso no permitido`）、意大利 integrazionemigranti 页（HTTPError）、法国 France-Visas 页与芬兰 migri.fi（均被 Cloudflare 挑战页拦截）本次未能逐字复核，相关断言沿用事实包口径并在 `sources[].claim` 里逐条写明「哪一条已实测、哪一条沿用事实包」，没有把未复核的说成已复核。法国与西班牙的费用、冰岛的全部关键条款均已用可读的官方页（service-public F17319、BOE、island.is）独立逐字核对。
+
+**门禁**
+
+- `validate.py --strict` 40 文件 / 39 项目，错误 0 / 警告 0；`pytest -q` **135 passed**；`gen_sources.py --check` OK（134 条）；`track.py` 39 条全在周期内；`tsc -b --force` 通过；`smoke-test.mjs` 128/128；`vite build` 通过；`e2e-check.mjs` 212/212；i18n 覆盖率 100%（本轮新增 258 条译文）。
+
+---
 ### 变更 — 扩覆盖到 34 个项目 + 窗口日历成为一等公民（2026-11-11）
 
 两件事并行：补版图空白（C1），以及把「什么时候开」从一句备注变成可被机器读的结构（C2）。

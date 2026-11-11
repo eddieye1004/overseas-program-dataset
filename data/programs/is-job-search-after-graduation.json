@@ -1,0 +1,222 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "is-job-search-after-graduation",
+    "name": "冰岛毕业后求职居留（学生居留续签，special residence permit for employment-seeking after graduation）",
+    "name_en": "Iceland: Post-Study Residence Permit for Employment Seeking",
+    "country": "冰岛",
+    "country_code": "IS",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Renewal of student residence permit for employment seeking after graduation",
+    "official_url": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect",
+    "authority": "冰岛移民局（Útlendingastofnun / Directorate of Immigration）",
+    "summary": "给在冰岛大学完成学士/硕士/博士学位的人用来找工作的学生居留续签，**最长 18 个月**（2026-07-08 修法后的现行值，旧规 3 年已废止）。期满可转专家知识类工作居留。另有一条独立通道：在冰岛取得博士学位者，可续签 specialist 居留最多 12 个月用于求职。",
+    "tags": [
+      "no_quota_cap",
+      "requires_degree",
+      "no_agency_needed"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方未按国籍设限，中国大陆护照持有人可申。门槛在前置身份：须在冰岛大学完成学位并持学生居留。没在冰岛读过书的人不适用。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方资格条件未设年龄限制。0–99 表示「无年龄门槛」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "官方原文要求 `applicants must have completed a Bachelor's, Master's or Doctoral degree at an Icelandic university`——三个层级任一即可，院校必须是冰岛的大学（Icelandic university）。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格条件未设语言考试要求。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 259951,
+        "currency": "ISK",
+        "cny_estimate": 13800,
+        "note": "生活保障按学生口径 ISK 259,951/月。**注意**：官方在宣布 18 个月新规的那条新闻里未对本续签单独重申这个金额，该数值来自按学生类别沿用的口径，属归类推定；递交前须按移民局当期生活费标准复核。人民币估算按 2026-11 汇率粗估，仅供参考。"
+      },
+      "note": "需证明能覆盖停留期的生活保障。金额按学生类别的官方生活费标准（ISK 259,951/月），但官方未在本续签的专门说明里单独列出该数字，因此本字段标注为「按学生口径沿用」，不是本许可的独立规定。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "须持冰岛学生居留并在毕业后续签本许可。修法后另有一条对博士的独立安排：在冰岛取得博士学位者，可续签 specialist 居留最多 12 个月用于求职（`foreign nationals who have completed a doctoral degree in Iceland may renew a specialist residence permit for up to 12 months to seek employment`）。"
+      },
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "须提供冰岛大学授予的学位证明（学士/硕士/博士任一），用以核实已毕业、已完成该段学业——本许可面向的是毕业生，不是在读生，因此不是「保持学籍」那类要求。本许可是学生居留的续签，还须能证明此前持冰岛学生居留。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect",
+    "quota_note": "官方规则说明中未出现名额上限、抽签或年度配额的表述，属资格制：满足条件即受理。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "next_window_hint": "无年度开放窗口：这是学生居留的续签，时点跟着学生许可到期节点走。可续签的最长期限为毕业后 18 个月。",
+      "lead_time_days": 30,
+      "note": "rolling：官方规则新闻未设开放窗口，本许可性质是「续签」，申请时点由个人学生许可到期日决定。date_confidence 记 unknown 是因为「无窗口」不需要日期可信度。lead_time_days=30 的依据：材料以学位证明、生活保障证明、护照为主，不涉及语言考试或无犯罪证明这类长周期项；主要耗时在移民局审理与预约。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "现行规则自 2026-07-08 起生效：毕业后可续签最长 18 个月（旧规为 3 年，已废止）。按个人学生许可到期节点申请。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "无年度窗口。规则按 island.is 上移民局当期公告执行；该局 2026 年刚做过一轮规则调整，后续是否再改须复核。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "居留许可申请费（ISK 70,000）",
+        "amount": {
+          "local_amount": 70000,
+          "currency": "ISK",
+          "cny_estimate": 3700,
+          "note": "按「基于学习的学生居留续签」费项归类（`Application for renewal of a residence permit based on studies: ISK 70.000`）。**注意**：官方费率表并未点名「毕业后求职」这一具体许可，本记录是按学生类别归类的口径；若移民局按「其他居留」类（ISK 40,000）处理，则实际费用更低。递交前以移民局账单为准。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方规则公告未给统一审理天数。实际取决于移民局当期排期与材料完整度。"
+  },
+  "documents": [
+    {
+      "name": "冰岛大学学位证明",
+      "required": true,
+      "note": "学士/硕士/博士任一，须为冰岛大学（Icelandic university）授予。",
+      "prepare_days": 30
+    },
+    {
+      "name": "学生居留卡与续签记录",
+      "required": true,
+      "note": "本许可性质是学生居留续签，须能证明此前持学生居留。",
+      "prepare_days": 7
+    },
+    {
+      "name": "生活保障证明",
+      "required": true,
+      "note": "按学生类别标准 ISK 259,951/月 准备（归类口径，官方未对本许可单独重申）。银行流水或资金证明。",
+      "prepare_days": 30
+    },
+    {
+      "name": "护照与照片",
+      "required": true,
+      "note": "护照有效期须覆盖申请期；照片须符合冰岛生物识别要求。",
+      "prepare_days": 7
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认学位来自冰岛大学且层级符合",
+      "description": "学士、硕士、博士任一即可，但院校必须是冰岛的大学。海外学位不适用这条通道。",
+      "duration": "1 天",
+      "official_link": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect"
+    },
+    {
+      "step_no": 2,
+      "title": "记住现行期限是 18 个月，不是 3 年",
+      "description": "2026-07-08 修法后，毕业后可续签最长 18 个月；旧规的 3 年已废止。任何说「冰岛给 3 年」的中文资料都是旧口径。",
+      "duration": "1 天",
+      "official_link": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect"
+    },
+    {
+      "step_no": 3,
+      "title": "备生活保障证明并递交续签",
+      "description": "按学生类别生活费标准准备资金证明，随续签申请递交。若手上是博士且走 specialist 路径，那条另有 12 个月的口径。",
+      "duration": "30 天",
+      "official_link": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect"
+    },
+    {
+      "step_no": 4,
+      "title": "18 个月内找到工作并转专家知识居留",
+      "description": "找到与资质匹配的工作后，转专家知识类工作居留（specialist residence permit）。这是本许可期满后的主要去向。",
+      "duration": "最长 18 个月",
+      "official_link": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 18,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "最长 18 个月（2026-07-08 起的现行值），属一次性缓冲期，不可反复续。期满须转专家知识类工作居留。在冰岛取得博士学位者另有 specialist 居留续签最多 12 个月的通道用于求职。",
+    "restricted_occupations": [],
+    "note": "本许可的用途是找工作，找到后须转专家知识类工作居留。注意与学生期间的打工规则区分：学生居留期间可无工作许可工作至全日制 60%（`may work in Iceland without a work permit for up to 60% of full-time employment while studying`），那是「在读期间」的规则，不是本条毕业后求职许可的规则。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "**期限是 18 个月，不是 3 年**。2026-07-08 修法把它从 3 年砍到 18 个月，官方原文明确 `Previously, this was possible for up to three years.` 中文资料里大量流传的「冰岛给 3 年」已失效，按 3 年做规划会直接误判。"
+    },
+    {
+      "level": "warning",
+      "description": "费用是归类口径：官方费率表未点名「毕业后求职」这一许可，本记录按「学习类续签」ISK 70,000 归类；若移民局按「其他居留」ISK 40,000 处理则更低。别把 70,000 当成官方对本许可的报价。"
+    },
+    {
+      "level": "warning",
+      "description": "生活保障金额 ISK 259,951/月 来自学生类别口径，官方未在本续签的专门说明里单独重申。递交前须按当期生活费标准复核。"
+    },
+    {
+      "level": "info",
+      "description": "修法同一批还收紧了在读者的学业进度要求（每次续签都要证明完成 75% 全日制课业，此前只在首次续签审查）。这不直接约束毕业后许可，但会影响「毕业前能否顺利续到毕业」——而拿到本许可的前提正是先持学生居留读完。"
+    },
+    {
+      "level": "info",
+      "description": "与其它四条的对照：冰岛时长最短（18 个月）且 2026 年刚缩短；法国 1 年不可续、西班牙 24 个月不可延、意大利 9–12 个月、芬兰最长 2 年可分 3 段。冰岛的特点是「期限短但明确可转专家知识居留」。"
+    },
+    {
+      "level": "info",
+      "description": "修法同一批还收紧了在读者的学业进度要求：续签时须证明完成全日制课业的至少 75%（`completing at least 75% of a full-time course load during the academic year`），且从「仅首次续签时审查」改为「每次续签都审查」。这不直接约束毕业后许可，但会影响毕业前能否顺利续到毕业——而拿到本许可的前提正是先持学生居留读完。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "New residence and work permit rules take effect（冰岛移民局 2026-07-08 新规公告）",
+      "url": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect",
+      "publisher": "Útlendingastofnun（Directorate of Immigration, Iceland）",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "18 个月现行值的原文：`Foreign nationals who have completed a university degree in Iceland may now renew their student residence permit for up to 18 months after graduation to seek employment based on their qualifications. Previously, this was possible for up to three years.`；资格 `applicants must have completed a Bachelor's, Master's or Doctoral degree at an Icelandic university`；博士另途 `foreign nationals who have completed a doctoral degree in Iceland may renew a specialist residence permit for up to 12 months to seek employment`；在读生学业进度 `completing at least 75% of a full-time course load during the academic year`，且 `must now demonstrate satisfactory academic progress each time they renew their permit, rather than only at the first renewal`；学生打工 `may work in Iceland without a work permit for up to 60% of full-time employment while studying`。本页已实测可读，以上均逐字取自页面正文。"
+    },
+    {
+      "type": "primary",
+      "name": "Increase in application fees（冰岛移民局费率公告，2026-01-01 起生效）",
+      "url": "https://island.is/en/o/directorate-of-immigration/news/increase-in-fees-for-residence-permit-and-citizenship-applications",
+      "publisher": "Útlendingastofnun（Directorate of Immigration, Iceland）",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "费率表原文：`Application for renewal of a residence permit based on studies: ISK 70.000`；`Application for renewal of other residence permits: ISK 40.000`。本记录按「学习类续签」ISK 70,000 归类，并在费用 note 中写明官方未点名「毕业后求职」这一许可、若按「其他居留」则为 ISK 40,000——这是归类口径而非官方对本许可的直接报价。该页同时说明生效日为 2026-01-01。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

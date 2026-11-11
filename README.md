@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| **收录规模** | 34 个项目 / 124 条官方来源。大陆护照可申 27，不可申 7（不可申也是收录内容，不是缺口） |
+| **收录规模** | 39 个项目 / 134 条官方来源。大陆护照可申 32，不可申 7（不可申也是收录内容，不是缺口） |
 | **数据怎么保鲜** | 每条记录带 `last_verified`。复核周期按项目性质分档：窗口写死到具体日期的 90 天，其余 180 天，剩余不足 25% 提前标「即将到期」。`scripts/track.py` 生成台账，每周一 CI 跑一次，超期就让构建变红并另开一张 issue 列清单 |
 | **怎么纠错** | 用 [数据纠错模板](.github/ISSUE_TEMPLATE/data-correction.yml) 提 issue，必须附官方来源 URL。CI 会校验来源等级与链接存活，二手来源与自媒体一律拦下 |
 | **数据长什么样** | 每个项目一个 JSON，字段定义见 [`data/schema.json`](data/schema.json)；逐条来源见 [`data/sources.md`](data/sources.md)（由脚本生成，勿手改） |
@@ -82,8 +82,18 @@
 | Look for work or start a business | 瑞典 | 毕业后求职 | ✅ |
 | Skilled workers | 挪威 | 工作居留 | ✅ |
 | Red-White-Red Card (VHQ) | 奥地利 | 求职居留 | ✅ |
+| Training visa (407) | 澳大利亚 | 培训签证 | ✅ |
+| Nomad Residence Permit | 马耳他 | 数字游民 | ✅ |
+| S Pass | 新加坡 | 工作准证 | ✅ |
+| Employment Pass | 新加坡 | 工作准证 | ✅ |
+| Working Holiday | 丹麦 | 打工度假 | ❌ 不可申请 |
+| Recherche d'emploi / création d'entreprise | 法国 | 毕业后求职 | ✅ |
+| Búsqueda de empleo o proyecto empresarial | 西班牙 | 毕业后求职（**期间禁止工作**） | ✅ |
+| Ricerca lavoro o imprenditorialità | 意大利 | 毕业后求职 | ✅ |
+| Look for work or start a business | 芬兰 | 毕业后求职 | ✅ |
+| Employment seeking after graduation | 冰岛 | 毕业后求职 | ✅ |
 
-**34 个项目，大陆护照可申 27 / 不可申 7，共 124 条来源（A 级 113 / B 级 6 / C 级 5），其中 5 条 C 级仅作旁证。** 数字取于 2026-11-11，改数据后重跑 `python scripts/gen_sources.py`。
+**39 个项目，大陆护照可申 32 / 不可申 7，共 134 条来源（A 级 123 / B 级 6 / C 级 5），其中 5 条 C 级仅作旁证。** 数字取于 2026-11-11，改数据后重跑 `python scripts/gen_sources.py`。
 
 完整清单见 [`data/programs/`](data/programs/)，逐条来源见 [`data/sources.md`](data/sources.md)。
 

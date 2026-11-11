@@ -13,9 +13,9 @@
 
 | 指标 | 数值 |
 |---|---|
-| 项目数 | 34 |
-| 来源条目 | 124（primary 118 / secondary 6） |
-| 去重后的 URL 数 | 114（另有 34 个 `official_url` 入口） |
+| 项目数 | 39 |
+| 来源条目 | 134（primary 128 / secondary 6） |
+| 去重后的 URL 数 | 124（另有 39 个 `official_url` 入口） |
 | 最近一次核实 | 2026-11-11 |
 | 最早一次核实 | 2026-09-17 |
 | 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 55 天） |
@@ -150,6 +150,45 @@
 
 ---
 
+## 西班牙
+
+### 西班牙求职/创业居留（Autorización de residencia para búsqueda de empleo o inicio de proyecto empresarial）
+
+`es-busqueda-empleo` · 官方入口 <https://www.inclusion.gob.es/web/migraciones/listado-completo>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Listado completo de autorizaciones（西班牙移民事务部委 Hoja 58） | Ministerio de Inclusión, Seguridad Social y Migraciones | <https://www.inclusion.gob.es/web/migraciones/listado-completo> | A · 政府/法律 | 2026-11-11 | 本条资格、最长 24 个月且不可延期、以及「不授权工作」的口径由事实包提供，其标注原文为 `no se está autorizado a trabajar`。本次尝试通过脚本与真实浏览器两条通道访问该页，均返回 `Acceso no permitido`（访问被拒），未能逐字复核正文；关键断言沿用事实包结论，未做改写。费用与费项编号另行用 BOE 原文交叉核对（见下条）。 |
+| 2 | primary | Orden PJC/617/2025（居留与证件收费标准，BOE 官方公报） | Boletín Oficial del Estado（西班牙国家官方公报） | <https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-12056> | A · 政府/法律 | 2026-11-11 | 费项 2.1.6 原文：`Autorización de residencia para estudiante para la búsqueda de empleo o para emprender un proyecto empresarial (DA 17.ª L. 14/2013) (titular principal y sus familiares). 10,94`。已逐字核对：€10.94 对应的正是本条通道，费项编号与事实包一致。同表相邻项 2.1.2、2.1.3、2.1.5、2.1.7 亦为 10,94。 |
+
+---
+
+## 芬兰
+
+### 芬兰求职/创业居留（Residence permit to look for work or to start a business）
+
+`fi-look-for-work` · 官方入口 <https://migri.fi/residence-permit-to-look-for-work>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Residence permit to look for work or to start a business（芬兰移民局官方页） | Migri（Finnish Immigration Service） | <https://migri.fi/residence-permit-to-look-for-work> | A · 政府/法律 | 2026-11-11 | 本条关于「在芬兰完成学位或研究、曾持学习或科研许可、许可到期后 5 年内可申、最长 2 年分最多 3 段（每段 ≥6 个月）、无限制工作权、收入要求 €800/月」的口径由事实包提供。本次尝试通过脚本与真实浏览器两条通道访问 migri.fi，均被 Cloudflare 挑战页拦截（「Checking if the site connection is secure」），未能逐字复核正文；关键断言沿用事实包，未做改写。 |
+| 2 | primary | Processing fees and payment methods（Migri 官方费率表） | Migri（Finnish Immigration Service） | <https://migri.fi/en/processing-fees-and-payment-methods> | A · 政府/法律 | 2026-11-11 | 首签费用 €750（在线）／€800（纸质）由事实包提供；本次同样因 Cloudflare 拦截未能逐字复核。费用为 Migri 费率表口径，且该表每年可能调整，递交前须复核。 |
+
+---
+
+## 法国
+
+### 法国求职/创业居留（Carte de séjour / VLS-TS « recherche d'emploi / création d'entreprise »）
+
+`fr-recherche-emploi` · 官方入口 <https://www.service-public.gouv.fr/particuliers/vosdroits/F17319>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Carte de séjour ou VLS-TS - recherche d'emploi/création d'entreprise（法国公共服务官方页 F17319） | Direction de l'information légale et administrative (DILA), service-public.fr | <https://www.service-public.gouv.fr/particuliers/vosdroits/F17319> | A · 政府/法律 | 2026-11-11 | 资格原文：人在法国须 `Séjourner en France avec une carte de séjour étudiant ou étudiant programme de mobilité` 且 `Avoir obtenu au cours des 12 derniers mois, une licence professionnelle, un Mastère Spécialisé, un Master of Science (labellisé par la conférence des grandes écoles) ou un autre diplôme au moins équivalent au master`；已回国者 `Faire votre demande dans le délai maximal de 4 ans à compter de l'obtention de votre diplôme`；期限与续签 `La carte de séjour ou le VLS-TS est valable 1 an. Le renouvellement n'est pas possible.`；工作权 `Pendant sa validité, cette carte vous permet de travailler en tant que salarié. L'employeur est dispensé de demander une autorisation de travail.` 两个条件 `Être en lien avec vos études`、`Être assorti d'une rémunération mensuelle brute supérieure à 2 800,53 €`，以及 `La limitation à 60 % de la durée annuelle de travail (964 heures) ne s'applique pas.`；费用 `Vous devez payer 150 € (droit de timbre de 50 € + taxe de 100 €) par timbres fiscaux.`；递交窗口 `dans les 2 mois précédant la date de fin de validité de votre carte étudiant`。 |
+| 2 | primary | Recherche d'emploi / création d'entreprise（France-Visas 官方说明页） | France-Visas（法国外交部） | <https://france-visas.gouv.fr/en/web/france-visas/recherche-d-emploi-creation-d-entreprise> | A · 政府/法律 | 2026-11-11 | 本条由事实包提供并标注为官方来源。本次核实尝试通过脚本与真实浏览器两条通道访问该页均被 Cloudflare 挑战页拦截（503 / 「Checking if the site connection is secure」），未能逐字读到正文。service-public.fr 的 F17319 页（已实测可读）覆盖了同一通道的资格、期限、费用与工作权，本记录的全部关键断言均以该页原文为准。 |
+
+---
+
 ## 国际实习平台
 
 ### AIESEC 全球人才计划（企业实习）
@@ -188,6 +227,32 @@
 | 2 | primary | Working Holiday Authorisation — Department of Foreign Affairs | Department of Foreign Affairs, Ireland | <https://www.ireland.ie/en/dfa/visas-for-ireland/working-holiday-authorisation/> | A · 政府/法律 | 2026-11-08 | 按国籍分流的递交口径：11 个签约国家/地区各自对应的受理机构（中国香港→驻港总领事馆，中国台湾→ISD，美国→驻美使领馆等） |
 | 3 | primary | How to apply for working holiday from Taiwan（2027 指南，EN） | Immigration Service Delivery, Ireland | <https://www.irishimmigration.ie/wp-content/uploads/2026/11/2027-EN_Guidance-Note.pdf> | A · 政府/法律 | 2026-11-08 | 八项资格条件原文：(a) be aged between 18 and 30 years inclusive at the time of application；(b) employment being an incidental, rather than the primary reason for the visit；(c) 不得携带未持 WHA 的家属；(d) 机票 + €2,500 或 €4,000 含机票；(e) 私人医疗保险须覆盖住院与遣返；(f) 未曾以打工度假身份在爱尔兰停留；(g) not have a criminal record；(h) 申请时不得已持其他身份在爱尔兰。另：There is no application fee for participation in this programme；handling fee NT 3,200 付给台北代理 Ms Corina Tsai；maximum stay ... twelve (12) months from the date of initial entry into Ireland with no possibility of extension；停留超 90 天须向 ISD 注册并缴费；WHA 在 2027 年初签发，可在 2027-12-31 前任一时点入境 |
 | 4 | primary | Working Holiday Authorisation Application Form 2027（WHA 2027 申请表） | Immigration Service Delivery, Ireland | <https://www.irishimmigration.ie/wp-content/uploads/2026/11/WHA-2027-Application-Form-November-2026.pdf> | A · 政府/法律 | 2026-11-08 | 必备材料：护照全部页面彩色复印件（含空白页，护照须在行程结束后仍有 6 个月有效期）、4 张同版照片（背面写姓名）、本人名下银行流水（英文对账单 €4,000 或附翻译的 €2,500）、返程或续程机票；代理手续费 the non-refundable agent’s handling fee of NT$3,200；信息采集问句含 Have you any criminal convictions in any country?、Have you ever come to Ireland previously on a Working Holiday programme?；Extensions to the period of validity shall not be granted |
+
+---
+
+## 冰岛
+
+### 冰岛毕业后求职居留（学生居留续签，special residence permit for employment-seeking after graduation）
+
+`is-job-search-after-graduation` · 官方入口 <https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | New residence and work permit rules take effect（冰岛移民局 2026-07-08 新规公告） | Útlendingastofnun（Directorate of Immigration, Iceland） | <https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect> | A · 政府/法律 | 2026-11-11 | 18 个月现行值的原文：`Foreign nationals who have completed a university degree in Iceland may now renew their student residence permit for up to 18 months after graduation to seek employment based on their qualifications. Previously, this was possible for up to three years.`；资格 `applicants must have completed a Bachelor's, Master's or Doctoral degree at an Icelandic university`；博士另途 `foreign nationals who have completed a doctoral degree in Iceland may renew a specialist residence permit for up to 12 months to seek employment`；在读生学业进度 `completing at least 75% of a full-time course load during the academic year`，且 `must now demonstrate satisfactory academic progress each time they renew their permit, rather than only at the first renewal`；学生打工 `may work in Iceland without a work permit for up to 60% of full-time employment while studying`。本页已实测可读，以上均逐字取自页面正文。 |
+| 2 | primary | Increase in application fees（冰岛移民局费率公告，2026-01-01 起生效） | Útlendingastofnun（Directorate of Immigration, Iceland） | <https://island.is/en/o/directorate-of-immigration/news/increase-in-fees-for-residence-permit-and-citizenship-applications> | A · 政府/法律 | 2026-11-11 | 费率表原文：`Application for renewal of a residence permit based on studies: ISK 70.000`；`Application for renewal of other residence permits: ISK 40.000`。本记录按「学习类续签」ISK 70,000 归类，并在费用 note 中写明官方未点名「毕业后求职」这一许可、若按「其他居留」则为 ISK 40,000——这是归类口径而非官方对本许可的直接报价。该页同时说明生效日为 2026-01-01。 |
+
+---
+
+## 意大利
+
+### 意大利求职/创业居留（Permesso di soggiorno per ricerca lavoro o imprenditorialità degli studenti）
+
+`it-ricerca-lavoro` · 官方入口 <https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Conversione del permesso di soggiorno da studio a lavoro: cosa è cambiato con il decreto Cutro（移民融合门户官方说明） | Ministero dell'Interno / Integrazione Migranti | <https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro> | A · 政府/法律 | 2026-11-11 | 本条关于「学习转工作脱离 flussi 年度配额、全年可申」以及「凭申请回执即可开始工作」的口径由事实包提供。本次尝试通过脚本访问该页返回 HTTPError，未能逐字复核正文；法律依据（D.Lgs. 286/1998 第 39-bis.1 条、Law 50/2023）与费用另用 portaleimmigrazione 费用表交叉核对（见下条）。关键断言沿用事实包，未做改写。 |
+| 2 | primary | Tabelle Costi（意大利内政部移民门户官方费用表） | Ministero dell'Interno — Portale Immigrazione | <https://www.portaleimmigrazione.it/ITA/tabelleCosti.html> | A · 政府/法律 | 2026-11-11 | 费用表逐项原文：`Marca da bollo 16.00 €`；`Produzione del Permesso di Soggiorno 30.46 €`；`Contributo per permessi di soggiorno di durata superiore a tre mesi e fino ad un anno 40.00 €`；`Costo spedizione Poste Italiane 30.00 €`。据此：卡费 30.46 + 印花 16 + 邮局 30 = €76.46（不含贡献金）；若计入 3–12 个月档贡献金 €40，则为 €116.46。这正是本记录在费用 note 里标注的口径差异。 |
 
 ---
 

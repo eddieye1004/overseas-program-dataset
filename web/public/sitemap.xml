@@ -67,6 +67,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/es-busqueda-empleo.html</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/fi-look-for-work.html</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/fr-recherche-emploi.html</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/p/global-aiesec-global-talent.html</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -81,6 +99,18 @@
   <url>
     <loc>https://eddieye1004.github.io/overseas-program-dataset/p/ie-working-holiday-authorisation.html</loc>
     <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/is-job-search-after-graduation.html</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eddieye1004.github.io/overseas-program-dataset/p/it-ricerca-lavoro.html</loc>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

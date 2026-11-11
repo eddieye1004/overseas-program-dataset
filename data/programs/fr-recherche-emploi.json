@@ -1,0 +1,237 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "fr-recherche-emploi",
+    "name": "法国求职/创业居留（Carte de séjour / VLS-TS « recherche d'emploi / création d'entreprise »）",
+    "name_en": "France: Residence Permit / VLS-TS for Job Search or Business Creation",
+    "country": "法国",
+    "country_code": "FR",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Carte de séjour temporaire / VLS-TS « recherche d'emploi / création d'entreprise »",
+    "official_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319",
+    "authority": "法国内政部（Ministère de l'Intérieur）／法国签证（France-Visas）",
+    "summary": "给在法国读完硕士层级文凭的人用来找工作或创业的 1 年期居留，有效期 1 年且明确不可续签，期满找到工作就转 salarié 或 talent 类居留。两种情形：人在法国（须持 étudiant 居留、文凭在最近 12 个月内取得）、已回国（文凭取得后 4 年内可申）。期间可以工作且雇主免办工作许可，但岗位须与所学相关、月薪税前高于 €2,800.53——这条限制把「随便找份工」排除在外。",
+    "tags": [
+      "no_quota_cap",
+      "requires_degree",
+      "no_agency_needed",
+      "high_wage"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方未按国籍设限，中国大陆护照持有人可申。但门槛在前置身份而不在护照：必须在法国持 étudiant（或 étudiant-programme de mobilité）居留、且已取得清单内文凭。没在法国读过书的人不适用这条通道——它是一个「毕业后留法找工作」的衔接，不是独立的入境通道。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方资格条件里没有年龄限制。0–99 表示「无年龄门槛」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "master",
+      "major_restriction": [],
+      "note": "须取得下列之一：licence professionnelle、Mastère Spécialisé、Master of Science（须经 conférence des grandes écoles 认证）、或**至少等同于 master 层级的其他文凭**。官方原文：`Avoir obtenu au cours des 12 derniers mois, une licence professionnelle, un Mastère Spécialisé, un Master of Science (labellisé par la conférence des grandes écoles) ou un autre diplôme au moins équivalent au master`。本科学历（licence générale）不满足，licence professionnelle 属于例外。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格清单未单列语言考试要求。实际需要能处理法语行政材料；递交材料本身不要求提交法语等级证书。"
+    },
+    "funds": {
+      "required": false,
+      "amount": null,
+      "note": "官方未设独立的存款门槛（与瑞典要求按月证明资金不同）。但需提供医疗保险证明与住所证明，且找工作期间的开销须自行覆盖。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "两条路径按所在地分：①人在法国——须持 carte de séjour étudiant 或 étudiant-programme de mobilité，且在学生居留到期前 2 个月内向住所地的 préfecture 或 sous-préfecture 递交；②已回国——须在取得文凭后最长 4 年内申请（`Faire votre demande dans le délai maximal de 4 ans à compter de l'obtention de votre diplôme`）。"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "材料清单含 Justificatif d'assurance maladie（医疗保险证明）。"
+      },
+      {
+        "type": "no_dependents",
+        "required": false,
+        "note": "官方材料清单包含 « Déclaration sur l'honneur de non polygamie »（非一夫多妻声明），仅对已婚且来源国允许一夫多妻者适用。不是对中国申请人的额外要求，但清单里确实有这一项。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319",
+    "quota_note": "官方页面未设名额、抽签或年度配额的表述，属资格制：满足条件即受理。真正的「名额」约束不在这条通道上，而在它之后转 salarié / talent 类居留时的雇主与岗位条件。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "next_window_hint": "无年度开放窗口。时间节点跟着学生居留到期走：人在法国须在 étudiant 居留到期前 2 个月内递交；已回国者可在取得文凭后 4 年内任何时间申请。",
+      "lead_time_days": 45,
+      "note": "rolling：官方无固定开放窗口，申请时点取决于个人学生居留的到期日。date_confidence 记 unknown 是因为「无窗口」不需要日期可信度，不是没查清。lead_time_days=45 的依据：需备文凭或成功证明、医疗保险、住所证明（3 个月内）、照片，以及 préfecture 预约等待时间；官方给的递交窗口本身只有「到期前 2 个月」，扣掉预约排队后实际准备期偏紧。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年按个人学生居留到期节点受理。人在法国者：学生居留到期前 2 个月内递交至住所地 préfecture／sous-préfecture。已回国者：取得文凭后 4 年内可申。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "无年度窗口。规则按 service-public.fr 当期版本执行；该页会随法规更新，建议递交前复核。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "居留卡费用（法国境内申请）",
+        "amount": {
+          "local_amount": 150,
+          "currency": "EUR",
+          "note": "官方原文：`Vous devez payer 150 € (droit de timbre de 50 € + taxe de 100 €) par timbres fiscaux.` 即印花税 €50 + 税 €100，以税票形式缴纳。境外 VLS-TS 的签发费官方页面只写「先付 VLS-TS 费用、抵法后验证时再付 €100」，未给总额，本记录不填该数字。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方页面未给固定审理天数。实际时长取决于 préfecture 预约排期与材料完整度；学生居留到期前 2 个月的递交窗口意味着排期紧张时可能来不及。"
+  },
+  "documents": [
+    {
+      "name": "文凭或成功证明",
+      "required": true,
+      "note": "须为 licence professionnelle、Mastère Spécialisé、Master of Science（CGE 认证）或至少等同 master 的文凭。若证书尚未下发，可用 `attestation de réussite définitive au diplôme`（最终通过证明）。",
+      "prepare_days": 30
+    },
+    {
+      "name": "学生居留（carte de séjour étudiant）",
+      "required": true,
+      "note": "人在法国申请时的前置条件，须在有效期内。到期前 2 个月内递交本申请。",
+      "prepare_days": 0
+    },
+    {
+      "name": "医疗保险证明",
+      "required": true,
+      "note": "材料清单要求 Justificatif d'assurance maladie。",
+      "prepare_days": 14
+    },
+    {
+      "name": "住所证明（3 个月内）",
+      "required": true,
+      "note": "官方要求 `Justificatif de domicile datant de moins de 6 mois`（6 个月内）；实际常被要求更新，按 3 个月内准备更稳。",
+      "prepare_days": 14
+    },
+    {
+      "name": "护照",
+      "required": true,
+      "note": "有效期须覆盖申请期；另需身份照片 3 张。",
+      "prepare_days": 7
+    },
+    {
+      "name": "创业项目说明（如走创业路径）",
+      "required": false,
+      "note": "若目的是创业，须提供与所学领域对应的创业项目证明（`Justificatif d'un projet de création d'entreprise dans un domaine correspondant à votre formation`）。找工作路径不需要。",
+      "prepare_days": 30
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "先确认自己走的是哪条路径",
+      "description": "人在法国（持 étudiant 居留、文凭 12 个月内取得）还是已回国（文凭 4 年内）。两条路径的材料与受理机构不同，不要混用。",
+      "duration": "1 天",
+      "official_link": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319"
+    },
+    {
+      "step_no": 2,
+      "title": "核对文凭是否在清单内",
+      "description": "licence professionnelle / Mastère Spécialisé / Master of Science（CGE 认证）/ 至少等同 master 的其他文凭。普通本科（licence générale）不在内。",
+      "duration": "1 天",
+      "official_link": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319"
+    },
+    {
+      "step_no": 3,
+      "title": "在学生居留到期前 2 个月内递交",
+      "description": "向住所地 préfecture 或 sous-préfecture 递交。官方明确窗口是「到期前 2 个月内」——不是随时可交，也不是到期后补交。",
+      "duration": "1 天",
+      "official_link": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319"
+    },
+    {
+      "step_no": 4,
+      "title": "缴 €150 并等卡",
+      "description": "以税票形式缴 €150（印花税 €50 + 税 €100）。获批后拿到 1 年期居留卡。",
+      "duration": "以 préfecture 排期为准",
+      "official_link": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319"
+    },
+    {
+      "step_no": 5,
+      "title": "1 年内找到符合条件的工作并转身份",
+      "description": "找到工作后可转 salarié 或 talent 类居留。注意本卡不可续签：1 年期满没转成就是失去居留依据。工作须与所学相关且月薪税前 > €2,800.53，否则即便在这张卡有效期内也不合规。",
+      "duration": "12 个月",
+      "official_link": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "不可续签，官方原文：`Le renouvellement n'est pas possible.` 期满须转 salarié、talent 等其他类别；转成则继续合法居留，转不成则失去依据。",
+    "restricted_occupations": [],
+    "note": "这张卡允许受雇工作且雇主免办工作许可（`L'employeur est dispensé de demander une autorisation de travail`），但工作要求两个硬条件同时满足：与所学相关（`Être en lien avec vos études`）、月薪税前超过 €2,800.53（`Être assorti d'une rémunération mensuelle brute supérieure à 2 800,53 €`）。另有一条宽松：学生打工常见的「年工时 60%（964 小时）上限」在本卡上不适用（`La limitation à 60 % de la durée annuelle de travail (964 heures) ne s'applique pas.`）。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "1 年期满不可续签（`Le renouvellement n'est pas possible.`）。这一年的实质是「找工作的缓冲期」，不是「可以长期待着的居留」。期满前没转成 salarié/talent 就失去合法居留依据。"
+    },
+    {
+      "level": "critical",
+      "description": "工作有两个硬条件：与所学相关、月薪税前 > €2,800.53。只满足其一不合规——这条把「先随便找份工过渡」的路堵掉了，而 €2,800.53 的月薪门槛对刚毕业的人是实质门槛。"
+    },
+    {
+      "level": "warning",
+      "description": "申请窗口窄：人在法国须在学生居留到期前 2 个月内递交。préfecture 预约排期常常超过这个窗口，晚约就来不及。"
+    },
+    {
+      "level": "warning",
+      "description": "两条路径的时限完全不同：人在法国是「文凭 12 个月内」，已回国是「文凭 4 年内」。把两个时限记混会导致白跑一趟。"
+    },
+    {
+      "level": "info",
+      "description": "与 APS 的区别（重要）：APS（autorisation provisoire de séjour）是给与法国签有移民流动协议国家的公民的「首次职业经验」通道，不是本条。本条是面向所有国籍的 recherche d'emploi / création d'entreprise 居留。中文资料里两者常被混为一谈。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Carte de séjour ou VLS-TS - recherche d'emploi/création d'entreprise（法国公共服务官方页 F17319）",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319",
+      "publisher": "Direction de l'information légale et administrative (DILA), service-public.fr",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "资格原文：人在法国须 `Séjourner en France avec une carte de séjour étudiant ou étudiant programme de mobilité` 且 `Avoir obtenu au cours des 12 derniers mois, une licence professionnelle, un Mastère Spécialisé, un Master of Science (labellisé par la conférence des grandes écoles) ou un autre diplôme au moins équivalent au master`；已回国者 `Faire votre demande dans le délai maximal de 4 ans à compter de l'obtention de votre diplôme`；期限与续签 `La carte de séjour ou le VLS-TS est valable 1 an. Le renouvellement n'est pas possible.`；工作权 `Pendant sa validité, cette carte vous permet de travailler en tant que salarié. L'employeur est dispensé de demander une autorisation de travail.` 两个条件 `Être en lien avec vos études`、`Être assorti d'une rémunération mensuelle brute supérieure à 2 800,53 €`，以及 `La limitation à 60 % de la durée annuelle de travail (964 heures) ne s'applique pas.`；费用 `Vous devez payer 150 € (droit de timbre de 50 € + taxe de 100 €) par timbres fiscaux.`；递交窗口 `dans les 2 mois précédant la date de fin de validité de votre carte étudiant`。"
+    },
+    {
+      "type": "primary",
+      "name": "Recherche d'emploi / création d'entreprise（France-Visas 官方说明页）",
+      "url": "https://france-visas.gouv.fr/en/web/france-visas/recherche-d-emploi-creation-d-entreprise",
+      "publisher": "France-Visas（法国外交部）",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "本条由事实包提供并标注为官方来源。本次核实尝试通过脚本与真实浏览器两条通道访问该页均被 Cloudflare 挑战页拦截（503 / 「Checking if the site connection is secure」），未能逐字读到正文。service-public.fr 的 F17319 页（已实测可读）覆盖了同一通道的资格、期限、费用与工作权，本记录的全部关键断言均以该页原文为准。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

@@ -1,0 +1,236 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "it-ricerca-lavoro",
+    "name": "意大利求职/创业居留（Permesso di soggiorno per ricerca lavoro o imprenditorialità degli studenti）",
+    "name_en": "Italy: Residence Permit for Job Search or Entrepreneurship (Post-Study)",
+    "country": "意大利",
+    "country_code": "IT",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Permesso di soggiorno per ricerca lavoro o imprenditorialità degli studenti（D.Lgs. 286/1998 第 39-bis.1 条）",
+    "official_url": "https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro",
+    "authority": "意大利内政部（Ministero dell'Interno）／移民融合门户（Integrazione Migranti）",
+    "summary": "给在意大利取得 laurea / dottorato / master 等文凭的人用来找工作或创业的居留，法定时长区间 9–12 个月（俗称 attesa occupazione 类）。须先在就业中心（Centro per l'Impiego）登记 DID（dichiarazione di immediata disponibilità）。关键变化：Decreto Cutro（Law 50/2023）之后，学生居留转工作居留脱离年度 flussi 配额、全年可申，且**凭申请回执即可开始工作**——这是它在五条同类通道里最实用的一点。",
+    "tags": [
+      "no_quota_cap",
+      "requires_degree",
+      "no_agency_needed"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方未按国籍设限，中国大陆护照持有人可申。门槛在前置身份：须持意大利学习居留并在意大利取得文凭。没在意大利读过书的人不适用。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方资格条件未设年龄限制。0–99 表示「无年龄门槛」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须在意大利取得文凭，官方列举包括 laurea（本科）、laurea magistrale（硕士）、dottorato（博士）、master 等。具体清单以 D.Lgs. 286/1998 第 39-bis.1 条与内政部通函为准；本条由事实包核实。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格条件未设语言考试要求。实际需能处理意大利语行政材料与就业中心登记。"
+    },
+    "funds": {
+      "required": false,
+      "amount": null,
+      "note": "官方未对本许可单列存款门槛。需有住所与基本生活保障，但条文未设固定金额；本记录不填猜测值。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "须持意大利学习居留并在其有效期内申请转换。转换时点跟着学习居留到期走，无年度开放窗口。"
+      },
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "须提交在意大利取得的文凭（或毕业证明）。这是「学生转求职」的资格基础。"
+      },
+      {
+        "type": "government_support_letter",
+        "required": true,
+        "note": "须先在就业中心（Centro per l'Impiego）登记 **DID**（dichiarazione di immediata disponibilità，即时可就业声明）。这不是一封推荐信，而是官方的求职登记，缺它无法完成本许可的目的要件。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro",
+    "quota_note": "Decreto Cutro（Law 50/2023）之后，学习居留转工作居留**脱离年度 flussi 配额**、全年可申。这一点是本条与「常规工作签证要等 flussi 名额」的根本差别——后者每年按国籍分配名额、错过窗口要等下一年，前者不受此限。本记录按 no_quota 记，指的是「不参与 flussi 年度名额分配」，不代表完全没有资格条件。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "next_window_hint": "无年度开放窗口，也不受 flussi 名额窗口约束：全年可申请转换，时点跟着学习居留到期走。",
+      "lead_time_days": 30,
+      "note": "rolling：Decreto Cutro 后转换脱离 flussi 配额，全年可办，因此不存在「每年几月开放」的问题。date_confidence 记 unknown 是因为「无窗口」不需要日期可信度。lead_time_days=30 的依据：需备文凭、住所证明、就业中心 DID 登记，以及 kit postale 寄送与 Questura 按手印的排期；材料本身不复杂，主要是行政排期。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年可申请转换（Decreto Cutro 后脱离 flussi 配额）。时点按个人学习居留到期安排。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "无年度窗口。规则按 D.Lgs. 286/1998 第 39-bis.1 条与内政部当期通函执行。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "居留许可费用（转换口径，合计约 €76.46）",
+        "amount": {
+          "local_amount": 76.46,
+          "currency": "EUR",
+          "note": "按「转换」口径：卡制作费 €30.46 + 印花税（marca da bollo）€16 + 邮局寄送费 €30 = €76.46。**另有 €40 贡献金（contributo）是否收取存在 Questura 口径差异**——portaleimmigrazione 的费用表列有「3 个月以上至 1 年」档 €40，但实践中部分 Questura 对学习转求职/工作不收。若收，合计为 €116.46。本记录按事实包口径记 €76.46，并把差异写明，不替读者做判断。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方未给统一审理天数。实际取决于 kit postale 寄送、Questura 预约按手印与制卡排期。"
+  },
+  "documents": [
+    {
+      "name": "意大利文凭或毕业证明",
+      "required": true,
+      "note": "laurea / laurea magistrale / dottorato / master 等，须为在意大利取得。",
+      "prepare_days": 30
+    },
+    {
+      "name": "就业中心 DID 登记证明",
+      "required": true,
+      "note": "dichiarazione di immediata disponibilità，在 Centro per l'Impiego 登记后取得。缺这项无法证明「求职中」这个目的。",
+      "prepare_days": 14
+    },
+    {
+      "name": "学习居留（permesso di soggiorno per studio）",
+      "required": true,
+      "note": "前置身份，须在有效期内办理转换。",
+      "prepare_days": 0
+    },
+    {
+      "name": "住所证明",
+      "required": true,
+      "note": "租房合同或房东声明（ospitalità），是意大利居留办理的常规要求。",
+      "prepare_days": 14
+    },
+    {
+      "name": "护照与照片",
+      "required": true,
+      "note": "护照有效期须覆盖申请期；另备制卡照片。",
+      "prepare_days": 7
+    },
+    {
+      "name": "印花税票（marca da bollo €16）",
+      "required": true,
+      "note": "在烟草店（tabaccheria）购买，随 kit 一同提交。",
+      "prepare_days": 1
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "凭文凭在学习居留到期前启动转换",
+      "description": "本许可不是独立入境通道，是在意大利境内由学习居留转换而来。时点跟着学习居留到期走。",
+      "duration": "1 天",
+      "official_link": "https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro"
+    },
+    {
+      "step_no": 2,
+      "title": "到就业中心登记 DID",
+      "description": "在 Centro per l'Impiego 登记 dichiarazione di immediata disponibilità。这是本条的目的要件，不是可选步骤。",
+      "duration": "1–2 天",
+      "official_link": "https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro"
+    },
+    {
+      "step_no": 3,
+      "title": "买印花税票、填 kit 并邮寄",
+      "description": "在 tabaccheria 买 €16 印花税票，用邮局的 kit postale 提交，缴卡费 €30.46 与邮局费 €30。是否另收 €40 贡献金按当地 Questura 口径。",
+      "duration": "1 天",
+      "official_link": "https://www.portaleimmigrazione.it/ITA/tabelleCosti.html"
+    },
+    {
+      "step_no": 4,
+      "title": "按手印、等卡",
+      "description": "按 Questura 预约时间到场采集指纹，之后等制卡。凭申请回执（ricevuta）在此期间已可合法工作。",
+      "duration": "以 Questura 排期为准",
+      "official_link": "https://www.portaleimmigrazione.it/ITA/tabelleCosti.html"
+    },
+    {
+      "step_no": 5,
+      "title": "9–12 个月内找到工作并转工作居留",
+      "description": "找到工作后按转换程序转成 lavoro subordinato 居留。Decreto Cutro 后这一步同样脱离 flussi 配额、全年可申。",
+      "duration": "9–12 个月",
+      "official_link": "https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 12,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "法定区间 9–12 个月（具体时长由 Questura 按个案核定），不是可反复续期的居留。期满须转为工作居留或自雇居留；未转成则失去依据。",
+    "restricted_occupations": [],
+    "note": "本许可的核心用途是求职，不是工作许可。但 Decreto Cutro 带来一个关键便利：转工作居留时**凭申请回执即可开始工作**（ricevuta 具有过渡工作权），不必等卡制好。这一点与西班牙同类通道「期间完全禁止工作」形成鲜明对比。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "必须先在就业中心登记 DID。没登记就缺少「求职中」这一目的要件，材料再全也不成立。这是最容易被漏掉的一步。"
+    },
+    {
+      "level": "warning",
+      "description": "费用口径有地区差异：€40 贡献金是否收取取决于 Questura。预算时按「可能多收 €40」准备，别按最低值算。"
+    },
+    {
+      "level": "warning",
+      "description": "法定时长是 9–12 个月的区间，不是固定值。实际给多久由 Questura 按个案核定，规划时要按最短 9 个月倒推。"
+    },
+    {
+      "level": "info",
+      "description": "与「等 flussi 名额」的区别（重要）：常规工作签证要等每年按国籍分配的 flussi 名额，错过窗口等一年；Decreto Cutro 之后学生转工作**脱离 flussi**、全年可申。中文资料里常把两者混为一谈，导致有人以为毕业后还得等名额窗口。"
+    },
+    {
+      "level": "info",
+      "description": "与西班牙、法国、芬兰的对照：意大利这条在「转工作」环节最顺（凭回执即可上班），而西班牙同类许可期间完全禁止工作、法国要求工作与所学相关且月薪过线、芬兰给无限制工作权。四条通道的劳动权设计差异很大。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Conversione del permesso di soggiorno da studio a lavoro: cosa è cambiato con il decreto Cutro（移民融合门户官方说明）",
+      "url": "https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro",
+      "publisher": "Ministero dell'Interno / Integrazione Migranti",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "本条关于「学习转工作脱离 flussi 年度配额、全年可申」以及「凭申请回执即可开始工作」的口径由事实包提供。本次尝试通过脚本访问该页返回 HTTPError，未能逐字复核正文；法律依据（D.Lgs. 286/1998 第 39-bis.1 条、Law 50/2023）与费用另用 portaleimmigrazione 费用表交叉核对（见下条）。关键断言沿用事实包，未做改写。"
+    },
+    {
+      "type": "primary",
+      "name": "Tabelle Costi（意大利内政部移民门户官方费用表）",
+      "url": "https://www.portaleimmigrazione.it/ITA/tabelleCosti.html",
+      "publisher": "Ministero dell'Interno — Portale Immigrazione",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "费用表逐项原文：`Marca da bollo 16.00 €`；`Produzione del Permesso di Soggiorno 30.46 €`；`Contributo per permessi di soggiorno di durata superiore a tre mesi e fino ad un anno 40.00 €`；`Costo spedizione Poste Italiane 30.00 €`。据此：卡费 30.46 + 印花 16 + 邮局 30 = €76.46（不含贡献金）；若计入 3–12 个月档贡献金 €40，则为 €116.46。这正是本记录在费用 note 里标注的口径差异。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

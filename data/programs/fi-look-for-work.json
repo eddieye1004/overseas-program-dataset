@@ -1,0 +1,226 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "fi-look-for-work",
+    "name": "芬兰求职/创业居留（Residence permit to look for work or to start a business）",
+    "name_en": "Finland: Residence Permit to Look for Work or Start a Business",
+    "country": "芬兰",
+    "country_code": "FI",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Residence permit to look for work or to start a business（Migri）",
+    "official_url": "https://migri.fi/residence-permit-to-look-for-work",
+    "authority": "芬兰移民局（Migri，Maahanmuuttovirasto）",
+    "summary": "给在芬兰完成学位或研究、并曾持学习或科研许可的人用来找工作或创业的居留。最长 2 年，可分最多 3 段（每段至少 6 个月）；**期间工作权不受限制**——五条同类通道里最宽松的一条。许可到期后 5 年内仍可申请。收入要求为每月可支配 €800。首签费用 €750（在线）／€800（纸质），是五条中最贵的。",
+    "tags": [
+      "no_quota_cap",
+      "requires_degree",
+      "no_agency_needed"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方未按国籍设限，中国大陆护照持有人可申。门槛在前置身份：须在芬兰完成学位或研究、并曾持芬兰学习或科研类居留许可。没在芬兰读过书或做过研究的人不适用。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方资格条件未设年龄限制。0–99 表示「无年龄门槛」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须在芬兰完成学位（degree）或研究（research）。官方未把门槛抬到硕士层级，本科层级完成学位即可；完成研究指科研岗位经历。具体材料为芬兰院校的学位证明或研究机构证明。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格条件未设语言考试要求。"
+    },
+    "funds": {
+      "required": true,
+      "amount": {
+        "local_amount": 800,
+        "currency": "EUR",
+        "cny_estimate": 6300,
+        "note": "每月可支配收入要求 €800（`€800 per month`）。这是「按月」的门槛，不是总额——申请 2 年则要能覆盖 24 个月。人民币估算按 2026-11 汇率粗估，仅供参考。"
+      },
+      "note": "官方要求证明有至少 €800/月的可支配收入以覆盖在芬期间开销。与瑞典「按月×月数存银行」的口径类似，但芬兰这条同时允许工作，因此收入可以来自实际就业而非纯存款。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "两个前置条件：①曾在芬兰完成学位或研究；②曾持芬兰学习或科研类居留许可。许可到期后 **5 年内**仍可申请（`within five years`），这是五条同类通道里回溯期最长的一条。"
+      },
+      {
+        "type": "return_ticket",
+        "required": false,
+        "note": "官方资格清单未单列返程机票；但需能覆盖在芬期间开销。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://migri.fi/residence-permit-to-look-for-work",
+    "quota_note": "官方页面未设名额上限、抽签或年度配额，属资格制：满足条件即受理。所以它没有「抢名额」的问题，只有「材料与收入是否达标」的问题。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "next_window_hint": "无年度开放窗口，全年可申。唯一的个人时间窗是「许可到期后 5 年内」；申请后可按最多 3 段（每段 ≥6 个月）使用，不必一次用满 2 年。",
+      "lead_time_days": 45,
+      "note": "rolling：官方无固定开放窗口。date_confidence 记 unknown 是因为「无窗口」不需要日期可信度。lead_time_days=45 的依据：需备学位/研究证明、€800/月 的收入证明、护照与照片，且审理时长本身较长（Migri 的许可审理常以月计）；若不提前启动，可能出现「许可到期了、新卡还没下来」的空档。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年可申，无固定开放日。许可到期后 5 年内均可递交。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "无年度窗口。规则按 migri.fi 当期版本执行；费用每年可能调整，须复核。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "首次居留许可申请费（在线）",
+        "amount": {
+          "local_amount": 750,
+          "currency": "EUR",
+          "note": "在线递交 €750；纸质递交 €800。这是五条同类通道里最贵的一条（西班牙 €10.94、意大利约 €76.46、冰岛 ISK 70,000）。费用为 Migri 官方费率表口径。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方页面未给统一天数。Migri 的许可审理常以月计，且受申请量与材料完整度影响；本条建议按「数月」预留，而不是按周。"
+  },
+  "documents": [
+    {
+      "name": "芬兰学位证明或研究经历证明",
+      "required": true,
+      "note": "证明在芬兰完成了学位（degree）或研究（research）。这是两个前置条件之一。",
+      "prepare_days": 30
+    },
+    {
+      "name": "曾持学习/科研许可的证明",
+      "required": true,
+      "note": "另一前置条件：须曾持芬兰学习或科研类居留许可。通常以旧居留卡或 Migri 的决定书为证。",
+      "prepare_days": 7
+    },
+    {
+      "name": "收入证明（€800/月）",
+      "required": true,
+      "note": "银行流水、工资单或雇佣合同，须能体现每月至少 €800 的可支配收入。按申请的月数准备覆盖期。",
+      "prepare_days": 30
+    },
+    {
+      "name": "护照与照片",
+      "required": true,
+      "note": "护照有效期须覆盖申请期；照片须符合芬兰生物识别要求。",
+      "prepare_days": 7
+    },
+    {
+      "name": "申请表与受理地点",
+      "required": true,
+      "note": "在线通过 Enter Finland 递交；若人在芬兰境内，通常还须到 Migri 服务点核验身份。",
+      "prepare_days": 3
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认两个前置条件都满足",
+      "description": "①在芬兰完成学位或研究；②曾持芬兰学习或科研许可。两者缺一不可。许可到期后 5 年内都可以申，不必赶在毕业当月。",
+      "duration": "1 天",
+      "official_link": "https://migri.fi/residence-permit-to-look-for-work"
+    },
+    {
+      "step_no": 2,
+      "title": "算清楚要覆盖多少个月的 €800",
+      "description": "€800 是月门槛，不是总额。申请 2 年就要能覆盖 24 个月。好消息是这条许可允许工作，因此收入可以来自就业而非纯存款。",
+      "duration": "1 天",
+      "official_link": "https://migri.fi/residence-permit-to-look-for-work"
+    },
+    {
+      "step_no": 3,
+      "title": "在线递交并缴 €750",
+      "description": "通过 Enter Finland 在线递交为 €750，纸质为 €800。在线既便宜又快。",
+      "duration": "1 天",
+      "official_link": "https://migri.fi/en/processing-fees-and-payment-methods"
+    },
+    {
+      "step_no": 4,
+      "title": "到 Migri 核验身份、等决定",
+      "description": "在芬境内申请人通常需到服务点核验身份与指纹。审理以月计，建议在当前许可到期前数月启动。",
+      "duration": "数月",
+      "official_link": "https://migri.fi/residence-permit-to-look-for-work"
+    },
+    {
+      "step_no": 5,
+      "title": "按段使用，边工作边找方向",
+      "description": "许可可分最多 3 段使用（每段 ≥6 个月），期间工作权不受限制。找到合适工作后可转工作居留，或按创业路径申请。",
+      "duration": "最长 24 个月",
+      "official_link": "https://migri.fi/residence-permit-to-look-for-work"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "最长 2 年，可分最多 3 段（每段至少 6 个月）。这是「一次性缓冲期」而非可反复续的居留；期满须转成工作居留或其它类别。分段使用的意义是：中间找到工作转走了，剩下的时间段不浪费（按 Migri 的分段规则）。",
+    "restricted_occupations": [],
+    "note": "**工作权不受限制**——这是五条同类通道里最宽松的一条。对照：西班牙同类许可期间完全禁止工作、法国允许但要求与所学相关且月薪 > €2,800.53、意大利凭转换申请回执才可工作。芬兰这条可以直接合法就业，因此 €800/月 的收入要求也更容易靠实际工作满足。"
+  },
+  "risks": [
+    {
+      "level": "warning",
+      "description": "€800 是按月的门槛，不是总额。申请 2 年要能覆盖 24 个月，按总额算容易低估。"
+    },
+    {
+      "level": "warning",
+      "description": "费用是五条里最贵的：€750（在线）／€800（纸质）。且许可审理以月计，若当前许可将到期，需提早数月启动以免出现身份空档。"
+    },
+    {
+      "level": "info",
+      "description": "5 年回溯期是五条里最长的：许可到期后 5 年内都可以申，不必赶在毕业当年。这给了「先回国工作一段再回来找」的空间，而法国是 4 年内、西班牙要求在学居留到期后 90 天内。"
+    },
+    {
+      "level": "info",
+      "description": "与其它四条的对照：工作权上芬兰最宽松（无限制），西班牙最严（完全禁止），法国有条件（与所学相关 + 月薪门槛），意大利凭回执可工作，冰岛按期续签。同样叫「毕业后求职居留」，劳动权差别是本组最值得注意的维度。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Residence permit to look for work or to start a business（芬兰移民局官方页）",
+      "url": "https://migri.fi/residence-permit-to-look-for-work",
+      "publisher": "Migri（Finnish Immigration Service）",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "本条关于「在芬兰完成学位或研究、曾持学习或科研许可、许可到期后 5 年内可申、最长 2 年分最多 3 段（每段 ≥6 个月）、无限制工作权、收入要求 €800/月」的口径由事实包提供。本次尝试通过脚本与真实浏览器两条通道访问 migri.fi，均被 Cloudflare 挑战页拦截（「Checking if the site connection is secure」），未能逐字复核正文；关键断言沿用事实包，未做改写。"
+    },
+    {
+      "type": "primary",
+      "name": "Processing fees and payment methods（Migri 官方费率表）",
+      "url": "https://migri.fi/en/processing-fees-and-payment-methods",
+      "publisher": "Migri（Finnish Immigration Service）",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "首签费用 €750（在线）／€800（纸质）由事实包提供；本次同样因 Cloudflare 拦截未能逐字复核。费用为 Migri 费率表口径，且该表每年可能调整，递交前须复核。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

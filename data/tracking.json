@@ -7,10 +7,10 @@
     "note": "windows 里写死了 open_date / close_date 的项目，一年只开一次窗口，错过就要再等一年；晚一天发现就等于让人白等一年，所以按 90 天核。 其余项目的资格条件、费用、材料不会因为跨年而失效，180 天足够，太勤只会把精力花在没变的东西上。"
   },
   "summary": {
-    "total": 34,
+    "total": 39,
     "overdue": 0,
     "due_soon": 0,
-    "fresh": 34,
+    "fresh": 39,
     "unknown": 0,
     "quota_unverified": 2
   },
@@ -1631,6 +1631,191 @@
       "quota_basis": null,
       "quota_note": "官方页面未出现名额上限或抽签的表述，按滚动受理记录。由于本项目对中国大陆护照不分配名额，配额对本仓库主要读者没有实际意义；此处的 no_quota 指「该安排本身没有公布名额上限」，不是「中国人能申且无名额限制」。",
       "quota_source": "https://www.nyidanmark.dk/en-GB/You-want-to-apply/Working-holiday"
+    },
+    {
+      "id": "es-busqueda-empleo",
+      "name": "西班牙求职/创业居留（Autorización de residencia para búsqueda de empleo o inicio de proyecto empresarial）",
+      "country": "西班牙",
+      "file": "es-busqueda-empleo.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.inclusion.gob.es/web/migraciones/listado-completo",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-12056",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方明示本条为资格制、不受年度名额限制：它是 Ley 14/2013 与国际保护转居留体系下的一条授权，不参与西班牙外籍劳工的年度配额（contingente）分配。满足条件即受理，没有抽签、没有排队名额。",
+      "quota_source": "https://www.inclusion.gob.es/web/migraciones/listado-completo"
+    },
+    {
+      "id": "fi-look-for-work",
+      "name": "芬兰求职/创业居留（Residence permit to look for work or to start a business）",
+      "country": "芬兰",
+      "file": "fi-look-for-work.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://migri.fi/residence-permit-to-look-for-work",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://migri.fi/en/processing-fees-and-payment-methods",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方页面未设名额上限、抽签或年度配额，属资格制：满足条件即受理。所以它没有「抢名额」的问题，只有「材料与收入是否达标」的问题。",
+      "quota_source": "https://migri.fi/residence-permit-to-look-for-work"
+    },
+    {
+      "id": "fr-recherche-emploi",
+      "name": "法国求职/创业居留（Carte de séjour / VLS-TS « recherche d'emploi / création d'entreprise »）",
+      "country": "法国",
+      "file": "fr-recherche-emploi.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://france-visas.gouv.fr/en/web/france-visas/recherche-d-emploi-creation-d-entreprise",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方页面未设名额、抽签或年度配额的表述，属资格制：满足条件即受理。真正的「名额」约束不在这条通道上，而在它之后转 salarié / talent 类居留时的雇主与岗位条件。",
+      "quota_source": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319"
+    },
+    {
+      "id": "is-job-search-after-graduation",
+      "name": "冰岛毕业后求职居留（学生居留续签，special residence permit for employment-seeking after graduation）",
+      "country": "冰岛",
+      "file": "is-job-search-after-graduation.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://island.is/en/o/directorate-of-immigration/news/increase-in-fees-for-residence-permit-and-citizenship-applications",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方规则说明中未出现名额上限、抽签或年度配额的表述，属资格制：满足条件即受理。",
+      "quota_source": "https://island.is/en/o/directorate-of-immigration/news/new-residence-and-work-permit-rules-take-effect"
+    },
+    {
+      "id": "it-ricerca-lavoro",
+      "name": "意大利求职/创业居留（Permesso di soggiorno per ricerca lavoro o imprenditorialità degli studenti）",
+      "country": "意大利",
+      "file": "it-ricerca-lavoro.json",
+      "last_verified": "2026-11-11",
+      "age_days": 0,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 180,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        },
+        {
+          "url": "https://www.portaleimmigrazione.it/ITA/tabelleCosti.html",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 0,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "Decreto Cutro（Law 50/2023）之后，学习居留转工作居留**脱离年度 flussi 配额**、全年可申。这一点是本条与「常规工作签证要等 flussi 名额」的根本差别——后者每年按国籍分配名额、错过窗口要等下一年，前者不受此限。本记录按 no_quota 记，指的是「不参与 flussi 年度名额分配」，不代表完全没有资格条件。",
+      "quota_source": "https://integrazionemigranti.gov.it/it-it/Ricerca-news/Dettaglio-news/id/3301/t/45/Conversione-del-permesso-di-soggiorno-da-studio-a-lavoro-Cosa-e-cambiato-con-il-decreto-Cutro"
     },
     {
       "id": "mt-nomad-residence",
