@@ -8,6 +8,30 @@
 
 ## [未发布]
 
+### 新增 — 仓库门面素材与结构化纠错入口（2026-11-11）
+
+只做仓库内能落盘的部分：推广内容不在本单，GitHub 设置本身也没有改（About / topics / social preview 只能在仓库设置页或 PATCH API 写，本机 keyring 在 session-0 读不到，gh 无法认证）。
+
+**门面素材（B1）**
+
+- 新增 `docs/social-preview.png`（1200×630），由 `web/scripts/social-preview.mjs` 生成。与既有 `web/scripts/og-image.mjs` 分工明确：后者产出 `web/public/og.png` 供站点分享卡片，这张供仓库门面人工上传，两者不共用一个产物路径。
+- 图上四个数字（29 项目 / 23 可申 / 117 来源 / 90·180 天复核周期）全部从 `data/programs/*.json` 与 `data/review-policy.json` 派生，不写死。这延续 `og-image.mjs` 里那次事故的教训——硬编码的「11」在项目加到 26 个后还在图上，而图是二进制、grep 不到。标题只用 README 已有口径，未造新卖点。
+- README 第一屏补一张四行速览表。原先「29 个项目 / 数据怎么保鲜 / 怎么纠错」要翻到第 77、158、224 行才看得到；现在第一屏就给：规模、复核周期（90/180 天、剩余 25% 提前提醒、每周一 CI）、纠错路径、数据结构。数字全部搬运自仓库已有事实，标注取数日期，未新增任何数字。
+- 新增 `docs/REPO-SETTINGS.md`：只写清单不执行。含 About 描述中英两版（各带字符数与取舍）、website（强调必须带结尾斜杠）、topics 终选 10 个（逐个取舍理由，剔掉 `awesome-list`）、social preview 上传说明与重生成命令、标签缺口、其余建议项与三条无登录自检命令。
+
+**纠错入口（B2）**
+
+- `.github/ISSUE_TEMPLATE/data-correction.md` → `data-correction.yml`（GitHub issue form）。旧模板是自由文本框，提上来的 issue 常缺来源、缺字段路径，维护者要来回两三轮；form 用下拉与必填校验把「问不清楚」消灭在提交前。字段：项目（30 项下拉，选项由 29 个 `program.id` + `name` 生成，不是手抄）、项目 id（可选）、问题字段（11 项）、当前数据、正确说法、官方来源 URL、发布机构、核实日期、核实方式、两条提交前确认。其中项目 / 问题字段 / 当前数据 / 正确说法 / 官方来源 / 核实日期为必填。
+- 新增 `config.yml`，**保留空白 issue 通道**（`blank_issues_enabled: true`）。理由：三个模板只覆盖具体数据问题，而关于数据集结构、来源分级标准、前端可用性的建议没有合适模板，强迫选一个只会把内容塞进不匹配的模板。代价由 `contact_links` 里「数据纠错（请优先用这个）」的说明承担。
+- 站点页脚新增「发现数据有误？提纠错」，直连 `issues/new?template=data-correction.yml`，新窗口打开并带 `rel="noopener noreferrer"`。放页脚而非横幅：不该抢主流程，但必须每页都有——发现错误的那一页往往不是「数据说明」页。中英各一版文案，链接不随语言变。e2e 新增 [28] 一节 9 条断言（template 参数、指向本仓库、`_blank`、`noopener`、中文文案、详情页也有、英文切换后链接不变），总数 193 → 203。
+- 顺带发现并记录：三个模板声明的标签 `data-correction` / `broken-link` / `new-program` **在仓库里都不存在**（只有 10 个默认标签）。GitHub 遇到不存在的标签是静默跳过、issue 照建，所以这个缺口一直没被发现，代价是模板声称的分类在 issue 列表里筛不出来。清单里已给出三条标签的 name/color/description。
+
+**门禁**
+
+- `validate.py --strict` 错误 0 / 警告 0；`pytest -q` **118 passed**；`gen_sources.py --check` OK（117 条）；`track.py` 29 条全在周期内；`tsc -b --force` 通过；`smoke-test.mjs` **128/128**；`vite build` 通过；`e2e-check.mjs` **203/203**；i18n 覆盖率 100%。两个 issue 表单 YAML 经 yaml@2 解析核过（id 无重复、required 齐全、下拉 30 项无重复）。
+- 线上核验：push 后 `Validate Dataset` 与 `Deploy web` 在 `483e0bd` 均 success；CDP 实测线上站点页脚链接为 `.../issues/new?template=data-correction.yml`、`target=_blank`、`rel="noopener noreferrer"`。GitHub issue 表单页需登录态才能渲染，无登录实测做不到，字段渲染留给 Muse 验收。
+
+---
 ### 变更 — 配额四态化、复核到期开 issue、待核实清单进台账（2026-11-11）
 
 这一轮不加国家，只把三处「读的人分不清、维护的人也容易忘」的地方定义清楚。
