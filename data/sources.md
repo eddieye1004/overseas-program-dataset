@@ -13,9 +13,9 @@
 
 | 指标 | 数值 |
 |---|---|
-| 项目数 | 39 |
-| 来源条目 | 134（primary 128 / secondary 6） |
-| 去重后的 URL 数 | 124（另有 39 个 `official_url` 入口） |
+| 项目数 | 41 |
+| 来源条目 | 136（primary 130 / secondary 6） |
+| 去重后的 URL 数 | 126（另有 41 个 `official_url` 入口） |
 | 最近一次核实 | 2026-11-11 |
 | 最早一次核实 | 2026-09-17 |
 | 距今最久的来源 | `global-iaeste`（2026-09-17，距最近一次核实 55 天） |
@@ -69,6 +69,14 @@
 | 3 | primary | Temporary Graduate visa — study requirement（2 学年 / 92 周 / 16 个自然月口径） | Australian Government Department of Home Affairs | <https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/meeting-the-temporary-graduate-visa-subclass-485-study-requirement> | A · 政府/法律 | 2026-11-08 | 核心原文：`you must have completed in the 6 months immediately before the day you apply for your visa, either: a single eligible qualification that requires at least 2 academic years study or more than 1 qualification that results in a total of at least 2 academic years study`；`You must have completed your study in Australia, in a total of no less than 16 calendar months, while you held a visa authorising you to study.`；`Two academic years of study equals 92 weeks that contribute towards one or more acceptable qualification.`；`Two academic years study, or 92 weeks of registered study, is based on the duration of the course as registered by CRICOS.`；`You can take longer to complete your course, but you will only be credited with the number of weeks that CRICOS determines as the standard duration.`；`Only study that you successfully completed counts towards the 2 academic years. You cannot include failed subjects.`；`Credit for prior learning may reduce the amount of study undertaken.`；`You cannot use English language proficiency courses or enabling programs to meet the Temporary Graduate visa study requirement` |
 | 4 | primary | English language visa requirements（认可考试与 2025-08-07 改版） | Australian Government Department of Home Affairs | <https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/english-language> | A · 政府/法律 | 2026-11-08 | 改版原文：`On 7 August 2025, the English language tests approved for Australian visa purposes changed. If you completed a test before this date, your results may still be valid for up to 3 years.` 新版认可清单：`Cambridge C1 Advanced Test`、`Canadian English Language Proficiency Index Program General (CELPIP General)`、`International English Language Testing System Academic (IELTS Academic), including One Skill Retake (OSR)`、`IELTS General Training`、`LANGUAGECERT Academic Test`、`Michigan English Test (MET), including Single Section Retake (SSR)`、`Occupational English Test (OET)`、`Pearson Test of English Academic (PTE Academic)`、`TOEFL iBT - To ensure your TOEFL iBT result is valid for Australian visa purposes, you must select 'Taking TOEFL for Australia' when registering for your test.` 等级划分：该页把英语分为 `Functional English`、`Vocational English`、`Competent English`、`Proficient English`、`Superior English` 五档，各签证按档对应不同分数线。 |
 | 5 | primary | Competent English 分数表（Table 1，2025-08-07 及之后考试） | Australian Government Department of Home Affairs | <https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/english-language/competent-english> | A · 政府/法律 | 2026-11-08 | Table 1 各项最低分原文：`IELTS Academic / General Training — In each of the 4 test components, at least: 6 for listening, 6 for reading, 6 for writing, 6 for speaking`；`PTE Academic — 47 for listening, 48 for reading, 51 for writing, 54 for speaking`；`CELPIP General — 7 for listening, 7 for reading, 7 for writing, 7 for speaking`；`Cambridge C1 Advanced — 163 for listening, 163 for reading, 170 for writing, 179 for speaking`；`MET — 56 for listening, 55 for reading, 57 for writing, 48 for speaking`；`LANGUAGECERT Academic — 57 for listening, 60 for reading, 64 for writing, 70 for speaking`；`OET — 290 for listening, 310 for reading, 290 for writing, 330 for speaking`。该页同时说明英语国家护照持有人（`The Republic of Ireland`、`The United Kingdom of Great Britain and Northern Ireland`、`The United States of America` 等）可用护照直接证明，以及旧成绩有效期上限为 `3 years`。**485 资格页只写「所需的英语等级」，未在该页给出具体等级名与分数；本记录的分数为 Home Affairs 英语等级体系下 Competent English 档的官方分数，实际适用档位须按 485 页面链接核验。** |
+
+### 澳大利亚毕业生临时签证 485（职业教育类别 / Post-Vocational Education Work）
+
+`au-485-vocational` · 官方入口 <https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Temporary Graduate visa (subclass 485) — Post-Vocational Education Work stream（澳大利亚内政部官方页） | Australian Department of Home Affairs | <https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work> | A · 政府/法律 | 2026-11-11 | 年龄原文：`You must be 35 years of age or under when you apply.` 与 `You can be under 50 years of age when you apply if you hold a Hong Kong or British National Overseas passport.`；学历原文 `You must have been awarded at least one associate degree, diploma or trade qualification in the 6 months immediately before the day you apply for your visa`；所在地 `You must be in Australia (but not in immigration clearance) when you apply for this visa.`；技能评估 `A relevant assessing authority must assess your skills as being suitable for your nominated occupation.`；停留期 `Up to 18 months.` 与 `Hong Kong and British National Overseas passport holders may stay for 5 years.`；保险 `You and your family members must have and maintain adequate health insurance for the duration of your stay in Australia.`；签证费为前端注入的 `BasePrice` 占位符，抓不到数字。 |
 
 ---
 
@@ -216,6 +224,14 @@
 ---
 
 ## 爱尔兰
+
+### 爱尔兰第三级毕业生计划（Third Level Graduate Programme，Stamp 1G）
+
+`ie-third-level-graduate` · 官方入口 <https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/>
+
+| # | 类型 | 名称 | 机构 | URL | 分级 | 核实日期 | 覆盖内容 |
+|---|---|---|---|---|---|---|---|
+| 1 | primary | Third Level Graduate Programme（爱尔兰移民服务局官方页） | Immigration Service Delivery (ISD), Ireland | <https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/> | A · 政府/法律 | 2026-11-11 | 期限分档原文：`Graduates with an award at Level 8 on the National Framework of Qualifications will be granted a twelve-month permission to a maximum of seven years student permission overall (time spent on Stamp 2 as a student and on Stamp 1G under this programme cannot exceed an aggregate time of seven years in total).`；Level 9 及以上 `will be granted permission for 12 months initially. This will be renewed for a further period of twelve months (subject to the overall eight year limit on student conditions not being exceeded) where the graduate satisfies the immigration authorities that he or she has taken appropriate steps to access suitable graduate level employment`；学位证明 `Must present evidence of the final award being attained by way of a parchment or, in circumstances where the graduation ceremony is yet to take place, an official letter for the awarding body / institution confirming that the award has been achieved.`；费用 `You must pay a fee of 300 per person to register.`；材料 `A copy of the award granted to you`、`Your passport`、`Medical insurance`；品行 `expected to be of good character and not to have come to the adverse attention of the authorities`；次数限制 `A graduate will not be permitted to access the Programme on more than two separate occasions`。 |
 
 ### 爱尔兰打工度假授权
 

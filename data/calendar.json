@@ -1,11 +1,11 @@
 {
-  "generated_for": "2026-11-11",
+  "generated_for": "2026-11-12",
   "note": "本文件由 scripts/build_calendar.py 从 data/programs/*.json 的 timeline.schedule 派生，请勿手工编辑。三档 date_confidence （confirmed/inferred/unknown）是硬分区：推断出来的日期永不与官方日期混排。",
   "summary": {
-    "total": 39,
+    "total": 41,
     "confirmed": 3,
     "inferred": 2,
-    "unknown": 34
+    "unknown": 36
   },
   "actionable": [
     "ie-working-holiday-authorisation"
@@ -23,7 +23,7 @@
       "close_date": null,
       "lead_time_days": 45,
       "remind_on": "2026-09-17",
-      "days_to_open": -10,
+      "days_to_open": -11,
       "days_to_deadline": null,
       "next_window_hint": "2027 年度已开放（自 2026-11-01 起），无名额即止的明确截止日，前 400 份即满。",
       "cycle_note": "2027 年度自 2026-11-01 09:00（台北时间）起接受申请，按收件先后受理，前 400 份合格申请在 2027 年初签发。",
@@ -41,8 +41,8 @@
       "close_date": "2026-07-16",
       "lead_time_days": 30,
       "remind_on": "2026-06-14",
-      "days_to_open": -120,
-      "days_to_deadline": -118,
+      "days_to_open": -121,
+      "days_to_deadline": -119,
       "next_window_hint": "2027 年抽签日程未公布，官方说会在同一页面发布。",
       "cycle_note": "2026 年两轮抽签：2 月一轮、7 月一轮（07-14 起 48 小时），全部名额已分配完毕；官方明确 2026 年不再有第三轮。",
       "missing": null
@@ -59,8 +59,8 @@
       "close_date": "2026-06-25",
       "lead_time_days": 60,
       "remind_on": "2026-04-05",
-      "days_to_open": -160,
-      "days_to_deadline": -139,
+      "days_to_open": -161,
+      "days_to_deadline": -140,
       "next_window_hint": "2027-28 财年的注册窗口官方尚未公布。参照 2026-27 安排在 6 月上旬开放、为期约 3 周，但这是参照而非承诺。",
       "cycle_note": "2026-27 财年的注册窗口为 2026-06-04 至 2026-06-25（约 3 周），中签后 28 天内须递交正式申请；抽签选择期持续到 2027-04-30。",
       "missing": null
@@ -152,6 +152,24 @@
       "days_to_open": null,
       "days_to_deadline": null,
       "next_window_hint": "无窗口；唯一的时间约束是「递交前 6 个月内完成课程」与「过去 6 个月内持过学生签证」。",
+      "cycle_note": null,
+      "missing": null
+    },
+    {
+      "id": "au-485-vocational",
+      "name": "澳大利亚毕业生临时签证 485（职业教育类别 / Post-Vocational Education Work）",
+      "country": "澳大利亚",
+      "eligible": "eligible",
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "lead_time_days": 45,
+      "remind_on": null,
+      "days_to_open": null,
+      "days_to_deadline": null,
+      "next_window_hint": "无年度开放窗口。真正的时间窗是「取得资格后 6 个月内」，且申请时须在澳大利亚境内。",
       "cycle_note": null,
       "missing": null
     },
@@ -350,6 +368,24 @@
       "days_to_open": null,
       "days_to_deadline": null,
       "next_window_hint": "无统一窗口；但岗位集中发布在 11 月、1 月、4 月的国际交流会议后，实际申请节奏随之起伏。",
+      "cycle_note": null,
+      "missing": null
+    },
+    {
+      "id": "ie-third-level-graduate",
+      "name": "爱尔兰第三级毕业生计划（Third Level Graduate Programme，Stamp 1G）",
+      "country": "爱尔兰",
+      "eligible": "eligible",
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "lead_time_days": 45,
+      "remind_on": null,
+      "days_to_open": null,
+      "days_to_deadline": null,
+      "next_window_hint": "无年度开放窗口。申请时点跟着学生许可（Stamp 2）到期节点走：须在学生许可到期前完成注册。",
       "cycle_note": null,
       "missing": null
     },

@@ -1,0 +1,227 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "ie-third-level-graduate",
+    "name": "爱尔兰第三级毕业生计划（Third Level Graduate Programme，Stamp 1G）",
+    "name_en": "Ireland: Third Level Graduate Programme (Stamp 1G)",
+    "country": "爱尔兰",
+    "country_code": "IE",
+    "region": "europe",
+    "program_type": "short_term_work",
+    "visa_code": "Stamp 1G（Third Level Graduate Programme）",
+    "official_url": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/",
+    "authority": "爱尔兰移民服务局（Immigration Service Delivery, ISD）",
+    "summary": "给在爱尔兰取得学位的非欧洲经济区毕业生留在当地找工作的居留许可（Stamp 1G）。期限按学位层级分两档：Level 8（本科层级）给 12 个月；Level 9 及以上先给 12 个月、可再续 12 个月共 24 个月，但续期要证明「已采取适当步骤找毕业生层级的工作」（如参加面试、注册毕业生招聘平台）。注册费 €300。有累计年限上限：学生身份与本计划合计不得超过 7 年（Level 9 续期路径为 8 年）。",
+    "tags": [
+      "no_quota_cap",
+      "requires_degree",
+      "no_agency_needed",
+      "residency_required"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方资格按「非欧洲经济区国民 + 在爱尔兰取得认可机构学位」判定，未按国籍设限；中国大陆护照持有人可申。门槛在前置身份：须已持爱尔兰学生许可（Stamp 2）并在认可的爱尔兰机构取得学位。没在爱尔兰读过书的人不适用。"
+    },
+    "age": {
+      "min": 0,
+      "max": 99,
+      "note": "官方资格条件未设年龄限制。0–99 表示「无年龄门槛」，不是「未核实」。"
+    },
+    "education": {
+      "minimum_level": "bachelor_completed",
+      "major_restriction": [],
+      "note": "须取得爱尔兰国家资格框架（NFQ）**Level 8 及以上**的学位。Level 8 = 本科（honours bachelor degree）；Level 9 = 硕士。授予机构须为认可的爱尔兰机构，官方列举包括：都柏林圣三一学院、都柏林大学（UCD）、都柏林城市大学（DCU）、都柏林理工大学（TU Dublin）、梅努斯大学、芒斯特理工大学（MTU）、科克大学（UCC）、高威大学（NUI Galway）、利默里克大学（UL）、爱尔兰皇家外科医学院（RCSI）、技术学院（Institutes of Technology）、以及 QQI（Quality and Qualifications Ireland）认证的奖项。"
+    },
+    "language": {
+      "required": false,
+      "tests": [],
+      "note": "官方资格条件未单列语言考试要求（语言要求是在申请学生签证时满足的，本计划是毕业后的续接，不再重复审查）。"
+    },
+    "funds": {
+      "required": false,
+      "amount": null,
+      "note": "官方材料清单要求医疗保险与护照，未设独立存款门槛。但找工作期间的生活开销须自行覆盖。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "须已持爱尔兰学生许可（Stamp 2）并在此身份下完成学业。另有一条累计上限：学生身份（Stamp 2）与本计划（Stamp 1G）的时间合计不得超过 **7 年**；Level 9 及以上走续期路径的为 **8 年**上限。官方原文：`time spent on Stamp 2 as a student and on Stamp 1G under this programme cannot exceed an aggregate time of seven years in total`。"
+      },
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "须提交最终学位的证明：学位证书（parchment），或毕业典礼尚未举行时由授予机构出具的**官方信函**确认学位已取得。官方原文：`Must present evidence of the final award being attained by way of a parchment or, in circumstances where the graduation ceremony is yet to take place, an official letter for the awarding body / institution confirming that the award has been achieved.` 注意：本计划是「已毕业」才申请，不是在读期间续签。"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "材料清单明列医疗保险（`Medical insurance`）。"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "官方要求申请人品行良好、未引起当局不良注意（`expected to be of good character and not to have come to the adverse attention of the authorities in any way`），并遵守爱尔兰法律。不要求单独提交无犯罪记录证明，由移民当局在审核中判断。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/",
+    "quota_note": "官方页面未设名额、抽签或年度配额的表述，属资格制：满足学位与身份条件即受理。真正的限制是「累计年限上限」（7 年 / 8 年）与「最多申请两次」，不是名额。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "next_window_hint": "无年度开放窗口。申请时点跟着学生许可（Stamp 2）到期节点走：须在学生许可到期前完成注册。",
+      "lead_time_days": 45,
+      "note": "rolling：官方无固定开放窗口，本计划是毕业时对学生许可的续接，时点由个人学生许可到期日决定。date_confidence 记 unknown 是因为「无窗口」不需要日期可信度。lead_time_days=45 的依据：需备学位证书或院校官方信函（毕业典礼未举行时）、医疗保险、护照，并预约注册（registration）缴 €300；院校出具信函与注册预约排期是主要耗时项。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年按个人学生许可到期节点受理。须在完成学业后、学生许可到期前注册 Stamp 1G。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "无年度窗口。规则按 ISD 当期页面执行；该计划曾多次调整期限（Level 9 的 24 个月是较近的政策），递交前须复核。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "注册费（每人）",
+        "amount": {
+          "local_amount": 300,
+          "currency": "EUR",
+          "note": "官方原文：`You must pay a fee of 300 per person to register.` 单位按欧元计（原文只写数字 300，币种按爱尔兰注册费惯例为欧元）。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方页面未给统一审理天数。实际取决于注册预约排期与材料完整度。"
+  },
+  "documents": [
+    {
+      "name": "学位证书或院校官方信函",
+      "required": true,
+      "note": "毕业典礼已举行的交学位证书（parchment）；未举行的交授予机构出具的官方信函，确认学位已取得。这是本计划的核心材料。",
+      "prepare_days": 30
+    },
+    {
+      "name": "护照",
+      "required": true,
+      "note": "有效期须覆盖拟停留期。",
+      "prepare_days": 7
+    },
+    {
+      "name": "医疗保险",
+      "required": true,
+      "note": "官方材料清单明列。须覆盖在爱尔兰的停留期。",
+      "prepare_days": 14
+    },
+    {
+      "name": "学生许可（Stamp 2）记录",
+      "required": true,
+      "note": "本计划是学生许可的续接，须能证明此前持 Stamp 2 完成学业。",
+      "prepare_days": 7
+    },
+    {
+      "name": "注册费 €300",
+      "required": true,
+      "note": "注册时缴纳，每人 €300。",
+      "prepare_days": 1
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认学位层级与院校在认可名单内",
+      "description": "须为 NFQ Level 8 及以上，且由认可的爱尔兰机构授予（国立大学、理工大学、技术学院或 QQI 认证奖项）。海外学位不适用。",
+      "duration": "1 天",
+      "official_link": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/"
+    },
+    {
+      "step_no": 2,
+      "title": "确认没有超过累计年限上限",
+      "description": "Stamp 2（学生）与 Stamp 1G 的时间合计不得超过 7 年；Level 9 及以上走续期路径为 8 年。且本计划最多申请两次。",
+      "duration": "1 天",
+      "official_link": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/"
+    },
+    {
+      "step_no": 3,
+      "title": "在学生许可到期前注册，缴 €300",
+      "description": "备齐学位证明、护照、医疗保险，按 ISD 的注册指引预约并缴费。错过学生许可有效期会带来身份空档。",
+      "duration": "1 天",
+      "official_link": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/"
+    },
+    {
+      "step_no": 4,
+      "title": "Level 8 有 12 个月；Level 9+ 先 12 个月",
+      "description": "Level 8 直接给 12 个月。Level 9 及以上先给 12 个月，之后可申请再续 12 个月（共 24 个月）。",
+      "duration": "12 个月",
+      "official_link": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/"
+    },
+    {
+      "step_no": 5,
+      "title": "（Level 9+）续第二个 12 个月须证明在找工作",
+      "description": "续期不是自动的：须让移民当局相信你已采取适当步骤获得毕业生层级的工作（如参加面试、注册毕业生招聘平台）。没有任何求职动作会被拒续。",
+      "duration": "12 个月",
+      "official_link": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 24,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": true,
+    "renewal_condition": "Level 8 为 12 个月，不可续。Level 9 及以上为先 12 个月、可再续 12 个月共 24 个月；续期的条件是**证明已采取适当步骤求职**（official 举例：参加面试、注册毕业生招聘平台），并非满足身份条件就自动续。24 个月是上限，不是默认值——Level 8 只有 12 个月。",
+    "restricted_occupations": [],
+    "note": "Stamp 1G 允许持有人在爱尔兰工作（这是「找工作 + 可工作」的许可，不是纯求职签证）。本计划最多申请两次；学生身份与本计划时间合计有 7 年（Level 9 路径 8 年）上限。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "Level 8（本科）只有 12 个月，且不可续。只有 Level 9 及以上（硕士）才可能拿到 24 个月——而且第二个 12 个月要证明在求职。把「爱尔兰给毕业生 2 年」当成通用口径会让本科生误判。"
+    },
+    {
+      "level": "critical",
+      "description": "累计年限上限是硬约束：Stamp 2 与 Stamp 1G 合计不得超过 7 年（Level 9 路径 8 年）。读语言学校或预科耗掉的时间会吃掉这个额度，可能在毕业时已无余额可用。"
+    },
+    {
+      "level": "warning",
+      "description": "本计划最多申请两次，且再次申请须是取得了更高层级学位（例如 Level 8 之后又拿了 Level 9）。读完一个学位反复申请是不允许的。"
+    },
+    {
+      "level": "warning",
+      "description": "Level 9 的第二个 12 个月不是自动续：须让当局相信你在认真找工作（面试记录、招聘平台注册等）。没有任何求职证据会被拒。"
+    },
+    {
+      "level": "info",
+      "description": "与爱尔兰打工度假（WHA）的区别：WHA 是入境前的双边协议通道、中国大陆护照不可申（不在 11 个签约名单内）；本计划是境内学生许可的毕业后延续、中国大陆护照可申。同属爱尔兰，两条通道的适用人群完全不同。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Third Level Graduate Programme（爱尔兰移民服务局官方页）",
+      "url": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/",
+      "publisher": "Immigration Service Delivery (ISD), Ireland",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "期限分档原文：`Graduates with an award at Level 8 on the National Framework of Qualifications will be granted a twelve-month permission to a maximum of seven years student permission overall (time spent on Stamp 2 as a student and on Stamp 1G under this programme cannot exceed an aggregate time of seven years in total).`；Level 9 及以上 `will be granted permission for 12 months initially. This will be renewed for a further period of twelve months (subject to the overall eight year limit on student conditions not being exceeded) where the graduate satisfies the immigration authorities that he or she has taken appropriate steps to access suitable graduate level employment`；学位证明 `Must present evidence of the final award being attained by way of a parchment or, in circumstances where the graduation ceremony is yet to take place, an official letter for the awarding body / institution confirming that the award has been achieved.`；费用 `You must pay a fee of 300 per person to register.`；材料 `A copy of the award granted to you`、`Your passport`、`Medical insurance`；品行 `expected to be of good character and not to have come to the adverse attention of the authorities`；次数限制 `A graduate will not be permitted to access the Programme on more than two separate occasions`。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

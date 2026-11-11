@@ -1,0 +1,241 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "id": "au-485-vocational",
+    "name": "澳大利亚毕业生临时签证 485（职业教育类别 / Post-Vocational Education Work）",
+    "name_en": "Australia: Temporary Graduate visa (subclass 485) — Post-Vocational Education Work stream",
+    "country": "澳大利亚",
+    "country_code": "AU",
+    "region": "oceania",
+    "program_type": "short_term_work",
+    "visa_code": "485（Post-Vocational Education Work stream）",
+    "official_url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work",
+    "authority": "澳大利亚内政部（Department of Home Affairs）",
+    "summary": "485 毕业生临时签证下面向**职业教育**毕业生的类别（与同签证下给本科及以上学历的 Post-Higher Education Work 是两条不同通道）。适用人群是在澳大利亚完成 associate degree、diploma 或 trade qualification（技工资格）的人。停留期最长 18 个月；香港与 BNO 护照持有人可停留 5 年。须在取得资格后 6 个月内、且人在澳大利亚境内时申请，并须通过相关评估机构的技能评估。年龄上限 35 岁；持香港或 BNO 护照者可放宽到 50 岁以下。",
+    "tags": [
+      "no_quota_cap",
+      "requires_degree",
+      "no_agency_needed",
+      "english_required"
+    ],
+    "active": true
+  },
+  "eligibility": {
+    "passport_types": {
+      "mainland_china": "eligible",
+      "hong_kong_china": "eligible",
+      "tw_china": "eligible",
+      "note": "官方资格按「在澳完成的学历类别 + 年龄 + 英语 + 技能评估」判定，未按国籍设限；中国大陆护照持有人可申。门槛在前置身份：须已在澳大利亚完成 associate degree / diploma / trade qualification，且申请时人在澳大利亚境内。中国香港与 BNO 护照持有人另有一条更宽的待遇（年龄上限 50 岁以下、可停留 5 年）。"
+    },
+    "age": {
+      "min": 18,
+      "max": 35,
+      "note": "官方原文：`You must be 35 years of age or under when you apply.` 即申请时不得超过 35 岁（含）。**例外**：持中国香港或 BNO（British National Overseas）护照者，申请时可放宽到 50 岁以下（`You can be under 50 years of age when you apply if you hold a Hong Kong or British National Overseas passport.`）。大陆护照持有人适用 35 岁上限。"
+    },
+    "education": {
+      "minimum_level": "vocational",
+      "major_restriction": [],
+      "note": "须在申请前 6 个月内取得至少一项：**associate degree（副学士）、diploma（文凭）或 trade qualification（技工资格）**。官方原文：`You must have been awarded at least one associate degree, diploma or trade qualification in the 6 months immediately before the day you apply for your visa`。这与同签证的 Post-Higher Education Work 类别（本科及以上）是两条不同通道——本类别面向职业教育背景，不是给本科/硕士毕业生的。"
+    },
+    "language": {
+      "required": true,
+      "tests": [],
+      "note": "须满足英语要求。官方提供两种证明方式之一：持特定英语国家护照，或提交认可的英语考试成绩。具体分数线按内政部当期英语要求页，本记录不逐项登记（该表会调整）。"
+    },
+    "funds": {
+      "required": false,
+      "amount": null,
+      "note": "官方资格清单未单列资金门槛。需满足健康、品行与真实临时入境者等要求。"
+    },
+    "other_requirements": [
+      {
+        "type": "residency_requirement",
+        "required": true,
+        "note": "申请时人必须在澳大利亚境内（且不在出入境查验中）。官方原文：`You must be in Australia (but not in immigration clearance) when you apply for this visa.` 后续入境者（subsequent entrants）可在境内或境外申请。"
+      },
+      {
+        "type": "enrollment_proof",
+        "required": true,
+        "note": "须证明在申请前 6 个月内已取得 associate degree / diploma / trade qualification，并满足 485 的 Australian study requirement。这是「证明已完成该段学业」的材料，不是在读期间的学籍证明——本类别面向已毕业者。**毕业超过 6 个月就不能申**，这一点与英国 Graduate 的「学签到期前」不同。"
+      },
+      {
+        "type": "internship_contract",
+        "required": true,
+        "note": "须提名一个在相关技术职业清单上的职业，并取得**相关评估机构的技能评估**（skills assessment）。官方原文：`A relevant assessing authority must assess your skills as being suitable for your nominated occupation.` 这一步通常比递签本身耗时，要提前启动。"
+      },
+      {
+        "type": "insurance",
+        "required": true,
+        "note": "申请人与随行家属须在澳期间维持足够的医疗保险（adequate health insurance）。"
+      },
+      {
+        "type": "health_check",
+        "required": true,
+        "note": "申请人及随行家属须满足健康要求（meet our health requirement）。"
+      },
+      {
+        "type": "criminal_record",
+        "required": true,
+        "note": "申请人及 16 岁及以上随行家属须满足品行要求（meet our character requirement）。"
+      },
+      {
+        "type": "no_dependents",
+        "required": false,
+        "note": "官方允许携带家属（`bring your family members`），与打工度假类不允许携带家属不同。家属须一并满足健康与品行要求。"
+      }
+    ]
+  },
+  "timeline": {
+    "mechanism": "rolling",
+    "quota_status": "no_quota",
+    "quota": null,
+    "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work",
+    "quota_note": "官方签证页的资格清单里没有名额、抽签或年度配额条款，全年滚动受理。真正的约束是「6 个月内取得资格」与「35 岁上限」，不是名额。",
+    "schedule": {
+      "type": "rolling",
+      "status": "always_open",
+      "date_confidence": "unknown",
+      "open_date": null,
+      "close_date": null,
+      "next_window_hint": "无年度开放窗口。真正的时间窗是「取得资格后 6 个月内」，且申请时须在澳大利亚境内。",
+      "lead_time_days": 45,
+      "note": "rolling：全年受理，无固定窗口。date_confidence 记 unknown 是因为「无窗口」不需要日期可信度。lead_time_days=45 的依据：技能评估（skills assessment）由外部评估机构出具，通常需数周；加上英语成绩、体检与无犯罪证明。6 个月的窗口看着宽，但技能评估若未提前启动就会来不及。"
+    },
+    "windows": [
+      {
+        "year": 2026,
+        "status": "open",
+        "note": "全年滚动受理。个人时间窗：取得 associate degree / diploma / trade qualification 后 6 个月内递交。"
+      },
+      {
+        "year": 2027,
+        "status": "unknown",
+        "note": "无年度窗口。规则按内政部当期页面执行；485 各子类别的期限与年龄上限近年调整频繁（如 2024 年把年龄上限从 50 降到 35），递交前必须复核。"
+      }
+    ],
+    "fees": [
+      {
+        "item": "签证申请费（Visa application charge）",
+        "amount": {
+          "local_amount": 0,
+          "currency": "AUD",
+          "note": "官方页面把金额写成由前端脚本注入的 `BasePrice` 占位符（`From <span data-svpattribute=\"BasePrice\" data-svpproductcode=\"4470\" ...>`），直接抓页面拿不到数字，须在内政部 Visa Pricing Estimator 里按 485 与当期币种查询。本记录不填猜测值。"
+        },
+        "refundable": false
+      }
+    ],
+    "processing_time": "官方不给固定天数，指向 Visa processing time guide：该工具展示近期已决案件的处理时间，官方明说只是参考、不针对具体申请。"
+  },
+  "documents": [
+    {
+      "name": "学历证明（associate degree / diploma / trade qualification）",
+      "required": true,
+      "note": "须能证明在申请前 6 个月内取得。这是本类别的资格基础。",
+      "prepare_days": 30
+    },
+    {
+      "name": "技能评估结果（skills assessment）",
+      "required": true,
+      "note": "由相关评估机构出具，证明技能符合提名职业。通常是最耗时的一项，须最先启动。",
+      "prepare_days": 60
+    },
+    {
+      "name": "英语能力证明",
+      "required": true,
+      "note": "认可英语国家的护照，或认可的英语考试成绩。分数线按内政部当期要求。",
+      "prepare_days": 60
+    },
+    {
+      "name": "护照",
+      "required": true,
+      "note": "有效期须覆盖拟停留期。",
+      "prepare_days": 7
+    },
+    {
+      "name": "医疗保险",
+      "required": true,
+      "note": "须覆盖整个停留期。",
+      "prepare_days": 14
+    },
+    {
+      "name": "健康检查与无犯罪记录",
+      "required": true,
+      "note": "申请人及 16 岁以上随行家属须提供。中国申请人通常需办无犯罪记录证明并附英文翻译。",
+      "prepare_days": 30
+    }
+  ],
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "确认走的是职业教育类别而不是高等教育类别",
+      "description": "485 有多个子类别。本类（Post-Vocational Education Work）给 associate degree / diploma / trade qualification；本科及以上走 Post-Higher Education Work。选错类别等于申请无效。",
+      "duration": "1 天",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work"
+    },
+    {
+      "step_no": 2,
+      "title": "先启动技能评估",
+      "description": "须提名清单上的职业并取得相关评估机构的技能评估。这一步外部机构办理，通常数周，是最容易卡时间的环节。",
+      "duration": "数周",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work"
+    },
+    {
+      "step_no": 3,
+      "title": "在取得资格后 6 个月内、人在境内时递交",
+      "description": "两个硬条件同时成立：资格取得日在 6 个月内，且递交时人在澳大利亚境内（不在出入境查验中）。",
+      "duration": "1 天",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work"
+    },
+    {
+      "step_no": 4,
+      "title": "获批后最多 18 个月（HK/BNO 为 5 年）",
+      "description": "一般申请人停留期最长 18 个月；持香港或 BNO 护照者可停留 5 年。期间可工作、可携带家属。",
+      "duration": "18 个月",
+      "official_link": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work"
+    }
+  ],
+  "work_conditions": {
+    "max_stay_months": 18,
+    "max_same_employer_months": 0,
+    "max_study_months": 0,
+    "renewable": false,
+    "renewal_condition": "停留期最长 18 个月（香港/BNO 护照 5 年），属一次性缓冲期。官方另有 Replacement Stream 与 Second Post-Study Work 等子类别，但是否适用取决于个人情况（如受疫情影响、或在偏远地区学习），不是通用续签通道。",
+    "restricted_occupations": [],
+    "note": "本类别允许工作与携带家属，与打工度假类「不允许携带家属」不同。提名职业须在相关技术职业清单上——这是它与「随便找份工作」的差别：职业必须在清单内且通过技能评估。"
+  },
+  "risks": [
+    {
+      "level": "critical",
+      "description": "6 个月窗口是硬约束：须在取得 associate degree / diploma / trade qualification 后 6 个月内申请。技能评估若没提前启动，很容易在窗口内来不及——评估由外部机构出具，通常需数周。"
+    },
+    {
+      "level": "critical",
+      "description": "申请时人必须在澳大利亚境内，且不在出入境查验中。已经离境的人不能递交。"
+    },
+    {
+      "level": "warning",
+      "description": "年龄上限是 35 岁（申请时含 35 岁），不是 50 岁。2024 年该上限从 50 下调到 35，持香港/BNO 护照者仍可到 50 岁以下。旧资料里的「50 岁」对大陆护照持有人已不适用。"
+    },
+    {
+      "level": "warning",
+      "description": "必须提名清单上的职业并通过技能评估，不是「有文凭就能申」。职业清单会调整，递交前须核对当期清单与评估机构。"
+    },
+    {
+      "level": "info",
+      "description": "与同签证 485 Post-Higher Education Work 的区别：那条给本科/硕士/博士（停留期 2–3 年、年龄上限 35 岁），本条给 associate degree / diploma / trade qualification（18 个月）。同一签证号下两条通道，受众不重叠，不能混用。"
+    }
+  ],
+  "sources": [
+    {
+      "type": "primary",
+      "name": "Temporary Graduate visa (subclass 485) — Post-Vocational Education Work stream（澳大利亚内政部官方页）",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work",
+      "publisher": "Australian Department of Home Affairs",
+      "last_verified": "2026-11-11",
+      "verified_by": "eddieye1004",
+      "claim": "年龄原文：`You must be 35 years of age or under when you apply.` 与 `You can be under 50 years of age when you apply if you hold a Hong Kong or British National Overseas passport.`；学历原文 `You must have been awarded at least one associate degree, diploma or trade qualification in the 6 months immediately before the day you apply for your visa`；所在地 `You must be in Australia (but not in immigration clearance) when you apply for this visa.`；技能评估 `A relevant assessing authority must assess your skills as being suitable for your nominated occupation.`；停留期 `Up to 18 months.` 与 `Hong Kong and British National Overseas passport holders may stay for 5 years.`；保险 `You and your family members must have and maintain adequate health insurance for the duration of your stay in Australia.`；签证费为前端注入的 `BasePrice` 占位符，抓不到数字。"
+    }
+  ],
+  "last_verified": "2026-11-11",
+  "verified_by": "eddieye1004"
+}

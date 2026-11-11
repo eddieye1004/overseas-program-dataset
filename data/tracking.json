@@ -1,5 +1,5 @@
 {
-  "generated_for": "2026-11-11",
+  "generated_for": "2026-11-12",
   "policy": {
     "interval_dated_window_days": 90,
     "interval_default_days": 180,
@@ -7,10 +7,10 @@
     "note": "windows 里写死了 open_date / close_date 的项目，一年只开一次窗口，错过就要再等一年；晚一天发现就等于让人白等一年，所以按 90 天核。 其余项目的资格条件、费用、材料不会因为跨年而失效，180 天足够，太勤只会把精力花在没变的东西上。"
   },
   "summary": {
-    "total": 39,
+    "total": 41,
     "overdue": 0,
     "due_soon": 0,
-    "fresh": 39,
+    "fresh": 41,
     "unknown": 0,
     "quota_unverified": 2
   },
@@ -35,10 +35,10 @@
       "country": "澳大利亚",
       "file": "au-462-work-holiday.json",
       "last_verified": "2026-10-30",
-      "age_days": 12,
+      "age_days": 13,
       "interval_days": 90,
       "due": "2027-01-28",
-      "days_left": 78,
+      "days_left": 77,
       "state": "fresh",
       "dated_window": true,
       "sources": [
@@ -47,7 +47,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-16",
-          "age_days": 26,
+          "age_days": 27,
           "state": "fresh"
         },
         {
@@ -55,7 +55,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -63,7 +63,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -71,7 +71,7 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-10-16",
-          "age_days": 26,
+          "age_days": 27,
           "state": "fresh"
         }
       ],
@@ -88,10 +88,10 @@
       "country": "新西兰",
       "file": "nz-china-whv.json",
       "last_verified": "2026-10-30",
-      "age_days": 12,
+      "age_days": 13,
       "interval_days": 90,
       "due": "2027-01-28",
-      "days_left": 78,
+      "days_left": 77,
       "state": "fresh",
       "dated_window": true,
       "sources": [
@@ -100,7 +100,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -108,7 +108,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-16",
-          "age_days": 26,
+          "age_days": 27,
           "state": "fresh"
         },
         {
@@ -116,7 +116,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -133,10 +133,10 @@
       "country": "日本",
       "file": "jp-working-holiday.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 90,
       "due": "2027-02-06",
-      "days_left": 87,
+      "days_left": 86,
       "state": "fresh",
       "dated_window": true,
       "sources": [
@@ -145,7 +145,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -153,7 +153,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -161,7 +161,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -169,7 +169,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -177,7 +177,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -194,10 +194,10 @@
       "country": "德国",
       "file": "de-16e-internship.json",
       "last_verified": "2026-10-30",
-      "age_days": 12,
+      "age_days": 13,
       "interval_days": 180,
       "due": "2027-04-28",
-      "days_left": 168,
+      "days_left": 167,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -206,7 +206,7 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -214,7 +214,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -222,7 +222,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -230,7 +230,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -238,7 +238,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         }
       ],
@@ -255,10 +255,10 @@
       "country": "英国",
       "file": "uk-youth-mobility-scheme.json",
       "last_verified": "2026-10-30",
-      "age_days": 12,
+      "age_days": 13,
       "interval_days": 180,
       "due": "2027-04-28",
-      "days_left": 168,
+      "days_left": 167,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -267,7 +267,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -275,7 +275,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -283,7 +283,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -291,7 +291,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-31",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         }
       ],
@@ -308,10 +308,10 @@
       "country": "美国",
       "file": "us-j1-summer-work-travel.json",
       "last_verified": "2026-10-30",
-      "age_days": 12,
+      "age_days": 13,
       "interval_days": 180,
       "due": "2027-04-28",
-      "days_left": 168,
+      "days_left": 167,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -320,7 +320,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -328,7 +328,7 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-10-16",
-          "age_days": 26,
+          "age_days": 27,
           "state": "fresh"
         }
       ],
@@ -345,10 +345,10 @@
       "country": "新加坡",
       "file": "sg-work-holiday-programme.json",
       "last_verified": "2026-11-03",
-      "age_days": 8,
+      "age_days": 9,
       "interval_days": 180,
       "due": "2027-05-02",
-      "days_left": 172,
+      "days_left": 171,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -357,7 +357,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -365,7 +365,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -373,7 +373,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         }
       ],
@@ -390,10 +390,10 @@
       "country": "英国",
       "file": "uk-graduate-visa.json",
       "last_verified": "2026-11-03",
-      "age_days": 8,
+      "age_days": 9,
       "interval_days": 180,
       "due": "2027-05-02",
-      "days_left": 172,
+      "days_left": 171,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -402,7 +402,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -410,7 +410,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         }
       ],
@@ -427,10 +427,10 @@
       "country": "澳大利亚",
       "file": "au-485-graduate.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -439,7 +439,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -447,7 +447,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -455,7 +455,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -463,7 +463,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -471,7 +471,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -488,10 +488,10 @@
       "country": "加拿大",
       "file": "ca-iec-working-holiday.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -500,7 +500,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -508,7 +508,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -516,7 +516,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         }
       ],
@@ -533,10 +533,10 @@
       "country": "加拿大",
       "file": "ca-pgwp.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -545,7 +545,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -553,7 +553,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -561,7 +561,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -569,7 +569,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -577,7 +577,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -594,10 +594,10 @@
       "country": "德国",
       "file": "de-20-job-search.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -606,7 +606,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -614,7 +614,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -622,7 +622,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -630,7 +630,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -647,10 +647,10 @@
       "country": "德国",
       "file": "de-chancenkarte.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -659,7 +659,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -667,7 +667,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -675,7 +675,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -683,7 +683,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -691,7 +691,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -699,7 +699,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -716,10 +716,10 @@
       "country": "全球（120+ 国家和地区）",
       "file": "global-aiesec-global-talent.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -728,7 +728,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -736,7 +736,7 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         }
       ],
@@ -753,10 +753,10 @@
       "country": "全球（100+ 国家/地区）",
       "file": "global-iaeste.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -765,7 +765,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -773,7 +773,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -781,7 +781,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -789,7 +789,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-09-17",
-          "age_days": 55,
+          "age_days": 56,
           "state": "fresh"
         },
         {
@@ -797,7 +797,7 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-09-17",
-          "age_days": 55,
+          "age_days": 56,
           "state": "fresh"
         },
         {
@@ -805,7 +805,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         }
       ],
@@ -822,10 +822,10 @@
       "country": "爱尔兰",
       "file": "ie-working-holiday-authorisation.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -834,7 +834,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -842,7 +842,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -850,7 +850,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -858,7 +858,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -875,10 +875,10 @@
       "country": "韩国",
       "file": "kr-h1-working-holiday.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -887,7 +887,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -895,7 +895,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -903,7 +903,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 12,
+          "age_days": 13,
           "state": "fresh"
         },
         {
@@ -911,7 +911,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -928,10 +928,10 @@
       "country": "荷兰",
       "file": "nl-orientation-year.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -940,7 +940,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -948,7 +948,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -956,7 +956,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -964,7 +964,7 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -981,10 +981,10 @@
       "country": "新西兰",
       "file": "nz-post-study-work.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -993,7 +993,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -1010,10 +1010,10 @@
       "country": "英国",
       "file": "uk-hpi-visa.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1022,7 +1022,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1030,7 +1030,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1038,7 +1038,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1046,7 +1046,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -1063,10 +1063,10 @@
       "country": "英国",
       "file": "uk-short-term-study-visa.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1075,7 +1075,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 10,
+          "age_days": 11,
           "state": "fresh"
         },
         {
@@ -1083,7 +1083,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 10,
+          "age_days": 11,
           "state": "fresh"
         },
         {
@@ -1091,7 +1091,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 10,
+          "age_days": 11,
           "state": "fresh"
         },
         {
@@ -1099,7 +1099,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 10,
+          "age_days": 11,
           "state": "fresh"
         },
         {
@@ -1107,7 +1107,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 10,
+          "age_days": 11,
           "state": "fresh"
         },
         {
@@ -1115,7 +1115,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 10,
+          "age_days": 11,
           "state": "fresh"
         },
         {
@@ -1123,7 +1123,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 10,
+          "age_days": 11,
           "state": "fresh"
         }
       ],
@@ -1140,10 +1140,10 @@
       "country": "美国",
       "file": "us-f1-opt.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1152,7 +1152,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1160,7 +1160,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1168,7 +1168,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1176,7 +1176,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -1193,10 +1193,10 @@
       "country": "美国",
       "file": "us-j1-camp-counselor.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1205,7 +1205,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1213,7 +1213,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1221,7 +1221,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1229,7 +1229,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1237,7 +1237,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1245,7 +1245,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1253,7 +1253,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         }
       ],
@@ -1270,10 +1270,10 @@
       "country": "美国",
       "file": "us-j1-intern.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1282,7 +1282,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1290,7 +1290,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1298,7 +1298,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1306,7 +1306,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1314,7 +1314,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         }
       ],
@@ -1331,10 +1331,10 @@
       "country": "美国",
       "file": "us-j1-research-scholar.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1343,7 +1343,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1351,7 +1351,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1359,7 +1359,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1367,7 +1367,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         },
         {
@@ -1375,7 +1375,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 3,
+          "age_days": 4,
           "state": "fresh"
         }
       ],
@@ -1392,10 +1392,10 @@
       "country": "美国",
       "file": "us-j1-trainee.json",
       "last_verified": "2026-11-08",
-      "age_days": 3,
+      "age_days": 4,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 177,
+      "days_left": 176,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1404,7 +1404,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1412,7 +1412,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1420,7 +1420,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1428,7 +1428,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         },
         {
@@ -1436,7 +1436,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 8,
+          "age_days": 9,
           "state": "fresh"
         }
       ],
@@ -1453,10 +1453,10 @@
       "country": "奥地利",
       "file": "at-rwr-card-vhq.json",
       "last_verified": "2026-11-09",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-08",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1465,7 +1465,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-09",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1473,7 +1473,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-09",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
       ],
@@ -1490,10 +1490,10 @@
       "country": "挪威",
       "file": "no-skilled-worker.json",
       "last_verified": "2026-11-10",
-      "age_days": 1,
+      "age_days": 2,
       "interval_days": 180,
       "due": "2027-05-09",
-      "days_left": 179,
+      "days_left": 178,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1502,7 +1502,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 1,
+          "age_days": 2,
           "state": "fresh"
         },
         {
@@ -1510,7 +1510,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 1,
+          "age_days": 2,
           "state": "fresh"
         },
         {
@@ -1518,7 +1518,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 1,
+          "age_days": 2,
           "state": "fresh"
         }
       ],
@@ -1535,10 +1535,10 @@
       "country": "瑞典",
       "file": "se-look-for-work.json",
       "last_verified": "2026-11-10",
-      "age_days": 1,
+      "age_days": 2,
       "interval_days": 180,
       "due": "2027-05-09",
-      "days_left": 179,
+      "days_left": 178,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1547,7 +1547,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 1,
+          "age_days": 2,
           "state": "fresh"
         },
         {
@@ -1555,7 +1555,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 1,
+          "age_days": 2,
           "state": "fresh"
         },
         {
@@ -1563,7 +1563,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 1,
+          "age_days": 2,
           "state": "fresh"
         }
       ],
@@ -1580,10 +1580,10 @@
       "country": "澳大利亚",
       "file": "au-407-training.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1592,7 +1592,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1604,15 +1604,44 @@
       "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/training-407"
     },
     {
+      "id": "au-485-vocational",
+      "name": "澳大利亚毕业生临时签证 485（职业教育类别 / Post-Vocational Education Work）",
+      "country": "澳大利亚",
+      "file": "au-485-vocational.json",
+      "last_verified": "2026-11-11",
+      "age_days": 1,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 179,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 1,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方签证页的资格清单里没有名额、抽签或年度配额条款，全年滚动受理。真正的约束是「6 个月内取得资格」与「35 岁上限」，不是名额。",
+      "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-vocational-education-work"
+    },
+    {
       "id": "dk-working-holiday",
       "name": "丹麦打工度假居留（Working Holiday）",
       "country": "丹麦",
       "file": "dk-working-holiday.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1621,7 +1650,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1638,10 +1667,10 @@
       "country": "西班牙",
       "file": "es-busqueda-empleo.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1650,7 +1679,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1658,7 +1687,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1675,10 +1704,10 @@
       "country": "芬兰",
       "file": "fi-look-for-work.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1687,7 +1716,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1695,7 +1724,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1712,10 +1741,10 @@
       "country": "法国",
       "file": "fr-recherche-emploi.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1724,7 +1753,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1732,7 +1761,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1744,15 +1773,44 @@
       "quota_source": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17319"
     },
     {
+      "id": "ie-third-level-graduate",
+      "name": "爱尔兰第三级毕业生计划（Third Level Graduate Programme，Stamp 1G）",
+      "country": "爱尔兰",
+      "file": "ie-third-level-graduate.json",
+      "last_verified": "2026-11-11",
+      "age_days": 1,
+      "interval_days": 180,
+      "due": "2027-05-10",
+      "days_left": 179,
+      "state": "fresh",
+      "dated_window": false,
+      "sources": [
+        {
+          "url": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/",
+          "type": "primary",
+          "grade": null,
+          "last_verified": "2026-11-11",
+          "age_days": 1,
+          "state": "fresh"
+        }
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方页面未设名额、抽签或年度配额的表述，属资格制：满足学位与身份条件即受理。真正的限制是「累计年限上限」（7 年 / 8 年）与「最多申请两次」，不是名额。",
+      "quota_source": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/"
+    },
+    {
       "id": "is-job-search-after-graduation",
       "name": "冰岛毕业后求职居留（学生居留续签，special residence permit for employment-seeking after graduation）",
       "country": "冰岛",
       "file": "is-job-search-after-graduation.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1761,7 +1819,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1769,7 +1827,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1786,10 +1844,10 @@
       "country": "意大利",
       "file": "it-ricerca-lavoro.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1798,7 +1856,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1806,7 +1864,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1823,10 +1881,10 @@
       "country": "马耳他",
       "file": "mt-nomad-residence.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1835,7 +1893,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1843,7 +1901,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1860,10 +1918,10 @@
       "country": "新加坡",
       "file": "sg-employment-pass.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1872,7 +1930,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
@@ -1889,10 +1947,10 @@
       "country": "新加坡",
       "file": "sg-s-pass.json",
       "last_verified": "2026-11-11",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-10",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1901,7 +1959,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1909,7 +1967,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-11",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
       ],
