@@ -95,7 +95,11 @@ function Row({ p, now }: { p: IndexEntry; now: number }) {
       </span>
       <span className="cal__remind">
         {remind != null ? (
-          remind <= 0 ? (
+          p.schedule_status === 'closed' ? (
+            // 已关闭的窗口不要再喊「现在就该准备」——那句话与状态自相矛盾，
+            // 读者会以为还有活要干。这里只陈述事实：这一轮已经过了。
+            <span className="cal__passed">{t('calPassed')}</span>
+          ) : remind <= 0 ? (
             <strong className="cal__due">{t('calShouldPrepare')}</strong>
           ) : (
             `${t('calInDays')} ${remind} ${t('calDays')}`

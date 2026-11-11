@@ -234,6 +234,7 @@ export type UiKey =
   | 'calNoDate'
   | 'calDays'
   | 'calShouldPrepare'
+  | 'calPassed'
   | 'calInDays'
   | 'calClosingSoon'
   | 'calEmpty'
@@ -491,6 +492,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     calNoDate: '无确定日期',
     calDays: '天',
     calShouldPrepare: '现在就该准备',
+    calPassed: '这一轮已过',
     calInDays: '还有',
     calClosingSoon: '两周内截止',
     calEmpty: '暂无',
@@ -753,6 +755,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     calNoDate: 'No confirmed date',
     calDays: 'days',
     calShouldPrepare: 'Start preparing now',
+    calPassed: 'This round has passed',
     calInDays: 'in',
     calClosingSoon: 'Closes within 2 weeks',
     calEmpty: 'None',

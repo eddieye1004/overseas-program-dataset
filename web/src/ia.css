@@ -557,3 +557,8 @@
     grid-column: 1 / -1;
   }
 }
+
+/* 已关闭的窗口：只陈述「过了」，不催准备 */
+.cal__passed {
+  color: var(--ink-3);
+}
