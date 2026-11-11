@@ -8,6 +8,15 @@
 
 **在线浏览：<https://eddieye1004.github.io/overseas-program-dataset/>** —— 中英双语，手机上能直接筛。不想读 JSON 就从这里进。
 
+| | |
+|---|---|
+| **收录规模** | 29 个项目 / 117 条官方来源。大陆护照可申 23，不可申 6（不可申也是收录内容，不是缺口） |
+| **数据怎么保鲜** | 每条记录带 `last_verified`。复核周期按项目性质分档：窗口写死到具体日期的 90 天，其余 180 天，剩余不足 25% 提前标「即将到期」。`scripts/track.py` 生成台账，每周一 CI 跑一次，超期就让构建变红并另开一张 issue 列清单 |
+| **怎么纠错** | 用 [数据纠错模板](.github/ISSUE_TEMPLATE/data-correction.md) 提 issue，必须附官方来源 URL。CI 会校验来源等级与链接存活，二手来源与自媒体一律拦下 |
+| **数据长什么样** | 每个项目一个 JSON，字段定义见 [`data/schema.json`](data/schema.json)；逐条来源见 [`data/sources.md`](data/sources.md)（由脚本生成，勿手改） |
+
+数字取于 2026-11-11，改数据后重跑 `python scripts/gen_sources.py` 与 `python scripts/track.py`。
+
 ---
 
 ## 解决什么问题
