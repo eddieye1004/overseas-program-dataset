@@ -26,7 +26,11 @@ on:
   workflow_dispatch:  # 允许手动触发
 
 permissions:
+  # 最小权限：读代码 + 只写 issue。
+  # issues: write 是为了「复核到期就开一张 issue 喊人」（见最后一步 sync_issue.py）。
+  # 不给 pull-requests / packages / contents: write —— 这个工作流只读数据、只写 issue。
   contents: read
+  issues: write
 
 jobs:
   validate:
@@ -87,6 +91,27 @@ jobs:
           if [ "$IS_SCHEDULE" = "true" ]; then
             python scripts/track.py --check
           fi
+
+      - name: 复核清单开 issue（幂等）
+        # 上面那一步让构建变红，但红由谁看见？GitHub 的失败通知默认只发给
+        # 最后一个推送者，而定时任务是没有人推的 —— 于是它每周红一次、红到被无视。
+        # 这里把同一份台账写进一张 issue：仓库里唯一「有人真的会看到」的位置。
+        #
+        # 幂等靠三件固定不变的东西：固定标题、固定标签、正文里的固定 marker。
+        # 每次先按标题搜 open issue，有就原地更新、没有才新建，因此连跑 N 周
+        # 也只有一张。反过来，标题里一旦拼日期或运行号，就会变成每周刷一张新 issue，
+        # 比不做还吵 —— tests/test_sync_issue.py 专门钉住了这一点。
+        #
+        # 这一层是**叠加**在「让构建红」之上，不是替代：红是给 CI 的硬信号，
+        # issue 是给人的待办。所以这一步用 if: always()，即便上面已经红了，
+        # issue 也必须照常更新，否则最该喊人的时候恰好喊不出来。
+        #
+        # 只在定时任务上跑：push/PR 时数据该复核与否不是本次改动的责任，
+        # 往 PR 里塞 issue 更新会吵到评审。
+        if: always() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/sync_issue.py
 
       - name: 生成 JSON 报告（供归档）
         if: always()

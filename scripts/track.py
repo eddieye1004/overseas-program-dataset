@@ -125,6 +125,19 @@ def build(programs, today):
         lv = parse_date(doc.get("last_verified"))
         interval = interval_for(doc)
 
+        # 配额四态里唯一需要跟进的是 unverified：它是一条公开的待办，
+        # 而不是一个「已确认」的结论。其余三态都已经到此为止，不必再提醒。
+        tl = doc.get("timeline") or {}
+        quota_status = tl.get("quota_status")
+        quota_pending = quota_status == "unverified"
+        quota_row = {
+            "quota_status": quota_status,
+            "quota": tl.get("quota"),
+            "quota_basis": tl.get("quota_basis"),
+            "quota_note": tl.get("quota_note"),
+            "quota_source": tl.get("quota_source"),
+        }
+
         if lv is None:
             rows.append({
                 "id": pid,
@@ -139,6 +152,8 @@ def build(programs, today):
                 "state": "unknown",
                 "dated_window": has_dated_window(doc),
                 "sources": [],
+                "quota_pending": quota_pending,
+                **quota_row,
             })
             continue
 
@@ -171,6 +186,8 @@ def build(programs, today):
             "state": classify(age, interval),
             "dated_window": has_dated_window(doc),
             "sources": sources,
+            "quota_pending": quota_pending,
+            **quota_row,
         })
 
     rows.sort(key=lambda r: (
@@ -183,6 +200,9 @@ def build(programs, today):
     for r in rows:
         summary[r["state"]] = summary.get(r["state"], 0) + 1
 
+    quota_pending = [r for r in rows if r.get("quota_pending")]
+    summary["quota_unverified"] = len(quota_pending)
+
     return {
         "generated_for": today.isoformat(),
         "policy": {
@@ -193,6 +213,15 @@ def build(programs, today):
                     + " " + POLICY.get("why", {}).get("default", ""),
         },
         "summary": summary,
+        "quota_unverified": [
+            {
+                "id": r["id"],
+                "name": r["name"],
+                "country": r["country"],
+                "quota_note": r.get("quota_note"),
+            }
+            for r in sorted(quota_pending, key=lambda r: r["id"])
+        ],
         "programs": rows,
     }
 
@@ -249,6 +278,7 @@ def render_md(tracking):
         L.append("")
 
     L.append("## 全部记录")
+
     L.append("")
     L.append("| 状态 | 项目 | 国家 | 上次核实 | 已过天数 | 下次复核 | 剩余 | 来源数 |")
     L.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
@@ -258,6 +288,26 @@ def render_md(tracking):
         L.append(f"| {STATE_LABEL[r['state']]} | `{r['id']}` | {r['country']} | "
                  f"{r['last_verified'] or '—'} | {age} | {r['due'] or '—'} | {left} | "
                  f"{len(r['sources'])} |")
+    L.append("")
+    # ---- 待核实配额清单 ----
+    # 这一节是「配额四态」里 unverified 那两档的落地形态：它们不是错误，
+    # 但必须可见。放在复核台账里而不是单独一份手工文档，是为了让它跟着
+    # track.py 的常规流程自动更新，不会变成第二份需要人记得去改的清单。
+    qp = tracking.get("quota_unverified") or []
+    L.append("## 待核实的配额")
+    L.append("")
+    if qp:
+        L.append(f"共 **{len(qp)}** 个项目知道「官方可能设限额」但没查到数字，"
+                 f"递交前须自行确认。这些不计入上面的超期判定——"
+                 f"它们是缺口，不是过期。")
+        L.append("")
+        L.append("| 项目 | 国家 | 缺什么 |")
+        L.append("| --- | --- | --- |")
+        for q in qp:
+            note = (q.get("quota_note") or "").replace("|", "\\|")
+            L.append(f"| `{q['id']}` {q['name']} | {q['country']} | {note} |")
+    else:
+        L.append("没有待核实的配额。")
     L.append("")
     L.append("---")
     L.append("")

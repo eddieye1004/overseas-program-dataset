@@ -1,5 +1,5 @@
 {
-  "generated_for": "2026-11-10",
+  "generated_for": "2026-11-11",
   "policy": {
     "interval_dated_window_days": 90,
     "interval_default_days": 180,
@@ -11,8 +11,23 @@
     "overdue": 0,
     "due_soon": 0,
     "fresh": 29,
-    "unknown": 0
+    "unknown": 0,
+    "quota_unverified": 2
   },
+  "quota_unverified": [
+    {
+      "id": "at-rwr-card-vhq",
+      "name": "奥地利红白红卡（高资质）",
+      "country": "奥地利",
+      "quota_note": "红白红卡部分类别按奥地利《定居与居留法》受年度配额（Bundeshöchstzahl）约束，但 very highly qualified 这一档的具体数字未在 migration.gv.at 的高资质人才页与 FAQ 页上找到，本次复核（2026-11-11）两页均无相关表述。待核实：该通道当年是否列入配额、数字多少，须向受理机关（维也纳 MA 35 或州政府）或 ris.bka.gv.at 的当年 Verordnung 确认。"
+    },
+    {
+      "id": "de-chancenkarte",
+      "name": "德国机会卡（求职居留许可）",
+      "country": "德国",
+      "quota_note": "§20a Abs.7 AufenthG 明文授权联邦政府以行政法规按年度或更短周期限制尚未在德人士的机会卡发放数量，但截至复核日（2026-11-11）未在 gesetze-im-internet.de 的 §20a/§20b 条文页上见到已生效的数量限制公告；make-it-in-germany 的机会卡页对抓取返回反爬中间页，未能读到正文。待核实：是否已依 §20a Abs.7 发布限额法规。"
+    }
+  ],
   "programs": [
     {
       "id": "au-462-work-holiday",
@@ -20,10 +35,10 @@
       "country": "澳大利亚",
       "file": "au-462-work-holiday.json",
       "last_verified": "2026-10-30",
-      "age_days": 11,
+      "age_days": 12,
       "interval_days": 90,
       "due": "2027-01-28",
-      "days_left": 79,
+      "days_left": 78,
       "state": "fresh",
       "dated_window": true,
       "sources": [
@@ -32,7 +47,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-16",
-          "age_days": 25,
+          "age_days": 26,
           "state": "fresh"
         },
         {
@@ -40,7 +55,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -48,7 +63,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -56,10 +71,16 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-10-16",
-          "age_days": 25,
+          "age_days": 26,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "capped",
+      "quota": 5000,
+      "quota_basis": "annual",
+      "quota_note": "中国大陆护照年度发放上限 5,000 个（官方 Status of country caps 页逐国列出 Annual grant cap：China 5,000、India 1,000、Vietnam 1,500）。名额走年度发放上限，但中国护照须先参加 ballot 被随机抽中才能递交正式申请，抽中不等于获批。",
+      "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462"
     },
     {
       "id": "nz-china-whv",
@@ -67,10 +88,10 @@
       "country": "新西兰",
       "file": "nz-china-whv.json",
       "last_verified": "2026-10-30",
-      "age_days": 11,
+      "age_days": 12,
       "interval_days": 90,
       "due": "2027-01-28",
-      "days_left": 79,
+      "days_left": 78,
       "state": "fresh",
       "dated_window": true,
       "sources": [
@@ -79,7 +100,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -87,7 +108,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-16",
-          "age_days": 25,
+          "age_days": 26,
           "state": "fresh"
         },
         {
@@ -95,10 +116,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "capped",
+      "quota": 1000,
+      "quota_basis": "annual",
+      "quota_note": "中国大陆护照年度名额 1,000 个，名额开放后先到先得、满额即关闭。若上一年度有剩余名额，将继续开放直至满额，然后重置为新年度的 1,000 个。",
+      "quota_source": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/"
     },
     {
       "id": "jp-working-holiday",
@@ -106,10 +133,10 @@
       "country": "日本",
       "file": "jp-working-holiday.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 90,
       "due": "2027-02-06",
-      "days_left": 88,
+      "days_left": 87,
       "state": "fresh",
       "dated_window": true,
       "sources": [
@@ -118,7 +145,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -126,7 +153,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -134,7 +161,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -142,7 +169,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -150,10 +177,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "中国大陆不在日本打工度假协议名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。其他协议对象各有年度签发上限，例如中国台湾 10,000、中国香港 1,500——那些数字属于其他护照，不可当作大陆护照可用的名额。",
+      "quota_source": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html"
     },
     {
       "id": "de-16e-internship",
@@ -161,10 +194,10 @@
       "country": "德国",
       "file": "de-16e-internship.json",
       "last_verified": "2026-10-30",
-      "age_days": 11,
+      "age_days": 12,
       "interval_days": 180,
       "due": "2027-04-28",
-      "days_left": 169,
+      "days_left": 168,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -173,7 +206,7 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -181,7 +214,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -189,7 +222,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -197,7 +230,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -205,10 +238,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "§16e AufenthG 未设名额限制（该条按实习协议期限签发，最长六个月）。真正的门槛是先获得德国雇主实习合同。",
+      "quota_source": "https://www.gesetze-im-internet.de/aufenthg_2004/__16e.html"
     },
     {
       "id": "uk-youth-mobility-scheme",
@@ -216,10 +255,10 @@
       "country": "英国",
       "file": "uk-youth-mobility-scheme.json",
       "last_verified": "2026-10-30",
-      "age_days": 11,
+      "age_days": 12,
       "interval_days": 180,
       "due": "2027-04-28",
-      "days_left": 169,
+      "days_left": 168,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -228,7 +267,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -236,7 +275,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -244,7 +283,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -252,10 +291,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-31",
-          "age_days": 10,
+          "age_days": 11,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "中国大陆不在英国 YMS 参与名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。中国台湾与中国香港 2026 年各 1,000 个名额、且须先通过 ballot 抽签，那些名额属其他护照。",
+      "quota_source": "https://www.gov.uk/youth-mobility"
     },
     {
       "id": "us-j1-summer-work-travel",
@@ -263,10 +308,10 @@
       "country": "美国",
       "file": "us-j1-summer-work-travel.json",
       "last_verified": "2026-10-30",
-      "age_days": 11,
+      "age_days": 12,
       "interval_days": 180,
       "due": "2027-04-28",
-      "days_left": 169,
+      "days_left": 168,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -275,7 +320,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -283,10 +328,16 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-10-16",
-          "age_days": 25,
+          "age_days": 26,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设年度名额上限。全球每年约 10 万名大学生参加。但单个 Sponsor 机构的岗位名额有限，建议尽早报名。",
+      "quota_source": "https://j1visa.state.gov/programs/summer-work-travel/"
     },
     {
       "id": "sg-work-holiday-programme",
@@ -294,10 +345,10 @@
       "country": "新加坡",
       "file": "sg-work-holiday-programme.json",
       "last_verified": "2026-11-03",
-      "age_days": 7,
+      "age_days": 8,
       "interval_days": 180,
       "due": "2027-05-02",
-      "days_left": 173,
+      "days_left": 172,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -306,7 +357,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -314,7 +365,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -322,10 +373,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "capped",
+      "quota": 2000,
+      "quota_basis": "concurrent",
+      "quota_note": "官方原文 `The Work Holiday Programme has a capacity of 2,000 pass holders at any one time.` 这是「同时在册人数」上限，不是年度发放数——有人离境即可释放名额。",
+      "quota_source": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/eligibility"
     },
     {
       "id": "uk-graduate-visa",
@@ -333,10 +390,10 @@
       "country": "英国",
       "file": "uk-graduate-visa.json",
       "last_verified": "2026-11-03",
-      "age_days": 7,
+      "age_days": 8,
       "interval_days": 180,
       "due": "2027-05-02",
-      "days_left": 173,
+      "days_left": 172,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -345,7 +402,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -353,10 +410,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，全年可申请，按个人毕业时间滚动递交。唯一的时间限制是必须在学生签证到期前递交。",
+      "quota_source": "https://www.gov.uk/graduate-visa"
     },
     {
       "id": "au-485-graduate",
@@ -364,10 +427,10 @@
       "country": "澳大利亚",
       "file": "au-485-graduate.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -376,7 +439,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -384,7 +447,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -392,7 +455,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -400,7 +463,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -408,10 +471,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，按个人毕业时间滚动递交。真正的约束是两条滚动窗口：「递交前 6 个月内完成课程」与「过去 6 个月内持过学生签证」。",
+      "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work"
     },
     {
       "id": "ca-iec-working-holiday",
@@ -419,10 +488,10 @@
       "country": "加拿大",
       "file": "ca-iec-working-holiday.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -431,7 +500,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -439,7 +508,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -447,10 +516,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "中国大陆不在 IEC 青年流动协议名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。官方只按类别列出参与国/地区，不公布各参与方的年度配额；中国香港、中国台湾的具体名额由双方年度磋商确定，不在 canada.ca 上披露。",
+      "quota_source": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility/eligibility-by-country.html"
     },
     {
       "id": "ca-pgwp",
@@ -458,10 +533,10 @@
       "country": "加拿大",
       "file": "ca-pgwp.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -470,7 +545,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -478,7 +553,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -486,7 +561,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -494,7 +569,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -502,10 +577,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，按个人毕业时间滚动递交。真正的约束是 180 天窗口：须在学校确认完成课程之日起 180 天内递交，且学签须在这 180 天内有效过。",
+      "quota_source": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/about.html"
     },
     {
       "id": "de-20-job-search",
@@ -513,10 +594,10 @@
       "country": "德国",
       "file": "de-20-job-search.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -525,7 +606,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -533,7 +614,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -541,7 +622,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -549,10 +630,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "§20 AufenthG 未设年度名额上限，按个人毕业时间向当地外管局预约递交。真正的约束是前置居留的到期日：学生居留一到期，就失去在德国境内转换的资格。",
+      "quota_source": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html"
     },
     {
       "id": "de-chancenkarte",
@@ -560,10 +647,10 @@
       "country": "德国",
       "file": "de-chancenkarte.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -572,7 +659,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -580,7 +667,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -588,7 +675,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -596,7 +683,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -604,7 +691,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -612,10 +699,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": true,
+      "quota_status": "unverified",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "§20a Abs.7 AufenthG 明文授权联邦政府以行政法规按年度或更短周期限制尚未在德人士的机会卡发放数量，但截至复核日（2026-11-11）未在 gesetze-im-internet.de 的 §20a/§20b 条文页上见到已生效的数量限制公告；make-it-in-germany 的机会卡页对抓取返回反爬中间页，未能读到正文。待核实：是否已依 §20a Abs.7 发布限额法规。",
+      "quota_source": null
     },
     {
       "id": "global-aiesec-global-talent",
@@ -623,10 +716,10 @@
       "country": "全球（120+ 国家和地区）",
       "file": "global-aiesec-global-talent.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -635,7 +728,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -643,10 +736,16 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设统一名额上限。岗位由企业合作伙伴滚动发布，无固定申请周期，因此不存在可比的年度配额。",
+      "quota_source": "https://aiesec.org/global-talent"
     },
     {
       "id": "global-iaeste",
@@ -654,10 +753,10 @@
       "country": "全球（100+ 国家/地区）",
       "file": "global-iaeste.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -666,7 +765,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -674,7 +773,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -682,7 +781,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -690,7 +789,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-09-17",
-          "age_days": 54,
+          "age_days": 55,
           "state": "fresh"
         },
         {
@@ -698,7 +797,7 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-09-17",
-          "age_days": 54,
+          "age_days": 55,
           "state": "fresh"
         },
         {
@@ -706,10 +805,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设统一名额上限。官方口径为 1948 年至今累计派出 374,000+ 名学生，按年派出量只给累计口径、不公布单一年份数字；实习岗位由各国委员会按接收机构需求滚动提供。",
+      "quota_source": "https://www.iaeste.org/"
     },
     {
       "id": "ie-working-holiday-authorisation",
@@ -717,10 +822,10 @@
       "country": "爱尔兰",
       "file": "ie-working-holiday-authorisation.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -729,7 +834,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -737,7 +842,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -745,7 +850,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -753,10 +858,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "中国大陆不在爱尔兰 WHA 的 11 个签约国家/地区名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。中国台湾 400 个名额/年（官方原文 an annual quota of 400 WHAs），中国香港等其他国家/地区官方只写 Places are limited、未公布数字。",
+      "quota_source": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/working-holidays-in-ireland/"
     },
     {
       "id": "kr-h1-working-holiday",
@@ -764,10 +875,10 @@
       "country": "韩国",
       "file": "kr-h1-working-holiday.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -776,7 +887,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -784,7 +895,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -792,7 +903,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-10-30",
-          "age_days": 11,
+          "age_days": 12,
           "state": "fresh"
         },
         {
@@ -800,10 +911,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "中国大陆不在韩国 H-1 的 30 个签约国家/地区名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。官方 2026/27 表按国别列出的年度名额（中国台湾 800、中国香港 1,000、加拿大 12,000 等）均属其他护照。",
+      "quota_source": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91"
     },
     {
       "id": "nl-orientation-year",
@@ -811,10 +928,10 @@
       "country": "荷兰",
       "file": "nl-orientation-year.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -823,7 +940,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -831,7 +948,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -839,7 +956,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -847,10 +964,16 @@
           "type": "secondary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，也没有统一开放窗口。约束是「毕业/完成研究之日起 3 年内」这个个人时间窗，越早递交越好。",
+      "quota_source": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year"
     },
     {
       "id": "nz-post-study-work",
@@ -858,10 +981,10 @@
       "country": "新西兰",
       "file": "nz-post-study-work.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -870,10 +993,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，按个人毕业时间滚动递交。真正的约束是申请窗口：一般须在学生签证到期后 3 个月内递交，博士为 6 个月，特定「先读低阶再读高阶但高阶不足 30 周」的情形可放宽到 12 个月。",
+      "quota_source": "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/post-study-work-visa"
     },
     {
       "id": "uk-hpi-visa",
@@ -881,10 +1010,10 @@
       "country": "英国",
       "file": "uk-hpi-visa.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -893,7 +1022,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -901,7 +1030,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -909,7 +1038,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -917,10 +1046,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "not_published",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方明说设年度限额但不公布数字，原文：`There is a yearly limit on applications for this visa. The application year runs between 1 November and 31 October. If the limit has been reached, you'll be told when you apply online.` 名额是否用尽只能在在线申请时才知道，无法提前查询。",
+      "quota_source": "https://www.gov.uk/high-potential-individual-visa"
     },
     {
       "id": "uk-short-term-study-visa",
@@ -928,10 +1063,10 @@
       "country": "英国",
       "file": "uk-short-term-study-visa.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -940,7 +1075,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 9,
+          "age_days": 10,
           "state": "fresh"
         },
         {
@@ -948,7 +1083,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 9,
+          "age_days": 10,
           "state": "fresh"
         },
         {
@@ -956,7 +1091,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 9,
+          "age_days": 10,
           "state": "fresh"
         },
         {
@@ -964,7 +1099,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 9,
+          "age_days": 10,
           "state": "fresh"
         },
         {
@@ -972,7 +1107,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 9,
+          "age_days": 10,
           "state": "fresh"
         },
         {
@@ -980,7 +1115,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 9,
+          "age_days": 10,
           "state": "fresh"
         },
         {
@@ -988,10 +1123,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-01",
-          "age_days": 9,
+          "age_days": 10,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设年度名额限制，符合条件即可申请。真正的约束来自课程本身：须为认证机构开设的 6–11 个月纯英语课程。",
+      "quota_source": "https://www.gov.uk/visa-to-study-english"
     },
     {
       "id": "us-f1-opt",
@@ -999,10 +1140,10 @@
       "country": "美国",
       "file": "us-f1-opt.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1011,7 +1152,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1019,7 +1160,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1027,7 +1168,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1035,10 +1176,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，按个人毕业时间滚动申请。真正的约束是三个日期：毕业前 90 天起可递交、毕业后 60 天截止、DSO 推荐后 30 天内必须递交。",
+      "quota_source": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students"
     },
     {
       "id": "us-j1-camp-counselor",
@@ -1046,10 +1193,10 @@
       "country": "美国",
       "file": "us-j1-camp-counselor.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1058,7 +1205,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1066,7 +1213,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1074,7 +1221,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1082,7 +1229,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1090,7 +1237,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1098,7 +1245,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1106,10 +1253,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设年度名额上限。但对重复参与者有比例限制：参加过两次以上的人不得超过该 Sponsor 上一年度派出总数的 10%（22 CFR 62.30(j)）。岗位须预先落实，Sponsor 不得为尚未落实营地岗位的人办理入境。",
+      "quota_source": "https://j1visa.state.gov/programs/camp-counselor/"
     },
     {
       "id": "us-j1-intern",
@@ -1117,10 +1270,10 @@
       "country": "美国",
       "file": "us-j1-intern.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1129,7 +1282,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1137,7 +1290,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1145,7 +1298,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1153,7 +1306,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1161,10 +1314,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设年度名额上限。每年 5 月 1 日为项目年度起始日，具体报名与岗位安置日历由各 Sponsor 自行设定。",
+      "quota_source": "https://j1visa.state.gov/programs/intern/"
     },
     {
       "id": "us-j1-research-scholar",
@@ -1172,10 +1331,10 @@
       "country": "美国",
       "file": "us-j1-research-scholar.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1184,7 +1343,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1192,7 +1351,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1200,7 +1359,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1208,7 +1367,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         },
         {
@@ -1216,10 +1375,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-08",
-          "age_days": 2,
+          "age_days": 3,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，按 Sponsor 的接收安排滚动办理。真正的约束是「24 个月 / 12 个月冷却期」与「5 年总时长上限」这两条硬规则。",
+      "quota_source": "https://j1visa.state.gov/programs/research-scholar/"
     },
     {
       "id": "us-j1-trainee",
@@ -1227,10 +1392,10 @@
       "country": "美国",
       "file": "us-j1-trainee.json",
       "last_verified": "2026-11-08",
-      "age_days": 2,
+      "age_days": 3,
       "interval_days": 180,
       "due": "2027-05-07",
-      "days_left": 178,
+      "days_left": 177,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1239,7 +1404,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1247,7 +1412,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1255,7 +1420,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1263,7 +1428,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         },
         {
@@ -1271,10 +1436,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-03",
-          "age_days": 7,
+          "age_days": 8,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设年度名额上限，报名与岗位安置日历由各 Sponsor 自行设定。",
+      "quota_source": "https://j1visa.state.gov/programs/trainee/"
     },
     {
       "id": "at-rwr-card-vhq",
@@ -1282,10 +1453,10 @@
       "country": "奥地利",
       "file": "at-rwr-card-vhq.json",
       "last_verified": "2026-11-09",
-      "age_days": 1,
+      "age_days": 2,
       "interval_days": 180,
       "due": "2027-05-08",
-      "days_left": 179,
+      "days_left": 178,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1294,7 +1465,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-09",
-          "age_days": 1,
+          "age_days": 2,
           "state": "fresh"
         },
         {
@@ -1302,10 +1473,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-09",
-          "age_days": 1,
+          "age_days": 2,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": true,
+      "quota_status": "unverified",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "红白红卡部分类别按奥地利《定居与居留法》受年度配额（Bundeshöchstzahl）约束，但 very highly qualified 这一档的具体数字未在 migration.gv.at 的高资质人才页与 FAQ 页上找到，本次复核（2026-11-11）两页均无相关表述。待核实：该通道当年是否列入配额、数字多少，须向受理机关（维也纳 MA 35 或州政府）或 ris.bka.gv.at 的当年 Verordnung 确认。",
+      "quota_source": null
     },
     {
       "id": "no-skilled-worker",
@@ -1313,10 +1490,10 @@
       "country": "挪威",
       "file": "no-skilled-worker.json",
       "last_verified": "2026-11-10",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-09",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1325,7 +1502,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1333,7 +1510,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1341,10 +1518,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，也没有开放窗口，全年滚动受理。实际约束是「先有雇主 offer」——雇主不先提交确认，申请人连表都填不了。",
+      "quota_source": "https://www.udi.no/en/want-to-apply/work-immigration/skilled-workers/"
     },
     {
       "id": "se-look-for-work",
@@ -1352,10 +1535,10 @@
       "country": "瑞典",
       "file": "se-look-for-work.json",
       "last_verified": "2026-11-10",
-      "age_days": 0,
+      "age_days": 1,
       "interval_days": 180,
       "due": "2027-05-09",
-      "days_left": 180,
+      "days_left": 179,
       "state": "fresh",
       "dated_window": false,
       "sources": [
@@ -1364,7 +1547,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1372,7 +1555,7 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         },
         {
@@ -1380,10 +1563,16 @@
           "type": "primary",
           "grade": null,
           "last_verified": "2026-11-10",
-          "age_days": 0,
+          "age_days": 1,
           "state": "fresh"
         }
-      ]
+      ],
+      "quota_pending": false,
+      "quota_status": "no_quota",
+      "quota": null,
+      "quota_basis": null,
+      "quota_note": "官方未设名额上限，也没有开放窗口。唯一的时间约束是「拿到第二周期学历之后」——官方没有写毕业到申请之间的期限上限，这一点与荷兰（3 年内）不同。",
+      "quota_source": "https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-or-start-a-business.html"
     }
   ]
 }

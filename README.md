@@ -157,10 +157,11 @@ pnpm build        # 产出静态站到 web/dist
 ```bash
 python scripts/validate.py                  # 数据完整性与格式（离线）
 python scripts/validate.py --check-links    # 同时检查官方链接存活（需网络）
-python -m pytest -q                         # 校验器与复核台账的 92 个测试
+python -m pytest -q                         # 校验器、复核台账与 issue 同步的 118 个测试
 node web/scripts/smoke-test.mjs             # 前端纯逻辑断言
 python scripts/track.py                     # 重算复核台账（写 data/tracking.json 与 data/FRESHNESS.md）
 python scripts/track.py --check             # 有过期记录就退出码 1（CI 定时任务用）
+python scripts/sync_issue.py --dry-run      # 预览将要写进 issue 的正文（不调 API）
 ```
 
 **复核台账**
@@ -172,7 +173,10 @@ python scripts/track.py --check             # 有过期记录就退出码 1（CI
 | 窗口写死日期、错过等一年（澳新打工度假、日本打工度假等） | 90 天 | 一年只开一次，晚核一周可能就误一整年 |
 | 其余 | 180 天 | 条款变动通常按年度调整，半年足够 |
 
-产物有两份，都在 `data/` 下：`tracking.json` 给程序读（每条含上次核实、已过天数、下次到期日、状态），`FRESHNESS.md` 给人读（按紧急度排序的待办清单）。`.github/workflows/validate.yml` 每周一跑一次，有过期记录会让构建变红——不是提醒，是拦住。
+产物有两份，都在 `data/` 下：`tracking.json` 给程序读（每条含上次核实、已过天数、下次到期日、状态），`FRESHNESS.md` 给人读（按紧急度排序的待办清单，末尾附一节「待核实的配额」）。`.github/workflows/validate.yml` 每周一跑一次，有两层动作：
+
+- **让构建变红**（`track.py --check`）：这是给 CI 的硬信号，超期即失败。
+- **开一张 issue 喊人**（`scripts/sync_issue.py`）：红由谁看见？GitHub 的失败通知默认只发给最后一个推送者，而定时任务没有人推，于是它每周红一次、红到被无视。issue 是仓库里唯一「有人真的会看到」的位置。幂等靠固定标题 + 固定标签 + 正文 marker：先按标题搜 open issue，有就原地更新，没有才新建；没有任何待办时自动关闭。只在这个定时任务上给 `issues: write`，其余权限一概不给。
 
 ---
 
@@ -194,7 +198,8 @@ overseas-program-dataset/
 ├── scripts/
 │   ├── validate.py              # 完整性 + 来源分级 + 链接存活
 │   ├── gen_sources.py           # 从 programs/*.json 生成 sources.md
-│   └── track.py                 # 生成复核台账 + --check 供 CI 判定
+│   ├── track.py                 # 生成复核台账 + --check 供 CI 判定
+│   └── sync_issue.py            # 把台账同步成一张幂等的 GitHub issue
 ├── tests/                       # validate.py 与 track.py 的测试
 ├── web/                         # 中英双语静态站（React + Vite）
 │   ├── src/                     # 页面、筛选、智能匹配、i18n、首访引导
