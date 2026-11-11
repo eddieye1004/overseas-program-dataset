@@ -27,7 +27,7 @@ Open dataset of working-holiday, internship & exchange programs for students - w
 ### 建议值 · 中文
 
 ```
-面向中国大陆护照的海外打工度假 / 实习 / 毕业后工签数据集：29 个项目、117 条官方来源，每条资格可追溯并标注核实日期，CI 校验来源等级。
+面向中国大陆护照的海外打工度假 / 实习 / 毕业后工签数据集：41 个项目、136 条官方来源，每条资格可追溯并标注核实日期，CI 校验来源等级。
 ```
 
 字符数 74（按 Unicode 码点算）。取舍：先给「面向谁」，再说「多少个项目、多少条来源」，
@@ -36,7 +36,7 @@ Open dataset of working-holiday, internship & exchange programs for students - w
 ### 建议值 · 英文
 
 ```
-Working-holiday, internship and post-study work programs for mainland Chinese passport holders: 29 programs, 117 cited official sources, each claim traceable and dated. Source tiers and links checked in CI.
+Working-holiday, internship and post-study work programs for mainland Chinese passport holders: 41 programs, 136 cited official sources, each claim traceable and dated. Source tiers and links checked in CI.
 ```
 
 字符数 206。英文版比中文长是正常的——英文单词信息密度低，硬压到同样的字符数会丢「29 / 117」
