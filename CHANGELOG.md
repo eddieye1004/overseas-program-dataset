@@ -15,7 +15,7 @@
 **配额四态（`timeline.quota_status`）**
 
 - 原来的 `timeline.quota` 是「整数或 null」，而 null 同时兼指三件事：无名额上限、官方设限额但未公布、还没查。29 个项目里 26 个是 null——三种完全不同的情况长得一模一样，读者无法据此规划，也排不出待办。
-- 改为**必填**的四态：`capped`（有具体配额，须带 `quota` + `quota_basis` + `quota_source`）、`no_quota`（无配额：官方不设上限，或该项目对大陆护照不分配名额）、`not_published`（官方设限额但未公布数字）、`unverified`（尚未核实，不得填 `quota_source`）。分布：**capped 3 / no_quota 24 / not_published 1 / unverified 2**。
+- 改为**必填**的四态：`capped`（有具体配额，须带 `quota` + `quota_basis` + `quota_source`）、`no_quota`（无配额：官方不设上限，或该项目对大陆护照不分配名额）、`not_published`（官方设限额但未公布数字）、`unverified`（尚未核实，不得填 `quota_source`）。分布：**capped 3 / no_quota 23 / not_published 1 / unverified 2**（合计 29）。
 - 三条证据纪律写进 `validate.py` 由 CI 拦：① `quota` 口径固定为「中国大陆护照适用的年度名额」，其他护照的数字（台湾 10,000、香港 1,500）留在 `quota_note`，不许塞进 `quota`；② `quota_source` 必须指向本项目 `sources[]` 里已有的 **primary** 来源——凭空指一条 URL 等于造证据，二手来源也不足以支撑「无上限」这种排除性断言；③ 前两态与 `not_published` 必须给来源，`unverified` 必须不给。
 - 顺带修正一处自相矛盾：`uk-hpi-visa` 原本挂着 `no_quota_cap` 标签，但官方明说「有年度限额、只是未公布数字」，标签与事实相反，已去掉。另有 15 条 `no_quota` 项目补齐该标签，让前端「无名额上限」筛选不漏。
 - `unverified` 的两条是 `at-rwr-card-vhq`（奥地利红白红卡高资质档受《定居与居留法》年度配额约束，但 migration.gv.at 两页均未给数字）与 `de-chancenkarte`（§20a Abs.7 授权可按年限制数量，但截至复核日未见到生效公告）。用 `info` 而非 `warn`：`--strict` 下 warn 会让每周定时任务常红，把真正的「数据超期」淹没。
