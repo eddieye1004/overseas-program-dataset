@@ -296,9 +296,25 @@ export function DetailView({
           <KV
             k={t('quota')}
             v={
-              tl.quota != null
-                ? `${tl.quota.toLocaleString()}${tl.quota_note ? ` · ${td(tl.quota_note)}` : ''}`
-                : td(tl.quota_note ?? '')
+              // 四态化之后 quota 不再是唯一的信息来源：先看状态，再决定展示数字、
+              // 展示「无上限/未公布」，还是老实说「待核实」。旧写法把 null 一律当
+              // 「看 note」，结果三种完全不同的情况长得一模一样。
+              tl.quota_status === 'capped' && tl.quota != null ? (
+                <>
+                  {`${tl.quota.toLocaleString()}${tl.quota_basis === 'concurrent' ? `（${t('quotaConcurrent')}）` : ''}`}
+                  {tl.quota_note ? ` · ${td(tl.quota_note)}` : ''}
+                </>
+              ) : tl.quota_status ? (
+                <>
+                  <span className={`quota quota--${tl.quota_status}`}>
+                    {t(`quota_${tl.quota_status}` as 'quota_capped')}
+                  </span>
+                  {tl.quota_note ? ` · ${td(tl.quota_note)}` : ''}
+                </>
+              ) : (
+                // 老数据没写状态（理论上校验已拦死，这里只是不让页面空白）
+                td(tl.quota_note ?? '')
+              )
             }
           />
           <KV

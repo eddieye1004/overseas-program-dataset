@@ -77,8 +77,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "不设名额上限，也没有统一开放窗口。约束是「毕业/完成研究之日起 3 年内」这个个人时间窗，越早递交越好。",
+    "quota_source": "https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year",
+    "quota_note": "官方未设名额上限，也没有统一开放窗口。约束是「毕业/完成研究之日起 3 年内」这个个人时间窗，越早递交越好。",
     "windows": [
       {
         "year": 2026,

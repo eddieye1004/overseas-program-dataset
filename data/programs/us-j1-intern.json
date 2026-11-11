@@ -13,11 +13,12 @@
     "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
     "summary": "美国国务院 J-1 交流访问者项目下的实习类别：在美企业从事与所学专业相关的实习，最长 12 个月。参与人须为境外高校全日制在读生，或毕业不超过 12 个月。与 Trainee 的区别在于 Intern 面向在读生与应届生，Trainee 面向已有学历加工作经验的在职者。须经国务院指定 Sponsor 办理，岗位须预先落实。",
     "tags": [
+        "no_quota_cap",
       "requires_agency",
       "english_required",
       "rolling",
       "stem_friendly"
-    ],
+      ],
     "active": true
   },
   "eligibility": {
@@ -66,7 +67,9 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
+    "quota_source": "https://j1visa.state.gov/programs/intern/",
     "quota_note": "官方未设年度名额上限。每年 5 月 1 日为项目年度起始日，具体报名与岗位安置日历由各 Sponsor 自行设定。",
     "windows": [
       {

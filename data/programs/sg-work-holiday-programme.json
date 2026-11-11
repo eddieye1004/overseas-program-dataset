@@ -60,7 +60,10 @@
   },
   "timeline": {
     "mechanism": "first_come_first_served",
+    "quota_status": "capped",
     "quota": 2000,
+    "quota_basis": "concurrent",
+    "quota_source": "https://www.mom.gov.sg/passes-and-permits/work-holiday-programme/eligibility",
     "quota_note": "官方原文 `The Work Holiday Programme has a capacity of 2,000 pass holders at any one time.` 这是「同时在册人数」上限，不是年度发放数——有人离境即可释放名额。",
     "windows": [
       {

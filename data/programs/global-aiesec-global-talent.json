@@ -66,8 +66,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "无统一名额上限。岗位由企业合作伙伴滚动发布，无固定申请周期。",
+    "quota_source": "https://aiesec.org/global-talent",
+    "quota_note": "官方未设统一名额上限。岗位由企业合作伙伴滚动发布，无固定申请周期，因此不存在可比的年度配额。",
     "windows": [
       {
         "year": 2026,

@@ -13,12 +13,13 @@
     "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
     "summary": "面向已具研究能力的学者赴美做研究或任教的交流签证，最长 5 年，可带家属（J-2）。不要求美国雇主做劳工证，但必须由指定赞助机构（Sponsor）出具 DS-2019。中国大陆护照持有人不受国籍限制，门槛在学历、英语能力与 Sponsorship。两条最容易被忽略的禁令：不能申请终身教职岗位，且参加后须在境外住满 24 个月才能再次以教授/研究学者身份赴美。",
     "tags": [
+        "no_quota_cap",
       "requires_agency",
       "requires_degree",
       "english_required",
       "stem_friendly",
       "cultural_exchange"
-    ],
+      ],
     "active": true
   },
   "eligibility": {
@@ -67,8 +68,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "无名额上限，按 Sponsor 的接收安排滚动办理。真正的约束是「24 个月 / 12 个月冷却期」与「5 年总时长上限」这两条硬规则。",
+    "quota_source": "https://j1visa.state.gov/programs/research-scholar/",
+    "quota_note": "官方未设名额上限，按 Sponsor 的接收安排滚动办理。真正的约束是「24 个月 / 12 个月冷却期」与「5 年总时长上限」这两条硬规则。",
     "windows": [
       {
         "year": 2026,

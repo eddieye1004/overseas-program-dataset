@@ -66,8 +66,9 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "unverified",
     "quota": null,
-    "quota_note": "红白红卡部分类别受年度配额限制，官方页面在受理机关说明中提到「受配额约束的申请」。本通道未见公开的单独配额数字，递交前应向受理机关确认当年名额状况。",
+    "quota_note": "红白红卡部分类别按奥地利《定居与居留法》受年度配额（Bundeshöchstzahl）约束，但 very highly qualified 这一档的具体数字未在 migration.gv.at 的高资质人才页与 FAQ 页上找到，本次复核（2026-11-11）两页均无相关表述。待核实：该通道当年是否列入配额、数字多少，须向受理机关（维也纳 MA 35 或州政府）或 ris.bka.gv.at 的当年 Verordnung 确认。",
     "windows": [
       {
         "year": 2027,

@@ -66,8 +66,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "§20 不设年度名额上限，按个人毕业时间向当地外管局预约递交。真正的约束是前置居留的到期日：学生居留一到期，就失去在德国境内转换的资格。",
+    "quota_source": "https://www.gesetze-im-internet.de/aufenthg_2004/__20.html",
+    "quota_note": "§20 AufenthG 未设年度名额上限，按个人毕业时间向当地外管局预约递交。真正的约束是前置居留的到期日：学生居留一到期，就失去在德国境内转换的资格。",
     "windows": [
       {
         "year": 2026,

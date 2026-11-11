@@ -61,6 +61,16 @@ export interface ProgramIndexEntry {
   funds_amount: number | null;
   funds_currency: string | null;
   risk_levels: RiskLevel[];
+  /**
+   * 配额四态，由 sync-data.mjs 从 timeline 透传。
+   * 卡片上要能一眼看出「有上限 / 无上限 / 未公布 / 待核实」，
+   * 而不是只看到一个可能为 null 的 quota 数字然后各自猜含义。
+   */
+  quota_status: QuotaStatus | null;
+  /** 配额数字，仅 quota_status='capped' 时有值 */
+  quota: number | null;
+  /** 配额口径：annual=年度发放上限；concurrent=同时在册人数上限 */
+  quota_basis: 'annual' | 'concurrent' | null;
   last_verified: string | null;
   /**
    * 复核状态，由 sync-data.mjs 按 data/review-policy.json 算好。
@@ -155,9 +165,20 @@ export interface Fee {
   note?: string;
 }
 
+/**
+ * 配额四态。空值不再兼职三种含义：null 既不表示「无配额」，也不表示「未公布」。
+ * 与 data/schema.json 的 timeline.quota_status 一一对应。
+ */
+export type QuotaStatus = 'capped' | 'no_quota' | 'not_published' | 'unverified';
+
 export interface Timeline {
   mechanism?: string;
+  quota_status?: QuotaStatus;
   quota?: number | null;
+  /** 配额口径：annual=年度发放上限；concurrent=同时在册人数上限 */
+  quota_basis?: 'annual' | 'concurrent';
+  /** 支撑该配额结论的官方来源 URL（必为本项目 sources[] 中的一条） */
+  quota_source?: string;
   quota_note?: string;
   windows?: Window[];
   fees?: Fee[];

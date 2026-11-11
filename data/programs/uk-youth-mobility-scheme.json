@@ -12,10 +12,7 @@
     "official_url": "https://www.gov.uk/youth-mobility",
     "authority": "UK Visas and Immigration（英国签证与移民局）",
     "summary": "英国与部分国家和地区签订的青年流动计划，允许 18-30 岁（部分 18-35 岁）青年在英国生活工作 24 个月。⚠️ 中国大陆不在 YMS 协议名单内，中国大陆护照持有人无法通过此计划申请。中国香港、中国台湾在名单内。",
-    "tags": [
-      "no_agency_needed",
-      "high_wage"
-    ],
+    "tags": ["no_quota_cap", "no_agency_needed", "high_wage"],
     "active": true
   },
   "eligibility": {
@@ -70,8 +67,10 @@
   },
   "timeline": {
     "mechanism": "ballot",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "中国台湾 1,000 个/年、中国香港有独立配额，两者都须先通过 Youth Mobility Scheme ballot 抽签才能递交；日本、韩国、澳大利亚等按年度配额分配但不必抽签（名额满即止）。中国大陆不在名单内，无配额。",
+    "quota_source": "https://www.gov.uk/youth-mobility",
+    "quota_note": "中国大陆不在英国 YMS 参与名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。中国台湾与中国香港 2026 年各 1,000 个名额、且须先通过 ballot 抽签，那些名额属其他护照。",
     "windows": [
       {
         "year": 2026,

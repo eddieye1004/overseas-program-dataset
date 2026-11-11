@@ -40,6 +40,11 @@ export type UiKey =
   | 'timeline'
   | 'mechanism'
   | 'quota'
+  | 'quota_capped'
+  | 'quota_no_quota'
+  | 'quota_not_published'
+  | 'quota_unverified'
+  | 'quotaConcurrent'
   | 'windows'
   | 'processingTime'
   | 'documents'
@@ -263,6 +268,11 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     timeline: '时间与名额',
     mechanism: '申请机制',
     quota: '年度名额',
+    quota_capped: '有名额上限',
+    quota_no_quota: '无名额上限',
+    quota_not_published: '官方设限额，未公布数字',
+    quota_unverified: '待核实',
+    quotaConcurrent: '同时在册人数上限',
     windows: '申请窗口',
     processingTime: '审理时长',
     documents: '材料清单',
@@ -489,6 +499,11 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     timeline: 'Timeline and quota',
     mechanism: 'Selection mechanism',
     quota: 'Annual quota',
+    quota_capped: 'Capped',
+    quota_no_quota: 'No quota cap',
+    quota_not_published: 'Capped, number not published',
+    quota_unverified: 'Not verified yet',
+    quotaConcurrent: 'cap on concurrent pass holders',
     windows: 'Application windows',
     processingTime: 'Processing time',
     documents: 'Documents',

@@ -937,6 +937,45 @@ console.log('\n[24] 未核实值不显示为假数字');
   ok('费用为空时明说官方未公布', feeRow.includes('官方页面未公布'), feeRow);
 }
 
+console.log('\n[24b] 配额四态各自渲染成不同的东西');
+{
+  // 四态化之前，这四条在页面上长得一模一样：都只有一句 note，
+  // 读者分不出「确定没有上限」和「我们还没查」。这组断言把「不合并」钉住。
+  const quotaRow = async (pid) => {
+    await goto(`#/p/${pid}`);
+    await sleep(700);
+    return evalJs(`(() => {
+      const rows = [...document.querySelectorAll('.kv')];
+      const hit = rows.find((r) => (r.querySelector('dt')?.textContent ?? '').includes('名额'));
+      return hit ? hit.querySelector('dd').textContent.trim() : '';
+    })()`);
+  };
+
+  // capped：要同时出现数字和「同时在册」的口径说明
+  const sg = await quotaRow('sg-work-holiday-programme');
+  ok('capped 显示具体数字', /2,000/.test(sg), sg);
+  ok('capped 标出「同时在册」口径而不是年度发放', sg.includes('同时在册'), sg);
+
+  // capped + 年度口径：不能误标成同时在册
+  const nz = await quotaRow('nz-china-whv');
+  ok('capped 年度口径不写「同时在册」', /1,000/.test(nz) && !nz.includes('同时在册'), nz);
+
+  // not_published：有状态词，且不得出现任何数字当作名额
+  const hpi = await quotaRow('uk-hpi-visa');
+  ok('not_published 说「未公布数字」', hpi.includes('未公布'), hpi);
+  ok('not_published 不把限额伪装成数字', !/^\d|：\s*\d/.test(hpi), hpi);
+
+  // unverified：必须是「待核实」，不能落成空白，也不能落成「无上限」
+  const at = await quotaRow('at-rwr-card-vhq');
+  ok('unverified 显示「待核实」', at.includes('待核实'), at);
+  ok('unverified 不被说成「无名额上限」', !at.includes('无名额上限'), at);
+
+  // no_quota：对大陆护照不可申的项目也要说清是哪种「没有」
+  const jp = await quotaRow('jp-working-holiday');
+  ok('no_quota 显示「无名额上限」', jp.includes('无名额上限'), jp);
+  ok('no_quota 解释里点明大陆护照不在协议内', /不在.{0,8}名单|不分配名额/.test(jp), jp);
+}
+
 console.log('\\n[25] 信息架构改版：结论条 / 折叠筛选 / 推叠卡片预算');
 {
   await send('Emulation.setDeviceMetricsOverride', {

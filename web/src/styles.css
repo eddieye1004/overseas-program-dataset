@@ -569,6 +569,34 @@ a:hover {
   color: var(--ink-2);
 }
 
+/* 配额四态：状态词本身要能一眼分辨，不能靠读者去比对颜色语义。
+   待核实用虚线框 —— 「我们还不知道」和「确定没有」在视觉上必须不同。 */
+.quota {
+  display: inline-block;
+  padding: 0 6px;
+  border: 1px solid currentcolor;
+  border-radius: var(--r-xs);
+  font-size: var(--fs-2xs);
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.quota--capped {
+  color: var(--ink-1);
+  font-weight: 600;
+}
+.quota--no_quota {
+  color: var(--ink-2);
+}
+.quota--not_published {
+  color: var(--ink-2);
+  border-style: dashed;
+}
+.quota--unverified {
+  color: var(--ink-3);
+  border-style: dashed;
+  opacity: 0.85;
+}
+
 /* ---------- 详情页 ---------- */
 
 .detail {

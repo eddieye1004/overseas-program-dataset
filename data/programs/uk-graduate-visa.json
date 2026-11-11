@@ -13,10 +13,11 @@
     "authority": "UK Visas and Immigration（英国内政部签证与移民局）",
     "summary": "在英国读完本科及以上课程后申请的毕业后工作签证，不需要雇主担保，可自由工作或求职。2026 年 12 月 31 日（含）之前递交批 2 年，2027 年 1 月 1 日起递交批 18 个月，博士 3 年。中国大陆护照持有人本身不受限，前提是已在英国以学生签证完成合格课程。",
     "tags": [
+        "no_quota_cap",
       "no_agency_needed",
       "english_required",
       "requires_degree"
-    ],
+      ],
     "active": true
   },
   "eligibility": {
@@ -60,8 +61,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "无名额上限，全年可申请，按个人毕业时间滚动递交。唯一的时间限制是必须在学生签证到期前递交。",
+    "quota_source": "https://www.gov.uk/graduate-visa",
+    "quota_note": "官方未设名额上限，全年可申请，按个人毕业时间滚动递交。唯一的时间限制是必须在学生签证到期前递交。",
     "windows": [
       {
         "year": 2026,

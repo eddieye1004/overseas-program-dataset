@@ -102,8 +102,11 @@
 
   "timeline": {
     "mechanism": "ballot",
+    "quota_status": "capped",
     "quota": 5000,
-    "quota_note": "中国大陆年度名额 5,000 个（对比：印度 1,000、越南 1,500）。需先注册进入抽签池，被随机选中后方可递交正式申请。中签不等于获批。",
+    "quota_basis": "annual",
+    "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-462",
+    "quota_note": "中国大陆护照年度发放上限 5,000 个（官方 Status of country caps 页逐国列出 Annual grant cap：China 5,000、India 1,000、Vietnam 1,500）。名额走年度发放上限，但中国护照须先参加 ballot 被随机抽中才能递交正式申请，抽中不等于获批。",
     "windows": [
       {
         "year": 2026,

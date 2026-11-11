@@ -114,8 +114,11 @@
   },
   "timeline": {
     "mechanism": "first_come_first_served",
+    "quota_status": "capped",
     "quota": 1000,
-    "quota_note": "中国大陆年度名额 1,000 个。名额开放后先到先得，满额即关闭。若上一年度有剩余名额，将继续开放直至满额，然后重置为新年度的 1,000 个。",
+    "quota_basis": "annual",
+    "quota_source": "https://www.immigration.govt.nz/visas/china-working-holiday-visa/",
+    "quota_note": "中国大陆护照年度名额 1,000 个，名额开放后先到先得、满额即关闭。若上一年度有剩余名额，将继续开放直至满额，然后重置为新年度的 1,000 个。",
     "windows": [
       {
         "year": 2027,

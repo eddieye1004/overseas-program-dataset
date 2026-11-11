@@ -12,10 +12,7 @@
     "official_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html",
     "authority": "Immigration, Refugees and Citizenship Canada（加拿大移民、难民及公民部）",
     "summary": "加拿大与 30 多个国家和地区签订的青年流动协议，允许 18-35 岁青年在加工作，单次停留最长 12 个月（中国香港、中国台湾均为 12 个月，部分签约国可达 24 个月）。⚠️ 中国大陆不在协议名单内，中国大陆护照持有人无法申请此项目。中文互联网上大量'加拿大打工度假'信息实为雇主担保工签，与 IEC 性质完全不同。",
-    "tags": [
-      "no_agency_needed",
-      "high_wage"
-    ],
+    "tags": ["no_quota_cap", "no_agency_needed", "high_wage"],
     "active": true
   },
   "eligibility": {
@@ -60,8 +57,10 @@
   },
   "timeline": {
     "mechanism": "ballot",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "中国大陆不在协议内，无配额。官方主源只按类别列出参与国/地区，不公布各参与方的年度配额——香港、台湾的具体名额由双方年度磋商确定，不在 canada.ca 上披露。",
+    "quota_source": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec/eligibility/eligibility-by-country.html",
+    "quota_note": "中国大陆不在 IEC 青年流动协议名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。官方只按类别列出参与国/地区，不公布各参与方的年度配额；中国香港、中国台湾的具体名额由双方年度磋商确定，不在 canada.ca 上披露。",
     "windows": [
       {
         "year": 2026,

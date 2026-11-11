@@ -60,8 +60,9 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "unverified",
     "quota": null,
-    "quota_note": "法规未设个人名额上限，但明文授权联邦政府以行政法规按年度或更短周期限制尚未在德人士的机会卡发放数量（§20a Abs.7）。截至核实日未见到生效的数量限制公告。",
+    "quota_note": "§20a Abs.7 AufenthG 明文授权联邦政府以行政法规按年度或更短周期限制尚未在德人士的机会卡发放数量，但截至复核日（2026-11-11）未在 gesetze-im-internet.de 的 §20a/§20b 条文页上见到已生效的数量限制公告；make-it-in-germany 的机会卡页对抓取返回反爬中间页，未能读到正文。待核实：是否已依 §20a Abs.7 发布限额法规。",
     "windows": [
       {
         "year": 2027,

@@ -12,10 +12,7 @@
     "official_url": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
     "authority": "日本外务省（MOFA）/ 日本驻华大使馆、总领事馆",
     "summary": "日本与 33 个国家和地区签订的青年文化交流签证，允许 18-30 岁青年在日本停留最长 1 年并合法打工以补充旅费。⚠️ 日本外务省公布的协议名单中未包含中国大陆，中日之间未签订打工度假协议，中国大陆护照持有人无法申请。",
-    "tags": [
-      "once_in_lifetime",
-      "no_agency_needed"
-    ],
+    "tags": ["no_quota_cap", "once_in_lifetime", "no_agency_needed"],
     "active": false
   },
   "eligibility": {
@@ -79,8 +76,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "各国年度签发上限不同（官方原文 Maximum number of visas issued per year）：中国台湾 10,000、中国香港 1,500、韩国 10,000、加拿大 6,283、英国 6,000、法国 1,800、爱尔兰 800；澳大利亚、新西兰、德国、丹麦等为 no limit。中国大陆不在协议名单内，无名额；原记录「实际安排为年度协商制」与官方名单矛盾，已删除。",
+    "quota_source": "https://www.mofa.go.jp/j_info/visit/w_holiday/index.html",
+    "quota_note": "中国大陆不在日本打工度假协议名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。其他协议对象各有年度签发上限，例如中国台湾 10,000、中国香港 1,500——那些数字属于其他护照，不可当作大陆护照可用的名额。",
     "windows": [
       {
         "year": 2026,

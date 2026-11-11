@@ -238,7 +238,7 @@
     "timeline": {
       "type": "object",
       "description": "时间窗口。用于'当年/次年'筛选与倒计时提醒。",
-      "required": ["mechanism", "quota", "windows"],
+      "required": ["mechanism", "quota_status", "quota", "quota_note", "windows"],
       "additionalProperties": false,
       "properties": {
         "mechanism": {
@@ -246,11 +246,30 @@
           "enum": ["ballot", "first_come_first_served", "rolling", "appointment", "annual_negotiation"],
           "description": "ballot=抽签；first_come_first_served=先到先得；rolling=滚动；appointment=预约制；annual_negotiation=年度协商制"
         },
+        "quota_status": {
+          "type": "string",
+          "enum": ["capped", "no_quota", "not_published", "unverified"],
+          "description": "配额四态，必填，不再允许留空。capped=有具体配额（须同时给 quota 与 quota_source）；no_quota=无配额（官方明确不设上限，或该项目对中国大陆护照不分配名额，如不在协议名单内）；not_published=官方设限额但未公布数字（须给 quota_source）；unverified=尚未核实（不得填 quota_source）。null 不再兼职表示任何一种含义。"
+        },
         "quota": {
           "type": ["integer", "null"],
-          "description": "年度名额。null 表示无名额上限。"
+          "minimum": 1,
+          "description": "配额数量，口径固定为「中国大陆护照持有人适用的年度名额」，与 eligibility.passport_types 的主键一致。仅 quota_status=capped 时填正整数；其余三态必须为 null（其他护照的名额数字写进 quota_note，不要塞进本字段，否则读者会把它当成自己能用的名额）。"
         },
-        "quota_note": { "type": "string" },
+        "quota_basis": {
+          "type": "string",
+          "enum": ["annual", "concurrent"],
+          "description": "配额口径，仅 quota_status=capped 时必填。annual=按年度发放上限；concurrent=同时在册人数上限（有人离境即释放名额，不等于年度发放数）。"
+        },
+        "quota_source": {
+          "$ref": "#/definitions/url",
+          "description": "支撑该配额结论的官方来源 URL，必须与本项目 sources[] 中某条的 url 完全一致。unverified 时不得填写。"
+        },
+        "quota_note": {
+          "type": "string",
+          "minLength": 8,
+          "description": "配额说明，必填且不得为空。capped 写清数字口径与适用护照/地区；not_published 写清官方如何表述限额；unverified 写清缺的是哪一条信息、该向谁确认。"
+        },
         "windows": {
           "type": "array",
           "description": "申请窗口，按年份列出。已知历史窗口也应记录，便于推算规律。",

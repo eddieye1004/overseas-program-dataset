@@ -13,12 +13,13 @@
     "authority": "U.S. Department of State, Bureau of Educational and Cultural Affairs（美国国务院教育与文化事务局）",
     "summary": "美国国务院 J-1 交流访问者项目下的营地辅导员类别：在美夏令营担任辅导员，直接负责一组美国青少年的督导与活动组织，最长 4 个月。与暑期带薪实习（SWT）同为 J-1，但参与人资格不看学籍，在读学生、青年工作者、教师或具备专门技能者均可，因此是在职青年少数可申的 J-1 类别。须经国务院指定 Sponsor 且岗位必须预先落实。",
     "tags": [
+        "no_quota_cap",
       "requires_agency",
       "cultural_exchange",
       "english_required",
       "rolling",
       "paid"
-    ],
+      ],
     "active": true
   },
   "eligibility": {
@@ -57,8 +58,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "官方未设年度名额上限。但对重复参与者有比例限制：参加过两次以上的人不得超过该 Sponsor 上一年度派出总数的 10%（22 CFR 62.30(j)）。另外岗位必须预先落实，Sponsor 不得为尚未落实营地岗位的人办理入境（§62.30(h)(3)）。",
+    "quota_source": "https://j1visa.state.gov/programs/camp-counselor/",
+    "quota_note": "官方未设年度名额上限。但对重复参与者有比例限制：参加过两次以上的人不得超过该 Sponsor 上一年度派出总数的 10%（22 CFR 62.30(j)）。岗位须预先落实，Sponsor 不得为尚未落实营地岗位的人办理入境。",
     "windows": [
       {
         "year": 2027,

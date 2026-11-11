@@ -12,10 +12,7 @@
     "official_url": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91",
     "authority": "韩国法务部 / 韩国外交部（MOFA）",
     "summary": "韩国与 28 个国家/地区签订打工度假协议、另与英国签订青年交流（YMS）协议，允许 18-30 岁青年在韩停留最多 12 个月、每周打工不超过 25 小时以补充旅费。年龄上限按国别不同（中国台湾 18-34、中国香港 18-30）。⚠️ 官方协议名单不含中国大陆，中国大陆护照持有人无法申请。",
-    "tags": [
-      "once_in_lifetime",
-      "no_agency_needed"
-    ],
+    "tags": ["no_quota_cap", "once_in_lifetime", "no_agency_needed"],
     "active": false
   },
   "eligibility": {
@@ -85,8 +82,10 @@
   },
   "timeline": {
     "mechanism": "appointment",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "官方 2026/27 表按国别列出年度名额：中国台湾 800、中国香港 1000、加拿大 12000、英国 5000、日本 10000、美国 2000、法国 2000、新西兰 3000；澳大利亚、丹麦、德国、瑞典为 Unlimited。中国大陆不在 30 个签约国家/地区名单内。",
+    "quota_source": "https://whic.mofa.go.kr/contents.do?contentsNo=39&menuNo=91",
+    "quota_note": "中国大陆不在韩国 H-1 的 30 个签约国家/地区名单内，本项目对中国大陆护照不分配名额（该护照资格为 not_eligible）。官方 2026/27 表按国别列出的年度名额（中国台湾 800、中国香港 1,000、加拿大 12,000 等）均属其他护照。",
     "windows": [
       {
         "year": 2026,

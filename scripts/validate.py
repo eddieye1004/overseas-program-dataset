@@ -90,6 +90,15 @@ VALID_LANGUAGE_TESTS = {
 
 VALID_WINDOW_STATUS = {"upcoming", "open", "closed", "unknown"}
 
+# 配额四态。空值语义必须显式：旧口径 quota=null 同时兼指「无配额」「官方未公布」
+# 「还没查」三种完全不同的情况，读的人分不出来，也排不出待办。
+#   capped        有具体配额，须带 quota + quota_basis + quota_source
+#   no_quota      无配额：官方明确不设上限，或该项目对中国大陆护照不分配名额
+#   not_published 官方设限额但未公布数字，须带 quota_source
+#   unverified    尚未核实 —— 本身是合格产出，会形成可见的待办清单
+VALID_QUOTA_STATUS = {"capped", "no_quota", "not_published", "unverified"}
+VALID_QUOTA_BASIS = {"annual", "concurrent"}
+
 VALID_REQUIREMENT_TYPES = {
     "health_check", "criminal_record", "insurance", "no_dependents",
     "return_ticket", "government_support_letter", "enrollment_proof",
@@ -557,15 +566,15 @@ def validate_program(rep, fname, doc):
     if not isinstance(tl, dict):
         rep.error(p, "timeline", "必须是对象")
     else:
-        check_required(rep, p, tl, ["mechanism", "quota", "windows"],
+        check_required(rep, p, tl, ["mechanism", "quota_status", "quota", "quota_note", "windows"],
                        prefix="timeline.")
         if "mechanism" in tl:
             check_enum(rep, p, "timeline.mechanism", tl["mechanism"], VALID_MECHANISMS)
 
-        if "quota" in tl:
-            q = tl["quota"]
-            if q is not None and not isinstance(q, int):
-                rep.error(p, "timeline.quota", "必须为整数或 null")
+        # 配额四态：空值语义必须显式，禁止用 null 兼职「无配额 / 未公布 / 还没查」。
+        # 旧口径下 quota=null 同时表示这三种意思，读的人无法区分，也无法据此排待办。
+        if "quota_status" in tl:
+            _check_quota(rep, p, tl, doc)
 
         windows = tl.get("windows", [])
         if not isinstance(windows, list):
@@ -702,6 +711,82 @@ def validate_program(rep, fname, doc):
     _check_consistency(rep, p, doc)
 
 
+def _check_quota(rep, fname, tl, doc):
+    """配额四态的结构与证据约束。
+
+    这一段的立场：`quota_status` 是一个**断言**，不是备注。
+    凡断言「有配额」「无配额」「官方未公布」，都必须指得出一条本项目已有的官方来源；
+    指不出来的一律只能是 `unverified`。否则「无配额」会变成「我懒得查」的写法，
+    而读者会把它当成事实去规划。
+    """
+    status = tl.get("quota_status")
+    if not isinstance(status, str) or status not in VALID_QUOTA_STATUS:
+        rep.error(fname, "timeline.quota_status",
+                  f"非法配额状态 '{status}'，允许值：{sorted(VALID_QUOTA_STATUS)}")
+        return
+
+    quota = tl.get("quota")
+    source = tl.get("quota_source")
+    basis = tl.get("quota_basis")
+    note = tl.get("quota_note")
+
+    # 所有四态都要求 quota_note 有实质内容：一个只写「无」的 note 等于没写。
+    if not isinstance(note, str) or len(note.strip()) < 8:
+        rep.error(fname, "timeline.quota_note",
+                  "缺少配额说明（至少 8 个字符）。四态都必须写清依据或缺口，不能留空。")
+
+    # 只有 capped 有数字；其余三态残留数字意味着状态与数值自相矛盾。
+    if status == "capped":
+        if not isinstance(quota, int) or isinstance(quota, bool) or quota < 1:
+            rep.error(fname, "timeline.quota",
+                      f"quota_status=capped 时必须给出正整数配额，实际 {quota!r}")
+        if basis not in VALID_QUOTA_BASIS:
+            rep.error(fname, "timeline.quota_basis",
+                      f"quota_status=capped 时必须声明配额口径 {sorted(VALID_QUOTA_BASIS)}，"
+                      f"实际 {basis!r}")
+    else:
+        if quota is not None:
+            rep.error(fname, "timeline.quota",
+                      f"quota_status={status} 时 quota 必须为 null，实际 {quota!r}——"
+                      f"没核实到数字却填了数字，或已确认无上限却还留着数字")
+        if basis is not None:
+            rep.error(fname, "timeline.quota_basis",
+                      f"quota_status={status} 时不应填写 quota_basis（口径只对有数字的配额有意义）")
+
+    # 证据：capped / no_quota / not_published 都必须指到本项目已有的来源。
+    # 指向一条 sources[] 里不存在的 URL，等于凭空造证据，必须拦下。
+    if status == "unverified":
+        if source is not None:
+            rep.error(fname, "timeline.quota_source",
+                      "quota_status=unverified 时不应填写 quota_source——"
+                      "有来源就不叫未核实了，请改判为 capped / no_quota / not_published")
+        return
+
+    if not source:
+        rep.error(fname, "timeline.quota_source",
+                  f"quota_status={status} 必须给出 quota_source（支撑该结论的官方来源 URL）")
+        return
+
+    src_urls = {
+        s.get("url") for s in (doc.get("sources") or [])
+        if isinstance(s, dict) and s.get("url")
+    }
+    if source not in src_urls:
+        rep.error(fname, "timeline.quota_source",
+                  f"quota_source 不在本项目 sources[] 里：{source}。"
+                  f"配额结论必须由已有来源支撑，而不是另开一条无法核对的链接。")
+        return
+
+    # 来源本身还必须是 primary：二手来源不足以支撑「无名额上限」这种排除性断言。
+    for s in doc.get("sources") or []:
+        if isinstance(s, dict) and s.get("url") == source:
+            if s.get("type") != "primary":
+                rep.error(fname, "timeline.quota_source",
+                          f"quota_source 指向的是一条 {s.get('type')} 来源。"
+                          f"配额结论须由 primary 官方来源支撑。")
+            break
+
+
 def _check_money(rep, fname, field, amt):
     if "local_amount" not in amt:
         rep.error(fname, field, "缺少 local_amount")
@@ -764,18 +849,32 @@ def _check_consistency(rep, fname, doc):
                      f"但缺少 critical 级别的风险说明（建议说明为何不可申请）")
 
     # 一致性 2：标记为 eligible 的项目应有配额机制说明
+    # 四态化之后「没写 quota」已由必填校验拦死，这里只剩「待核实」需要提示。
+    # 用 info 而不是 warn：--strict 下 warn 会让每周定时任务变红，而「待核实」
+    # 是一项长期公开的待办，把它做成常红会让真正的「数据超期」失去信号。
+    # 让它可见的机制放在两处：track.py 的 FRESHNESS.md 待核实清单，与 CI 的
+    # 复核 issue —— 那两处是逐条列出来的，比一条红更可操作。
     if mainland == "eligible":
         tl = doc.get("timeline", {})
-        if isinstance(tl, dict) and "quota" not in tl:
-            rep.warn(fname, "timeline.quota",
-                     f"项目 {pid} 对大陆护照开放，但未说明配额（quota）")
+        if isinstance(tl, dict) and tl.get("quota_status") == "unverified":
+            rep.note(fname, "timeline.quota_status",
+                     f"项目 {pid} 对大陆护照开放，但配额仍为 unverified（待核实）")
 
-    # 一致性 3：quota 为 null 时应有 quota_note 解释
+    # 一致性 3：配额断言与项目标签不能互相打架。
+    # no_quota_cap 是页面上的硬标签（筛选项），若配额状态说「有上限」，读者会看到
+    # 两处相反的说法；反之标了 no_quota_cap 却判 capped 也同理。
     tl = doc.get("timeline", {})
     if isinstance(tl, dict):
-        if tl.get("quota") is None and not tl.get("quota_note"):
-            rep.warn(fname, "timeline.quota_note",
-                     "quota 为 null 但缺少 quota_note 说明（无名额限制？不在协议内？）")
+        tags = (prog or {}).get("tags") or []
+        status = tl.get("quota_status")
+        if "no_quota_cap" in tags and status in ("capped", "not_published"):
+            rep.error(fname, "program.tags",
+                      f"标签 no_quota_cap 与 timeline.quota_status={status} 矛盾："
+                      f"要么去掉标签，要么改配额状态")
+        if status == "no_quota" and "no_quota_cap" not in tags:
+            rep.warn(fname, "program.tags",
+                     f"quota_status=no_quota 但缺少 no_quota_cap 标签，"
+                     f"前端的「无名额上限」筛选会漏掉这条")
 
 
 # ---------------------------------------------------------------------------

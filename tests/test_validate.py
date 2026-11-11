@@ -65,6 +65,20 @@ def iter_verified_dates(doc):
             yield f"sources[{i}].last_verified", src["last_verified"]
 
 
+def mutate_unrelated_source_url(doc, url):
+    """改一条**不被配额断言引用**的来源 URL，返回改到的下标。
+
+    配额四态化之后，`timeline.quota_source` 指向某条具体来源；若测试去改那一条，
+    会连带击穿「来源可追溯」，报出来的是另一个错误，测的东西就跑了。
+    """
+    quota_source = (doc.get("timeline") or {}).get("quota_source")
+    for i, src in enumerate(doc.get("sources") or []):
+        if src.get("url") != quota_source:
+            src["url"] = url
+            return i
+    raise AssertionError("这份 fixture 没有可用于变异的非配额来源，测试前提失效")
+
+
 class MutationBase(unittest.TestCase):
     """基于真实文档的变异测试基类。"""
 
@@ -250,7 +264,7 @@ class TestSourceQualityViolations(MutationBase):
 
     def test_primary_on_c_level_domain_warns_but_passes(self):
         """C 级域名可作辅助来源，但不能自称 primary —— 告警，不阻断。"""
-        self.doc["sources"][0]["url"] = "https://www.some-uni.edu.cn/international/"
+        mutate_unrelated_source_url(self.doc, "https://www.some-uni.edu.cn/international/")
         rep = self.validate_doc()
         self.assertTrue(rep.ok, self.errors(rep))
         self.assertIn("primary", self.warnings(rep))
@@ -374,6 +388,130 @@ class TestStaleness(MutationBase):
 
 
 # ---------------------------------------------------------------------------
+# 4. 配额四态 —— 空值不许再兼职三种含义
+# ---------------------------------------------------------------------------
+
+class TestQuotaStates(MutationBase):
+    """timeline.quota 旧口径是「整数或 null」，null 同时兼指三件事：
+    无配额 / 官方未公布 / 还没查。读的人分不出来，也排不出待办。
+    四态化之后，每一种都是显式断言，并且都要指得出来源。
+    """
+
+    def set_quota(self, **kw):
+        tl = self.doc["timeline"]
+        for k in ("quota", "quota_status", "quota_basis", "quota_source", "quota_note"):
+            tl.pop(k, None)
+        tl.update(kw)
+
+    def test_legacy_null_quota_without_status_is_rejected(self):
+        """回归：旧的「quota 为 null 就算合格」必须不再成立。"""
+        tl = self.doc["timeline"]
+        tl.pop("quota_status", None)
+        tl["quota"] = None
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("缺少必填字段", self.errors(rep))
+
+    def test_capped_requires_number_and_basis_and_source(self):
+        self.set_quota(quota_status="capped", quota=None, quota_note="某个超过八个字符的说明文字")
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("必须给出正整数配额", self.errors(rep))
+
+        self.set_quota(quota_status="capped", quota=1000, quota_note="某个超过八个字符的说明文字")
+        rep = self.validate_doc()
+        self.assertIn("必须声明配额口径", self.errors(rep))
+
+    def test_capped_with_full_evidence_passes(self):
+        src = self.doc["sources"][0]["url"]
+        self.set_quota(quota_status="capped", quota=1000, quota_basis="annual",
+                       quota_source=src, quota_note="中国大陆护照年度名额 1,000 个，先到先得。")
+        # fixture 是 nz-china-whv，本身带 no_quota_cap 之外的标签，这里先对齐标签
+        self.doc["program"]["tags"] = [
+            t for t in self.doc["program"].get("tags", []) if t != "no_quota_cap"
+        ]
+        rep = self.validate_doc()
+        self.assertTrue(rep.ok, self.errors(rep))
+
+    def test_source_must_exist_in_this_program(self):
+        """凭空指一条 URL 等于造证据。"""
+        self.set_quota(quota_status="no_quota", quota=None,
+                       quota_source="https://www.example.gov/nonexistent",
+                       quota_note="官方未设名额上限，符合条件即可申请。")
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("不在本项目 sources[] 里", self.errors(rep))
+
+    def test_secondary_source_cannot_back_quota_claim(self):
+        """二手来源不足以支撑「无名额上限」这种排除性断言。"""
+        self.doc["sources"][0]["type"] = "secondary"
+        # 再补一条 primary，避免触发「缺少 primary」的另一个错误
+        primary = copy.deepcopy(self.doc["sources"][1])
+        primary["url"] = "https://www.gov.uk/graduate-visa"
+        self.doc["sources"].append(primary)
+        self.set_quota(quota_status="no_quota", quota=None,
+                       quota_source=self.doc["sources"][0]["url"],
+                       quota_note="官方未设名额上限，符合条件即可申请。")
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("须由 primary 官方来源支撑", self.errors(rep))
+
+    def test_non_capped_states_must_not_carry_a_number(self):
+        """状态说「无配额」却留着数字，是最危险的一种自相矛盾。"""
+        src = self.doc["sources"][0]["url"]
+        for status in ("no_quota", "not_published"):
+            with self.subTest(status=status):
+                self.set_quota(quota_status=status, quota=1000, quota_source=src,
+                               quota_note="某个超过八个字符的说明文字")
+                rep = self.validate_doc()
+                self.assertFalse(rep.ok)
+                self.assertIn("quota 必须为 null", self.errors(rep))
+
+    def test_unverified_must_not_claim_a_source(self):
+        """有来源就不叫未核实。允许顺手填来源，等于给「没查」留后门。"""
+        self.set_quota(quota_status="unverified", quota=None,
+                       quota_source=self.doc["sources"][0]["url"],
+                       quota_note="尚未核实，待向受理机关确认年度名额。")
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("不应填写 quota_source", self.errors(rep))
+
+    def test_unverified_is_a_valid_terminal_state(self):
+        """待核实本身是合格产出：它形成待办清单，不该被当成错误。"""
+        self.set_quota(quota_status="unverified", quota=None,
+                       quota_note="尚未核实，待向受理机关确认年度名额。")
+        self.doc["program"]["tags"] = [
+            t for t in self.doc["program"].get("tags", []) if t not in ("no_quota_cap",)
+        ]
+        rep = self.validate_doc()
+        self.assertTrue(rep.ok, self.errors(rep))
+
+    def test_note_must_have_substance(self):
+        src = self.doc["sources"][0]["url"]
+        self.set_quota(quota_status="no_quota", quota=None, quota_source=src,
+                       quota_note="无")
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("缺少配额说明", self.errors(rep))
+
+    def test_unknown_status_is_rejected(self):
+        self.set_quota(quota_status="maybe", quota=None, quota_note="某个超过八个字符的说明文字")
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("非法配额状态", self.errors(rep))
+
+    def test_tag_and_status_must_agree(self):
+        """页面上的 no_quota_cap 标签与配额状态是两处说法，不许互相打架。"""
+        src = self.doc["sources"][0]["url"]
+        self.doc["program"]["tags"] = ["no_quota_cap"]
+        self.set_quota(quota_status="capped", quota=1000, quota_basis="annual",
+                       quota_source=src, quota_note="中国大陆护照年度名额 1,000 个。")
+        rep = self.validate_doc()
+        self.assertFalse(rep.ok)
+        self.assertIn("矛盾", self.errors(rep))
+
+
+# ---------------------------------------------------------------------------
 # 5. 跨字段一致性
 # ---------------------------------------------------------------------------
 
@@ -488,7 +626,7 @@ class TestCliOnTempData(unittest.TestCase):
 
     def test_warning_alone_does_not_fail_without_strict(self):
         doc = copy.deepcopy(self.base)
-        doc["sources"][0]["url"] = "https://www.some-uni.edu.cn/international/"
+        mutate_unrelated_source_url(doc, "https://www.some-uni.edu.cn/international/")
         self.write(FIXTURE_NAME, doc)
         code, out = self.run_main()
         self.assertEqual(code, 0, out)
@@ -496,7 +634,7 @@ class TestCliOnTempData(unittest.TestCase):
     def test_strict_promotes_warnings_to_failure(self):
         """--strict 是「每周审计必须零告警」这一策略的开关，行为必须锁死。"""
         doc = copy.deepcopy(self.base)
-        doc["sources"][0]["url"] = "https://www.some-uni.edu.cn/international/"
+        mutate_unrelated_source_url(doc, "https://www.some-uni.edu.cn/international/")
         self.write(FIXTURE_NAME, doc)
         code, out = self.run_main("--strict")
         self.assertEqual(code, 1, out)
@@ -504,7 +642,7 @@ class TestCliOnTempData(unittest.TestCase):
     def _warning_only_doc(self):
         """只有告警、没有错误的数据：用于区分 --strict 的两条路径。"""
         doc = copy.deepcopy(self.base)
-        doc["sources"][0]["url"] = "https://www.some-uni.edu.cn/international/"
+        mutate_unrelated_source_url(doc, "https://www.some-uni.edu.cn/international/")
         return doc
 
     def test_report_body_agrees_with_exit_code_under_strict(self):

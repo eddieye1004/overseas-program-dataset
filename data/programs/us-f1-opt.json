@@ -13,11 +13,12 @@
     "authority": "U.S. Citizenship and Immigration Services（USCIS，美国公民及移民服务局）",
     "summary": "在美国读完学位的 F-1 学生，毕业后可申请最长 12 个月的工作许可，工作内容须与专业直接相关；STEM 专业可在此基础上再延 24 个月。不需要雇主担保，但要先拿到学校 DSO 的 I-20 推荐、再向 USCIS 递交 I-765。这是美国留学转工作的第一条桥，OPT 期间的失业天数有硬上限。",
     "tags": [
+        "no_quota_cap",
       "no_agency_needed",
       "requires_degree",
       "stem_friendly",
       "high_demand"
-    ],
+      ],
     "active": true
   },
   "eligibility": {
@@ -66,8 +67,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "无名额上限，按个人毕业时间滚动申请。真正的约束是三个日期：毕业前 90 天起可递交、毕业后 60 天截止、DSO 推荐后 30 天内必须递交。",
+    "quota_source": "https://www.uscis.gov/working-in-the-united-states/students-and-exchange-visitors/optional-practical-training-opt-for-f-1-students",
+    "quota_note": "官方未设名额上限，按个人毕业时间滚动申请。真正的约束是三个日期：毕业前 90 天起可递交、毕业后 60 天截止、DSO 推荐后 30 天内必须递交。",
     "windows": [
       {
         "year": 2026,

@@ -66,8 +66,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "无名额上限，按个人毕业时间滚动递交。真正的约束是 180 天窗口：须在学校确认你完成课程之日起 180 天内递交，且学签须在这 180 天内有效过。",
+    "quota_source": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/work/after-graduation/about.html",
+    "quota_note": "官方未设名额上限，按个人毕业时间滚动递交。真正的约束是 180 天窗口：须在学校确认完成课程之日起 180 天内递交，且学签须在这 180 天内有效过。",
     "windows": [
       {
         "year": 2026,

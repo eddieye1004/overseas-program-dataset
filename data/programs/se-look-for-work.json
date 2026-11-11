@@ -77,8 +77,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "不设名额上限，也没有开放窗口。唯一的时间约束是「拿到第二周期学历之后」——官方没有写毕业到申请之间的期限上限，这一点与荷兰（3 年内）不同。",
+    "quota_source": "https://www.migrationsverket.se/en/you-want-to-apply/work/look-for-work/look-for-work-or-start-a-business.html",
+    "quota_note": "官方未设名额上限，也没有开放窗口。唯一的时间约束是「拿到第二周期学历之后」——官方没有写毕业到申请之间的期限上限，这一点与荷兰（3 年内）不同。",
     "windows": [
       {
         "year": 2026,

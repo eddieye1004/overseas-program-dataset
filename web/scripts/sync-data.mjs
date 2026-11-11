@@ -134,6 +134,11 @@ function toIndexEntry(p, today) {
     funds_amount: funds.amount?.local_amount ?? null,
     funds_currency: funds.amount?.currency ?? null,
     risk_levels: (p.risks ?? []).map((r) => r.level),
+    // 配额四态。索引层只放状态与数字，不放 note —— 卡片上要能一眼看出
+    // 「有上限 / 无上限 / 未公布 / 待核实」，而不是只看到一个可能为 null 的字段。
+    quota_status: p.timeline?.quota_status ?? null,
+    quota: p.timeline?.quota ?? null,
+    quota_basis: p.timeline?.quota_basis ?? null,
     last_verified: p.last_verified ?? null,
     // 复核状态在索引层就算好，前端不用再各算一遍 90 天。
     ...reviewState(p, today),

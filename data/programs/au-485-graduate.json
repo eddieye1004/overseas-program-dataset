@@ -72,8 +72,10 @@
   },
   "timeline": {
     "mechanism": "rolling",
+    "quota_status": "no_quota",
     "quota": null,
-    "quota_note": "无名额上限，按个人毕业时间滚动递交。主要时间约束是「递交前 6 个月内完成课程」与「过去 6 个月内持过学生签证」这两条滚动窗口。",
+    "quota_source": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485/post-higher-education-work",
+    "quota_note": "官方未设名额上限，按个人毕业时间滚动递交。真正的约束是两条滚动窗口：「递交前 6 个月内完成课程」与「过去 6 个月内持过学生签证」。",
     "windows": [
       {
         "year": 2026,
