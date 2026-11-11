@@ -1,0 +1,16 @@
+# Issue 模板选择页的配置。
+#
+# 设计取舍：**保留空白 issue 通道**（blank_issues_enabled: true）。
+# 理由：这三个模板覆盖的是「数据纠错 / 链接失效 / 新增项目」，都属于具体数据问题；
+# 而关于数据集结构、来源分级标准、前端可用性的建议没有合适的模板，
+# 强行要求选一个只会让人把内容塞进不匹配的模板，反而更难读。
+# 代价是有人可能绕过模板、不附来源就来纠错——这个代价由下面两行说明承担：
+# 空白通道旁边写清「纠错请用模板」，并在 CONTRIBUTING 里保留同样的要求。
+blank_issues_enabled: true
+contact_links:
+  - name: 数据纠错（请优先用这个）
+    url: https://github.com/eddieye1004/overseas-program-dataset/issues/new?template=data-correction.yml
+    about: 报告数据错误。需要附官方来源 URL，没有来源的纠错无法采纳。
+  - name: 关于数据集的讨论 / 来源分级标准的疑问
+    url: https://github.com/eddieye1004/overseas-program-dataset/blob/main/CONTRIBUTING.md
+    about: 先读贡献指南；其中写明了什么样的来源可用、什么样的会被 CI 拦下。

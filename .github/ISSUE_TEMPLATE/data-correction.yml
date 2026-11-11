@@ -1,0 +1,146 @@
+name: 数据纠错
+description: 报告数据集中的错误信息（必须附官方来源）
+title: "[纠错] "
+labels: ["data-correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢纠错。这个仓库唯一比「快」更重要的事是**每一条结论都能追溯到官方来源**，
+        所以下面「官方来源」是必填的——没有来源的纠错我们没法采纳，即使它是对的。
+
+        不确定该填哪个字段时，选「不确定」，在说明里写清楚就行。
+
+  - type: dropdown
+    id: program
+    attributes:
+      label: 哪个项目
+      description: 选一个最接近的。跨多个项目请在末尾的说明里列全。
+      options:
+        - （不属于下面任何一个 / 多项目）
+        - at-rwr-card-vhq · 奥地利红白红卡（高资质）
+        - au-462-work-holiday · 澳大利亚打工与度假签证（462 类别）
+        - au-485-graduate · 澳洲毕业生临时签证（485）
+        - ca-iec-working-holiday · 加拿大国际经验计划（IEC 打工度假）
+        - ca-pgwp · 加拿大毕业后工签（PGWP）
+        - de-16e-internship · 德国与学业相关实习居留（§16e）
+        - de-20-job-search · 德国毕业后求职居留（§20）
+        - de-chancenkarte · 德国机会卡（Chancenkarte）
+        - global-aiesec-global-talent · AIESEC 全球人才计划
+        - global-iaeste · IAESTE 国际实习交流计划
+        - ie-working-holiday-authorisation · 爱尔兰打工度假授权（WHA）
+        - jp-working-holiday · 日本打工度假签证
+        - kr-h1-working-holiday · 韩国 H-1 打工度假签证
+        - nl-orientation-year · 荷兰毕业后求职居留（zoekjaar）
+        - no-skilled-worker · 挪威技术工人居留
+        - nz-china-whv · 新西兰打工度假签证（中国名额）
+        - nz-post-study-work · 新西兰毕业后工签
+        - se-look-for-work · 瑞典毕业后求职居留
+        - sg-work-holiday-programme · 新加坡打工度假计划
+        - uk-graduate-visa · 英国毕业生签证
+        - uk-hpi-visa · 英国高潜力人才签证（HPI）
+        - uk-short-term-study-visa · 英国短期学习签证（英语课程）
+        - uk-youth-mobility-scheme · 英国青年流动计划（YMS）
+        - us-f1-opt · 美国 F-1 毕业后实习工作许可（OPT）
+        - us-j1-camp-counselor · 美国 J-1 营地辅导员项目
+        - us-j1-intern · 美国 J-1 实习项目
+        - us-j1-research-scholar · 美国 J-1 研究学者
+        - us-j1-summer-work-travel · 美国 J-1 暑期带薪实习
+        - us-j1-trainee · 美国 J-1 培训项目
+    validations:
+      required: true
+
+  - type: input
+    id: program_id
+    attributes:
+      label: 项目 id（可选）
+      description: 如果你是从网址里看到的，`/p/<id>.html` 里的 `<id>` 就是它，例如 `nz-china-whv`。
+      placeholder: nz-china-whv
+    validations:
+      required: false
+
+  - type: dropdown
+    id: field
+    attributes:
+      label: 哪个字段
+      description: 按数据 schema 的段落选。拿不准选「不确定」，在下面的说明里描述位置即可。
+      options:
+        - 不确定
+        - program（名称 / 国家 / 官方链接 / 标签）
+        - eligibility（资格：护照、年龄、学历、语言、资金、其他要求）
+        - timeline（时间窗口、配额、费用、审理时长）
+        - documents（材料清单）
+        - steps（申请流程）
+        - work_conditions（停留时长、同雇主上限、可否续签）
+        - risks（风险提示）
+        - sources（来源链接本身失效或指错页面）
+        - last_verified（核实日期与实际不符）
+        - 网站显示问题（数据对，但页面渲染错）
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: 当前数据是什么（错在哪）
+      description: 能贴字段路径最好，例如 `eligibility.age.max` 现在写 30，实际是 35。也请说明这个错误会带来什么后果。
+      placeholder: |
+        字段路径：eligibility.age.max
+        当前值：30
+        实际应该是：35
+        影响：31–35 岁的人会以为自己不能申请。
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct
+    attributes:
+      label: 正确说法是什么
+      description: 请写成可以直接替换进数据的表述，不要只说「不对」。
+      placeholder: 年龄上限为 35 岁（含），依据官方页面原文 "be aged 35 years or under when you apply"。
+    validations:
+      required: true
+
+  - type: input
+    id: source_url
+    attributes:
+      label: 官方来源 URL
+      description: 必须是**一手官方**页面——移民局、使领馆、政府法律文本、项目官方运营方。中介网站、公众号、小红书、知乎、AI 生成内容、其他攻略博客一律不作为依据。
+      placeholder: https://www.example.gov/visa/...
+    validations:
+      required: true
+
+  - type: input
+    id: source_publisher
+    attributes:
+      label: 来源发布机构
+      description: 例如 "Australian Department of Home Affairs"、"英国 GOV.UK"。
+    validations:
+      required: false
+
+  - type: input
+    id: verified_on
+    attributes:
+      label: 你核实该信息的日期
+      description: 格式 YYYY-MM-DD。官方页面会改版，日期决定了这条纠错该怎么被复核。
+      placeholder: "2026-11-11"
+    validations:
+      required: true
+
+  - type: textarea
+    id: how
+    attributes:
+      label: 你是怎么核实的
+      description: 例如「访问了官网该页面」「读了官方 PDF 第 3 页」「电话咨询了使领馆」。这决定了我们能否复现你的结论。
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我提供的来源是官方一手来源，不是中介、自媒体或 AI 生成内容。
+          required: true
+        - label: 我理解这条数据会在合并前被独立复核，维护者可能要求补充来源。
+          required: true

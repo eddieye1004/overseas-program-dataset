@@ -139,6 +139,16 @@ export default function App() {
           <p className="ftr__guides">
             <a href="./guides/age-wall.html">{t('guideAgeWall')}</a>
             <a href="./guides/misinformation.html">{t('guideMisinfo')}</a>
+            {/* 纠错入口：直连 issue 表单（带 template 参数），不是 Discussions、不是邮箱。
+                数据错了却找不到地方说，比数据错了更伤；放在页脚是因为它不该抢主流程，
+                但每一页都得有——发现错误的那一页往往不是「数据说明」页。 */}
+            <a
+              href="https://github.com/eddieye1004/overseas-program-dataset/issues/new?template=data-correction.yml"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('reportDataIssue')}
+            </a>
           </p>
         </footer>
       </div>

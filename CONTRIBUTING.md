@@ -27,13 +27,16 @@
 
 ## 如何提交数据纠错
 
-1. 打开 [新建 Issue](https://github.com/eddieye1004/overseas-program-dataset/issues/new/choose)
-2. 选择 **"数据纠错"** 模板
-3. 填写：
-   - 哪个项目、哪个字段有误
+1. 直接打开 [数据纠错表单](https://github.com/eddieye1004/overseas-program-dataset/issues/new?template=data-correction.yml)
+   （站点任意页脚也有「发现数据有误？提纠错」入口，链接到同一张表单）
+2. 填写：
+   - 哪个项目、哪个字段有误（表单里都是下拉，选即可）
    - 正确的值是什么
    - **官方来源 URL**（必填）
    - 你核实该信息的日期
+
+表单里「项目」「问题字段」「正确说法」「官方来源」是必填，其余可留空。
+若问题不属于任何单一项目，选「不属于下面任何一个 / 多项目」，在说明里列全。
 
 ---
 

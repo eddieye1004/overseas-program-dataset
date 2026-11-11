@@ -1205,6 +1205,70 @@ console.log('\\n[27] 长文页（public/guides，静态 HTML，不经 React）')
   ok('guide.css 可访问', probe.cssOk === true);
 }
 
+console.log('\n[28] 纠错入口：每个页面都要能说「这里错了」');
+{
+  // 页脚是全站唯一常驻的反馈入口。它有三件事必须同时成立：
+  // 链接指向正确的 issue 表单（带 template 参数，否则会落到模板选择页 → 多一步错路）、
+  // 新窗口打开时不泄露 window.opener、以及中英文各有自己的文案。
+  const FOOTER_ISSUE_SEL = '.ftr a[href*="issues/new"]';
+  const probeFooter = () =>
+    evalJs(`(() => {
+      const a = document.querySelector('${FOOTER_ISSUE_SEL}');
+      if (!a) return JSON.stringify({ found: false });
+      return JSON.stringify({
+        found: true,
+        href: a.getAttribute('href'),
+        target: a.getAttribute('target'),
+        rel: a.getAttribute('rel'),
+        text: (a.textContent || '').trim(),
+      });
+    })()`);
+
+  await goto('#/');
+  await sleep(700);
+  const zh = JSON.parse(await probeFooter());
+  ok('列表页页脚有纠错链接', zh.found === true);
+  ok(
+    '纠错链接带 template 参数（否则落到模板选择页）',
+    /issues\/new\?template=data-correction\.yml$/.test(zh.href || ''),
+    zh.href,
+  );
+  ok('纠错链接指向本仓库', (zh.href || '').includes('eddieye1004/overseas-program-dataset'), zh.href);
+  ok('纠错链接新窗口打开', zh.target === '_blank');
+  ok('纠错链接带 rel=noopener', /noopener/.test(zh.rel || ''), zh.rel);
+  ok('中文纠错文案非空且含「纠错」', zh.text.includes('纠错'), zh.text);
+
+  // 详情页也要有：发现错误的那一页往往不是列表页
+  await goto('#/p/nz-china-whv');
+  await sleep(900);
+  const onDetail = JSON.parse(await probeFooter());
+  ok('详情页页脚也有纠错链接', onDetail.found === true);
+
+  // 英文模式：文案必须换，链接不能跟着变成中文。
+  // 语言开关是**一个**按钮（点一下切到另一种语言），不是两个按钮——
+  // 按 /EN/ 找子按钮会落空，e2e 其余处也是直接点 .langswitch。
+  await goto('#/');
+  await sleep(500);
+  const langNow = await evalJs(
+    `document.querySelector('.langswitch').getAttribute('aria-label')`,
+  );
+  // aria-label 是「切换到另一种语言」的说法，用当前页面语言判断状态
+  const isZhNow = langNow === 'Switch to English';
+  if (isZhNow) {
+    await evalJs(`document.querySelector('.langswitch').click()`);
+    await sleep(700);
+  }
+  const en = JSON.parse(await probeFooter());
+  ok('英文模式纠错链接仍在', en.found === true);
+  ok('英文纠错文案已切换', en.text !== zh.text && /error|Report/i.test(en.text), en.text);
+  ok('英文模式链接不变（不随语言走本地化路径）', en.href === zh.href, en.href);
+  // 切回中文，避免影响后续断言
+  if (isZhNow) {
+    await evalJs(`document.querySelector('.langswitch').click()`);
+    await sleep(500);
+  }
+}
+
 ws.close();
 proc.kill();
 

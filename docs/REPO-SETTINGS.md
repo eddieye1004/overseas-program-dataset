@@ -120,7 +120,42 @@ cd web && node scripts/social-preview.mjs
 
 ---
 
-## 5. 其余建议项（不影响门面，但建议一并核对）
+## 5. 标签（Labels）
+
+**现状：三个 issue 模板声明的标签都不存在。** 仓库里只有 GitHub 的 10 个默认标签
+（`accessibility` / `bug` / `documentation` / `duplicate` / `enhancement` /
+`good first issue` / `help wanted` / `invalid` / `question` / `wontfix`），
+而模板里写的是：
+
+| 模板 | 声明的标签 | 仓库里是否存在 |
+|---|---|---|
+| `data-correction.yml` | `data-correction` | ❌ |
+| `broken-link.md` | `broken-link` | ❌ |
+| `new-program.md` | `new-program` | ❌ |
+
+标签不存在时，GitHub 只是**静默跳过**这个标签，issue 照常建出来——不报错，所以这个缺口
+一直没被发现。后果是模板声称的分类在 issue 列表里筛不出来。
+
+### 要建的三条
+
+| Name | Color | Description |
+|---|---|---|
+| `data-correction` | `d73a4a` | 数据纠错（走模板提交，需附官方来源） |
+| `broken-link` | `fbca04` | 官方链接失效或跳转异常 |
+| `new-program` | `0e8a16` | 建议新增尚未收录的项目 |
+
+另有一条**已由 A 单的 workflow 自动创建**（`scripts/sync_issue.py` 的 `ensure_label`）：
+`data-freshness`（`d4c5f9`，复核到期 / 配额待核实）。第一次定时任务跑起来就存在，
+不需要手工建。
+
+### 建完之后
+
+回到模板文件把标签名核对一遍即可——模板里写的名字与上表一致，不需要改文件。
+若以后改标签名，**模板和 workflow 里的字符串要一起改**：它们靠名字匹配，没有共享常量。
+
+---
+
+## 6. 其余建议项（不影响门面，但建议一并核对）
 
 | 设置 | 建议值 | 说明 |
 |---|---|---|
