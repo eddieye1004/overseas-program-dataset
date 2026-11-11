@@ -8,6 +8,41 @@
 
 ## [未发布]
 
+### 变更 — 配额四态化、复核到期开 issue、待核实清单进台账（2026-11-11）
+
+这一轮不加国家，只把三处「读的人分不清、维护的人也容易忘」的地方定义清楚。
+
+**配额四态（`timeline.quota_status`）**
+
+- 原来的 `timeline.quota` 是「整数或 null」，而 null 同时兼指三件事：无名额上限、官方设限额但未公布、还没查。29 个项目里 26 个是 null——三种完全不同的情况长得一模一样，读者无法据此规划，也排不出待办。
+- 改为**必填**的四态：`capped`（有具体配额，须带 `quota` + `quota_basis` + `quota_source`）、`no_quota`（无配额：官方不设上限，或该项目对大陆护照不分配名额）、`not_published`（官方设限额但未公布数字）、`unverified`（尚未核实，不得填 `quota_source`）。分布：**capped 3 / no_quota 24 / not_published 1 / unverified 2**。
+- 三条证据纪律写进 `validate.py` 由 CI 拦：① `quota` 口径固定为「中国大陆护照适用的年度名额」，其他护照的数字（台湾 10,000、香港 1,500）留在 `quota_note`，不许塞进 `quota`；② `quota_source` 必须指向本项目 `sources[]` 里已有的 **primary** 来源——凭空指一条 URL 等于造证据，二手来源也不足以支撑「无上限」这种排除性断言；③ 前两态与 `not_published` 必须给来源，`unverified` 必须不给。
+- 顺带修正一处自相矛盾：`uk-hpi-visa` 原本挂着 `no_quota_cap` 标签，但官方明说「有年度限额、只是未公布数字」，标签与事实相反，已去掉。另有 15 条 `no_quota` 项目补齐该标签，让前端「无名额上限」筛选不漏。
+- `unverified` 的两条是 `at-rwr-card-vhq`（奥地利红白红卡高资质档受《定居与居留法》年度配额约束，但 migration.gv.at 两页均未给数字）与 `de-chancenkarte`（§20a Abs.7 授权可按年限制数量，但截至复核日未见到生效公告）。用 `info` 而非 `warn`：`--strict` 下 warn 会让每周定时任务常红，把真正的「数据超期」淹没。
+- **`last_verified` 一律未动**——本轮只是把空值改成显式状态，没有重新核实任何一个项目。
+- 前端 `DetailView` 按四态分别渲染，「待核实」用虚线框与「确定没有」在视觉上分开；配额口径 `concurrent` 会注明「同时在册人数上限」而不是年度发放数（新加坡 2,000 属这一类）。索引层透传 `quota_status`/`quota`/`quota_basis`，i18n 补齐 26 条新 note 的英文（覆盖率回到 100%）。
+
+**复核到期开 issue（`scripts/sync_issue.py`）**
+
+- `track.py --check` 能让构建变红，但红由谁看见？GitHub 的失败通知默认只发给最后一个推送者，而定时任务没有人推——于是它每周红一次、红到被无视。新增 `sync_issue.py` 把同一份台账写进一张 issue。
+- 幂等靠固定标题 + 固定标签 + 正文 marker：先按标题搜 open issue，有就原地更新，没有才新建；没有待办时自动关闭。`tests/test_sync_issue.py` 里有一条专门断言标题不含日期或 issue 号——那正是「每周刷一张新 issue」的起点。
+- 权限最小：workflow 只加 `issues: write`。这一步用 `if: always() && schedule`，叠在「让构建红」之上而不是替代它——最该喊人的时刻恰恰是构建红了的时候。
+- 一处自己踩到的坑：判定「该不该存在这张 issue」一开始只看「有没有过期待复核记录」，于是只剩配额缺口、没有过期记录时会把刚建的 issue 立刻关掉。现在由 `has_open_work()` 单独判定，配额缺口也算未完成的活。
+
+**待核实清单进台账（A3）**
+
+- `track.py` 把 `quota_status`/`quota`/`quota_note` 带进 `tracking.json`，新增顶层 `quota_unverified` 数组；`FRESHNESS.md` 新增「待核实的配额」一节，逐条列出缺什么。
+- 它是生成物而不是第二份手工文档：跑一次 `track.py` 就跟着数据更新，issue 正文里用的也是同一份数据。
+
+**schedule 触发核查**
+
+- `validate.yml` 的 schedule 本来就写着且写法正确：`cron: '0 1 * * 1'`。用公开 API 核了该 workflow 最近 30 次运行，其中 **2026-11-02 与 2026-11-09 两次 `event=schedule`、`conclusion=success`**。「看起来全是 push」是因为这段时间几乎每天都有推送，cron 记录被挤出了视野。`pages.yml` 没有 schedule，这是对的：它只发布站点，不负责审计。
+
+**门禁**
+
+- `validate.py` 30 文件 / 29 项目，错误 0 / 警告 0（`--strict` 通过）；`pytest -q` **118 passed**（92 + 四态 11 + issue 同步 15）；`gen_sources.py --check` OK（117 条）；`track.py` 29 条全在周期内；`tsc -b --force` 通过；`smoke-test.mjs` **128/128**；`vite build` 通过；`e2e-check.mjs` **193/193**（新增 9 条四态渲染断言）。
+
+---
 ### 新增 — 复核台账与看板的「下一步」，并把 29 条记录的缺口补上（2026-11-10）
 
 这一轮不加国家，只解决两件让数据集「用起来」比「堆得高」更要紧的事：**数据会过期而没人知道该核哪几条**，以及**用户来了看一眼就走**。
