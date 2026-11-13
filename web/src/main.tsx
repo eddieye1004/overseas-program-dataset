@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { I18nProvider } from './i18n';
+import { registerServiceWorker } from './lib/pwa';
 // 顺序有意义：tokens 先定义变量，其余文件消费变量；ia.css 最后，覆盖信息架构层
 import './tokens.css';
 import './styles.css';
@@ -23,3 +24,6 @@ createRoot(root).render(
     </I18nProvider>
   </StrictMode>,
 );
+
+// 渲染之后再注册：SW 注册会占用一次网络与存储，不该和首屏抢资源
+registerServiceWorker();

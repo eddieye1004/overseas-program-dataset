@@ -927,6 +927,37 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
   ok('项目静态页也声明 manifest', /rel="manifest"/.test(pHtml));
   ok('项目静态页也带 apple-touch-icon', /apple-touch-icon\.png/.test(pHtml));
 
+  // service worker 是 Chrome 安装条件的第四条：manifest + 图标 + HTTPS 之外，
+  // 还必须有一个带 fetch 处理器的 SW。没有它地址栏不会出安装图标，
+  // beforeinstallprompt 也不触发——「添加到桌面」引导就只能退化成一段文字。
+  const sw = await evalJs(`(async () => {
+    try {
+      const r = await fetch('./sw.js', { cache: 'no-store' });
+      const text = r.ok ? await r.text() : '';
+      const reg = await navigator.serviceWorker?.getRegistration();
+      return JSON.stringify({
+        ok: r.ok,
+        hasFetch: /addEventListener\\('fetch'/.test(text),
+        hasInstall: /addEventListener\\('install'/.test(text),
+        // index.html 的文件名不带构建哈希，URL 永远相同。若它走缓存优先，
+        // 用户会被永久钉在首次访问的版本上——新 JS 的哈希变了也拿不到，
+        // 因为入口 HTML 根本不刷新。这条断言钉住导航分支必须存在。
+        handlesNavigation: /mode === 'navigate'/.test(text),
+        controlled: !!navigator.serviceWorker?.controller || !!reg,
+        scope: reg?.scope ?? '',
+      });
+    } catch (e) {
+      return JSON.stringify({ ok: false, err: String(e) });
+    }
+  })()`);
+  const swInfo = JSON.parse(sw);
+  ok('sw.js 可访问', swInfo.ok === true, sw);
+  ok('sw.js 有 fetch 处理器（安装条件之四）', swInfo.hasFetch === true);
+  ok('sw.js 有 install 处理器', swInfo.hasInstall === true);
+  ok(
+    'sw.js 对页面导航单独走网络优先（否则 index.html 会把用户钉在旧版本）',
+    swInfo.handlesNavigation === true,
+  );
 
   // manifest 里写的项目数必须与数据一致：写死 26 的版本在 26→41 之后
   // 就不会有人发现，直到用户装到桌面看到一句错的简介。
@@ -1624,6 +1655,67 @@ console.log('\n[29] 窗口日历：三档确定性不许混排');
     (await evalJs(`document.querySelectorAll('.wrow').length`)) === before - 1,
     `${before} → ${await evalJs(`document.querySelectorAll('.wrow').length`)}`,
   );
+}
+
+// ==========================================================================
+// [33] 安装引导（M4）
+// ==========================================================================
+{
+  console.log('\n[33] 安装引导（M4）');
+  await evalJs(`localStorage.clear()`);
+  await goto('#/');
+  await sleep(900);
+
+  ok('顶栏有安装入口', await evalJs(`!!document.querySelector('.installchip')`));
+  const chipH = await evalJs(`Math.round(document.querySelector('.installchip').getBoundingClientRect().height)`);
+  ok('安装入口不占内容区高度（≤36px，且位于顶栏内）', chipH <= 36, `${chipH}px`);
+  ok(
+    '安装入口在顶栏而不是内容区',
+    await evalJs(`!!document.querySelector('.shell__bar .installchip')`),
+  );
+  ok('默认不展开步骤（零打扰）', await evalJs(`!document.querySelector('.installpop')`));
+
+  await evalJs(`document.querySelector('.installchip').click()`);
+  await sleep(400);
+  const pop = JSON.parse(
+    await evalJs(`(() => {
+      const p = document.querySelector('.installpop');
+      if (!p) return JSON.stringify({ open: false });
+      return JSON.stringify({
+        open: true,
+        hasSteps: /安装|主屏幕|Home screen|Install/i.test(p.textContent),
+        hasCta: !!p.querySelector('.btn'),
+        ariaExpanded: document.querySelector('.installchip').getAttribute('aria-expanded'),
+      });
+    })()`),
+  );
+  ok('点击后展开步骤说明', pop.open === true && pop.hasSteps === true, JSON.stringify(pop));
+  ok('展开时 aria-expanded=true', pop.ariaExpanded === 'true', String(pop.ariaExpanded));
+
+  // Esc 收起
+  await evalJs(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))`);
+  await sleep(300);
+  ok('Esc 可收起', await evalJs(`!document.querySelector('.installpop')`));
+
+  // 关掉后不再骚扰
+  await evalJs(`document.querySelector('.installchip').click()`);
+  await sleep(300);
+  await evalJs(`[...document.querySelectorAll('.installpop .btn')].find(b => /知道了|Got it/.test(b.textContent))?.click()`);
+  await sleep(300);
+  await goto('#/');
+  await sleep(900);
+  ok('点「知道了」后不再出现', await evalJs(`!document.querySelector('.installchip')`));
+
+  // 独立应用模式（已安装）下不出现
+  await evalJs(`localStorage.clear()`);
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'display-mode', value: 'standalone' }] });
+  await goto('#/');
+  await sleep(900);
+  ok(
+    '已装成独立应用时不再提示安装',
+    await evalJs(`!document.querySelector('.installchip')`),
+  );
+  await send('Emulation.setEmulatedMedia', { features: [] });
 }
 
 ws.close();

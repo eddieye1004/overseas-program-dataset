@@ -327,6 +327,15 @@ export type UiKey =
   | 'watchToday'
   | 'watchNeither'
   | 'watchNoWindowData'
+  // —— 安装引导（M4）——
+  | 'installTitle'
+  | 'installCta'
+  | 'installBody'
+  | 'installAndroid'
+  | 'installIOS'
+  | 'installDesktop'
+  | 'installDismiss'
+  | 'installMenuHint';
 
 export const UI: Record<Lang, Record<UiKey, string>> = {
   zh: {
@@ -664,6 +673,15 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     watchNeither: '未加入任何项目，也没有可汇总的窗口。',
     watchNoWindowData: '这条项目在仓内没有窗口数据，只能盯官网。',
 
+    // —— 安装引导 ——
+    installTitle: '装到桌面，当应用打开',
+    installCta: '现在安装',
+    installBody: '装好后有独立图标、全屏无地址栏，条件与追踪清单照旧存在本机。',
+    installAndroid: '安卓 Chrome：右上角 ⋮ → 「安装应用」或「添加到主屏幕」。',
+    installIOS: 'iPhone / iPad Safari：底部分享按钮 → 「添加到主屏幕」。',
+    installDesktop: '桌面 Chrome / Edge：地址栏右侧的安装图标，或菜单里的「安装」。',
+    installDismiss: '知道了',
+    installMenuHint: '浏览器菜单里找「安装」或「添加到主屏幕」',
   },
   en: {
     siteTitle: 'Overseas Program Dataset',
@@ -1007,6 +1025,16 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     watchNeither: 'No programs on the list, so there is no window to summarise.',
     watchNoWindowData: 'The dataset holds no window for this program; the official site is the only source.',
 
+    // —— Install guidance ——
+    installTitle: 'Install it like an app',
+    installCta: 'Install now',
+    installBody:
+      'It gets its own icon and runs without browser chrome. Your conditions and watchlist stay on this device.',
+    installAndroid: 'Android Chrome: menu ⋮ → "Install app" or "Add to Home screen".',
+    installIOS: 'iPhone / iPad Safari: Share → "Add to Home Screen".',
+    installDesktop: 'Desktop Chrome / Edge: the install icon in the address bar, or "Install" in the menu.',
+    installDismiss: 'Got it',
+    installMenuHint: 'Look for "Install" or "Add to Home screen" in the browser menu',
   },
 };
 

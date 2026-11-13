@@ -18,6 +18,7 @@ import { CompareView } from './components/CompareView';
 import { AboutView } from './components/AboutView';
 import { Sidebar } from './components/Sidebar';
 import { Onboarding } from './components/Onboarding';
+import { InstallHint } from './components/InstallHint';
 import { CalendarView } from './components/CalendarView';
 
 function LangSwitch() {
@@ -98,7 +99,12 @@ export default function App() {
       <div className="shell">
         <header className="shell__bar">
           <span className="shell__crumb">{t('siteTitle')}</span>
-          <LangSwitch />
+          <span className="shell__tools">
+            {/* 安装入口放顶栏而不是内容区：内容区里一条横幅会吃掉 70–112px，
+                把首屏第一行卡片顶到折线以下。这里它是零高度的控件。 */}
+            <InstallHint />
+            <LangSwitch />
+          </span>
         </header>
 
         <main className="main" id="main" tabIndex={-1}>
