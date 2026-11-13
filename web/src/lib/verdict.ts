@@ -40,7 +40,16 @@ export interface ProgramFlags {
     note_open: boolean;
   };
   age: { min: number | null; max: number | null; unverified: boolean };
-  education: { level: string | null; years_completed: number | null };
+  education: {
+    level: string | null;
+    years_completed: number | null;
+    /** note 另写的硬性年限门槛（结构化字段没有时靠它判不可判）——§4-2 */
+    years_required: number | null;
+    /** 学位须在指定国家/名单内院校完成，画像不采集院校与毕业年份——§4-3/4/6 */
+    place_constrained: boolean;
+    /** 结构化层级比 note 严，原文写「由 Sponsor 判断」，以原文为准——§4-5 */
+    by_sponsor: boolean;
+  };
   language: {
     required: boolean;
     ielts_min: number | null;
@@ -55,6 +64,23 @@ export interface ProgramFlags {
     by_design: boolean;
     /** 门槛是「年收入」而非存款：不能与用户填的可动用资金相减 */
     income_basis: boolean;
+    /** 金额是「每月」口径：必须乘停留月数再比，不能拿月额当总额——§4-1 */
+    monthly: boolean;
+    /** 停留期上限（月）。monthly 为真而它为 null 时，无法折算 → 不可判 */
+    months: number | null;
+    /** 金额被标注为「按同类口径沿用/归类推定」，不作达标判断 */
+    amount_inferred: boolean;
+  };
+  /** 前置身份 / 在地要求；kind 与 Python 的 precondition_kind() 一一对应 */
+  precondition: {
+    kind:
+      | 'local_status'
+      | 'outside'
+      | 'home_residence'
+      | 'citizenship'
+      | 'document'
+      | 'unclassified'
+      | null;
   };
   window: {
     type: string | null;
@@ -72,13 +98,13 @@ export interface MatchFlagsFile {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 3;
+export const RULES_VERSION = 4;
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
 
 export interface DimVerdict {
-  dim: 'passport' | 'age' | 'education' | 'language' | 'funds';
+  dim: 'passport' | 'age' | 'education' | 'language' | 'funds' | 'precondition';
   kind: DimKind;
   /** 稳定标识，界面按它查文案；与 Python 侧同名同义 */
   code: string;
@@ -163,13 +189,27 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
   // —— 学历 ——
   const need = EDU_RANK[flags.education.level ?? 'any'] ?? 0;
   const have = EDU_RANK[pr.education] ?? 0;
-  if (have < need) {
+  const yearsNeed = flags.education.years_required;
+  if (need > 0 && flags.education.by_sponsor) {
+    // 结构化 minimum_level 比原文更严：note 明说法规没规定学位层级、由 Sponsor
+    // 判断。这时按层级判 fail 是替官方拒绝（§4-5），以原文为准判不可判。
+    dims.push({ dim: 'education', kind: 'silent', code: 'edu_by_sponsor' });
+  } else if (have < need) {
     dims.push({
       dim: 'education',
       kind: 'fail',
       code: 'edu_low',
       need: flags.education.level ?? 'any',
       have: pr.education,
+    });
+  } else if (yearsNeed) {
+    // note 另写「不少于 N 年高等教育」且明说不足 N 年不满足（§4-2）。
+    // 画像不采集学制，所以「本科毕业」不能直接判达标，也不能替三年制判失败。
+    dims.push({
+      dim: 'education',
+      kind: 'silent',
+      code: 'edu_years_unknown',
+      need: `已完成 ${yearsNeed} 年高等教育`,
     });
   } else if (flags.education.years_completed && pr.education === 'bachelor_in_progress') {
     // 门槛只写了「本科」，但另要求已完成 N 年——在读的人他填的信息判不出来
@@ -179,6 +219,10 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
       code: 'edu_years_unknown',
       need: `已完成 ${flags.education.years_completed} 年本科`,
     });
+  } else if (flags.education.place_constrained) {
+    // 学位须在指定国家/名单内院校完成（英国毕业生签证 / PGWP 的 DLI /
+    // HPI 的认可名单）。画像不采集院校与毕业年份，判 pass 就是静默放行。
+    dims.push({ dim: 'education', kind: 'silent', code: 'edu_place_unknown' });
   } else {
     dims.push({ dim: 'education', kind: 'pass', code: 'edu_ok' });
   }
@@ -249,6 +293,38 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
       code: 'funds_income_basis',
       need: `年收入约 ${Math.round(funds.cny_estimate).toLocaleString('en-US')} 元`,
     });
+  } else if (funds.amount_inferred) {
+    // 数字在仓内被标注为「按同类口径沿用 / 归类推定」，不是本项目的独立规定
+    dims.push({
+      dim: 'funds',
+      kind: 'silent',
+      code: 'funds_amount_inferred',
+      need: `约 ${Math.round(funds.cny_estimate).toLocaleString('en-US')} 元`,
+    });
+  } else if (funds.monthly && funds.months == null) {
+    // 金额按「每月」计，但不知道要覆盖几个月 —— 既不能乘，也不能直接比。
+    // 拿月额当总额比正是 §4-1 那个把「差什么」判成「能申」的错误。
+    dims.push({
+      dim: 'funds',
+      kind: 'silent',
+      code: 'funds_term_unknown',
+      need: `每月约 ${Math.round(funds.cny_estimate).toLocaleString('en-US')} 元`,
+    });
+  } else if (funds.monthly && funds.months != null) {
+    const total = funds.cny_estimate * funds.months;
+    if (pr.budget_cny < total) {
+      dims.push({
+        dim: 'funds',
+        kind: 'gap',
+        code: 'funds_short',
+        need: `约 ${Math.round(total).toLocaleString('en-US')} 元（每月 ${Math.round(
+          funds.cny_estimate,
+        ).toLocaleString('en-US')} × ${funds.months} 个月）`,
+        have: `${pr.budget_cny.toLocaleString('en-US')} 元`,
+      });
+    } else {
+      dims.push({ dim: 'funds', kind: 'pass', code: 'funds_ok' });
+    }
   } else if (pr.budget_cny < funds.cny_estimate) {
     dims.push({
       dim: 'funds',
@@ -259,6 +335,38 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
     });
   } else {
     dims.push({ dim: 'funds', kind: 'pass', code: 'funds_ok' });
+  }
+
+  // —— 前置身份 / 在地要求 ——
+  // 这一段过去完全不存在：judge() 只读五处结构化字段，other_requirements 一个字
+  // 没读，于是「只对已在英留学生开放」的毕业生签证被判成谁都能申（§4-3）。
+  const pre = flags.precondition?.kind ?? null;
+  if (pre === 'local_status') {
+    dims.push({
+      dim: 'precondition',
+      kind: 'gap',
+      code: 'pre_local_status',
+      need: '先在该国持学生/居留身份并完成学业',
+      have: '未采集该项经历',
+    });
+    // 同一件事在教育维已判 silent 的话，去掉教育维那条，避免两条重复缺口
+    if (flags.education.place_constrained) {
+      const i = dims.findIndex((d) => d.code === 'edu_place_unknown');
+      if (i >= 0) dims.splice(i, 1);
+    }
+  } else if (pre === 'outside') {
+    dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_outside_country' });
+  } else if (pre === 'home_residence') {
+    dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_home_residence' });
+  } else if (pre === 'citizenship') {
+    // 「须为参与国公民」是国籍条件，护照维已判同一件事，不另算缺口。
+    dims.push({ dim: 'precondition', kind: 'na', code: 'pre_citizenship_basis' });
+  } else if (pre === 'document') {
+    // 「须持有效租约」是递交时自备的材料，不是身份前置。
+    dims.push({ dim: 'precondition', kind: 'na', code: 'pre_document_basis' });
+  } else if (pre === 'unclassified') {
+    // 有必填的前置要求但原文类别没认出来 —— 不能落 pass，那是 §4-3 的错因。
+    dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_unclassified' });
   }
 
   const kinds = new Set(dims.map((d) => d.kind));

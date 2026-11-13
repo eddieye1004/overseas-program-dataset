@@ -54,6 +54,7 @@ const DIM_LABEL: Record<DimVerdict['dim'], Parameters<ReturnType<typeof useI18n>
   education: 'verdictDimEdu',
   language: 'verdictDimLang',
   funds: 'verdictDimFunds',
+  precondition: 'verdictDimPrecondition',
 };
 
 /** 状态的色调 class：与既有 badge 体系一致，不另造一套颜色 */

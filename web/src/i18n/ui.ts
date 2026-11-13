@@ -301,6 +301,7 @@ export type UiKey =
   | 'verdictDimEdu'
   | 'verdictDimLang'
   | 'verdictDimFunds'
+  | 'verdictDimPrecondition'
   // —— 追踪清单（M3：窗口状态 + 关键日期，滚动型不编日期）——
   | 'watchTitle'
   | 'watchIntro'
@@ -643,6 +644,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictDimEdu: '学历',
     verdictDimLang: '语言',
     verdictDimFunds: '资金证明',
+  verdictDimPrecondition: '前置身份',
 
     // —— 追踪清单 ——
     watchTitle: '追踪清单',
@@ -995,6 +997,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictDimEdu: 'Education',
     verdictDimLang: 'Language',
     verdictDimFunds: 'Proof of funds',
+  verdictDimPrecondition: 'Prior status',
 
     // —— Watchlist ——
     watchTitle: 'Watchlist',
@@ -1280,6 +1283,8 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     edu_ok: '学历达到门槛',
     edu_low: '学历低于门槛：要求 {need}',
     edu_years_unknown: '另要求 {need}，在读无法从你填的信息判定',
+    edu_place_unknown: '原文要求学位在指定国家/名单内院校完成，院校与毕业年份未采集，无法判定',
+    edu_by_sponsor: '原文写明学历层级由 Sponsor 判断，不作硬性门槛',
     lang_ok: '语言成绩达标',
     lang_low: '语言成绩不够：要求 {need}，你是 {have}',
     lang_missing: '要求语言成绩，你没填：需要 {need}',
@@ -1294,6 +1299,14 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     funds_by_design: '要求资金证明但官方不设固定金额（递交时自证）',
     funds_unknown: '要求资金证明但未登记金额，无法判定',
     funds_income_basis: '该门槛是年收入（{need}）而非存款，与你填的可动用资金不是同一口径，需按官网核对',
+    funds_term_unknown: '该门槛是每月金额（{need}），须乘停留月数才是总额；仓内未登记停留期上限，无法折算',
+    funds_amount_inferred: '该金额（{need}）在仓内标注为按同类口径沿用/归类推定，不是本项目的独立规定，不作达标判断',
+    pre_local_status: '原文把「先在该国持学生签/居留并完成学业」写成本项目的前置身份：{need}',
+    pre_outside_country: '原文要求在递交时人位于该国境外，画像不采集现居地，无法判定',
+    pre_home_residence: '原文要求常驻护照所属地区，画像不采集现居地，无法判定',
+    pre_citizenship_basis: '原文该项是国籍条件，已由护照维判定，不另算缺口',
+    pre_document_basis: '原文该项是递交时自备的材料（租约等），不是身份前置条件',
+    pre_unclassified: '该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定',
   },
   en: {
     passport_ok: 'Passport recorded as eligible',
@@ -1310,6 +1323,10 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     edu_ok: 'Education meets the threshold',
     edu_low: 'Education is below the threshold: requires {need}',
     edu_years_unknown: 'Also requires {need}; not decidable from what you entered as a current student',
+    edu_place_unknown:
+      'The source requires the degree to come from an institution in a specified country or on an approved list; your institution and graduation year are not collected — cannot decide',
+    edu_by_sponsor:
+      'The source states the degree level is judged by the sponsor, not set as a hard threshold',
     lang_ok: 'Language score meets the requirement',
     lang_low: 'Language score is short: requires {need}, you have {have}',
     lang_missing: 'A language score is required and you entered none: needs {need}',
@@ -1325,6 +1342,22 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     funds_unknown: 'Proof required but no amount recorded — cannot decide',
     funds_income_basis:
       'This threshold is annual income ({need}), not savings — a different basis from the funds you entered; check the official page',
+    funds_term_unknown:
+      'This threshold is a monthly amount ({need}); it must be multiplied by the months of stay, and no maximum stay is recorded here — cannot convert',
+    funds_amount_inferred:
+      'This amount ({need}) is marked in the dataset as borrowed from a comparable category / an inferred figure, not a rule of this permit — no pass/fail judgement',
+    pre_local_status:
+      'The source makes a prior status a prerequisite: you must already hold a student permit/residence there and have completed study there — {need}',
+    pre_outside_country:
+      'The source requires you to be outside that country when applying; your current location is not collected — cannot decide',
+    pre_home_residence:
+      'The source requires you to be residing in your passport region; your current location is not collected — cannot decide',
+    pre_citizenship_basis:
+      'This condition is a nationality rule and is already decided by the passport dimension — not counted as a separate gap',
+    pre_document_basis:
+      'This condition is a document you provide at application (a lease, etc.), not a prior-status prerequisite',
+    pre_unclassified:
+      'This program has a mandatory prior-status / location requirement whose category could not be recognised in the source text — cannot decide',
   },
 };
 

@@ -1,5 +1,5 @@
 {
- "rules_version": 3,
+ "rules_version": 4,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
@@ -16,7 +16,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": 4,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -29,7 +32,13 @@
     "required": true,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -53,7 +62,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -66,7 +78,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "outside"
    },
    "window": {
     "type": "rolling",
@@ -90,7 +108,10 @@
    },
    "education": {
     "level": "bachelor_in_progress",
-    "years_completed": 2
+    "years_completed": 2,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -103,7 +124,13 @@
     "required": true,
     "cny_estimate": 23500,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "fixed_dates",
@@ -127,7 +154,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -140,7 +170,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -164,7 +200,10 @@
    },
    "education": {
     "level": "vocational",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -177,7 +216,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -201,7 +246,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -214,7 +262,13 @@
     "required": true,
     "cny_estimate": 13000,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "fixed_dates",
@@ -238,7 +292,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -251,7 +308,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -275,7 +338,10 @@
    },
    "education": {
     "level": "bachelor_in_progress",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -288,7 +354,13 @@
     "required": true,
     "cny_estimate": 5900,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": true,
+    "months": 6,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -312,7 +384,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -325,7 +400,13 @@
     "required": true,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -349,7 +430,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -362,7 +446,13 @@
     "required": true,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -386,7 +476,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -399,7 +492,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "citizenship"
    },
    "window": {
     "type": "no_window",
@@ -423,7 +522,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -436,7 +538,13 @@
     "required": true,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -460,7 +568,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -473,7 +584,13 @@
     "required": true,
     "cny_estimate": 6300,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": true,
+    "months": 24,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -497,7 +614,10 @@
    },
    "education": {
     "level": "master",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -510,7 +630,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": true,
+    "months": 12,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -534,7 +660,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -547,7 +676,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -571,7 +706,10 @@
    },
    "education": {
     "level": "bachelor_in_progress",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -584,7 +722,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -608,7 +752,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -621,7 +768,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -645,7 +798,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -658,7 +814,13 @@
     "required": true,
     "cny_estimate": 31000,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "fixed_dates",
@@ -682,7 +844,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -695,7 +860,13 @@
     "required": true,
     "cny_estimate": 13800,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": true,
+    "months": 18,
+    "amount_inferred": true
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -719,7 +890,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -732,7 +906,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -756,7 +936,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -769,7 +952,13 @@
     "required": true,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "home_residence"
    },
    "window": {
     "type": "annual_cycle",
@@ -793,7 +982,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -806,7 +998,13 @@
     "required": true,
     "cny_estimate": 15500,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "fixed_dates",
@@ -830,7 +1028,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -843,7 +1044,13 @@
     "required": true,
     "cny_estimate": 330000,
     "by_design": false,
-    "income_basis": true
+    "income_basis": true,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "document"
    },
    "window": {
     "type": "rolling",
@@ -867,7 +1074,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -880,7 +1090,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -904,7 +1120,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -917,7 +1136,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -941,7 +1166,10 @@
    },
    "education": {
     "level": "high_school",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -954,7 +1182,13 @@
     "required": true,
     "cny_estimate": 18000,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "home_residence"
    },
    "window": {
     "type": "annual_cycle",
@@ -978,7 +1212,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -991,7 +1228,13 @@
     "required": true,
     "cny_estimate": 21500,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1015,7 +1258,10 @@
    },
    "education": {
     "level": "master",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -1028,7 +1274,13 @@
     "required": true,
     "cny_estimate": 9400,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": true,
+    "months": 9,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "outside"
    },
    "window": {
     "type": "rolling",
@@ -1052,7 +1304,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -1065,7 +1320,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1089,7 +1350,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -1102,7 +1366,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1126,7 +1396,10 @@
    },
    "education": {
     "level": "bachelor_in_progress",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -1139,7 +1412,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "fixed_dates",
@@ -1163,7 +1442,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -1176,7 +1458,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -1200,7 +1488,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": true,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -1213,7 +1504,13 @@
     "required": true,
     "cny_estimate": 11600,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1237,7 +1534,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -1250,7 +1550,13 @@
     "required": true,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1274,7 +1580,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -1287,7 +1596,13 @@
     "required": true,
     "cny_estimate": 23000,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "fixed_dates",
@@ -1311,7 +1626,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": false,
@@ -1324,7 +1642,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": "local_status"
    },
    "window": {
     "type": "rolling",
@@ -1348,7 +1672,10 @@
    },
    "education": {
     "level": "any",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -1361,7 +1688,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1385,7 +1718,10 @@
    },
    "education": {
     "level": "bachelor_in_progress",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -1398,7 +1734,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1422,7 +1764,10 @@
    },
    "education": {
     "level": "master",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": true
    },
    "language": {
     "required": true,
@@ -1435,7 +1780,13 @@
     "required": true,
     "cny_estimate": null,
     "by_design": true,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1459,7 +1810,10 @@
    },
    "education": {
     "level": "bachelor_in_progress",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -1472,7 +1826,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",
@@ -1496,7 +1856,10 @@
    },
    "education": {
     "level": "bachelor_completed",
-    "years_completed": null
+    "years_completed": null,
+    "years_required": null,
+    "place_constrained": false,
+    "by_sponsor": false
    },
    "language": {
     "required": true,
@@ -1509,7 +1872,13 @@
     "required": false,
     "cny_estimate": null,
     "by_design": false,
-    "income_basis": false
+    "income_basis": false,
+    "monthly": false,
+    "months": null,
+    "amount_inferred": false
+   },
+   "precondition": {
+    "kind": null
    },
    "window": {
     "type": "rolling",

@@ -1,5 +1,5 @@
 {
- "rules_version": 3,
+ "rules_version": 4,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -56,7 +56,7 @@
     ]
    },
    "B": {
-    "state": "can",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -70,8 +70,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_years_unknown"
      },
      {
       "dim": "language",
@@ -86,7 +86,7 @@
     ]
    },
    "C": {
-    "state": "can",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -100,8 +100,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_years_unknown"
      },
      {
       "dim": "language",
@@ -144,6 +144,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_outside_country"
      }
     ]
    },
@@ -174,6 +179,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_outside_country"
      }
     ]
    },
@@ -204,6 +214,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_outside_country"
      }
     ]
    }
@@ -328,6 +343,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
@@ -345,11 +365,6 @@
       "code": "age_ok"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "gap",
       "code": "lang_missing"
@@ -358,11 +373,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -375,11 +395,6 @@
       "code": "age_ok"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "silent",
       "code": "lang_no_score"
@@ -388,13 +403,18 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
   },
   "au-485-vocational": {
    "A": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -420,6 +440,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
@@ -450,11 +475,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -480,6 +510,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -622,8 +657,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -652,8 +687,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -670,7 +705,7 @@
   },
   "de-16e-internship": {
    "A": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -694,8 +729,8 @@
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "gap",
+      "code": "funds_short"
      }
     ]
    },
@@ -788,11 +823,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -818,11 +858,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -848,6 +893,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -972,6 +1022,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_citizenship_basis"
      }
     ]
    },
@@ -1002,6 +1057,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_citizenship_basis"
      }
     ]
    },
@@ -1032,6 +1092,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_citizenship_basis"
      }
     ]
    }
@@ -1064,11 +1129,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1094,11 +1164,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1124,6 +1199,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -1154,13 +1234,18 @@
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "gap",
+      "code": "funds_short"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1173,24 +1258,24 @@
       "code": "age_none"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "na",
       "code": "lang_none"
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "gap",
+      "code": "funds_short"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1203,19 +1288,19 @@
       "code": "age_none"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "na",
       "code": "lang_none"
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "gap",
+      "code": "funds_short"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -1248,6 +1333,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
@@ -1278,6 +1368,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
@@ -1308,6 +1403,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -1524,11 +1624,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1541,11 +1646,6 @@
       "code": "age_none"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "na",
       "code": "lang_none"
@@ -1554,11 +1654,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1571,11 +1676,6 @@
       "code": "age_none"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "na",
       "code": "lang_none"
@@ -1584,6 +1684,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -1706,13 +1811,18 @@
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "silent",
+      "code": "funds_amount_inferred"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1736,13 +1846,18 @@
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "silent",
+      "code": "funds_amount_inferred"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1766,8 +1881,13 @@
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "silent",
+      "code": "funds_amount_inferred"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -1800,11 +1920,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1817,11 +1942,6 @@
       "code": "age_none"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "na",
       "code": "lang_none"
@@ -1830,11 +1950,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1847,11 +1972,6 @@
       "code": "age_none"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "na",
       "code": "lang_none"
@@ -1860,6 +1980,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -1892,6 +2017,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_home_residence"
      }
     ]
    },
@@ -1922,11 +2052,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_home_residence"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -1952,6 +2087,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_home_residence"
      }
     ]
    }
@@ -2076,6 +2216,11 @@
       "dim": "funds",
       "kind": "silent",
       "code": "funds_income_basis"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_document_basis"
      }
     ]
    },
@@ -2106,6 +2251,11 @@
       "dim": "funds",
       "kind": "silent",
       "code": "funds_income_basis"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_document_basis"
      }
     ]
    },
@@ -2136,6 +2286,11 @@
       "dim": "funds",
       "kind": "silent",
       "code": "funds_income_basis"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_document_basis"
      }
     ]
    }
@@ -2326,7 +2481,7 @@
   },
   "nz-china-whv": {
    "A": {
-    "state": "can",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -2352,6 +2507,11 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_home_residence"
      }
     ]
    },
@@ -2382,11 +2542,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_home_residence"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -2412,6 +2577,11 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_home_residence"
      }
     ]
    }
@@ -2448,7 +2618,7 @@
     ]
    },
    "B": {
-    "state": "can",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -2462,8 +2632,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -2478,7 +2648,7 @@
     ]
    },
    "C": {
-    "state": "can",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -2492,8 +2662,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -2534,8 +2704,13 @@
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "gap",
+      "code": "funds_short"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_outside_country"
      }
     ]
    },
@@ -2564,8 +2739,13 @@
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "gap",
+      "code": "funds_short"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_outside_country"
      }
     ]
    },
@@ -2594,8 +2774,13 @@
      },
      {
       "dim": "funds",
-      "kind": "pass",
-      "code": "funds_ok"
+      "kind": "gap",
+      "code": "funds_short"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_outside_country"
      }
     ]
    }
@@ -2800,8 +2985,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -2830,8 +3015,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -2860,8 +3045,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -2904,11 +3089,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -2921,11 +3111,6 @@
       "code": "age_none"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "na",
       "code": "lang_none"
@@ -2934,11 +3119,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -2951,11 +3141,6 @@
       "code": "age_none"
      },
      {
-      "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
-     },
-     {
       "dim": "language",
       "kind": "na",
       "code": "lang_none"
@@ -2964,6 +3149,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -3014,8 +3204,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -3044,8 +3234,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -3272,11 +3462,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3302,11 +3497,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3332,6 +3532,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
      }
     ]
    }
@@ -3522,7 +3727,7 @@
   },
   "us-j1-research-scholar": {
    "A": {
-    "state": "cannot",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -3536,8 +3741,8 @@
      },
      {
       "dim": "education",
-      "kind": "fail",
-      "code": "edu_low"
+      "kind": "silent",
+      "code": "edu_by_sponsor"
      },
      {
       "dim": "language",
@@ -3552,7 +3757,7 @@
     ]
    },
    "B": {
-    "state": "cannot",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -3566,8 +3771,8 @@
      },
      {
       "dim": "education",
-      "kind": "fail",
-      "code": "edu_low"
+      "kind": "silent",
+      "code": "edu_by_sponsor"
      },
      {
       "dim": "language",
@@ -3582,7 +3787,7 @@
     ]
    },
    "C": {
-    "state": "cannot",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -3596,8 +3801,8 @@
      },
      {
       "dim": "education",
-      "kind": "fail",
-      "code": "edu_low"
+      "kind": "silent",
+      "code": "edu_by_sponsor"
      },
      {
       "dim": "language",

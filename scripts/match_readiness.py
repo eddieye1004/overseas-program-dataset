@@ -146,6 +146,180 @@ FUNDS_NO_FIXED = re.compile(
 # 判据只能落在金额的 note 上（数据里没有独立字段），所以放这里与其它口径同处。
 FUNDS_INCOME = re.compile(r"年收入|年毛收入|年度收入|gross yearly income|annual income|月收入")
 
+# 资金：金额是按「每月」计的，不是一次性总额。
+#
+# 这一条是本轮验收修正（2026-11-13 §4-1）补的。`de-16e-internship` 写「每月至少
+# 752 欧元」、`cny_estimate` 记的是单月 5,900；判定却拿画像的 3 万可动用资金直接
+# 比这个 5,900，判「够」。真相是「资金须覆盖整个实习期」（最长 6 个月），6×5,900
+# 才是要证明的总额。拿月额当总额比，方向永远是「偏松」——这正是本产品最危险的
+# 假「能申」。
+#
+# 处理：能从 timeline/work_conditions 拿到期限上限的，按月数折算成总额再比；
+# 拿不到期限的，判 silent（不可判）并写明「不知道要覆盖几个月」。
+FUNDS_MONTHLY = re.compile(
+    r"每月|每个月|/月|月均|按月|per month|/month|monthly|per-month", re.IGNORECASE
+)
+
+# 资金：金额本身是「按学生口径沿用 / 归类推定」，不是这条许可的独立规定。
+#
+# `is-job-search-after-graduation` 原文：「官方未在本续签的专门说明里单独列出该
+# 数字，因此本字段标注为『按学生口径沿用』，不是本许可的独立规定」。这类数字可以
+# 用来算「大概差多少」，但不能当成官方门槛判「你够/不够」——那是替移民局担保一个
+# 它没为本项目写过的金额。命中时判不可判，写明数字来源存疑。
+# 注意只收「该数字本身是推定」的措辞；「人民币估算仅供参考」是汇率免责声明，
+# 不是金额存疑，单独放在 EXCHANGE_DISCLAIMER 里排除。
+FUNDS_INFERRED = re.compile(
+    r"归类推定|属推定值|是推定值|并非本许可的独立规定|不是本许可的独立规定|按.{0,12}口径沿用"
+)
+EXCHANGE_DISCLAIMER = re.compile(r"人民币估算.{0,20}仅供参考|汇率.{0,12}仅供参考")
+
+# 学历：note 里另写的「完成不少于 N 年高等教育」，且明说不足 N 年不满足。
+#
+# 只有**严格**写法才算额外门槛：若 note 把「N 年」写成与学位并列的备选条件
+# （如澳洲 462「①高等教育学历；②已完成至少 2 年本科」），那不是额外要求，
+# 硬套会把一个已经毕业的人误判成「差年数」。所以要求同一段 note 里同时出现
+# 「不满足 / 不达 / 不符合」，才认为年限是硬门槛。
+EDU_YEARS_STRICT = re.compile(
+    r"(?:不少于|至少|不低于)\s*([一二三四五六七八九十两\d]+)\s*个?\s*(?:学年|年)"
+)
+EDU_YEARS_DISQUALIFY = re.compile(r"不满足|不达|不符合")
+
+# 学历：学位必须在**指定国家/指定名单内院校**完成。结构化字段只有层级，没有
+# 「在哪读的」「读了多少个月」，因此这一维在画像缺院校信息时只能判不可判。
+EDU_PLACE = re.compile(
+    r"须在[^，。；]{0,30}(?:完成|取得|读满|修读)[^，。；]{0,20}(?:课程|学历|学位|学业|文凭|项目)|"
+    r"须由[^，。；]{0,24}(?:授予|出具|认证)|"
+    r"认可名单|指定学习机构|PGWP ?合格|CRICOS|合格.{0,6}院校|"
+    r"授予机构须为|须为.{0,12}大学"
+)
+
+# 学历：结构化字段比 note 更严（note 明说「法规未规定具体学位层级 / 由 Sponsor
+# 判断」）。这类冲突以 note 为准：结构化字段不能拿来判「学历不够」。
+EDU_BY_SPONSOR = re.compile(
+    r"未规定具体学位层级|未设具体学位层级|未规定学位层级|不设具体学位层级|"
+    r"由\s*Sponsor\s*判断|由赞助方判断"
+)
+
+# 前置身份：这类项目只对「已经在该国持学生/居留身份（并在当地完成学业）」的人
+# 开放，不是一张面向所有人开放的表。§4-3 / §4-4 的全部偏差都来自这一条从未
+# 进入判定。三类分开处理，因为「能不能补」不一样：
+#   local_status   须先在该国持学生签/居留（或在当地完成学业）→ 判 gap（差这一项前提）
+#   outside        递交时人须在该国境外 → 画像不采集所在地，判 silent
+#   home_residence 须常驻护照所属地区 → 画像不采集现居地，判 silent
+PRE_LOCAL_STATUS = re.compile(
+    r"须已持|须持[^。；]{0,30}(?:学习居留|学生居留|学生许可|学生签证|Stamp\s*2|F-1|居留许可)|"
+    # 「人在法国——须持 carte de séjour étudiant」这类两路径写法：原文是外语
+    # 证件名，中文正则抓不到，会整条落空。§4-3 要的是「读得到」，不是「读得准
+    # 一处」，所以把常见的外语学生证件名也收进来。
+    r"(?:必须|须)持[^。；]{0,20}(?:carte de séjour|séjour étudiant|student pass|study permit|"
+    r"residence permit|居留许可|长期学习居留)|"
+    r"曾持[^。；]{0,24}(?:居留|许可|签证)|"
+    r"在此身份下完成学业|并在此身份下|"
+    r"(?:必须|须)在[^。；]{0,6}(?:境内|国内)"
+)
+PRE_OUTSIDE = re.compile(r"(?:必须|须)在[^。；]{0,10}境外|人在[^。；]{0,8}境外")
+PRE_HOME_RESIDENCE = re.compile(r"居住于其国籍国|须居住且常驻|常驻其护照|常驻中国|居住且常驻")
+
+# 其余两类 required: true 的 residency_requirement —— 都不构成「身份前置」：
+#   citizenship  原文说的是「须为参与国公民」。那是护照条件，passport 维已经在判，
+#                这里再报一条就是同一个缺口说两遍。
+#   document     原文说的是「须持有效租约 / 购房合同」。这是递交时自行取得的文件，
+#                不是「你得先在该国读过书」，不构成可判的身份门槛。
+# 分开登记（而不是笼统落 None）是为了让「全库顺查」的结果里，每一条 required
+# 的 residency_requirement 都能指到处置理由，而不是一片无法区分的空白。
+PRE_CITIZENSHIP = re.compile(r"参与国公民|协议国公民|须为[^。；]{0,12}国民")
+PRE_DOCUMENT = re.compile(r"租房或购房合同|租赁合同|租房合同|购房合同|租约")
+
+CN_NUM = {
+    "一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5,
+    "六": 6, "七": 7, "八": 8, "九": 9, "十": 10,
+}
+
+
+def cn_int(text: str) -> int | None:
+    """把「四」「六」「十二」这类中文数字转成 int；已是阿拉伯数字就直取。"""
+    text = (text or "").strip()
+    if text.isdigit():
+        return int(text)
+    if text in CN_NUM:
+        return CN_NUM[text]
+    if text.startswith("十") and len(text) == 2 and text[1] in CN_NUM:
+        return 10 + CN_NUM[text[1]]
+    if text.endswith("十") and len(text) == 2 and text[0] in CN_NUM:
+        return CN_NUM[text[0]] * 10
+    if len(text) == 3 and text[1] == "十" and text[0] in CN_NUM and text[2] in CN_NUM:
+        return CN_NUM[text[0]] * 10 + CN_NUM[text[2]]
+    return None
+
+
+def edu_years_required(doc: dict) -> int | None:
+    """note 里另写的硬性年限门槛（结构化 `years_completed` 缺失时用）。"""
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    note = edu.get("note") or ""
+    m = EDU_YEARS_STRICT.search(note)
+    if not m or not EDU_YEARS_DISQUALIFY.search(note):
+        return None
+    years = cn_int(m.group(1))
+    if years and years >= 3:
+        return years
+    return None
+
+
+def stay_months(doc: dict) -> int | None:
+    """许可/停留期的月数上限：优先结构化 `work_conditions.max_stay_months`，
+    退化时读 `timeline.quota_note` 的「最长 N 个月」。都没有则返回 None。"""
+    wc = doc.get("work_conditions") or {}
+    m = wc.get("max_stay_months")
+    if isinstance(m, int) and m > 0:
+        return m
+    tl = doc.get("timeline") or {}
+    text = " ".join(str(tl.get(k) or "") for k in ("quota_note", "processing_time"))
+    hit = re.search(r"最长\s*([一二三四五六七八九十两\d]+)\s*个?月", text)
+    if hit:
+        return cn_int(hit.group(1))
+    return None
+
+
+def precondition_kind(doc: dict) -> str | None:
+    """从 `other_requirements` 里读出「前置身份/在地」类要求，返回处置类别。
+
+    只看 `required: true` 且 `type: residency_requirement` 的条目：这类条件在
+    原文里写得很清楚（「须在英国以学生签证完成课程」「递交时人必须在英国境内」），
+    但结构化字段里没有对应项，过去一个字节都没读（§4-3）。
+    """
+    reqs = (doc.get("eligibility") or {}).get("other_requirements") or []
+    notes = [
+        r.get("note") or ""
+        for r in reqs
+        if r.get("required") is True and r.get("type") == "residency_requirement"
+    ]
+    if not notes:
+        return None
+    joined = " ".join(notes)
+    if PRE_LOCAL_STATUS.search(joined):
+        return "local_status"
+    if PRE_OUTSIDE.search(joined):
+        return "outside"
+    if PRE_HOME_RESIDENCE.search(joined):
+        return "home_residence"
+    if PRE_CITIZENSHIP.search(joined):
+        return "citizenship"
+    if PRE_DOCUMENT.search(joined):
+        return "document"
+    # 读不懂就是读不懂：返回 "unclassified" 而不是 None，这样「全库顺查」能把它
+    # 单独列出来。落 None 会让「没有前置要求」和「有要求但我们没读懂」长得一样，
+    # 而后者正是 §4-3 那个错误的成因。
+    return "unclassified"
+
+
+def precondition_text(doc: dict) -> str:
+    """报告用：前置条件原文首句（只截取，不改写）。"""
+    reqs = (doc.get("eligibility") or {}).get("other_requirements") or []
+    for r in reqs:
+        if r.get("required") is True and r.get("type") == "residency_requirement":
+            return (r.get("note") or "").strip()[:120]
+    return ""
+
 
 def load_programs() -> list[dict]:
     out = []
@@ -435,9 +609,22 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 
     # 学历
     edu = (doc.get("eligibility") or {}).get("education") or {}
+    edu_note = edu.get("note") or ""
     need = EDU_RANK.get(edu.get("minimum_level") or "any", 0)
     have = EDU_RANK.get(pr["education"], 0)
-    if have < need:
+    years_need = edu_years_required(doc)
+    if need and EDU_BY_SPONSOR.search(edu_note):
+        # 结构化的 minimum_level 比 note 更严：note 明说法规没规定学位层级、
+        # 由 Sponsor 判断。这时拿结构化字段判 fail 是替官方拒绝（§4-5）。
+        dims.append(
+            {
+                "dim": "education",
+                "kind": "silent",
+                "code": "edu_by_sponsor",
+                "why": "结构化字段记了最低学位，但原文写明「法规未规定学位层级、由 Sponsor 判断」，以原文为准",
+            }
+        )
+    elif have < need:
         dims.append(
             {
                 "dim": "education",
@@ -448,6 +635,22 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 "why": f"学历门槛 {edu.get('minimum_level')}",
             }
         )
+    elif years_need:
+        # note 另写「须完成不少于四年高等教育，三年制本科不满足」，而结构化
+        # 字段只有层级、没有学制年数（§4-2）。画像也不采集学制，所以只要
+        # note 写了这条硬门槛，就不能默认「层级到了 = 达标」。
+        #
+        # 判 silent 而不是 fail：三年制本科确实不满足，但画像只知道「本科毕业」，
+        # 不知道你读的是三年制还是四年制——替一个四年制的人判「不能申」同样是错。
+        dims.append(
+            {
+                "dim": "education",
+                "kind": "silent",
+                "code": "edu_years_unknown",
+                "need": f"已完成 {years_need} 年高等教育",
+                "why": f"原文另要求完成不少于 {years_need} 年高等教育（学制短于该年限不满足），你的学制年数未采集",
+            }
+        )
     elif edu.get("years_completed") and pr["education"] == "bachelor_in_progress":
         dims.append(
             {
@@ -455,6 +658,19 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 "kind": "silent",
                 "code": "edu_years_unknown",
                 "why": f"另要求已完成 {edu['years_completed']} 年本科，在读无法从他填的信息判定",
+            }
+        )
+    elif EDU_PLACE.search(edu_note):
+        # 学位须在指定国家/名单内院校完成（英国毕业生签证的「在英国以学生
+        # 签证完成课程」、PGWP 的「合格 DLI 完成 ≥8 个月」、HPI 的「认可名单
+        # 院校 + 5 年内授予」）。结构化字段只有层级，画像不采集院校与学制，
+        # 因此这一维不能判 pass（§4-3 / §4-4 / §4-6）。
+        dims.append(
+            {
+                "dim": "education",
+                "kind": "silent",
+                "code": "edu_place_unknown",
+                "why": "原文要求学位在指定国家/名单内院校完成（另有时长或授予时点条件），院校与毕业年份未采集",
             }
         )
     else:
@@ -570,7 +786,16 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
         amount = funds.get("amount") or {}
         cny = amount.get("cny_estimate")
         note = funds.get("note") or ""
-        income_based = bool(FUNDS_INCOME.search((amount.get("note") or "") + " " + note))
+        amount_note = amount.get("note") or ""
+        income_based = bool(FUNDS_INCOME.search(amount_note + " " + note))
+        # 金额是否按月计；期限上限能拿到多少个月。两者合力决定能不能比。
+        monthly = bool(FUNDS_MONTHLY.search(amount_note + " " + note))
+        months = stay_months(doc) if monthly else None
+        inferred_amount = bool(
+            FUNDS_INFERRED.search(
+                EXCHANGE_DISCLAIMER.sub("", amount_note + " " + note)
+            )
+        )
         if not isinstance(cny, (int, float)):
             if FUNDS_NO_FIXED.search(note):
                 dims.append(
@@ -598,6 +823,53 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                     "why": "该项要求的是年收入而非存款，无法与你填的可动用资金直接比较",
                 }
             )
+        elif inferred_amount:
+            # 数字在仓内被标注为「按学生口径沿用 / 归类推定」，不是本许可的
+            # 独立规定。可以用它估算差多少，但不能据此判「够」或「不够」。
+            dims.append(
+                {
+                    "dim": "funds",
+                    "kind": "silent",
+                    "code": "funds_amount_inferred",
+                    "need": f"每年约 {int(cny):,} 元" if monthly else f"约 {int(cny):,} 元",
+                    "why": "该金额在仓内标注为按同类口径沿用/归类推定，不是本项目的独立规定，不作达标判断",
+                }
+            )
+        elif monthly and not months:
+            # 金额按「每月」计，但仓内拿不到期限上限 → 不知道要覆盖几个月，
+            # 既不能说够也不能说差多少。判不可判并写明缺的是期限（§4-1）。
+            dims.append(
+                {
+                    "dim": "funds",
+                    "kind": "silent",
+                    "code": "funds_term_unknown",
+                    "need": f"每月约 {int(cny):,} 元",
+                    "why": "该门槛是每月金额，须乘以停留月数才是要证明的总额；仓内未登记停留期上限，无法折算",
+                }
+            )
+        elif monthly and pr["budget_cny"] < cny * months:
+            # 月额门槛：按月数折算成总额再比（§4-1，de-16e 的 6 个月口径）
+            total = cny * months
+            dims.append(
+                {
+                    "dim": "funds",
+                    "kind": "gap",
+                    "code": "funds_short",
+                    "need": f"约 {int(total):,} 元（每月 {int(cny):,} × {months} 个月）",
+                    "have": f"{pr['budget_cny']:,} 元",
+                    "why": f"资金证明差约 {int(total) - pr['budget_cny']:,} 元",
+                }
+            )
+        elif monthly:
+            total = cny * months
+            dims.append(
+                {
+                    "dim": "funds",
+                    "kind": "pass",
+                    "code": "funds_ok",
+                    "why": f"预算 ≥ 约 {int(total):,} 元（每月 {int(cny):,} × {months} 个月）",
+                }
+            )
         elif pr["budget_cny"] < cny:
             dims.append(
                 {
@@ -613,6 +885,79 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             dims.append(
                 {"dim": "funds", "kind": "pass", "code": "funds_ok", "why": f"预算 ≥ 约 {int(cny):,} 元"}
             )
+
+    # 前置身份 / 在地要求（§4-3、§4-4）
+    #
+    # 这一段过去不存在：judge() 只读五处结构化字段，`other_requirements` 一个字
+    # 没读。于是「只对已在英留学生开放」的毕业生签证被判成「谁都能申」。
+    # 现在按原文类别分三档，宁可不可判，也不静默判过。
+    pre = precondition_kind(doc)
+    if pre == "local_status":
+        dims.append(
+            {
+                "dim": "precondition",
+                "kind": "gap",
+                "code": "pre_local_status",
+                "need": "先在该国持学生/居留身份并完成学业",
+                "have": "未采集该项经历",
+                "why": "原文把「已在该国持学生签/居留并完成学业」写成本项目的前置身份，这是能补的一项（先走留学路径）",
+            }
+        )
+        if EDU_PLACE.search(edu_note):
+            # 同一件事在教育维已经判过 silent，两处都报会让用户看到两条重复缺口
+            dims = [d for d in dims if d["code"] != "edu_place_unknown"]
+    elif pre == "outside":
+        dims.append(
+            {
+                "dim": "precondition",
+                "kind": "silent",
+                "code": "pre_outside_country",
+                "why": "原文要求在递交时人位于该国境外，画像不采集现居地，无法判定",
+            }
+        )
+    elif pre == "home_residence":
+        dims.append(
+            {
+                "dim": "precondition",
+                "kind": "silent",
+                "code": "pre_home_residence",
+                "why": "原文要求常驻护照所属地区，画像不采集现居地，无法判定",
+            }
+        )
+    elif pre == "citizenship":
+        # 原文这一条是「须为参与国公民」——国籍条件，passport 维已经在判同一件事。
+        # 报 na（不构成新缺口），但必须留痕：落空不让它看起来「这条要求不存在」。
+        dims.append(
+            {
+                "dim": "precondition",
+                "kind": "na",
+                "code": "pre_citizenship_basis",
+                "why": "原文该项是国籍条件，已由护照维判定，不另算缺口",
+            }
+        )
+    elif pre == "document":
+        # 「须持有效租约/购房合同」是递交时自行取得的文件，不是身份前置。
+        # 它与「你得先在该国读过书」不是一回事：前者人人可办，后者决定了这条
+        # 路对你开不开。判 na，不让它变成一条假缺口。
+        dims.append(
+            {
+                "dim": "precondition",
+                "kind": "na",
+                "code": "pre_document_basis",
+                "why": "原文该项是递交时自备的材料（租约等），不是身份前置条件",
+            }
+        )
+    elif pre == "unclassified":
+        # 有 required 的前置身份要求，但原文类别没认出来。**不能落 pass**：
+        # §4-3 的错就是从这里来的。判 silent 并写明「有这条、我们没读懂」。
+        dims.append(
+            {
+                "dim": "precondition",
+                "kind": "silent",
+                "code": "pre_unclassified",
+                "why": "该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定",
+            }
+        )
 
     kinds = {d["kind"] for d in dims}
     if "fail" in kinds:
@@ -640,7 +985,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
 # --------------------------------------------------------------------------
 
-RULES_VERSION = 3
+RULES_VERSION = 4
 
 
 def flags_of(doc: dict) -> dict:
@@ -674,6 +1019,10 @@ def flags_of(doc: dict) -> dict:
     lang_note = lang.get("note") or ""
     funds_note = funds.get("note") or ""
     cny = amount.get("cny_estimate")
+    amount_note = amount.get("note") or ""
+    # 月额门槛的期限上限：没有期限时前端要判 funds_term_unknown（§4-1）
+    monthly = bool(FUNDS_MONTHLY.search(amount_note + " " + funds_note))
+    months = stay_months(doc) if monthly else None
 
     return {
         "passport": passport,
@@ -685,6 +1034,16 @@ def flags_of(doc: dict) -> dict:
         "education": {
             "level": edu.get("minimum_level"),
             "years_completed": edu.get("years_completed"),
+            # note 另写的硬性年限门槛（§4-2）。结构化字段没有它时，靠它把
+            # 「本科毕业」判成不可判，而不是直接判达标。
+            "years_required": edu_years_required(doc),
+            # 学位须在指定国家/名单内院校完成（§4-3/§4-4/§4-6）：结构化只有层级。
+            "place_constrained": bool(EDU_PLACE.search(edu.get("note") or "")),
+            # 结构化字段比 note 严：以 note 为准（§4-5）。
+            "by_sponsor": bool(
+                EDU_RANK.get(edu.get("minimum_level") or "any", 0)
+                and EDU_BY_SPONSOR.search(edu.get("note") or "")
+            ),
         },
         "language": {
             "required": lang.get("required") is True,
@@ -707,7 +1066,18 @@ def flags_of(doc: dict) -> dict:
             "income_basis": bool(
                 FUNDS_INCOME.search((amount.get("note") or "") + " " + funds_note)
             ),
+            # 月额门槛：前端必须乘月数再比，不知道月数就判不可判（§4-1）
+            "monthly": monthly,
+            "months": months,
+            # 金额被标注为「按同类口径沿用 / 归类推定」：不作达标判断
+            "amount_inferred": bool(
+                FUNDS_INFERRED.search(EXCHANGE_DISCLAIMER.sub("", amount_note + " " + funds_note))
+            ),
         },
+        # 前置身份 / 在地要求（§4-3）。`kind` 取值与 Python judge() 的
+        # precondition 分支一一对应：local_status / outside / home_residence，
+        # 无要求时为 null。
+        "precondition": {"kind": precondition_kind(doc)},
         "window": {
             "type": sch.get("type"),
             "status": sch.get("status"),
