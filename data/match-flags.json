@@ -1,5 +1,5 @@
 {
- "rules_version": 2,
+ "rules_version": 3,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
@@ -22,7 +22,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": true,
-    "cefr": true
+    "cefr": true,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -42,7 +43,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -58,7 +59,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -94,7 +96,8 @@
     "required": true,
     "ielts_min": 4.5,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -130,7 +133,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -150,7 +154,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -166,7 +170,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -202,7 +207,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -238,7 +244,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": false,
-    "cefr": true
+    "cefr": true,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -274,7 +281,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -310,7 +318,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -346,7 +355,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": false,
-    "cefr": true
+    "cefr": true,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -366,7 +376,7 @@
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "unknown",
-    "taiwan_china": "missing",
+    "taiwan_china": "unknown",
     "note_open": false
    },
    "age": {
@@ -382,7 +392,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -402,7 +413,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -418,7 +429,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -438,7 +450,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -454,7 +466,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -474,7 +487,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -490,7 +503,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -526,7 +540,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -562,7 +577,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": true,
-    "cefr": true
+    "cefr": true,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -582,7 +598,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -598,7 +614,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -634,7 +651,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -654,7 +672,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -670,7 +688,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -690,7 +709,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -706,7 +725,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -742,7 +762,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -778,7 +799,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -798,7 +820,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -814,7 +836,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -850,7 +873,8 @@
     "required": true,
     "ielts_min": 6.0,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -886,7 +910,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": true,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -922,7 +947,8 @@
     "required": true,
     "ielts_min": 5.5,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -958,7 +984,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -994,7 +1021,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -1014,7 +1042,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -1030,7 +1058,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -1050,7 +1079,7 @@
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
-    "taiwan_china": "missing",
+    "taiwan_china": "eligible",
     "note_open": true
    },
    "age": {
@@ -1066,7 +1095,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -1102,7 +1132,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -1138,7 +1169,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -1174,7 +1206,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -1210,7 +1243,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -1246,7 +1280,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -1282,7 +1317,8 @@
     "required": false,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -1318,7 +1354,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": true,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -1354,7 +1391,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": true,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,
@@ -1390,7 +1428,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": true,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": true,
@@ -1426,7 +1465,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": false,
-    "cefr": false
+    "cefr": false,
+    "no_test": true
    },
    "funds": {
     "required": false,
@@ -1462,7 +1502,8 @@
     "required": true,
     "ielts_min": null,
     "by_design": true,
-    "cefr": false
+    "cefr": false,
+    "no_test": false
    },
    "funds": {
     "required": false,

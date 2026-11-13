@@ -1,5 +1,5 @@
 {
- "rules_version": 2,
+ "rules_version": 3,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -183,7 +183,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -459,7 +459,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -1011,7 +1011,7 @@
      {
       "dim": "passport",
       "kind": "silent",
-      "code": "passport_missing"
+      "code": "passport_unknown"
      },
      {
       "dim": "age",
@@ -1103,7 +1103,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -1195,7 +1195,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -1287,7 +1287,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -1563,7 +1563,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -1747,7 +1747,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -1839,7 +1839,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -2115,7 +2115,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -2667,7 +2667,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -2759,7 +2759,7 @@
      {
       "dim": "passport",
       "kind": "pass",
-      "code": "passport_open"
+      "code": "passport_ok"
      },
      {
       "dim": "age",
@@ -3633,8 +3633,8 @@
      },
      {
       "dim": "language",
-      "kind": "silent",
-      "code": "lang_no_score"
+      "kind": "na",
+      "code": "lang_no_test"
      },
      {
       "dim": "funds",
@@ -3644,7 +3644,7 @@
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -3663,8 +3663,8 @@
      },
      {
       "dim": "language",
-      "kind": "gap",
-      "code": "lang_missing"
+      "kind": "na",
+      "code": "lang_no_test"
      },
      {
       "dim": "funds",
@@ -3693,8 +3693,8 @@
      },
      {
       "dim": "language",
-      "kind": "silent",
-      "code": "lang_no_score"
+      "kind": "na",
+      "code": "lang_no_test"
      },
      {
       "dim": "funds",

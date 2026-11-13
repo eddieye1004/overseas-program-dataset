@@ -41,7 +41,14 @@ export interface ProgramFlags {
   };
   age: { min: number | null; max: number | null; unverified: boolean };
   education: { level: string | null; years_completed: number | null };
-  language: { required: boolean; ielts_min: number | null; by_design: boolean; cefr: boolean };
+  language: {
+    required: boolean;
+    ielts_min: number | null;
+    by_design: boolean;
+    cefr: boolean;
+    /** 官方不要求任何标准化考试（项目方测试/雇主面试把关），判 na 不判 silent */
+    no_test: boolean;
+  };
   funds: {
     required: boolean;
     cny_estimate: number | null;
@@ -65,7 +72,7 @@ export interface MatchFlagsFile {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 2;
+export const RULES_VERSION = 3;
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
@@ -180,6 +187,10 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
   const lang = flags.language;
   if (!lang.required) {
     dims.push({ dim: 'language', kind: 'na', code: 'lang_none' });
+  } else if (lang.no_test) {
+    // 官方要求英语沟通能力，但不要求任何标准化考试。判 na 而非 silent：
+    // silent 会让用户以为自己还有未知的语言缺口，而官方已经写明不用考。
+    dims.push({ dim: 'language', kind: 'na', code: 'lang_no_test' });
   } else if (lang.ielts_min != null) {
     if (pr.ielts == null) {
       dims.push({

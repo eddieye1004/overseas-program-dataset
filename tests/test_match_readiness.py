@@ -118,16 +118,31 @@ class VerdictSemantics(unittest.TestCase):
             self.assertEqual(kinds["language"], "na", pid)
 
     def test_swt_language_is_not_silently_passed(self):
-        """美方 SWT 是个反例，值得单独钉住：官方写的是「无需雅思/托福，
-        但须通过项目方英语测试及美方雇主面试」。
+        """美方 SWT 与三个 Sponsor 把关的项目同构，口径必须一致。
 
-        它不属于「不设门槛」（na）——确实有一道测试；也不属于「有分数线但
-        没登记」（absent）——分数线这个概念不适用。当前实现判 silent
-        （要求语言证明但仓内无分数线）。这是一个已知的保守选择：
-        对用户表现为「这一维不可判，请查官网」，而不是假装通过。
-        写成测试是为了让它可见，避免有人在补数据时把这条静默改成 can。"""
-        kinds = {d["dim"]: d["kind"] for d in self.judge("us-j1-summer-work-travel")[1]}
-        self.assertEqual(kinds["language"], "silent")
+        官方写的是「无需雅思/托福成绩，但必须具备足以在英语工作环境中沟通的
+        能力。须通过项目方英语测试及美方雇主面试」——要求和 J-1 Intern
+        「认可考试 / 学校证明 / Sponsor 面试三选一」、Camp Counselor「由
+        Sponsor 面试评估」是同一件事：有一道测试，但换算不成分数。
+
+        本测试原先钉的是 silent，理由是「保守选择，让用户去查官网」。那让
+        同一个概念在仓内落成两种结果，而分界只是措辞命中与否：
+        us-j1-intern 的 note 里有「面试评估」命中 LANG_BY_DESIGN 判 na；
+        SWT 写的是「无需雅思/托福」没有命中，落到 lang_no_score 判 silent。
+        两个项目对用户的实际约束完全相同，一个说不挡人、一个说不可判。
+
+        现在改钉 na（code = lang_no_test），并保住原测试真正想守的那条底线：
+        **不许判 can**。语言这一维不再伪装成缺口，但整体结论仍因年龄未核实
+        而不可判 —— 「不挡人」不等于「能申」。"""
+        dims = self.judge("us-j1-summer-work-travel")[1]
+        kinds = {d["dim"]: d["kind"] for d in dims}
+        codes = {d["dim"]: d["code"] for d in dims}
+        self.assertEqual(kinds["language"], "na")
+        self.assertEqual(codes["language"], "lang_no_test")
+        # 底线不变：语言不挡人，但整体仍不可判（年龄 ⚠️ 未核实）
+        for sample in ("A", "B", "C"):
+            state = mr.judge(self.docs["us-j1-summer-work-travel"], mr.SAMPLES[sample])[0]
+            self.assertNotEqual(state, "can", sample)
 
     def test_no_age_limit_is_na(self):
         kinds = {d["dim"]: d["kind"] for d in self.judge("de-16e-internship")[1]}
@@ -184,6 +199,40 @@ class VerdictSemantics(unittest.TestCase):
         state, dims = mr.judge(self.docs["au-462-work-holiday"], mr.SAMPLES["C"])
         self.assertEqual(state, "cannot")
         self.assertEqual(dims[0]["code"], "passport_no")
+
+    def test_tw_china_alias_is_read(self):
+        """台湾护照在数据里有 `taiwan_china` 与 `tw_china` 两种键，读取端必须都认。
+
+        12 个文件登记的是 `tw_china`（au-407-training、au-485-vocational、
+        dk-working-holiday、es-busqueda-empleo、fi-look-for-work、
+        fr-recherche-emploi、ie-third-level-graduate、
+        is-job-search-after-graduation、it-ricerca-lavoro、mt-nomad-residence、
+        sg-employment-pass、sg-s-pass）。只认 `taiwan_china` 会让这 12 条对
+        台湾护照判成 passport_missing，而它们的 note 大多写着「未按国籍设限」，
+        于是其它护照走 NOTE_OPEN_NATIONALITY 判 pass、唯独台湾判 silent ——
+        一个写明可申的项目变成「不可判」。
+
+        这里逐条比对：字段里登记了 eligible 的，判定的 passport 维就不能是
+        silent。数据本体不动，修在读取端。"""
+        checked = 0
+        for pid, doc in self.docs.items():
+            pt = (doc.get("eligibility") or {}).get("passport_types") or {}
+            if "tw_china" not in pt:
+                continue
+            checked += 1
+            _, dims = mr.judge(doc, mr.SAMPLES["C"])
+            passport = next(d for d in dims if d["dim"] == "passport")
+            if pt["tw_china"] == "eligible":
+                self.assertEqual(
+                    passport["kind"], "pass",
+                    f"{pid} 的 tw_china=eligible 未被读到（判成 {passport['code']}）",
+                )
+                self.assertEqual(passport["code"], "passport_ok", pid)
+        self.assertGreaterEqual(checked, 12, "tw_china 的项目数变少了，确认是否已统一键名")
+        # 反向别名同样要认，避免将来数据统一成 taiwan_china 后旧键读取路径失效
+        self.assertEqual(mr.passport_value({"tw_china": "eligible"}, "taiwan_china"), "eligible")
+        self.assertEqual(mr.passport_value({"taiwan_china": "eligible"}, "tw_china"), "eligible")
+        self.assertIsNone(mr.passport_value({}, "taiwan_china"))
 
     # —— 5. 每维必须带 code ——
     def test_every_dim_has_code(self):

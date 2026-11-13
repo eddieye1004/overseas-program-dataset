@@ -153,6 +153,26 @@ const INDEX = JSON.parse(
   ),
 );
 const EXPECT_TOTAL = INDEX.length;
+
+// 三样例画像的结论由 scripts/match_readiness.py 算出，落成仓库根的
+// data/match-samples.json（只给测试用，不进 web/public —— 那是给浏览器读的，
+// 而三样例的结论不该被当成首屏数据传下去）。e2e 断言界面计数时直接读它现算，
+// 不写死数字：写死的版本会在判定口径调整时红在断言本身，而不是红在真实偏差。
+const STATE_LABEL = { can: '能申', gap: '差什么', cannot: '不能申', unknown: '不可判' };
+const SAMPLES = JSON.parse(
+  await (await import('node:fs/promises')).readFile(
+    new URL('../../data/match-samples.json', import.meta.url),
+    'utf8',
+  ),
+);
+function sampleStateCounts(key) {
+  const out = {};
+  for (const per of Object.values(SAMPLES.verdicts ?? {})) {
+    const st = per?.[key]?.state;
+    if (st) out[st] = (out[st] ?? 0) + 1;
+  }
+  return out;
+}
 const EXPECT_CRITICAL = INDEX.filter((p) => (p.risk_levels ?? []).includes('critical')).length;
 const EXPECT_ELIGIBLE = INDEX.filter((p) => p.status === 'eligible').length;
 const EXPECT_NOT_ELIGIBLE = INDEX.filter((p) => p.status === 'not_eligible').length;
@@ -1495,10 +1515,22 @@ console.log('\n[29] 窗口日历：三档确定性不许混排');
       l: s.querySelector('.stat__label').textContent,
     })))`),
   );
+  // 期望值从 data/match-samples.json 现算，不写死数字。
+  // 原先这里钉的是 10，而它自称「与 Python 一致」——一旦判定口径变了，
+  // Python 侧算出新数字、这里还钉着旧值，红的是这条断言而不是真实偏差，
+  // 于是下一个人会把数字改回去（或直接改断言），闸门就失效了。
+  const expectedB = sampleStateCounts('B');
   ok(
-    'B 画像出现「差什么」>0 且计数与 Python 一致（10）',
-    (statB.find((s) => s.l === '差什么')?.n ?? 0) === 10,
+    `B 画像出现「差什么」>0 且计数与 Python 产物一致（${expectedB.gap ?? 0}）`,
+    (statB.find((s) => s.l === '差什么')?.n ?? 0) === (expectedB.gap ?? 0),
     JSON.stringify(statB),
+  );
+  ok(
+    `B 画像四态计数逐项与 Python 产物一致`,
+    ['can', 'gap', 'cannot', 'unknown'].every(
+      (k) => (statB.find((s) => s.l === STATE_LABEL[k])?.n ?? 0) === (expectedB[k] ?? 0),
+    ),
+    JSON.stringify({ ui: statB, py: expectedB }),
   );
   const gapRow = await evalJs(`(() => {
     const row = document.querySelector('.vsec--warn .vrow');

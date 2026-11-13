@@ -59,6 +59,14 @@ import re
 import sys
 from collections import Counter, OrderedDict
 
+# 与 build_calendar / gen_sources / track / sync_issue 保持一致：Windows 控制台
+# 默认 cp936，--json 输出里的「«」等字符会抛 UnicodeEncodeError，于是 CLI 在
+# Windows 上直接崩、在 Linux CI 上没事——同一份代码两种结果，最难查的一类。
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+# stderr 一起定编码：中文错误信息会变成非 UTF-8 字节，测试按 utf-8 读就崩在
+# 解码而不是报错本身。
+sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROGRAMS = os.path.join(ROOT, "data", "programs")
 DOC = os.path.join(ROOT, "docs", "audit", "2026-11-12-match-readiness.md")
@@ -104,6 +112,21 @@ LANG_BY_DESIGN = re.compile(
 # 公开对照表折算。判为 text：可可靠换算，但用户在界面上看到的是换算值。
 LANG_CEFR_LADDER = re.compile(r"CEFR|CLB|NCLC")
 
+# 语言：数据里用「一条 test=none、min_score=0」表示「官方不要求任何标准化考试」。
+#
+# 目前只有 us-j1-summer-work-travel 这么写：`required: true`（它确实要求英语沟通
+# 能力）+ `tests: [{test: "none", min_score: 0}]` + note「无需雅思/托福成绩，
+# 但必须具备足以在英语工作环境中沟通的能力。须通过项目方英语测试及美方雇主面试」。
+#
+# 不认这个哨兵时，tests 里筛不出 IELTS 条目、note 也命中不了 LANG_BY_DESIGN
+# （那条正则收的是「未设分数线 / 面试评估」等措辞，这条原文是「无需雅思/托福成绩」），
+# 于是落到 lang_no_score：一个写明「无需雅思托福」的项目被判「语言维度不可判」，
+# 用户会以为自己在语言上还有未知缺口。
+#
+# 判 na 而不是 pass：官方确实要求英语沟通能力，只是不用标准化考试证明，
+# 因此这一维不构成「够不够」的可比门槛 —— 与 funds_by_design 同一处理逻辑。
+LANG_NO_STANDARD_TEST = re.compile(r"无需雅思|无需托福|不需要雅思|不要求雅思|无需提供雅思")
+
 # 资金：官方明文「不设固定金额 / 未写死金额」，金额由外管局或按指标计算。
 # 收的写法都很具体，因为一旦放宽就会把「要求 3 万但没登记」这种真缺口
 # 误判成「不设门槛」——那正好是最该暴露给用户的一类缺失。
@@ -140,8 +163,8 @@ def load_programs() -> list[dict]:
 
 def probe_passport(doc: dict, key: str) -> tuple[str, str, str]:
     pt = (doc.get("eligibility") or {}).get("passport_types") or {}
-    if key in pt:
-        val = pt[key]
+    val = passport_value(pt, key)
+    if val is not None:
         return ("ok", f"字段已登记 = {val}", f"eligibility.passport_types.{key}")
     note = pt.get("note") or ""
     if NOTE_OPEN_NATIONALITY.search(note):
@@ -175,6 +198,28 @@ def probe_education(doc: dict) -> tuple[str, str, str]:
     return ("ok", str(lvl), "")
 
 
+def has_none_sentinel(lang: dict) -> bool:
+    """tests 里是否有 `test: "none"` 这个「不要求任何标准化考试」的哨兵。"""
+    return any(str(t.get("test") or "").lower() == "none" for t in (lang.get("tests") or []))
+
+
+def has_standard_test(lang: dict) -> bool:
+    """tests 里是否有真正可比分的标准化考试条目。
+
+    `test: "none"` 是本仓约定的哨兵（见 LANG_NO_STANDARD_TEST 的说明），
+    它带 min_score 0，若按「有 min_score 就算登记了分数线」去认，会把
+    「不要求任何考试」读成「雅思门槛 0 分」——那是替官方宣布人人达标。
+    """
+    if has_none_sentinel(lang):
+        return False
+    for t in lang.get("tests") or []:
+        if t.get("test") in ("IELTS", "TOEFL_iBT", "PTE", "Cambridge") and isinstance(
+            t.get("min_score"), (int, float)
+        ):
+            return True
+    return False
+
+
 def probe_language(doc: dict) -> tuple[str, str, str]:
     lang = (doc.get("eligibility") or {}).get("language") or {}
     if lang.get("required") is not True:
@@ -185,7 +230,7 @@ def probe_language(doc: dict) -> tuple[str, str, str]:
         if t.get("test") in ("IELTS", "TOEFL_iBT", "PTE", "Cambridge")
         and isinstance(t.get("min_score"), (int, float))
     ]
-    if tests:
+    if tests and has_standard_test(lang):
         # 以雅思为口径，没有雅思条目时退回任一有数值的考试
         pick = next((t for t in tests if t.get("test") == "IELTS"), tests[0])
         return (
@@ -194,6 +239,12 @@ def probe_language(doc: dict) -> tuple[str, str, str]:
             "",
         )
     note = lang.get("note") or ""
+    if LANG_NO_STANDARD_TEST.search(note) or has_none_sentinel(lang):
+        return (
+            "na",
+            "要求英语沟通能力，但官方不要求任何标准化考试（由项目方测试/雇主面试把关）",
+            note[:90],
+        )
     if LANG_BY_DESIGN.search(note):
         return ("na", "要求英语能力，但官方明确不设分数线（面试/自证/仅计分）", note[:90])
     if LANG_CEFR_LADDER.search(note):
@@ -300,6 +351,32 @@ SAMPLES = OrderedDict(
 )
 
 
+def passport_value(pt: dict, key: str):
+    """读一条项目的某护照结论，兼容两种历史写法。
+
+    数据里台湾护照有 `taiwan_china` 与 `tw_china` 两种键：validate.py 的 schema
+    只枚举前者，但 12 个文件登记的是后者（au-407-training、au-485-vocational、
+    dk-working-holiday 等）。只认 `taiwan_china` 会让这 12 条对台湾护照的
+    结论变成「未登记」——`judge()` 落到 passport_missing，判 silent。
+
+    影响是**真实且不对称**的：这 12 条项目的 note 大多写着「官方未按国籍设限」，
+    于是未知护照会走 NOTE_OPEN_NATIONALITY 判 pass；唯独台湾护照因为键名对不上
+    被判 silent，一个明明写明可申的项目变成「不可判」。
+
+    修在读取端而不是批量改数据：两种键表达的是同一件事，读取时归一即可；
+    直接改 12 个文件的数据本体属于「为了让判定好看而去动被审计的对象」。
+    真正的收敛（统一成 `taiwan_china`）应由 validate.py 升级为错误来完成，
+    那是一次独立的数据修订，不混进判定逻辑的修复里。
+    """
+    if key in pt:
+        return pt[key]
+    if key == "taiwan_china":
+        return pt.get("tw_china")
+    if key == "tw_china":
+        return pt.get("taiwan_china")
+    return None
+
+
 def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     """返回 (can|cannot|gap|unknown, 逐维结论)。
 
@@ -313,7 +390,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 
     # 护照
     pt = (doc.get("eligibility") or {}).get("passport_types") or {}
-    val = pt.get(pr["passport"])
+    val = passport_value(pt, pr["passport"])
     if val == "not_eligible":
         dims.append({"dim": "passport", "kind": "fail", "code": "passport_no", "why": "该护照明确不可申"})
     elif val == "eligible":
@@ -394,7 +471,17 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             if t.get("test") == "IELTS" and isinstance(t.get("min_score"), (int, float))
         ]
         note = lang.get("note") or ""
-        if tests:
+        # 哨兵优先于 tests：`test: "none"` 带 min_score 0，不能被当成「雅思门槛 0 分」
+        if has_none_sentinel(lang) or LANG_NO_STANDARD_TEST.search(note):
+            dims.append(
+                {
+                    "dim": "language",
+                    "kind": "na",
+                    "code": "lang_no_test",
+                    "why": "官方不要求任何标准化语言考试（由项目方测试/雇主面试把关）",
+                }
+            )
+        elif tests:
             need_score = tests[0]["min_score"]
             if pr["ielts"] is None:
                 dims.append(
@@ -444,7 +531,16 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                     "code": "lang_missing",
                     "need": "语言成绩（项目要求）",
                     "have": "未提供",
-                    "why": "该项目要求语言成绩，你没填；具体分数线仓内未登记，需查官网",
+                    # 措辞不能一律说「仓内未登记分数线」：CLB/CEFR 类项目是
+                    # **登记了档位**（如 PGWP 的 CLB 7 / CLB 5），只是没有雅思
+                    # 数字。一句话盖成「未登记」会让用户以为数据缺失，而真相是
+                    # 单位不同、需按官方对照表折算——那正是界面 lang_cefr 要说的事。
+                    "why": (
+                        "该项目要求语言成绩，你没填；官方以 CLB/CEFR 档位表述，"
+                        "需按官方对照表折算后再自评"
+                        if LANG_CEFR_LADDER.search(note)
+                        else "该项目要求语言成绩，你没填；具体分数线仓内未登记，需查官网"
+                    ),
                 }
             )
         elif LANG_CEFR_LADDER.search(note):
@@ -544,7 +640,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
 # --------------------------------------------------------------------------
 
-RULES_VERSION = 2
+RULES_VERSION = 3
 
 
 def flags_of(doc: dict) -> dict:
@@ -562,7 +658,7 @@ def flags_of(doc: dict) -> dict:
     amount = funds.get("amount") or {}
     sch = (doc.get("timeline") or {}).get("schedule") or {}
 
-    passport = {k: (pt.get(k) or "missing") for k in PASSPORTS}
+    passport = {k: (passport_value(pt, k) or "missing") for k in PASSPORTS}
     passport["note_open"] = bool(NOTE_OPEN_NATIONALITY.search(pt.get("note") or ""))
 
     ielts = [
@@ -570,6 +666,11 @@ def flags_of(doc: dict) -> dict:
         for t in (lang.get("tests") or [])
         if t.get("test") == "IELTS" and isinstance(t.get("min_score"), (int, float))
     ]
+    no_test = has_none_sentinel(lang) or bool(LANG_NO_STANDARD_TEST.search(lang.get("note") or ""))
+    if no_test:
+        # 哨兵在时不能把 min_score 0 当成分数线传出去：前端拿到 ielts_min=0
+        # 会判「人人达标」，那是替官方宣布条件。
+        ielts = []
     lang_note = lang.get("note") or ""
     funds_note = funds.get("note") or ""
     cny = amount.get("cny_estimate")
@@ -593,6 +694,10 @@ def flags_of(doc: dict) -> dict:
             # 判 na（不挡人）、后者判 silent（不可判），合并会把后者误放行。
             "by_design": bool(LANG_BY_DESIGN.search(lang_note)),
             "cefr": bool(LANG_CEFR_LADDER.search(lang_note)),
+            # 第三个也是 na 但原因不同：官方不要求任何标准化考试（test=none
+            # 哨兵或 note 明写「无需雅思/托福」）。前端按它判 lang_no_test，
+            # 不再落到「要求语言但没登记分数线」的 silent。
+            "no_test": no_test,
         },
         "funds": {
             "required": funds.get("required") is True,
