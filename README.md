@@ -197,8 +197,12 @@ pnpm build        # 产出静态站到 web/dist
 
 ```bash
 python scripts/validate.py                  # 数据完整性与格式（离线）
-python scripts/validate.py --check-links    # 同时检查官方链接存活（需网络）
-python -m pytest -q                         # 校验器、复核台账与 issue 同步的 118 个测试
+python scripts/validate.py --strict         # 警告也视为失败（CI 定时任务用）
+python scripts/validate.py --check-links --timeout 20  # 同时检查官方链接存活（需网络）
+python scripts/gen_sources.py --check       # data/sources.md 与数据一致（CI 闸门）
+python scripts/match_readiness.py --check   # 匹配判定产物与数据一致（CI 闸门）
+python -m unittest discover -s tests -v     # Python 测试（CI 口径，见 validate.yml「运行单元测试」）
+python -m pytest -q                         # 需自行安装，非 CI 口径
 node web/scripts/smoke-test.mjs             # 前端纯逻辑断言
 python scripts/track.py                     # 重算复核台账（写 data/tracking.json 与 data/FRESHNESS.md）
 python scripts/build_calendar.py            # 重算窗口日历（写 data/calendar.json）
