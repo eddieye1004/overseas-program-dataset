@@ -47,6 +47,8 @@ export interface ProgramFlags {
     years_required: number | null;
     /** note 另写的「须在申请日前 N 年内完成学业/取得学位」毕业时限——P2-0 */
     recency_required: number | null;
+    /** 原文把资格写成「须属于某几类参与人身份之一」，学历层级表达不了——P2-0 */
+    category_required: boolean;
     /** 学位须在指定国家/名单内院校完成，画像不采集院校与毕业年份——§4-3/4/6 */
     place_constrained: boolean;
     /** 结构化层级比 note 严，原文写「由 Sponsor 判断」，以原文为准——§4-5 */
@@ -83,6 +85,8 @@ export interface ProgramFlags {
       | 'document'
       | 'unclassified'
       | null;
+    /** 原文要求「岗位须预先落实」——材料/流程前提，与 kind 可同时成立——P2-0 */
+    job_placement?: boolean;
   };
   window: {
     type: string | null;
@@ -229,6 +233,16 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
       kind: 'silent',
       code: 'edu_recency_unknown',
       need: `申请日前 ${flags.education.recency_required} 年内完成学业或研究`,
+    });
+  } else if (flags.education.category_required) {
+    // 原文把资格写成「须属于某几类参与人身份之一，且由 Sponsor 判断是否成立」
+    // （P2-0）。结构化 minimum_level 是 any，判 edu_ok 等于说「学历层级任何值都
+    // 达标」——那句话与「你是在读学生/在职青年/教师/有专门技能吗」不是一回事。
+    // 与 §4-5 的 edu_by_sponsor 同口径：「由 Sponsor 判断」的事我们没有判据。
+    dims.push({
+      dim: 'education',
+      kind: 'silent',
+      code: 'edu_category_unknown',
     });
   } else if (flags.education.place_constrained) {
     // 学位须在指定国家/名单内院校完成（英国毕业生签证 / PGWP 的 DLI /
@@ -378,6 +392,18 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
   } else if (pre === 'unclassified') {
     // 有必填的前置要求但原文类别没认出来 —— 不能落 pass，那是 §4-3 的错因。
     dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_unclassified' });
+  }
+
+  // 岗位前置（P2-0）：与上面的身份类别**不是** if/else 关系，两者可同时成立
+  // （us-j1-camp-counselor 既是四类身份之一，又必须先落实营地岗位）。
+  if (flags.precondition?.job_placement) {
+    dims.push({
+      dim: 'precondition',
+      kind: 'gap',
+      code: 'pre_job_placement',
+      need: '预先落实的岗位（Sponsor 不得为未落实岗位者办理入境）',
+      have: '未采集岗位落实情况',
+    });
   }
 
   const kinds = new Set(dims.map((d) => d.kind));

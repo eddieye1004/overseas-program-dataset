@@ -1,5 +1,5 @@
 {
- "rules_version": 4,
+ "rules_version": 5,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
@@ -18,6 +18,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": 4,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -38,7 +40,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -64,6 +67,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -84,7 +89,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "outside"
+    "kind": "outside",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -110,6 +116,8 @@
     "level": "bachelor_in_progress",
     "years_completed": 2,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -130,7 +138,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "fixed_dates",
@@ -156,6 +165,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -176,7 +187,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -202,6 +214,8 @@
     "level": "vocational",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -222,7 +236,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -248,6 +263,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -268,7 +285,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "fixed_dates",
@@ -294,6 +312,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -314,7 +334,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -340,6 +361,8 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -360,7 +383,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -386,6 +410,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -406,7 +432,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -432,6 +459,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -452,7 +481,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -478,6 +508,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -498,7 +530,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "citizenship"
+    "kind": "citizenship",
+    "job_placement": false
    },
    "window": {
     "type": "no_window",
@@ -524,6 +557,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -544,7 +579,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -570,6 +606,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -590,7 +628,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -616,6 +655,8 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -636,7 +677,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -662,6 +704,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -682,7 +726,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -708,6 +753,8 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -728,7 +775,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -754,6 +802,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -774,7 +824,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -800,6 +851,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -820,7 +873,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "fixed_dates",
@@ -846,6 +900,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -866,7 +922,8 @@
     "amount_inferred": true
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -892,6 +949,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -912,7 +971,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -938,6 +998,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -958,7 +1020,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "home_residence"
+    "kind": "home_residence",
+    "job_placement": false
    },
    "window": {
     "type": "annual_cycle",
@@ -984,6 +1047,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1004,7 +1069,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "fixed_dates",
@@ -1030,6 +1096,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1050,7 +1118,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "document"
+    "kind": "document",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1076,6 +1145,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": 3,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1096,7 +1167,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1122,6 +1194,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1142,7 +1216,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1168,6 +1243,8 @@
     "level": "high_school",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1188,7 +1265,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "home_residence"
+    "kind": "home_residence",
+    "job_placement": false
    },
    "window": {
     "type": "annual_cycle",
@@ -1214,6 +1292,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1234,7 +1314,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1260,6 +1341,8 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1280,7 +1363,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "outside"
+    "kind": "outside",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1306,6 +1390,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1326,7 +1412,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1352,6 +1439,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1372,7 +1461,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1398,6 +1488,8 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1418,7 +1510,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "fixed_dates",
@@ -1444,6 +1537,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1464,7 +1559,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1490,6 +1586,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1510,7 +1608,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1536,6 +1635,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1556,7 +1657,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1582,6 +1684,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1602,7 +1706,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "fixed_dates",
@@ -1628,6 +1733,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1648,7 +1755,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status"
+    "kind": "local_status",
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1674,6 +1782,8 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": true,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1694,7 +1804,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": true
    },
    "window": {
     "type": "rolling",
@@ -1720,6 +1831,8 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1740,7 +1853,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1766,6 +1880,8 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": true
    },
@@ -1786,7 +1902,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1812,6 +1929,8 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1832,7 +1951,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",
@@ -1858,6 +1978,8 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "recency_required": null,
+    "category_required": false,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1878,7 +2000,8 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": null
+    "kind": null,
+    "job_placement": false
    },
    "window": {
     "type": "rolling",

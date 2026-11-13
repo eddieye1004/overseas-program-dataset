@@ -1,5 +1,5 @@
 {
- "rules_version": 4,
+ "rules_version": 5,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -2341,8 +2341,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_recency_unknown"
      },
      {
       "dim": "language",
@@ -2357,7 +2357,7 @@
     ]
    },
    "C": {
-    "state": "can",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -2371,8 +2371,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_recency_unknown"
      },
      {
       "dim": "language",
@@ -3543,7 +3543,7 @@
   },
   "us-j1-camp-counselor": {
    "A": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3557,8 +3557,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_category_unknown"
      },
      {
       "dim": "language",
@@ -3569,11 +3569,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3587,8 +3592,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_category_unknown"
      },
      {
       "dim": "language",
@@ -3599,11 +3604,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3617,8 +3627,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_category_unknown"
      },
      {
       "dim": "language",
@@ -3629,6 +3639,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    }

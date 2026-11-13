@@ -252,6 +252,67 @@ PRE_HOME_RESIDENCE = re.compile(r"居住于其国籍国|须居住且常驻|常�
 PRE_CITIZENSHIP = re.compile(r"参与国公民|协议国公民|须为[^。；]{0,12}国民")
 PRE_DOCUMENT = re.compile(r"租房或购房合同|租赁合同|租房合同|购房合同|租约")
 
+# 岗位前置：原文要求「必须先落实岗位/录取，Sponsor 才能办后续」的项目
+# （P2-0 us-j1-camp-counselor 的「须落实营地岗位」）。
+#
+# 这与 residency_requirement 不是一回事：那条说的是「你人在哪 / 你持什么身份」，
+# 这条说的是「你得先拿到一个具体岗位」。J-1 营地辅导员法规原文是 `Under no
+# circumstance facilitate the entry into the United States of a participant for
+# whom a camp placement has not been pre-arranged`——不存在「先入境再找营地」，
+# 所以画像填了学历年龄语言也说明不了这一条成立。
+#
+# 读 documents（条款落在哪一张材料上）与 other_requirements.internship_contract
+# 两处：us-j1-camp-counselor 把它写成 documents 里的一条「预先落实的营地岗位」，
+# us-j1-intern / us-j1-trainee 写成 internship_contract（DS-7002）。两类都判
+# gap 而非 silent——「你还没落实岗位」是能补的一步（去报名、面试、拿 placement），
+# 与「数据里没写这一条」不同。
+JOB_PLACEMENT = re.compile(
+    r"预先落实|事先落实|pre-arranged|prearranged|"
+    r"岗位必须(?:预先)?落实|未落实(?:营地)?岗位|尚未落实"
+)
+
+
+def job_placement_required(doc: dict) -> bool:
+    """原文是否把「岗位须预先落实」写成硬性前提。
+
+    只看必填项：documents 里 required 为真的条目、other_requirements 里
+    required 为真的 internship_contract。可选材料里出现同样措辞不算门槛。
+    """
+    for d in doc.get("documents") or []:
+        if d.get("required") is not True:
+            continue
+        if JOB_PLACEMENT.search((d.get("name") or "") + " " + (d.get("note") or "")):
+            return True
+    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
+        if r.get("required") is not True:
+            continue
+        if r.get("type") == "internship_contract" and JOB_PLACEMENT.search(
+            r.get("note") or ""
+        ):
+            return True
+    return False
+
+
+# 参与人身份类别：原文把资格写成「须属于某几类身份之一」，而结构化 education 只有
+# 学历层级（P2-0 us-j1-camp-counselor 的四类身份）。
+#
+# 画像采集的是「学历层级」，不是「你现在是在读学生 / 在职青年 / 教师 / 有专门技能」。
+# 一个本科毕业的在职者可能是 youth worker，也可能哪种都不算——这一维判不了。
+# 且原文自己写明「由 Sponsor 判断是否成立」，各机构口径可能不同。
+PARTICIPANT_CATEGORY = re.compile(
+    r"四类|bona fide youth workers|"
+    # 「身份须属于…类」：锚点必须落在「身份」，否则会把 au-407 的「培训项目须属于
+    # 三类之一」误认成参与人身份门槛——那三类是培训类型，不是申请人身份。
+    r"身份[^。；]{0,12}(?:属于|为)[^。；]{0,10}类|"
+    r"youth workers?[，,、].{0,20}students?[，,、].{0,20}teachers?"
+)
+
+
+def participant_category_required(doc: dict) -> bool:
+    """原文是否要求参与人先属于某个身份类别（而不是只看学历层级）。"""
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    return bool(PARTICIPANT_CATEGORY.search(edu.get("note") or ""))
+
 
 CN_NUM = {
     "一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5,
@@ -726,6 +787,23 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 ),
             }
         )
+    elif participant_category_required(doc):
+        # education.note 把资格写成「须属于四类身份之一」，并明说由 Sponsor 判断
+        # 是否成立（P2-0 us-j1-camp-counselor）。结构化 minimum_level 是 any ——
+        # 判 edu_ok 等于说「学历层级任何值都达标」，那句话与该条原文不是一回事：
+        # 原文卡的是「你现在是在读学生 / 在职青年 / 教师 / 有专门技能」这个身份。
+        #
+        # 判 silent 而不是 gap：与 §4-5 的 edu_by_sponsor 同一口径——「由 Sponsor
+        # 判断是否成立」的事，我们没有判据；画像也只采集学历层级。判 gap 会说成
+        # 「你差这一项材料」，而真相是「你属于哪一类，得 Sponsor 认」。
+        dims.append(
+            {
+                "dim": "education",
+                "kind": "silent",
+                "code": "edu_category_unknown",
+                "why": "原文把资格限定为若干类参与人身份之一，是否成立由 Sponsor 判断；画像只采集学历层级，无法判定",
+            }
+        )
     elif EDU_PLACE.search(edu_note):
         # 学位须在指定国家/名单内院校完成（英国毕业生签证的「在英国以学生
         # 签证完成课程」、PGWP 的「合格 DLI 完成 ≥8 个月」、HPI 的「认可名单
@@ -1025,6 +1103,25 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             }
         )
 
+    # 岗位前置（P2-0 us-j1-camp-counselor）
+    #
+    # 「须落实营地岗位」不在 residency_requirement 里，而在 documents 的一条必交
+    # 材料上（`Under no circumstance ... for whom a camp placement has not been
+    # pre-arranged`），于是「岗位还没落实」被当成「能申」。判 gap 而不是 silent：
+    # 岗位可以补（去报名、拿 placement），不是「数据不表态」。
+    # 身份类别那条落在教育维里判（见上），与岗位是两件事，各占一维不重复。
+    if job_placement_required(doc):
+        dims.append(
+            {
+                "dim": "precondition",
+                "kind": "gap",
+                "code": "pre_job_placement",
+                "need": "预先落实的岗位（Sponsor 不得为未落实岗位者办理入境）",
+                "have": "未采集岗位落实情况",
+                "why": "原文把「岗位须预先落实」写成硬性前提：没有落实的岗位，Sponsor 不能签发后续文件、也不能办入境",
+            }
+        )
+
     kinds = {d["kind"] for d in dims}
     if "fail" in kinds:
         return "cannot", dims
@@ -1106,6 +1203,10 @@ def flags_of(doc: dict) -> dict:
             # note 另写的「须在申请日前 N 年内完成学业」毕业时限（P2-0）。
             # 与 years_required 是两件事：那条说读了几年，这条说什么时候毕业。
             "recency_required": edu_recency_years(doc),
+            # 原文把资格写成「须属于某几类参与人身份之一」（P2-0）。结构化只有
+            # 学历层级，画像也只有学历层级——两处都表达不了身份类别。
+            "category_required": participant_category_required(doc),
+            # 学位须在指定国家/名单内院校完成（§4-3/§4-4/§4-6）：结构化只有层级。
             "place_constrained": bool(EDU_PLACE.search(edu.get("note") or "")),
             # 结构化字段比 note 严：以 note 为准（§4-5）。
             "by_sponsor": bool(
@@ -1145,7 +1246,12 @@ def flags_of(doc: dict) -> dict:
         # 前置身份 / 在地要求（§4-3）。`kind` 取值与 Python judge() 的
         # precondition 分支一一对应：local_status / outside / home_residence，
         # 无要求时为 null。
-        "precondition": {"kind": precondition_kind(doc)},
+        "precondition": {
+            "kind": precondition_kind(doc),
+            # 原文要求「岗位须预先落实」（P2-0）。与 kind 分开存：job_placement 是
+            # 材料/流程前提，不是身份类别，两者可以同时成立（camp counselor 就是）。
+            "job_placement": job_placement_required(doc),
+        },
         "window": {
             "type": sch.get("type"),
             "status": sch.get("status"),

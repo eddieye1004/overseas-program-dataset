@@ -476,7 +476,7 @@ class Phase1Fixes(unittest.TestCase):
 
 
 class Phase2P0(unittest.TestCase):
-    """二期 P2-0 第 1 腿（nl-orientation-year）的回归断言。
+    """二期 P2-0 第 1 腿：两条漏网的回归断言（派单 2026-11-13 全库抽查节）。
 
     守的仍是「不许静默判过」：原文写了、结构化字段表达不了的要求，结论必须
     降级并写明差什么，不许因为字段位在就判达标。
@@ -542,6 +542,61 @@ class Phase2P0(unittest.TestCase):
         self.assertEqual(
             self.dim("uk-hpi-visa", "C", "education")["code"], "edu_place_unknown"
         )
+
+    # —— us-j1-camp-counselor：「须落实营地岗位」+「须属四类身份之一」——
+    def test_camp_counselor_job_placement_is_not_silently_passed(self):
+        """22 CFR 62.30(h)(3)：`Under no circumstance facilitate the entry into the
+        United States of a participant for whom a camp placement has not been
+        pre-arranged`。这条在数据里落在 documents 的一条必交材料上，不在
+        residency_requirement 里，所以过去一个字节没读，A/B/C 全判 can。
+
+        现在必须出 `pre_job_placement`/`gap`：岗位可以补，属「差什么」。
+        """
+        self.assertTrue(mr.job_placement_required(self.docs["us-j1-camp-counselor"]))
+        for sample in ("A", "B", "C"):
+            d = self.dim("us-j1-camp-counselor", sample, "precondition")
+            self.assertIsNotNone(d, sample)
+            self.assertEqual(d["code"], "pre_job_placement", d)
+            self.assertEqual(d["kind"], "gap", d)
+            self.assertNotEqual(
+                mr.judge(self.docs["us-j1-camp-counselor"], mr.SAMPLES[sample])[0],
+                "can",
+                f"{sample} 在岗位未落实时判了能申",
+            )
+
+    def test_camp_counselor_participant_category_is_not_silently_passed(self):
+        """`Are bona fide youth workers, students, teachers, or individuals with
+        specialized skills`（22 CFR 62.30(b)(2)）被压在 education.note 里，而结构化
+        `minimum_level` 是 `any` —— 判 edu_ok 等于说「学历层级任何值都达标」。
+
+        原文还明说由 Sponsor 判断是否成立，与 §4-5 的 edu_by_sponsor 同口径，
+        判 `edu_category_unknown`/`silent`。
+        """
+        self.assertTrue(
+            mr.participant_category_required(self.docs["us-j1-camp-counselor"])
+        )
+        for sample in ("A", "B", "C"):
+            d = self.dim("us-j1-camp-counselor", sample, "education")
+            self.assertEqual(d["code"], "edu_category_unknown", d)
+            self.assertEqual(d["kind"], "silent", d)
+
+    def test_placement_and_category_detectors_are_scoped(self):
+        """两条探测器都必须只命中营地辅导员，否则会把别的项目误降级。
+
+        `au-407-training` 的「培训项目须属于三类之一」是**培训类型**不是申请人
+        身份，这正是收窄锚点到「身份」二字的原因——放宽后它会假阳。
+        """
+        self.assertEqual(
+            [p for p, d in self.docs.items() if mr.job_placement_required(d)],
+            ["us-j1-camp-counselor"],
+        )
+        self.assertEqual(
+            [p for p, d in self.docs.items() if mr.participant_category_required(d)],
+            ["us-j1-camp-counselor"],
+        )
+        # 兄弟项目 us-j1-intern 的 DS-7002 是实习合同，不是「预先落实岗位」，不许连带降级
+        self.assertFalse(mr.job_placement_required(self.docs["us-j1-intern"]))
+        self.assertFalse(mr.participant_category_required(self.docs["us-j1-intern"]))
 
 
 class CliBehaviour(unittest.TestCase):

@@ -1284,6 +1284,7 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     edu_low: '学历低于门槛：要求 {need}',
     edu_years_unknown: '另要求 {need}，在读无法从你填的信息判定',
     edu_recency_unknown: '另要求 {need}；你的毕业时间未采集，无法判定是否在时限内',
+    edu_category_unknown: '原文限定了参与人身份类别，是否成立由 Sponsor 判断；画像只采集学历层级，无法判定',
     edu_place_unknown: '原文要求学位在指定国家/名单内院校完成，院校与毕业年份未采集，无法判定',
     edu_by_sponsor: '原文写明学历层级由 Sponsor 判断，不作硬性门槛',
     lang_ok: '语言成绩达标',
@@ -1308,6 +1309,7 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     pre_citizenship_basis: '原文该项是国籍条件，已由护照维判定，不另算缺口',
     pre_document_basis: '原文该项是递交时自备的材料（租约等），不是身份前置条件',
     pre_unclassified: '该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定',
+    pre_job_placement: '原文要求岗位须预先落实：{need}；这一步可以补（报名、面试、拿到 placement）',
   },
   en: {
     passport_ok: 'Passport recorded as eligible',
@@ -1326,6 +1328,8 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     edu_years_unknown: 'Also requires {need}; not decidable from what you entered as a current student',
     edu_recency_unknown:
       'Also requires {need}; your graduation date is not collected, so whether you are within that window cannot be decided',
+    edu_category_unknown:
+      'The source limits eligibility to certain participant categories and leaves that call to the sponsor; only your education level is collected — cannot decide',
     edu_place_unknown:
       'The source requires the degree to come from an institution in a specified country or on an approved list; your institution and graduation year are not collected — cannot decide',
     edu_by_sponsor:
@@ -1361,6 +1365,8 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'This condition is a document you provide at application (a lease, etc.), not a prior-status prerequisite',
     pre_unclassified:
       'This program has a mandatory prior-status / location requirement whose category could not be recognised in the source text — cannot decide',
+    pre_job_placement:
+      'The source requires the placement to be arranged in advance: {need} — you have not recorded a placement yet, and this is a step you can still complete',
   },
 };
 
