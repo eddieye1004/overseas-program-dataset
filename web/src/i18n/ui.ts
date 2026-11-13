@@ -86,12 +86,14 @@ export type UiKey =
   | 'navBrowse'
   | 'navMatch'
   | 'navVerdict'
+  | 'navWatch'
   | 'navCalendar'
   | 'navTrack'
   | 'navSaved'
   | 'navCompare'
   | 'navData'
   | 'navVerdictHint'
+  | 'navWatchHint'
   | 'workbench'
   // —— 智能匹配 ——
   | 'matchTitle'
@@ -299,6 +301,32 @@ export type UiKey =
   | 'verdictDimEdu'
   | 'verdictDimLang'
   | 'verdictDimFunds'
+  // —— 追踪清单（M3：窗口状态 + 关键日期，滚动型不编日期）——
+  | 'watchTitle'
+  | 'watchIntro'
+  | 'watchEmpty'
+  | 'watchEmptyBody'
+  | 'watchAdd'
+  | 'watchAdded'
+  | 'watchRemove'
+  | 'watchClear'
+  | 'watchStatusOpen'
+  | 'watchStatusUpcoming'
+  | 'watchStatusClosed'
+  | 'watchStatusAlways'
+  | 'watchStatusUnknown'
+  | 'watchNoDate'
+  | 'watchRolling'
+  | 'watchInferred'
+  | 'watchInferredHint'
+  | 'watchConfirmed'
+  | 'watchWindow'
+  | 'watchLead'
+  | 'watchDaysFromNow'
+  | 'watchDaysAgo'
+  | 'watchToday'
+  | 'watchNeither'
+  | 'watchNoWindowData'
 
 export const UI: Record<Lang, Record<UiKey, string>> = {
   zh: {
@@ -385,6 +413,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     navBrowse: '项目库',
     navVerdict: '资格判定',
     navMatch: '智能匹配',
+    navWatch: '追踪清单',
     navCalendar: '窗口日历',
     navTrack: '我的申请',
     navSaved: '收藏',
@@ -516,6 +545,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     navBrowseHint: '全量列表，按资格筛',
     navMatchHint: '填条件，按匹配度排序',
     navVerdictHint: '五项条件，逐条判能不能申',
+    navWatchHint: '关注的项目，窗口一目了然',
     navCalendarHint: '什么时候开、什么时候该准备',
     calTitle: '窗口日历',
     calLede: '每个项目的开放窗口，按「这个日期可不可信」分成三块。官方公布的和按规律推断的永远分开显示——把推断出来的日期摆在官方日期旁边，读者分不出来，就一定会有人按错的日子准备材料。',
@@ -605,6 +635,34 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictDimLang: '语言',
     verdictDimFunds: '资金证明',
 
+    // —— 追踪清单 ——
+    watchTitle: '追踪清单',
+    watchIntro:
+      '把关心的项目放进来，汇总看它们的申请窗口。滚动型项目显示「常年可申」，只有推算日期的不当官方日期写。',
+    watchEmpty: '清单还是空的',
+    watchEmptyBody:
+      '在项目页点「加入追踪」，或在判定结果里逐条加入。清单只存这台设备，换设备不同步。',
+    watchAdd: '加入追踪',
+    watchAdded: '已在清单',
+    watchRemove: '移除',
+    watchClear: '清空清单',
+    watchStatusOpen: '窗口开放中',
+    watchStatusUpcoming: '尚未开放',
+    watchStatusClosed: '本轮已截止',
+    watchStatusAlways: '常年可申',
+    watchStatusUnknown: '日期未公布',
+    watchNoDate: '官方未公布日期',
+    watchRolling: '常年可申，无申请窗口',
+    watchInferred: '参考日期（未确认）',
+    watchInferredHint: '按往年规律推算，不是官方公布的日期，不要拿它卡时间。',
+    watchConfirmed: '官方已公布',
+    watchWindow: '申请窗口',
+    watchLead: '建议提前',
+    watchDaysFromNow: '还有 {n} 天',
+    watchDaysAgo: '已过 {n} 天',
+    watchToday: '就是今天',
+    watchNeither: '未加入任何项目，也没有可汇总的窗口。',
+    watchNoWindowData: '这条项目在仓内没有窗口数据，只能盯官网。',
 
   },
   en: {
@@ -692,6 +750,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     navBrowse: 'Programs',
     navVerdict: 'Eligibility',
     navMatch: 'Smart match',
+    navWatch: 'Watchlist',
     navCalendar: 'Calendar',
     navTrack: 'My applications',
     navSaved: 'Saved',
@@ -827,6 +886,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     navBrowseHint: 'All entries, filtered',
     navMatchHint: 'Enter a profile, get a ranking',
     navVerdictHint: 'Five inputs, one verdict per program',
+    navWatchHint: 'The programs you follow, windows in one view',
     navCalendarHint: 'When windows open, and when to prepare',
     calTitle: 'Application calendar',
     calLede: 'Every program application window, split into three blocks by how much the date can be trusted. Officially published dates never sit next to inferred ones — mixing them is how people end up preparing against the wrong day.',
@@ -918,6 +978,34 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictDimLang: 'Language',
     verdictDimFunds: 'Proof of funds',
 
+    // —— Watchlist ——
+    watchTitle: 'Watchlist',
+    watchIntro:
+      'Collect the programs you care about and read their application windows in one place. Rolling programs show "open year-round"; inferred dates are never presented as official.',
+    watchEmpty: 'Nothing on the watchlist yet',
+    watchEmptyBody:
+      'Use "Add to watchlist" on a program page, or add entries from the verdict results. The list lives on this device only.',
+    watchAdd: 'Add to watchlist',
+    watchAdded: 'On watchlist',
+    watchRemove: 'Remove',
+    watchClear: 'Clear watchlist',
+    watchStatusOpen: 'Window open',
+    watchStatusUpcoming: 'Not open yet',
+    watchStatusClosed: 'Closed for this round',
+    watchStatusAlways: 'Open year-round',
+    watchStatusUnknown: 'Dates not published',
+    watchNoDate: 'No date published',
+    watchRolling: 'Open year-round, no application window',
+    watchInferred: 'Reference date (unconfirmed)',
+    watchInferredHint: 'Projected from past cycles. Not an official date — do not schedule against it.',
+    watchConfirmed: 'Published by the authority',
+    watchWindow: 'Application window',
+    watchLead: 'Prepare by',
+    watchDaysFromNow: '{n} days away',
+    watchDaysAgo: '{n} days ago',
+    watchToday: 'Today',
+    watchNeither: 'No programs on the list, so there is no window to summarise.',
+    watchNoWindowData: 'The dataset holds no window for this program; the official site is the only source.',
 
   },
 };

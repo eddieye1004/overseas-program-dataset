@@ -6,11 +6,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { useI18n } from './i18n';
 import { useRoute } from './lib/router';
 import { loadIndex } from './lib/data';
-import { COMPARE_MAX, useCompare, useRecent, useSaved, useTrack } from './lib/store';
+import { COMPARE_MAX, useCompare, useRecent, useSaved, useTrack, useWatch } from './lib/store';
 import { ListView } from './components/ListView';
 import { DetailView } from './components/DetailView';
 import { MatchView } from './components/MatchView';
 import { VerdictView } from './components/VerdictView';
+import { WatchView } from './components/WatchView';
 import { TrackView } from './components/TrackView';
 import { SavedView } from './components/SavedView';
 import { CompareView } from './components/CompareView';
@@ -46,6 +47,7 @@ export default function App() {
   const compare = useCompare();
   const recent = useRecent();
   const track = useTrack();
+  const watch = useWatch();
 
   // 引导条要显示「收录 26 条」这个数字，但不该为了它把整份索引塞进外壳。
   // 与 ListView 共用 loadIndex() 的模块级 Promise 缓存，重复调用不会重复请求。
@@ -90,6 +92,7 @@ export default function App() {
         savedCount={saved.list.length}
         trackCount={Object.keys(track.map).length}
         compareCount={compare.list.length}
+        watchCount={watch.list.length}
       />
 
       <div className="shell">
@@ -122,8 +125,9 @@ export default function App() {
             <MatchView savedIds={saved.list} onToggleSave={toggleSave} />
           )}
           {route.name === 'verdict' && (
-            <VerdictView />
+            <VerdictView watchedIds={watch.list} onToggleWatch={watch.toggle} />
           )}
+          {route.name === 'watch' && <WatchView watch={watch} />}
           {route.name === 'track' && <TrackView track={track} />}
           {route.name === 'saved' && (
             <SavedView savedIds={saved.list} onToggleSave={toggleSave} />

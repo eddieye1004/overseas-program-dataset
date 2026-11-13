@@ -110,6 +110,19 @@ export type TrackMap = Record<string, TrackEntry>;
 
 const KEY_TRACK = 'opd.track';
 
+/**
+ * 追踪清单（M3）。与「我的申请」（KEY_TRACK）刻意分成两份：
+ *   追踪清单回答「我在关注哪些项目、它们的窗口什么时候开」——只存 id，不存状态；
+ *   我的申请回答「我交到哪一步了」——有状态、备注、更新时间。
+ * 合成一份会逼着人「先关注才能看进度」，而看窗口根本不需要先做决定。
+ */
+const KEY_WATCH = 'opd.watch';
+
+/** 只存 id 列表：窗口信息在 index.json 里，随数据更新自动跟着变，不存快照 */
+export function useWatch() {
+  const { list, toggle, remove, clear } = useStoredList(KEY_WATCH);
+  return { list, toggle, remove, clear };
+}
 /** 申请进度看板。状态值域由 ui.ts 的 TRACK_STATUS 约束，这里只管存。 */
 export function useTrack() {
   const [map, setMap] = useState<TrackMap>(() => read<TrackMap>(KEY_TRACK, {}));

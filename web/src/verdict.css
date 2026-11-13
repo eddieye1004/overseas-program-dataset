@@ -1,6 +1,6 @@
 /* src/verdict.css
-   资格判定页（M2）的样式。
-   单独一份而不是塞进 workbench.css：这是同一期新增的一组功能，
+   资格判定页（M2）、追踪清单页（M3）、安装引导（M4）三块的样式。
+   单独一份而不是塞进 workbench.css：这三块是同一期新增的一组功能，
    放一起便于整体撤换；它们只消费 tokens.css 的变量，不新造颜色。
 
    状态的色调映射刻意与既有 badge 体系一致（ok / warn / mute / no），
@@ -194,4 +194,255 @@
   margin-top: 4px;
   color: var(--ink-3);
   font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 追踪清单 ---------- */
+
+.watchlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.wrow {
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+/* 四档确定性各一条色带，与日历页的三档色系对齐，另加一条「常年可申」 */
+.wrow--confirmed {
+  border-left: 3px solid var(--ok-line);
+}
+.wrow--inferred {
+  border-left: 3px solid var(--warn-line);
+}
+.wrow--rolling {
+  border-left: 3px solid var(--accent-line);
+}
+.wrow--unknown {
+  border-left: 3px solid var(--line-strong);
+}
+
+.wrow__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+}
+.wrow__title {
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.wrow__title:hover {
+  color: var(--accent);
+}
+.wrow__meta {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.wrow__window {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-top: 8px;
+  font-size: var(--fs-sm);
+}
+.wrow__label {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  min-width: 56px;
+}
+.wrow__dates {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+/* 日期用等宽数字，一列排下来才对齐 */
+.wrow__dates time {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-1);
+}
+.wrow__tag {
+  font-size: var(--fs-xs);
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+.wrow__tag--ok {
+  background: var(--ok-soft);
+  color: var(--ok);
+  border-color: var(--ok-line);
+}
+.wrow__tag--warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+  border-color: var(--warn-line);
+}
+.wrow__count {
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+/* 推算日期：加删除线式的弱化处理？不用。改成灰色 + 明确标注已足够，
+   划线会让人误以为「这条作废了」，而它只是未经确认。 */
+.wrow__loose {
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.wrow__nodate {
+  color: var(--ink-3);
+}
+.wrow__note {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+.wrow__rolling {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.wrow__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 10px;
+}
+.wrow__status {
+  font-size: var(--fs-xs);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--canvas-sunken);
+  color: var(--ink-2);
+}
+.wrow__status--confirmed {
+  background: var(--ok-soft);
+  color: var(--ok);
+  border-color: var(--ok-line);
+}
+.wrow__status--inferred {
+  background: var(--warn-soft);
+  color: var(--warn);
+  border-color: var(--warn-line);
+}
+.wrow__status--rolling {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+.wrow__lead,
+.wrow__remind {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.wrow__remind strong {
+  color: var(--warn);
+}
+.wrow__closed {
+  margin: 8px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+.watch__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ---------- 安装引导（顶栏控件 + 弹出层） ---------- */
+
+/* 顶栏右侧一组控件（安装入口 + 语言开关）。用 flex 包一层，
+   否则 .shell__bar 的 space-between 会把两个控件分别推到两端，语言开关跑到中间。 */
+.shell__tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* 零高度锚点：控件本身在顶栏 flex 行内，不占内容区任何空间。
+   最初写成内容区横幅，实测 70–112px，把首屏两张卡直接挤出 900px 视口。 */
+.installwrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.installchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  font: inherit;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.installchip:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+.installchip--on {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+/* 窄屏只留图标：顶栏横向本来就紧，再塞五个汉字会把语言开关挤下去 */
+@media (max-width: 720px) {
+  .installchip__text {
+    display: none;
+  }
+}
+
+.installpop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: min(320px, calc(100vw - 32px));
+  padding: 12px 14px;
+  text-align: left;
+  background: var(--canvas-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(20, 20, 19, 0.12);
+}
+.installpop__title {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--accent);
+}
+.installpop__body,
+.installpop__steps {
+  margin: 6px 0 0;
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.installpop__side {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.installpop__hint {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.5;
+  flex: 1 1 140px;
 }

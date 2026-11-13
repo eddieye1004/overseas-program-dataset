@@ -9,6 +9,7 @@ export type NavName =
   | 'list'
   | 'match'
   | 'verdict'
+  | 'watch'
   | 'calendar'
   | 'track'
   | 'saved'
@@ -22,6 +23,7 @@ interface Item {
     | 'navBrowse'
     | 'navMatch'
     | 'navVerdict'
+    | 'navWatch'
     | 'navCalendar'
     | 'navTrack'
     | 'navSaved'
@@ -32,6 +34,7 @@ interface Item {
     | 'navBrowseHint'
     | 'navMatchHint'
     | 'navVerdictHint'
+    | 'navWatchHint'
     | 'navCalendarHint'
     | 'navTrackHint'
     | 'navSavedHint'
@@ -46,11 +49,13 @@ export function Sidebar({
   savedCount,
   trackCount,
   compareCount,
+  watchCount,
 }: {
   route: Route;
   savedCount: number;
   trackCount: number;
   compareCount: number;
+  watchCount: number;
 }) {
   const { t } = useI18n();
 
@@ -75,6 +80,14 @@ export function Sidebar({
       labelKey: 'navCalendar',
       hintKey: 'navCalendarHint',
       icon: '◷',
+    },
+    {
+      name: 'watch',
+      path: '/watch',
+      labelKey: 'navWatch',
+      hintKey: 'navWatchHint',
+      icon: '◎',
+      count: watchCount,
     },
     {
       name: 'track',

@@ -64,7 +64,13 @@ const STATE_TONE: Record<VerdictState, string> = {
   cannot: 'no',
 };
 
-export function VerdictView() {
+export function VerdictView({
+  watchedIds,
+  onToggleWatch,
+}: {
+  watchedIds: string[];
+  onToggleWatch: (id: string) => void;
+}) {
   const { t, te, lang } = useI18n();
   const [index, setIndex] = useState<ProgramIndexEntry[] | null>(null);
   const [flags, setFlags] = useState<MatchFlagsFile | null>(null);
@@ -312,6 +318,7 @@ export function VerdictView() {
                           (d) => d.kind !== 'pass' && d.kind !== 'na',
                         );
                         const passes = verdict.dims.filter((d) => d.kind === 'pass');
+                        const watched = watchedIds.includes(id);
                         return (
                           <li key={id} className={`vrow vrow--${STATE_TONE[state]}`}>
                             <div className="vrow__main">
@@ -349,6 +356,14 @@ export function VerdictView() {
                               <a className="btn btn--ghost btn--sm" href={detailHref(id)}>
                                 {t('verdictDetailLink')}
                               </a>
+                              <button
+                                type="button"
+                                className={watched ? 'btn btn--ghost btn--sm btn--on' : 'btn btn--ghost btn--sm'}
+                                aria-pressed={watched}
+                                onClick={() => onToggleWatch(id)}
+                              >
+                                {watched ? t('watchAdded') : t('watchAdd')}
+                              </button>
                             </div>
                           </li>
                         );

@@ -190,9 +190,14 @@ const navCount = await evalJs(`document.querySelectorAll('.sidebar__item').lengt
 // 不写死数字：2026-11-12 追踪系统一期加了「资格判定」「追踪清单」两项，
 // 写死 7 的版本当场红。这里守的是「该有的都有、没有重复」，条数由
 // 下面逐个名字的断言兜住 —— 数字本身不是产品要求。
-ok('侧边栏导航入口齐全（8 项）', navCount === 8, `got ${navCount}`);
+ok('侧边栏导航入口齐全（9 项）', navCount === 9, `got ${navCount}`);
 const navLabels = await evalJs(
   `JSON.stringify([...document.querySelectorAll('.sidebar__label')].map(e => e.textContent))`,
+);
+ok(
+  '新增的「资格判定」与「追踪清单」在导航里',
+  /资格判定/.test(navLabels) && /追踪清单/.test(navLabels),
+  navLabels,
 );
 ok('导航没有重复项', new Set(JSON.parse(navLabels)).size === navCount, navLabels);
 const brandText = await evalJs(`document.querySelector('.sidebar__name strong')?.textContent ?? ''`);
@@ -1529,6 +1534,96 @@ console.log('\n[29] 窗口日历：三档确定性不许混排');
   // 纯客户端：整个判定过程不该发出任何请求
   const net = await evalJs(`JSON.stringify(performance.getEntriesByType('resource').map(e => e.name).filter(n => /api|post|submit|\.php/.test(n)))`);
   ok('判定不发请求到服务器', net === '[]', net);
+}
+
+// ==========================================================================
+// [32] 追踪清单（M3）：窗口状态汇总，滚动型不编日期
+// ==========================================================================
+{
+  console.log('\n[32] 追踪清单（M3）');
+  await evalJs(`localStorage.clear()`);
+  await goto('#/watch');
+  await sleep(900);
+  ok('空清单显示空状态', await evalJs(`!!document.querySelector('.state__title')`));
+
+  // 从判定结果里加入两条：一条有官方日期、一条滚动型
+  await goto('#/verdict');
+  await sleep(900);
+  await evalJs(`(() => {
+    const setVal = (el, v) => {
+      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(el), 'value').set.call(el, v);
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    const f = [...document.querySelectorAll('.profile .pfield')];
+    setVal(f[0].querySelector('select'), 'mainland_china');
+    setVal(f[1].querySelector('input'), '25');
+    setVal(f[2].querySelector('select'), 'bachelor_completed');
+    setVal(f[3].querySelector('select'), '7');
+    setVal(f[4].querySelector('input'), '200000');
+    document.querySelector('.profile button[type="submit"]').click();
+    return true;
+  })()`);
+  await sleep(900);
+  const added = await evalJs(`(() => {
+    const rows = [...document.querySelectorAll('.vrow')];
+    // 一条有具体日期的（新西兰 WHV）与一条滚动型的
+    const dated = rows.find(r => /新西兰|New Zealand/.test(r.textContent));
+    const rolling = rows.find(r => /德国|Germany/.test(r.textContent));
+    let n = 0;
+    for (const r of [dated, rolling]) {
+      const b = r && [...r.querySelectorAll('button')].find(x => /加入追踪/.test(x.textContent));
+      if (b) { b.click(); n++; }
+    }
+    return n;
+  })()`);
+  ok('能从判定结果加入追踪清单', added >= 1, `added ${added}`);
+  await sleep(400);
+
+  await goto('#/watch');
+  await sleep(900);
+  const rows = JSON.parse(
+    await evalJs(`JSON.stringify([...document.querySelectorAll('.wrow')].map(r => ({
+      mode: (r.className.match(/wrow--(\\w+)/) || [])[1],
+      times: r.querySelectorAll('time').length,
+      status: r.querySelector('.wrow__status')?.textContent || '',
+      dates: r.querySelector('.wrow__dates')?.textContent || '',
+      rolling: r.querySelector('.wrow__rolling')?.textContent || '',
+    })))`),
+  );
+  ok('清单渲染出加入的项目', rows.length >= 1, JSON.stringify(rows));
+  ok(
+    '滚动型项目：显示「常年可申」，且不含任何 <time> 日期节点',
+    rows.filter((r) => r.mode === 'rolling').every((r) => r.times === 0 && r.rolling.length > 0),
+    JSON.stringify(rows.filter((r) => r.mode === 'rolling')),
+  );
+  ok(
+    '推算日期项目：标注为未确认，且不算倒计时',
+    rows.filter((r) => r.mode === 'inferred').every((r) => /未确认|unconfirmed/i.test(r.dates)),
+    JSON.stringify(rows.filter((r) => r.mode === 'inferred')),
+  );
+  ok(
+    '没有窗口数据的项目：不出现日期，只写未公布',
+    rows.filter((r) => r.mode === 'unknown').every((r) => r.times === 0),
+    JSON.stringify(rows.filter((r) => r.mode === 'unknown')),
+  );
+
+  // 刷新不丢
+  await send('Page.navigate', { url: `${base}#/watch` });
+  await sleep(1600);
+  ok(
+    '刷新后清单仍在（localStorage）',
+    (await evalJs(`document.querySelectorAll('.wrow').length`)) >= 1,
+  );
+
+  // 移除
+  const before = await evalJs(`document.querySelectorAll('.wrow').length`);
+  await evalJs(`document.querySelector('.wrow .btn')?.click()`);
+  await sleep(500);
+  ok(
+    '可以移除清单项',
+    (await evalJs(`document.querySelectorAll('.wrow').length`)) === before - 1,
+    `${before} → ${await evalJs(`document.querySelectorAll('.wrow').length`)}`,
+  );
 }
 
 ws.close();
