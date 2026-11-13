@@ -51,7 +51,7 @@ await build({
   outfile: outUi,
   platform: 'neutral',
 });
-const { UI, ENUM_LABELS, MATCH_TEXT, TRACK_STATUS, TRACK_TEXT } = await import(
+const { UI, ENUM_LABELS, MATCH_TEXT, TRACK_STATUS, TRACK_TEXT, VERDICT_TEXT } = await import(
   `file://${outUi.replace(/\\/g, '/')}`
 );
 
@@ -84,9 +84,29 @@ const { nextAction, prepDaysOf, rankByUrgency } = await import(
   `file://${outNext.replace(/\\/g, '/')}`
 );
 
+// 判定状态量（data/match-flags.json）与判定函数（lib/verdict.ts）是 M2 的另一半：
+// 判定口径的唯一权威在 Python（scripts/match_readiness.py），TypeScript 只做
+// 纯比较。这个文件把两侧钉死——任何一边改了口径而另一边没跟上，这里立刻红。
+const outVerdict = join(WEB, '.tmp-verdict.mjs');
+await build({
+  entryPoints: [join(WEB, 'src/lib/verdict.ts')],
+  bundle: true,
+  format: 'esm',
+  outfile: outVerdict,
+  platform: 'neutral',
+});
+const { judgeOne, judgeAll, countByState, STATE_ORDER, RULES_VERSION, EMPTY_VERDICT_PROFILE } =
+  await import(`file://${outVerdict.replace(/\\/g, '/')}`);
+
 const index = JSON.parse(await readFile(join(WEB, 'public/data/index.json'), 'utf8'));
 const dict = JSON.parse(await readFile(join(WEB, 'public/data/i18n.json'), 'utf8'));
 const programs = JSON.parse(await readFile(join(WEB, 'public/data/programs.json'), 'utf8'));
+const flags = JSON.parse(await readFile(join(WEB, 'public/data/match-flags.json'), 'utf8'));
+// 样例快照直接从仓库 data/ 读，不进 public/：它是测试对账用的事实基线，
+// 不是站点要发给浏览器的资源，复制一份到 public 只会多一份会漂移的副本。
+const samples = JSON.parse(
+  await readFile(join(WEB, '..', 'data', 'match-samples.json'), 'utf8'),
+);
 
 let pass = 0;
 const fails = [];
@@ -646,6 +666,136 @@ for (const id of datedIds) {
   ok(`真实数据 ${id} 能算出具体动作（不是 idle）`, a.kind !== 'idle', a.kind);
 }
 
+console.log('\n[15] 资格判定：Python 与 TypeScript 同一口径');
+{
+  // 1) 版本号必须两边一致。改了判定逻辑只改一边，这里是最先红的地方，
+  //    而且是红在「版本不匹配」这种一眼能懂的原因上，不用去翻 diff。
+  ok(
+    'rules_version 两侧一致',
+    RULES_VERSION === flags.rules_version,
+    `ts ${RULES_VERSION} / data ${flags.rules_version}`,
+  );
+  ok(
+    'match-flags 覆盖全部项目',
+    Object.keys(flags.programs).length === TOTAL,
+    `flags ${Object.keys(flags.programs).length} / index ${TOTAL}`,
+  );
+  ok(
+    'match-flags 的 id 与 index 完全一致',
+    JSON.stringify(Object.keys(flags.programs).sort()) ===
+      JSON.stringify(index.map((p) => p.id).sort()),
+  );
+
+  // 2) 逐样例、逐项目比对三态结论与逐维 code。
+  //    只比 state 不够：两条都判 gap，一条是差雅思、一条是差资金，
+  //    对用户是两件完全不同的事。所以连 (dim, kind, code) 一起比。
+  for (const [name, pr] of Object.entries(samples.samples)) {
+    const diffs = [];
+    for (const [id, perSample] of Object.entries(samples.verdicts)) {
+      const expected = perSample[name];
+      const got = judgeOne(flags.programs[id], pr);
+      const gotDims = got.dims.map((d) => `${d.dim}:${d.kind}:${d.code}`).join(',');
+      const wantDims = expected.dims.map((d) => `${d.dim}:${d.kind}:${d.code}`).join(',');
+      if (got.state !== expected.state) {
+        diffs.push(`${id} 状态 ${got.state} ≠ ${expected.state}`);
+      } else if (gotDims !== wantDims) {
+        diffs.push(`${id} 逐维 ${gotDims} ≠ ${wantDims}`);
+      }
+    }
+    ok(
+      `样例 ${name}：${Object.keys(samples.verdicts).length} 条判定与 Python 完全一致`,
+      diffs.length === 0,
+      diffs.slice(0, 3).join(' | '),
+    );
+  }
+
+  // 3) 三态的分布也要对得上——只比单条会漏掉「整组都算错但彼此自洽」的情况
+  for (const [name, pr] of Object.entries(samples.samples)) {
+    const rows = judgeAll(flags, index.map((p) => p.id), pr);
+    const c = countByState(rows);
+    const want = { can: 0, cannot: 0, gap: 0, unknown: 0 };
+    for (const v of Object.values(samples.verdicts)) want[v[name].state] += 1;
+    ok(
+      `样例 ${name}：三态计数一致（能申 ${want.can} / 差什么 ${want.gap} / 不可判 ${want.unknown} / 不能申 ${want.cannot}）`,
+      c.can === want.can && c.gap === want.gap && c.unknown === want.unknown && c.cannot === want.cannot,
+      `ts ${JSON.stringify(c)} vs py ${JSON.stringify(want)}`,
+    );
+  }
+
+  // 4) 硬性规则的定点断言。这些不依赖快照，写死的是「语义」而不是「当前结果」：
+  //    快照只能证明两侧一致，不能证明两侧都还对。
+  const ai = samples.samples.A; // 大陆 / 21 / 本科在读 / 雅思 6.0 / 3 万
+  const au462 = judgeOne(flags.programs['au-462-work-holiday'], ai);
+  ok('A 画像对澳洲 462：雅思 6.0 ≥ 4.5 判通过', au462.dims.find((d) => d.dim === 'language')?.code === 'lang_ok');
+  ok(
+    'A 画像对澳洲 462：本科在读但要求已完成 2 年，判不可判而非通过',
+    au462.dims.find((d) => d.dim === 'education')?.code === 'edu_years_unknown',
+  );
+
+  const eur = { ...ai, age: 35 };
+  ok(
+    '超龄是 fail 不是 gap：年龄不合格优先于语言差距',
+    judgeOne(flags.programs['au-462-work-holiday'], eur).state === 'cannot',
+  );
+
+  const b = samples.samples.B; // 大陆 / 28 / 本科毕业 / 无语言成绩 / 8 万
+  const bLang = judgeOne(flags.programs['nz-china-whv'], b).dims.find((d) => d.dim === 'language');
+  ok('B 画像无语言成绩 → 差什么（lang_missing），不是不可判', bLang?.code === 'lang_missing');
+
+  const c = samples.samples.C; // 台湾 / 25 / 本科毕业 / 雅思 6.5 / 5 万
+  ok(
+    'C 画像对澳洲 462：台湾护照明确不可申',
+    judgeOne(flags.programs['au-462-work-holiday'], c).dims[0].code === 'passport_no',
+  );
+
+  // 5) 「官方没公布」不许被当成「不设限」
+  const aiesec = judgeOne(flags.programs['global-aiesec-global-talent'], ai);
+  ok(
+    'AIESEC 年龄未公布 → 不可判，不按 0–99 当无限制',
+    aiesec.dims.find((d) => d.dim === 'age')?.code === 'age_unknown',
+  );
+  ok('AIESEC 结论为不可判', aiesec.state === 'unknown', aiesec.state);
+
+  // 6) 资金：官方不设固定金额 ≠ 你没钱
+  const de20 = judgeOne(flags.programs['de-20-job-search'], ai);
+  ok(
+    '官方不设固定金额的资金证明判「不适用」，不判差钱',
+    de20.dims.find((d) => d.dim === 'funds')?.code === 'funds_by_design',
+  );
+
+  // 7) 状态优先级：fail > gap > silent
+  ok('STATE_ORDER 首项为能申（先看还能做什么）', STATE_ORDER[0] === 'can', STATE_ORDER.join(','));
+  ok('STATE_ORDER 覆盖四态', STATE_ORDER.length === 4 && new Set(STATE_ORDER).size === 4);
+
+  // 8) 空画像也能跑：不该抛异常，也不该给出「能申」
+  const emptyRows = judgeAll(flags, index.map((p) => p.id), EMPTY_VERDICT_PROFILE);
+  ok('默认画像对全部项目都能算出结论', emptyRows.length === TOTAL, `got ${emptyRows.length}`);
+  ok(
+    '默认画像至少产出一条能申与一条不能申（说明判定真的在分叉）',
+    new Set(emptyRows.map((r) => r.verdict.state)).size >= 3,
+    JSON.stringify(countByState(emptyRows)),
+  );
+
+  // 9) 每个 code 都必须有中英文案，否则界面露出裸 key
+  const codes = new Set();
+  for (const id of Object.keys(flags.programs)) {
+    for (const pr of Object.values(samples.samples)) {
+      for (const d of judgeOne(flags.programs[id], pr).dims) codes.add(d.code);
+    }
+  }
+  ok(
+    `${codes.size} 个判定 code 全部有 zh/en 文案`,
+    [...codes].every((code) => VERDICT_TEXT.zh[code] && VERDICT_TEXT.en[code]),
+    [...codes].filter((code) => !VERDICT_TEXT.zh[code] || !VERDICT_TEXT.en[code]).join(','),
+  );
+  ok(
+    'VERDICT_TEXT.zh 与 en 键一致',
+    JSON.stringify(Object.keys(VERDICT_TEXT.zh).sort()) ===
+      JSON.stringify(Object.keys(VERDICT_TEXT.en).sort()),
+  );
+  ok('VERDICT_TEXT.en 无中文', Object.values(VERDICT_TEXT.en).every((v) => !HAS_CJK.test(v)));
+}
+
 console.log('\n[16] 界面词条双语对齐');
 const zhKeys = Object.keys(UI.zh).sort();
 const enKeys = Object.keys(UI.en).sort();
@@ -689,6 +839,7 @@ await import('node:fs/promises').then((fs) =>
     fs.rm(outUi, { force: true }),
     fs.rm(outOnboard, { force: true }),
     fs.rm(outNext, { force: true }),
+    fs.rm(outVerdict, { force: true }),
   ]),
 );
 

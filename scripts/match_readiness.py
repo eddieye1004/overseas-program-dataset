@@ -33,8 +33,19 @@
   python scripts/match_readiness.py             # 打印摘要 + 逐项目表
   python scripts/match_readiness.py --write      # 重写 docs/audit/ 下的审计文档
   python scripts/match_readiness.py --json       # 机器可读（CI / 测试用）
+  python scripts/match_readiness.py --emit       # 重写前端用的 data/match-flags.json
+                                                 # 与三样例快照 data/match-samples.json
+  python scripts/match_readiness.py --check      # 校验上面两个产物与数据是否同步（CI 闸门）
 
-退出码恒为 0：这是审计，不是闸门。是否停工由人按报告里的比例裁决。
+为什么前端要读这里产出的 flags，而不是自己在 TypeScript 里再判一遍
+「note 是不是写了未按国籍设限」「语言是不是官方不设分数线」：
+那套判据（NOTE_OPEN_NATIONALITY / LANG_BY_DESIGN / FUNDS_NO_FIXED …）全文只
+应该有一份。判据两份的后果是：某天有人放宽了正则，Python 审计说 41 条都能判，
+网页仍按旧口径把五条标成「不可判」，而且没有任何测试会红。所以这里把「每条
+项目在每一维处于什么状态」算好落盘，前端只做类型层面的比较（够不够、差多少）。
+
+退出码恒为 0（除非 --check 发现漂移）：审计本身不是闸门，是否停工由人按报告里
+的比例裁决。
 """
 
 from __future__ import annotations
@@ -51,6 +62,8 @@ from collections import Counter, OrderedDict
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROGRAMS = os.path.join(ROOT, "data", "programs")
 DOC = os.path.join(ROOT, "docs", "audit", "2026-11-12-match-readiness.md")
+FLAGS = os.path.join(ROOT, "data", "match-flags.json")
+SAMPLES_OUT = os.path.join(ROOT, "data", "match-samples.json")
 
 PASSPORTS = ("mainland_china", "hong_kong_china", "taiwan_china")
 PASSPORT_ZH = {
@@ -100,6 +113,15 @@ FUNDS_NO_FIXED = re.compile(
     r"没有全国统一数额|未给数额|未设统一金额|不设固定金额门槛|"
     r"官方不设固定金额门槛|法规未设统一金额"
 )
+
+# 资金的口径：金额是「年收入」还是「存款/资金证明」。
+#
+# 这两者不能拿同一个预算数字去比：马耳他数字游民要求的是年毛收入 ≥ €42,000，
+# 而用户填的是「可动用的资金证明」。拿 5 万人民币存款去比 33 万的年收入门槛，
+# 会判出「差 28 万」——数字算得出来，但结论是错的：一个有远程工作的人年收入
+# 达标、存款不足，他其实符合；反过来存款多但无收入的人不符合。
+# 判据只能落在金额的 note 上（数据里没有独立字段），所以放这里与其它口径同处。
+FUNDS_INCOME = re.compile(r"年收入|年毛收入|年度收入|gross yearly income|annual income|月收入")
 
 
 def load_programs() -> list[dict]:
@@ -282,6 +304,10 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     """返回 (can|cannot|gap|unknown, 逐维结论)。
 
     维结论 kind：pass / fail / gap（差多少可知）/ silent（数据不表态）/ na
+
+    每个 dim 还带一个 `code`。code 是与前端 src/lib/verdict.ts 的**契约**：
+    两边都产出同一组 (dim, kind, code)，smoke-test 拿 data/match-samples.json
+    逐条比对。界面文案按 code 查表，所以文案与判定语言无关，判定与文案互不牵连。
     """
     dims: list[dict] = []
 
@@ -289,39 +315,46 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     pt = (doc.get("eligibility") or {}).get("passport_types") or {}
     val = pt.get(pr["passport"])
     if val == "not_eligible":
-        dims.append({"dim": "passport", "kind": "fail", "why": "该护照明确不可申"})
-    elif val in ("eligible", "not_eligible"):
-        dims.append({"dim": "passport", "kind": "pass", "why": "护照已登记可申"})
+        dims.append({"dim": "passport", "kind": "fail", "code": "passport_no", "why": "该护照明确不可申"})
+    elif val == "eligible":
+        dims.append({"dim": "passport", "kind": "pass", "code": "passport_ok", "why": "护照已登记可申"})
     elif val == "conditional":
-        dims.append({"dim": "passport", "kind": "silent", "why": "有条件开放，需查当年公告"})
+        dims.append({"dim": "passport", "kind": "silent", "code": "passport_conditional", "why": "有条件开放，需查当年公告"})
     elif val == "unknown":
-        dims.append({"dim": "passport", "kind": "silent", "why": "官方未核实"})
+        dims.append({"dim": "passport", "kind": "silent", "code": "passport_unknown", "why": "官方未核实"})
     elif NOTE_OPEN_NATIONALITY.search(pt.get("note") or ""):
         dims.append(
-            {"dim": "passport", "kind": "pass", "why": "note 明文「官方未按国籍设限」", "inferred": True}
+            {
+                "dim": "passport",
+                "kind": "pass",
+                "code": "passport_open",
+                "why": "note 明文「官方未按国籍设限」",
+                "inferred": True,
+            }
         )
     else:
-        dims.append({"dim": "passport", "kind": "silent", "why": "该护照未登记，note 无可判结论"})
+        dims.append({"dim": "passport", "kind": "silent", "code": "passport_missing", "why": "该护照未登记，note 无可判结论"})
 
     # 年龄
     age = (doc.get("eligibility") or {}).get("age") or {}
     lo, hi = age.get("min"), age.get("max")
     if UNVERIFIED_PREFIX.match((age.get("note") or "").strip()):
-        dims.append({"dim": "age", "kind": "silent", "why": "官方未公布年龄限制"})
+        dims.append({"dim": "age", "kind": "silent", "code": "age_unknown", "why": "官方未公布年龄限制"})
     elif lo == 0 and hi == 99:
-        dims.append({"dim": "age", "kind": "na", "why": "官方无年龄限制"})
+        dims.append({"dim": "age", "kind": "na", "code": "age_none", "why": "官方无年龄限制"})
     elif pr["age"] < lo or pr["age"] > hi:
         dims.append(
             {
                 "dim": "age",
                 "kind": "fail",
+                "code": "age_low" if pr["age"] < lo else "age_high",
                 "need": f"{lo}-{hi} 岁",
                 "have": f"{pr['age']} 岁",
                 "why": f"年龄超出 {lo}-{hi} 岁",
             }
         )
     else:
-        dims.append({"dim": "age", "kind": "pass", "why": f"在 {lo}-{hi} 岁内"})
+        dims.append({"dim": "age", "kind": "pass", "code": "age_ok", "why": f"在 {lo}-{hi} 岁内"})
 
     # 学历
     edu = (doc.get("eligibility") or {}).get("education") or {}
@@ -332,6 +365,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             {
                 "dim": "education",
                 "kind": "fail",
+                "code": "edu_low",
                 "need": edu.get("minimum_level"),
                 "have": pr["education"],
                 "why": f"学历门槛 {edu.get('minimum_level')}",
@@ -342,16 +376,17 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             {
                 "dim": "education",
                 "kind": "silent",
+                "code": "edu_years_unknown",
                 "why": f"另要求已完成 {edu['years_completed']} 年本科，在读无法从他填的信息判定",
             }
         )
     else:
-        dims.append({"dim": "education", "kind": "pass", "why": "达到学历门槛"})
+        dims.append({"dim": "education", "kind": "pass", "code": "edu_ok", "why": "达到学历门槛"})
 
     # 语言
     lang = (doc.get("eligibility") or {}).get("language") or {}
     if lang.get("required") is not True:
-        dims.append({"dim": "language", "kind": "na", "why": "不要求语言成绩"})
+        dims.append({"dim": "language", "kind": "na", "code": "lang_none", "why": "不要求语言成绩"})
     else:
         tests = [
             t
@@ -366,6 +401,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                     {
                         "dim": "language",
                         "kind": "gap",
+                        "code": "lang_missing",
                         "need": f"雅思 {need_score}",
                         "have": "未提供语言成绩",
                         "why": f"需要雅思 {need_score} 及以上，你没填语言成绩",
@@ -376,15 +412,25 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                     {
                         "dim": "language",
                         "kind": "gap",
+                        "code": "lang_low",
                         "need": f"雅思 {need_score}",
                         "have": f"雅思 {pr['ielts']}",
                         "why": f"雅思差 {round(need_score - pr['ielts'], 1)} 分",
                     }
                 )
             else:
-                dims.append({"dim": "language", "kind": "pass", "why": f"雅思 {pr['ielts']} ≥ {need_score}"})
+                dims.append(
+                    {
+                        "dim": "language",
+                        "kind": "pass",
+                        "code": "lang_ok",
+                        "why": f"雅思 {pr['ielts']} ≥ {need_score}",
+                    }
+                )
         elif LANG_BY_DESIGN.search(note):
-            dims.append({"dim": "language", "kind": "na", "why": "官方不设分数线（面试/自证/仅计分）"})
+            dims.append(
+                {"dim": "language", "kind": "na", "code": "lang_by_design", "why": "官方不设分数线（面试/自证/仅计分）"}
+            )
         elif pr["ielts"] is None:
             # 关键的不对称：用户**没填**语言成绩时，「这条要求语言、你没成绩」
             # 是确定的事实，不依赖仓内有没有登记分数线 —— 判 gap（差一项）。
@@ -395,6 +441,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 {
                     "dim": "language",
                     "kind": "gap",
+                    "code": "lang_missing",
                     "need": "语言成绩（项目要求）",
                     "have": "未提供",
                     "why": "该项目要求语言成绩，你没填；具体分数线仓内未登记，需查官网",
@@ -405,6 +452,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 {
                     "dim": "language",
                     "kind": "silent",
+                    "code": "lang_cefr",
                     "why": "官方用 CEFR/CLB 档位表述，仓内无对照表，无法与雅思分数直接比",
                 }
             )
@@ -413,6 +461,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 {
                     "dim": "language",
                     "kind": "silent",
+                    "code": "lang_no_score",
                     "why": "项目要求语言证明但仓内未登记分数线，无法判断你的成绩是否达标",
                 }
             )
@@ -420,36 +469,54 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     # 预算
     funds = (doc.get("eligibility") or {}).get("funds") or {}
     if funds.get("required") is not True:
-        dims.append({"dim": "funds", "kind": "na", "why": "不要求资金证明"})
+        dims.append({"dim": "funds", "kind": "na", "code": "funds_none", "why": "不要求资金证明"})
     else:
         amount = funds.get("amount") or {}
         cny = amount.get("cny_estimate")
         note = funds.get("note") or ""
+        income_based = bool(FUNDS_INCOME.search((amount.get("note") or "") + " " + note))
         if not isinstance(cny, (int, float)):
             if FUNDS_NO_FIXED.search(note):
                 dims.append(
                     {
                         "dim": "funds",
                         "kind": "na",
+                        "code": "funds_by_design",
                         "why": "要求资金证明但官方不设固定金额，递交时自证",
                     }
                 )
             else:
                 dims.append(
-                    {"dim": "funds", "kind": "silent", "why": "要求资金证明但未登记金额"}
+                    {"dim": "funds", "kind": "silent", "code": "funds_unknown", "why": "要求资金证明但未登记金额"}
                 )
+        elif income_based:
+            # 门槛是「年收入」，用户填的是「可动用资金」——两个口径，不能相减。
+            # 说够（一个存款数字够不着收入门槛）与说不够（有收入但没存款）都会
+            # 把符合的人挡掉或把不符合的人放行，所以判 silent，请他看官网。
+            dims.append(
+                {
+                    "dim": "funds",
+                    "kind": "silent",
+                    "code": "funds_income_basis",
+                    "need": f"年收入约 {int(cny):,} 元",
+                    "why": "该项要求的是年收入而非存款，无法与你填的可动用资金直接比较",
+                }
+            )
         elif pr["budget_cny"] < cny:
             dims.append(
                 {
                     "dim": "funds",
                     "kind": "gap",
+                    "code": "funds_short",
                     "need": f"约 {int(cny):,} 元",
                     "have": f"{pr['budget_cny']:,} 元",
                     "why": f"资金证明差约 {int(cny) - pr['budget_cny']:,} 元",
                 }
             )
         else:
-            dims.append({"dim": "funds", "kind": "pass", "why": f"预算 ≥ 约 {int(cny):,} 元"})
+            dims.append(
+                {"dim": "funds", "kind": "pass", "code": "funds_ok", "why": f"预算 ≥ 约 {int(cny):,} 元"}
+            )
 
     kinds = {d["kind"] for d in dims}
     if "fail" in kinds:
@@ -459,6 +526,160 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     if "silent" in kinds:
         return "unknown", dims
     return "can", dims
+
+
+# --------------------------------------------------------------------------
+# 前端契约产物（--emit / --check）
+#
+# 两个文件，一个用途：
+#   data/match-flags.json    每条项目每一维的**判定状态**（不是原文），供
+#                            web/src/lib/verdict.ts 做纯比较。前端不再写任何
+#                            「note 里有没有『未按国籍设限』」这类正则。
+#   data/match-samples.json  三个样例画像 + Python 算出的逐项目结论（只留
+#                            dim/kind/code，不留中文解释），供 smoke-test 把
+#                            Python 与 TypeScript 两侧钉死：两边任何一边改了
+#                            判定口径而另一边没跟上，测试立刻红。
+#
+# rules_version 是这套口径的版本号。改了 judge() 的判定逻辑就要 +1，并同时
+# 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
+# --------------------------------------------------------------------------
+
+RULES_VERSION = 2
+
+
+def flags_of(doc: dict) -> dict:
+    """把一条项目的六个维度压成前端够用的**状态量**。
+
+    刻意只放状态量与数字阈值，不放 note 原文：note 是中文散文，放进索引会
+    让前端重新长出「读中文猜结论」的逻辑，那正是 M1 要消灭的东西。
+    """
+    el = doc.get("eligibility") or {}
+    pt = el.get("passport_types") or {}
+    age = el.get("age") or {}
+    edu = el.get("education") or {}
+    lang = el.get("language") or {}
+    funds = el.get("funds") or {}
+    amount = funds.get("amount") or {}
+    sch = (doc.get("timeline") or {}).get("schedule") or {}
+
+    passport = {k: (pt.get(k) or "missing") for k in PASSPORTS}
+    passport["note_open"] = bool(NOTE_OPEN_NATIONALITY.search(pt.get("note") or ""))
+
+    ielts = [
+        t["min_score"]
+        for t in (lang.get("tests") or [])
+        if t.get("test") == "IELTS" and isinstance(t.get("min_score"), (int, float))
+    ]
+    lang_note = lang.get("note") or ""
+    funds_note = funds.get("note") or ""
+    cny = amount.get("cny_estimate")
+
+    return {
+        "passport": passport,
+        "age": {
+            "min": age.get("min"),
+            "max": age.get("max"),
+            "unverified": bool(UNVERIFIED_PREFIX.match((age.get("note") or "").strip())),
+        },
+        "education": {
+            "level": edu.get("minimum_level"),
+            "years_completed": edu.get("years_completed"),
+        },
+        "language": {
+            "required": lang.get("required") is True,
+            "ielts_min": ielts[0] if ielts else None,
+            # 两个「不设分数线」的判据分开存，不合成一个布尔：by_design 是
+            # 「官方明说不设」，cefr 是「官方给了档位但仓内没折算表」，前者
+            # 判 na（不挡人）、后者判 silent（不可判），合并会把后者误放行。
+            "by_design": bool(LANG_BY_DESIGN.search(lang_note)),
+            "cefr": bool(LANG_CEFR_LADDER.search(lang_note)),
+        },
+        "funds": {
+            "required": funds.get("required") is True,
+            "cny_estimate": cny if isinstance(cny, (int, float)) else None,
+            "by_design": bool(FUNDS_NO_FIXED.search(funds_note)),
+            # 门槛是「年收入」而非存款：前端不能拿可动用资金与之相减
+            "income_basis": bool(
+                FUNDS_INCOME.search((amount.get("note") or "") + " " + funds_note)
+            ),
+        },
+        "window": {
+            "type": sch.get("type"),
+            "status": sch.get("status"),
+            "confidence": sch.get("date_confidence"),
+            "open": sch.get("open_date"),
+            "close": sch.get("close_date"),
+        },
+    }
+
+
+def build_flags() -> dict:
+    docs = load_programs()
+    return {
+        "rules_version": RULES_VERSION,
+        "total": len(docs),
+        "programs": {doc["program"]["id"]: flags_of(doc) for doc in docs},
+    }
+
+
+def build_samples() -> dict:
+    """三样例画像的逐项目结论。dims 只留 (dim, kind, code)。"""
+    docs = load_programs()
+    out = {}
+    for doc in docs:
+        per = {}
+        for name, pr in SAMPLES.items():
+            state, dims = judge(doc, pr)
+            per[name] = {
+                "state": state,
+                "dims": [
+                    {"dim": d["dim"], "kind": d["kind"], "code": d["code"]} for d in dims
+                ],
+            }
+        out[doc["program"]["id"]] = per
+    return {
+        "rules_version": RULES_VERSION,
+        "samples": SAMPLES,
+        "verdicts": out,
+    }
+
+
+def _dump(obj: dict) -> str:
+    return json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=False) + "\n"
+
+
+def write_artifacts() -> list[str]:
+    payloads = [(FLAGS, _dump(build_flags())), (SAMPLES_OUT, _dump(build_samples()))]
+    written = []
+    for path, text in payloads:
+        with io.open(path, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(text)
+        written.append(os.path.relpath(path, ROOT).replace("\\", "/"))
+    return written
+
+
+def check_artifacts() -> int:
+    payloads = [(FLAGS, _dump(build_flags())), (SAMPLES_OUT, _dump(build_samples()))]
+    stale = []
+    for path, text in payloads:
+        rel = os.path.relpath(path, ROOT).replace("\\", "/")
+        if not os.path.isfile(path):
+            stale.append("%s 不存在" % rel)
+            continue
+        with io.open(path, encoding="utf-8") as fh:
+            cur = fh.read()
+        if cur != text:
+            stale.append("%s 与数据不一致" % rel)
+    if stale:
+        print("FAIL 前端契约产物过期，请运行 python scripts/match_readiness.py --emit")
+        for s in stale:
+            print("  - %s" % s)
+        return 1
+    print(
+        "OK data/match-flags.json 与 data/match-samples.json 与数据一致（rules_version %d）"
+        % RULES_VERSION
+    )
+    return 0
 
 
 # --------------------------------------------------------------------------
@@ -682,7 +903,16 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="画像匹配数据就绪审计")
     ap.add_argument("--write", action="store_true", help="重写 docs/audit/ 下的审计文档")
     ap.add_argument("--json", action="store_true", help="输出 JSON")
+    ap.add_argument(
+        "--emit",
+        action="store_true",
+        help="重写 data/match-flags.json 与 data/match-samples.json（前端契约产物）",
+    )
+    ap.add_argument("--check", action="store_true", help="校验前端契约产物是否与数据同步（CI）")
     args = ap.parse_args()
+
+    if args.check:
+        return check_artifacts()
 
     rep = audit()
 
@@ -704,6 +934,10 @@ def main() -> int:
         with io.open(DOC, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(render_markdown(rep))
         print("已写入 %s" % os.path.relpath(DOC, ROOT))
+
+    if args.emit:
+        for rel in write_artifacts():
+            print("已写入 %s" % rel)
     return 0
 
 

@@ -5,7 +5,15 @@ import type { ReactNode } from 'react';
 import { useI18n } from '../i18n';
 import { navigate, type Route } from '../lib/router';
 
-export type NavName = 'list' | 'match' | 'calendar' | 'track' | 'saved' | 'compare' | 'about';
+export type NavName =
+  | 'list'
+  | 'match'
+  | 'verdict'
+  | 'calendar'
+  | 'track'
+  | 'saved'
+  | 'compare'
+  | 'about';
 
 interface Item {
   name: NavName;
@@ -13,6 +21,7 @@ interface Item {
   labelKey:
     | 'navBrowse'
     | 'navMatch'
+    | 'navVerdict'
     | 'navCalendar'
     | 'navTrack'
     | 'navSaved'
@@ -22,6 +31,7 @@ interface Item {
   hintKey:
     | 'navBrowseHint'
     | 'navMatchHint'
+    | 'navVerdictHint'
     | 'navCalendarHint'
     | 'navTrackHint'
     | 'navSavedHint'
@@ -49,6 +59,15 @@ export function Sidebar({
 
   const items: Item[] = [
     { name: 'list', path: '/', labelKey: 'navBrowse', hintKey: 'navBrowseHint', icon: '▤' },
+    // 判定在匹配上面：先回答「能不能申」，再看「哪个更值得先看」。
+    // 顺序反了会让人拿分数当资格，而分数只是排序。
+    {
+      name: 'verdict',
+      path: '/verdict',
+      labelKey: 'navVerdict',
+      hintKey: 'navVerdictHint',
+      icon: '⊪',
+    },
     { name: 'match', path: '/match', labelKey: 'navMatch', hintKey: 'navMatchHint', icon: '◈' },
     {
       name: 'calendar',

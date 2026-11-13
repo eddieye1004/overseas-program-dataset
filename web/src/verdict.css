@@ -1,0 +1,197 @@
+/* src/verdict.css
+   资格判定页（M2）的样式。
+   单独一份而不是塞进 workbench.css：这是同一期新增的一组功能，
+   放一起便于整体撤换；它们只消费 tokens.css 的变量，不新造颜色。
+
+   状态的色调映射刻意与既有 badge 体系一致（ok / warn / mute / no），
+   否则「差什么」在判定页是琥珀色、在卡片上是别的颜色，两处要各解释一遍。 */
+
+/* ---------- 资格判定：双栏 ---------- */
+
+.verdict__grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .verdict__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.verdict__results {
+  min-width: 0;
+}
+
+/* 判定表单里的辅助说明：雅思那一项的「没考过 ≠ 项目没分数线」全靠这句话 */
+.pfield__hint {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+/* ---------- 判定结果：分区 ---------- */
+
+.vsec {
+  margin: 0 0 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow: hidden;
+}
+.vsec__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  padding: 10px 14px;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  border-bottom: 1px solid var(--line);
+}
+.vsec__hint {
+  font-weight: 400;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+/* 四个分区的标题条各自带一点色调，让人滚到一半也知道自己在哪一组 */
+.vsec--ok .vsec__title {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.vsec--warn .vsec__title {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.vsec--mute .vsec__title {
+  background: var(--canvas-sunken);
+  color: var(--info);
+}
+.vsec--no .vsec__title {
+  background: var(--no-soft);
+  color: var(--no);
+}
+
+.vlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.vrow {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-top: 1px solid var(--line-soft);
+}
+.vrow:first-child {
+  border-top: 0;
+}
+/* 左侧一条色带：不靠颜色也能靠位置分辨分组 */
+.vrow--ok {
+  border-left: 3px solid var(--ok-line);
+}
+.vrow--warn {
+  border-left: 3px solid var(--warn-line);
+}
+.vrow--mute {
+  border-left: 3px solid var(--line-strong);
+}
+.vrow--no {
+  border-left: 3px solid var(--no-line);
+}
+
+.vrow__main {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.vrow__title {
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.vrow__title:hover {
+  color: var(--accent);
+}
+.vrow__meta {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+.vrow__passes {
+  margin: 6px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--ok);
+}
+.vrow__side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 0 0 auto;
+  align-items: stretch;
+}
+
+/* 逐维缺口：一行一维，标签固定宽度，句子左对齐才好扫 */
+.vdims {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.vdim {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+.vdim__label {
+  flex: 0 0 auto;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  min-width: 56px;
+}
+.vdim__text {
+  color: var(--ink-1);
+}
+.vdim--fail .vdim__text {
+  color: var(--no);
+}
+.vdim--gap .vdim__text {
+  color: var(--warn);
+}
+.vdim--silent .vdim__text {
+  color: var(--info);
+}
+/* 「据官方不按国籍设限推出」这类推断要显式标出来，不能混在确定结论里 */
+.vdim__tag {
+  font-size: var(--fs-xs);
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--canvas-sunken);
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+}
+
+.verdict__foot {
+  margin: 4px 0 0;
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+.verdict__version {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

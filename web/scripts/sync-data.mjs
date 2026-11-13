@@ -2,14 +2,16 @@
 // 把仓库根目录 data/programs/*.json 合并成前端可直接 fetch 的两个静态文件：
 //   public/data/programs.json  完整数据（11 条，含 documents/steps/risks/sources），详情页用
 //   public/data/index.json     轻量索引（列表页/筛选用，只保留卡片与筛选需要的字段）
+// 并把 Python 侧算好的 data/match-flags.json 一并搬到 public/data/（匹配页读）。
 // 运行：node scripts/sync-data.mjs（package.json 里是 pnpm sync:data）
-import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readdir, readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const WEB_ROOT = resolve(__dirname, '..');
-const DATA_DIR = resolve(WEB_ROOT, '..', 'data', 'programs');
+const REPO_ROOT = resolve(WEB_ROOT, '..');
+const DATA_DIR = resolve(REPO_ROOT, 'data', 'programs');
 const I18N_DIR = join(WEB_ROOT, 'i18n-src');
 const OUT_DIR = join(WEB_ROOT, 'public', 'data');
 const PUBLIC_DIR = join(WEB_ROOT, 'public');
@@ -220,6 +222,28 @@ async function main() {
   await writeFile(join(OUT_DIR, 'programs.json'), full, 'utf8');
   await writeFile(join(OUT_DIR, 'index.json'), index, 'utf8');
   await writeFile(join(OUT_DIR, 'i18n.json'), i18n, 'utf8');
+
+  // 判定状态量由 Python 生成（scripts/match_readiness.py --emit），这里只搬运。
+  // 不在这里重算：判据一旦有两份，Python 审计与网页就会各说各话。搬之前校验它
+  // 覆盖了每一个项目 —— 少一条就等于匹配页静默吞掉一个项目。
+  const flagsPath = resolve(REPO_ROOT, 'data', 'match-flags.json');
+  let flags;
+  try {
+    flags = JSON.parse(await readFile(flagsPath, 'utf8'));
+  } catch (err) {
+    throw new Error(
+      `data/match-flags.json 读不到或不是合法 JSON：${err.message}\n` +
+        '先运行 python scripts/match_readiness.py --emit',
+    );
+  }
+  const missingFlags = programs.map((p) => p.program.id).filter((id) => !flags.programs?.[id]);
+  if (missingFlags.length > 0) {
+    throw new Error(
+      `data/match-flags.json 缺 ${missingFlags.length} 个项目：${missingFlags.join(', ')}\n` +
+        '先运行 python scripts/match_readiness.py --emit',
+    );
+  }
+  await copyFile(flagsPath, join(OUT_DIR, 'match-flags.json'));
 
   // sitemap 也从数据生成，否则加一个项目就会漏一条 URL。
   // 2026-11-01 加 uk-short-term-study-visa 时手工维护的版本就漏了它，

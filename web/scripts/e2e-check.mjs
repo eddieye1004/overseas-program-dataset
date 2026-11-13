@@ -187,7 +187,14 @@ await evalJs(`localStorage.clear()`);
 await goto('#/');
 ok('侧边栏存在', await evalJs(`!!document.querySelector('.sidebar')`));
 const navCount = await evalJs(`document.querySelectorAll('.sidebar__item').length`);
-ok('侧边栏 7 个导航入口', navCount === 7, `got ${navCount}`);
+// 不写死数字：2026-11-12 追踪系统一期加了「资格判定」「追踪清单」两项，
+// 写死 7 的版本当场红。这里守的是「该有的都有、没有重复」，条数由
+// 下面逐个名字的断言兜住 —— 数字本身不是产品要求。
+ok('侧边栏导航入口齐全（8 项）', navCount === 8, `got ${navCount}`);
+const navLabels = await evalJs(
+  `JSON.stringify([...document.querySelectorAll('.sidebar__label')].map(e => e.textContent))`,
+);
+ok('导航没有重复项', new Set(JSON.parse(navLabels)).size === navCount, navLabels);
 const brandText = await evalJs(`document.querySelector('.sidebar__name strong')?.textContent ?? ''`);
 ok('站点标题非空', brandText.length > 0, brandText);
 ok(
@@ -914,6 +921,18 @@ console.log('\n[23] SEO 基础件：robots / sitemap / favicon / OG / JSON-LD');
   const pHtml = await (await fetch(`${base}p/au-462-work-holiday.html`)).text();
   ok('项目静态页也声明 manifest', /rel="manifest"/.test(pHtml));
   ok('项目静态页也带 apple-touch-icon', /apple-touch-icon\.png/.test(pHtml));
+
+
+  // manifest 里写的项目数必须与数据一致：写死 26 的版本在 26→41 之后
+  // 就不会有人发现，直到用户装到桌面看到一句错的简介。
+  const mfDesc = String(mf.description ?? '');
+  const ctaDesc = String((mf.shortcuts ?? [])[0]?.description ?? '');
+  ok(
+    'manifest 简介里的项目数与数据一致',
+    mfDesc.includes(`${EXPECT_TOTAL} 个`) && !/26 个/.test(mfDesc),
+    mfDesc,
+  );
+  ok('manifest 快捷方式的描述不含旧条数', !/26 个/.test(ctaDesc), ctaDesc);
 }
 
 console.log('\n[24] 未核实值不显示为假数字');
@@ -1327,6 +1346,189 @@ console.log('\n[29] 窗口日历：三档确定性不许混排');
   );
   await sleep(800);
   ok('侧栏导航可进入日历页', await evalJs(`location.hash.includes('calendar')`));
+}
+
+// ==========================================================================
+// [31] 资格判定（M2）：五项输入 → 三态结论，纯客户端
+// ==========================================================================
+{
+  console.log('\n[31] 资格判定（M2）');
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1280,
+    height: 900,
+    deviceScaleFactor: 1,
+    mobile: false,
+  });
+  await evalJs(`localStorage.clear()`);
+  await goto('#/verdict');
+  await sleep(900);
+
+  ok('判定页可打开', await evalJs(`!!document.querySelector('.verdict')`));
+  ok(
+    '五项输入都在（护照/年龄/学历/雅思/预算）',
+    (await evalJs(`document.querySelectorAll('.profile .pfield').length`)) === 5,
+    String(await evalJs(`document.querySelectorAll('.profile .pfield').length`)),
+  );
+  ok('未提交时不出结果', await evalJs(`!document.querySelector('.vsec')`));
+
+  // 填 A 画像：大陆 / 21 / 本科在读 / 雅思 6.0 / 3 万
+  await evalJs(`(() => {
+    const setVal = (el, v) => {
+      const proto = Object.getPrototypeOf(el);
+      const desc = Object.getOwnPropertyDescriptor(proto, 'value');
+      desc.set.call(el, v);
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    const fields = [...document.querySelectorAll('.profile .pfield')];
+    setVal(fields[0].querySelector('select'), 'mainland_china');
+    setVal(fields[1].querySelector('input'), '21');
+    setVal(fields[2].querySelector('select'), 'bachelor_in_progress');
+    setVal(fields[3].querySelector('select'), '6');
+    setVal(fields[4].querySelector('input'), '30000');
+    return true;
+  })()`);
+  await sleep(400);
+  await evalJs(`document.querySelector('.profile button[type="submit"]').click()`);
+  await sleep(700);
+
+  const stat = JSON.parse(
+    await evalJs(`JSON.stringify([...document.querySelectorAll('.stat')].map(s => ({
+      n: Number(s.querySelector('.stat__num').textContent),
+      l: s.querySelector('.stat__label').textContent,
+    })))`),
+  );
+  ok('判定后出现四态计数条', stat.length === 4, JSON.stringify(stat));
+  ok(
+    '四态计数之和 = 41',
+    stat.reduce((a, b) => a + b.n, 0) === EXPECT_TOTAL,
+    `sum ${stat.reduce((a, b) => a + b.n, 0)}`,
+  );
+  ok('A 画像出现「能申」>0', (stat.find((s) => s.l === '能申')?.n ?? 0) > 0, JSON.stringify(stat));
+
+  // A 画像的「差什么」确实是 0，这不是漏判：
+  //   A 雅思 6.0 已过语言线，预算 3 万也不缺，唯一够不着的 462「已完成 2 年本科」
+  //   属于「数据只说了要求、没说怎么判在读生」→ silent → 不可判。
+  //   所以这一条断言的是设计口径本身：462 要落在不可判区，且原因写的是年数未知。
+  //   「差什么」分支改由 B 画像（gap=10）覆盖，见下面 [31b]。
+  const a462 = await evalJs(`(() => {
+    const row = [...document.querySelectorAll('.vrow')].find(r => /462|Work and Holiday/.test(r.textContent));
+    if (!row) return JSON.stringify({ found: false });
+    return JSON.stringify({
+      found: true,
+      cls: row.className,
+      dims: [...row.querySelectorAll('.vdim__text')].map(e => e.textContent),
+    });
+  })()`);
+  const a462p = JSON.parse(a462);
+  ok(
+    'A 画像下 462 判「不可判」（在读年数官方未表态，不硬判能/不能）',
+    a462p.found === true && /vrow--mute/.test(a462p.cls),
+    a462,
+  );
+  ok(
+    '该不可判行给出原因（完成年数未知）',
+    (a462p.dims ?? []).some((d) => /年|years/.test(d)),
+    JSON.stringify(a462p.dims),
+  );
+
+  // B 画像（大陆 / 28 / 本科已毕业 / 无雅思 / 8 万）是「差什么」的主场：
+  // 语言缺成绩、预算不够这类都是「差多少可知」的 gap，不该混进不可判或不能申。
+  await evalJs(`(() => {
+    const setVal = (el, v) => {
+      const proto = Object.getPrototypeOf(el);
+      Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, v);
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    const fields = [...document.querySelectorAll('.profile .pfield')];
+    setVal(fields[0].querySelector('select'), 'mainland_china');
+    setVal(fields[1].querySelector('input'), '28');
+    setVal(fields[2].querySelector('select'), 'bachelor_completed');
+    setVal(fields[3].querySelector('select'), '');
+    setVal(fields[4].querySelector('input'), '80000');
+    return true;
+  })()`);
+  await sleep(400);
+  await evalJs(`document.querySelector('.profile button[type="submit"]').click()`);
+  await sleep(700);
+
+  const statB = JSON.parse(
+    await evalJs(`JSON.stringify([...document.querySelectorAll('.stat')].map(s => ({
+      n: Number(s.querySelector('.stat__num').textContent),
+      l: s.querySelector('.stat__label').textContent,
+    })))`),
+  );
+  ok(
+    'B 画像出现「差什么」>0 且计数与 Python 一致（10）',
+    (statB.find((s) => s.l === '差什么')?.n ?? 0) === 10,
+    JSON.stringify(statB),
+  );
+  const gapRow = await evalJs(`(() => {
+    const row = document.querySelector('.vsec--warn .vrow');
+    if (!row) return '';
+    return (row.querySelector('.vdim--gap .vdim__text')?.textContent ?? '') + '|' + row.querySelector('.vrow__title')?.textContent;
+  })()`);
+  ok('「差什么」分区里写清了差多少（含具体门槛）', /雅思|语言|元/.test(gapRow), gapRow);
+
+  const secs = JSON.parse(
+    await evalJs(`JSON.stringify([...document.querySelectorAll('.vsec')].map(s => ({
+      cls: s.className,
+      title: s.querySelector('.vsec__title')?.textContent || '',
+      rows: s.querySelectorAll('.vrow').length,
+      hint: s.querySelector('.vsec__hint')?.textContent || '',
+    })))`),
+  );
+  ok('结果按分区呈现且每个分区都有说明', secs.every((s) => s.hint.length > 5), JSON.stringify(secs.map((s) => s.hint)));
+
+  // 抽一条「不能申」核对原因确实是硬条件：台湾护照对澳洲 462
+  const cProfile = JSON.parse(
+    await evalJs(`(() => {
+      const setVal = (el, v) => {
+        const proto = Object.getPrototypeOf(el);
+        Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, v);
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      };
+      const fields = [...document.querySelectorAll('.profile .pfield')];
+      setVal(fields[0].querySelector('select'), 'taiwan_china');
+      setVal(fields[1].querySelector('input'), '25');
+      setVal(fields[2].querySelector('select'), 'bachelor_completed');
+      setVal(fields[3].querySelector('select'), '6.5');
+      setVal(fields[4].querySelector('input'), '50000');
+      return JSON.stringify({ ok: true });
+    })()`),
+  );
+  ok('切换到 C 画像成功', cProfile.ok === true);
+  await evalJs(`document.querySelector('.profile button[type="submit"]').click()`);
+  await sleep(700);
+
+  const cRow = await evalJs(`(() => {
+    const rows = [...document.querySelectorAll('.vrow')];
+    const hit = rows.find(r => /Work and Holiday|462/.test(r.textContent));
+    if (!hit) return '';
+    return hit.querySelector('.vdim--fail .vdim__text')?.textContent
+      ?? hit.querySelector('.vdim__text')?.textContent ?? '';
+  })()`);
+  ok('C 画像下澳洲 462 判「该护照明确不可申」', /不可申/.test(cRow), cRow);
+
+  // 条件必须落盘：刷新后不重填
+  await send('Page.navigate', { url: `${base}#/verdict` });
+  await sleep(1600);
+  const persisted = JSON.parse(
+    await evalJs(`(() => {
+      const fields = [...document.querySelectorAll('.profile .pfield')];
+      return JSON.stringify({
+        passport: fields[0]?.querySelector('select')?.value,
+        age: fields[1]?.querySelector('input')?.value,
+        budget: fields[4]?.querySelector('input')?.value,
+      });
+    })()`),
+  );
+  ok('刷新后条件仍在（本机存储）', persisted.passport === 'taiwan_china' && persisted.age === '25', JSON.stringify(persisted));
+
+  // 纯客户端：整个判定过程不该发出任何请求
+  const net = await evalJs(`JSON.stringify(performance.getEntriesByType('resource').map(e => e.name).filter(n => /api|post|submit|\.php/.test(n)))`);
+  ok('判定不发请求到服务器', net === '[]', net);
 }
 
 ws.close();

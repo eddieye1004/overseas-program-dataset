@@ -1,0 +1,3800 @@
+{
+ "rules_version": 2,
+ "samples": {
+  "A": {
+   "passport": "mainland_china",
+   "age": 21,
+   "education": "bachelor_in_progress",
+   "ielts": 6.0,
+   "budget_cny": 30000
+  },
+  "B": {
+   "passport": "mainland_china",
+   "age": 28,
+   "education": "bachelor_completed",
+   "ielts": null,
+   "budget_cny": 80000
+  },
+  "C": {
+   "passport": "taiwan_china",
+   "age": 25,
+   "education": "bachelor_completed",
+   "ielts": 6.5,
+   "budget_cny": 50000
+  }
+ },
+ "verdicts": {
+  "at-rwr-card-vhq": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   }
+  },
+  "au-407-training": {
+   "A": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "au-462-work-holiday": {
+   "A": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_years_unknown"
+     },
+     {
+      "dim": "language",
+      "kind": "pass",
+      "code": "lang_ok"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "pass",
+      "code": "lang_ok"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "au-485-graduate": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "au-485-vocational": {
+   "A": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "ca-iec-working-holiday": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "ca-pgwp": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_cefr"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_cefr"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "de-16e-internship": {
+   "A": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "de-20-job-search": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   }
+  },
+  "de-chancenkarte": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_cefr"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_cefr"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   }
+  },
+  "dk-working-holiday": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "silent",
+      "code": "passport_missing"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "es-busqueda-empleo": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   }
+  },
+  "fi-look-for-work": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "fr-recherche-emploi": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "global-aiesec-global-talent": {
+   "A": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "silent",
+      "code": "age_unknown"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "silent",
+      "code": "age_unknown"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "silent",
+      "code": "age_unknown"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "global-iaeste": {
+   "A": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "ie-third-level-graduate": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "ie-working-holiday-authorisation": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "gap",
+      "code": "funds_short"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "is-job-search-after-graduation": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "it-ricerca-lavoro": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "jp-working-holiday": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   }
+  },
+  "kr-h1-working-holiday": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "mt-nomad-residence": {
+   "A": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "silent",
+      "code": "funds_income_basis"
+     }
+    ]
+   },
+   "B": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "silent",
+      "code": "funds_income_basis"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "silent",
+      "code": "funds_income_basis"
+     }
+    ]
+   }
+  },
+  "nl-orientation-year": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "pass",
+      "code": "lang_ok"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "pass",
+      "code": "lang_ok"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "no-skilled-worker": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "nz-china-whv": {
+   "A": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "pass",
+      "code": "lang_ok"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "pass",
+      "code": "lang_ok"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "nz-post-study-work": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "se-look-for-work": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "sg-employment-pass": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "sg-s-pass": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_open"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "sg-work-holiday-programme": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "fail",
+      "code": "age_high"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "uk-graduate-visa": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "uk-hpi-visa": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "uk-short-term-study-visa": {
+   "A": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   }
+  },
+  "uk-youth-mobility-scheme": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "fail",
+      "code": "passport_no"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "pass",
+      "code": "funds_ok"
+     }
+    ]
+   }
+  },
+  "us-f1-opt": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_none"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "us-j1-camp-counselor": {
+   "A": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "pass",
+      "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "us-j1-intern": {
+   "A": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "us-j1-research-scholar": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "B": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   },
+   "C": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_by_design"
+     }
+    ]
+   }
+  },
+  "us-j1-summer-work-travel": {
+   "A": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "silent",
+      "code": "age_unknown"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "gap",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "silent",
+      "code": "age_unknown"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "gap",
+      "code": "lang_missing"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "unknown",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "silent",
+      "code": "age_unknown"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "silent",
+      "code": "lang_no_score"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  },
+  "us-j1-trainee": {
+   "A": {
+    "state": "cannot",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "fail",
+      "code": "edu_low"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "B": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   },
+   "C": {
+    "state": "can",
+    "dims": [
+     {
+      "dim": "passport",
+      "kind": "pass",
+      "code": "passport_ok"
+     },
+     {
+      "dim": "age",
+      "kind": "na",
+      "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "pass",
+      "code": "edu_ok"
+     },
+     {
+      "dim": "language",
+      "kind": "na",
+      "code": "lang_by_design"
+     },
+     {
+      "dim": "funds",
+      "kind": "na",
+      "code": "funds_none"
+     }
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,1482 @@
+{
+ "rules_version": 2,
+ "total": 41,
+ "programs": {
+  "at-rwr-card-vhq": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": true,
+    "cefr": true
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "au-407-training": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 18,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "au-462-work-holiday": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "not_eligible",
+    "taiwan_china": "not_eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 30,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_in_progress",
+    "years_completed": 2
+   },
+   "language": {
+    "required": true,
+    "ielts_min": 4.5,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 23500,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "fixed_dates",
+    "status": "closed",
+    "confidence": "confirmed",
+    "open": "2026-06-04",
+    "close": "2026-06-25"
+   }
+  },
+  "au-485-graduate": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 35,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "au-485-vocational": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 18,
+    "max": 35,
+    "unverified": false
+   },
+   "education": {
+    "level": "vocational",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "ca-iec-working-holiday": {
+   "passport": {
+    "mainland_china": "not_eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 35,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 13000,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "fixed_dates",
+    "status": "unknown",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "ca-pgwp": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": true
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "de-16e-internship": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_in_progress",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 5900,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "de-20-job-search": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "de-chancenkarte": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": true
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "dk-working-holiday": {
+   "passport": {
+    "mainland_china": "not_eligible",
+    "hong_kong_china": "unknown",
+    "taiwan_china": "missing",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 30,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "no_window",
+    "status": "unknown",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "es-busqueda-empleo": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "fi-look-for-work": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 6300,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "fr-recherche-emploi": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "master",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "global-aiesec-global-talent": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": true
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "global-iaeste": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_in_progress",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": true,
+    "cefr": true
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "ie-third-level-graduate": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "ie-working-holiday-authorisation": {
+   "passport": {
+    "mainland_china": "not_eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 30,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 31000,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "fixed_dates",
+    "status": "open",
+    "confidence": "confirmed",
+    "open": "2026-11-01",
+    "close": null
+   }
+  },
+  "is-job-search-after-graduation": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 13800,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "it-ricerca-lavoro": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "jp-working-holiday": {
+   "passport": {
+    "mainland_china": "not_eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 30,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "annual_cycle",
+    "status": "closed",
+    "confidence": "inferred",
+    "open": null,
+    "close": null
+   }
+  },
+  "kr-h1-working-holiday": {
+   "passport": {
+    "mainland_china": "not_eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 34,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 15500,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "fixed_dates",
+    "status": "unknown",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "mt-nomad-residence": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 18,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 330000,
+    "by_design": false,
+    "income_basis": true
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "nl-orientation-year": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": 6.0,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "no-skilled-worker": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": true,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "nz-china-whv": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 30,
+    "unverified": false
+   },
+   "education": {
+    "level": "high_school",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": 5.5,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 18000,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "annual_cycle",
+    "status": "closed",
+    "confidence": "inferred",
+    "open": null,
+    "close": null
+   }
+  },
+  "nz-post-study-work": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 21500,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "se-look-for-work": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "master",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 9400,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "sg-employment-pass": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "sg-s-pass": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "missing",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "sg-work-holiday-programme": {
+   "passport": {
+    "mainland_china": "not_eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "not_eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 25,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_in_progress",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "fixed_dates",
+    "status": "unknown",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "uk-graduate-visa": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "uk-hpi-visa": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 11600,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "uk-short-term-study-visa": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 16,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "uk-youth-mobility-scheme": {
+   "passport": {
+    "mainland_china": "not_eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 35,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": 23000,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "fixed_dates",
+    "status": "closed",
+    "confidence": "confirmed",
+    "open": "2026-07-14",
+    "close": "2026-07-16"
+   }
+  },
+  "us-f1-opt": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": true
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": false,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "us-j1-camp-counselor": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 18,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "any",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": true,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "us-j1-intern": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_in_progress",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": true,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "us-j1-research-scholar": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "master",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": true,
+    "cefr": false
+   },
+   "funds": {
+    "required": true,
+    "cny_estimate": null,
+    "by_design": true,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "us-j1-summer-work-travel": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": true
+   },
+   "education": {
+    "level": "bachelor_in_progress",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": false,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  },
+  "us-j1-trainee": {
+   "passport": {
+    "mainland_china": "eligible",
+    "hong_kong_china": "eligible",
+    "taiwan_china": "eligible",
+    "note_open": false
+   },
+   "age": {
+    "min": 0,
+    "max": 99,
+    "unverified": false
+   },
+   "education": {
+    "level": "bachelor_completed",
+    "years_completed": null
+   },
+   "language": {
+    "required": true,
+    "ielts_min": null,
+    "by_design": true,
+    "cefr": false
+   },
+   "funds": {
+    "required": false,
+    "cny_estimate": null,
+    "by_design": false,
+    "income_basis": false
+   },
+   "window": {
+    "type": "rolling",
+    "status": "always_open",
+    "confidence": "unknown",
+    "open": null,
+    "close": null
+   }
+  }
+ }
+}

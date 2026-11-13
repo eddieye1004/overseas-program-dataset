@@ -85,11 +85,13 @@ export type UiKey =
   // —— 工作台导航 ——
   | 'navBrowse'
   | 'navMatch'
+  | 'navVerdict'
   | 'navCalendar'
   | 'navTrack'
   | 'navSaved'
   | 'navCompare'
   | 'navData'
+  | 'navVerdictHint'
   | 'workbench'
   // —— 智能匹配 ——
   | 'matchTitle'
@@ -256,7 +258,47 @@ export type UiKey =
   | 'compareEmptyBody'
   | 'emptyRecentCta'
   | 'compareIntro'
-  | 'compareCountLabel';
+  | 'compareCountLabel'
+  // —— 资格判定（M2：五项输入 → 三态结论）——
+  | 'verdictTitle'
+  | 'verdictIntro'
+  | 'verdictProfileTitle'
+  | 'verdictProfileDesc'
+  | 'verdictPassport'
+  | 'verdictAge'
+  | 'verdictEdu'
+  | 'verdictIelts'
+  | 'verdictIeltsNone'
+  | 'verdictIeltsHint'
+  | 'verdictBudget'
+  | 'verdictSubmit'
+  | 'verdictSubmitHint'
+  | 'verdictSaved'
+  | 'verdictReset'
+  | 'verdictResultTitle'
+  | 'verdictEmpty'
+  | 'verdictCountCan'
+  | 'verdictCountGap'
+  | 'verdictCountUnknown'
+  | 'verdictCountCannot'
+  | 'verdictSecCan'
+  | 'verdictSecCanHint'
+  | 'verdictSecGap'
+  | 'verdictSecGapHint'
+  | 'verdictSecUnknown'
+  | 'verdictSecUnknownHint'
+  | 'verdictSecCannot'
+  | 'verdictSecCannotHint'
+  | 'verdictDetailLink'
+  | 'verdictDisclaimer'
+  | 'verdictInferred'
+  | 'verdictNoVerdicts'
+  | 'verdictRulesVersion'
+  | 'verdictDimPassport'
+  | 'verdictDimAge'
+  | 'verdictDimEdu'
+  | 'verdictDimLang'
+  | 'verdictDimFunds'
 
 export const UI: Record<Lang, Record<UiKey, string>> = {
   zh: {
@@ -341,6 +383,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     criticalOnly: '只看有致命风险',
 
     navBrowse: '项目库',
+    navVerdict: '资格判定',
     navMatch: '智能匹配',
     navCalendar: '窗口日历',
     navTrack: '我的申请',
@@ -472,6 +515,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     onboardPath3: '拿不准就点星号收藏，回头在「收藏」里并排比',
     navBrowseHint: '全量列表，按资格筛',
     navMatchHint: '填条件，按匹配度排序',
+    navVerdictHint: '五项条件，逐条判能不能申',
     navCalendarHint: '什么时候开、什么时候该准备',
     calTitle: '窗口日历',
     calLede: '每个项目的开放窗口，按「这个日期可不可信」分成三块。官方公布的和按规律推断的永远分开显示——把推断出来的日期摆在官方日期旁边，读者分不出来，就一定会有人按错的日子准备材料。',
@@ -516,6 +560,52 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     emptyRecentCta: '从最近看过的开始',
     compareIntro: '同一行看同一字段，差异才会跳出来。最多 4 条。',
     compareCountLabel: '已选',
+
+    // —— 资格判定 ——
+    verdictTitle: '资格判定',
+    verdictIntro:
+      '填五项条件，逐条给出「能申 / 差什么 / 不能申」。判定只用仓内已核实的字段，算不出来的会明说「不可判」，不猜。',
+    verdictProfileTitle: '你的条件',
+    verdictProfileDesc:
+      '五项都只影响这一次判定。填完自动保存在本机，刷新不用重填，也不会发到任何服务器。',
+    verdictPassport: '护照',
+    verdictAge: '年龄',
+    verdictEdu: '最高学历',
+    verdictIelts: '雅思总分',
+    verdictIeltsNone: '没考过 / 不填',
+    verdictIeltsHint: '没考过就选「没考过」。这与「考了但项目没登记分数线」是两件事，会影响结论。',
+    verdictBudget: '可动用的资金证明（人民币）',
+    verdictSubmit: '开始判定',
+    verdictSubmitHint: '判定在你自己的浏览器里完成，不发服务器。',
+    verdictSaved: '条件已存本机',
+    verdictReset: '清空条件',
+    verdictResultTitle: '判定结果',
+    verdictEmpty: '填完上面五项条件后点「开始判定」，这里会按三态列出来。',
+    verdictCountCan: '能申',
+    verdictCountGap: '差什么',
+    verdictCountUnknown: '不可判',
+    verdictCountCannot: '不能申',
+    verdictSecCan: '能申',
+    verdictSecCanHint: '五项条件都满足，或该项目不设这一维的门槛。',
+    verdictSecGap: '差什么',
+    verdictSecGapHint: '有一项能补——差多少已经算出来，补上就够。',
+    verdictSecUnknown: '不可判',
+    verdictSecUnknownHint: '官方没公布，或仓内没登记到能比的数字。这类不替你担保，请点开详情页核对官网。',
+    verdictSecCannot: '不能申',
+    verdictSecCannotHint: '有硬性条件不符，补材料也绕不过去。原因写在每一条下面。',
+    verdictDetailLink: '看官方原文与缺口',
+    verdictDisclaimer:
+      '判定是对照仓内数据的机械比较，不等于签证结果。递交前请点开每条项目核对官方原文——「能申」只表示数据里没有拦你的条款。',
+    verdictInferred: '据官方「不按国籍设限」推出',
+    verdictNoVerdicts: '没有算得出结论的项目。',
+    verdictRulesVersion: '判定口径',
+    verdictDimPassport: '护照资格',
+    verdictDimAge: '年龄',
+    verdictDimEdu: '学历',
+    verdictDimLang: '语言',
+    verdictDimFunds: '资金证明',
+
+
   },
   en: {
     siteTitle: 'Overseas Program Dataset',
@@ -600,6 +690,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     criticalOnly: 'Critical risks only',
 
     navBrowse: 'Programs',
+    navVerdict: 'Eligibility',
     navMatch: 'Smart match',
     navCalendar: 'Calendar',
     navTrack: 'My applications',
@@ -735,6 +826,7 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
       'Unsure? Star it and compare side by side later under Saved',
     navBrowseHint: 'All entries, filtered',
     navMatchHint: 'Enter a profile, get a ranking',
+    navVerdictHint: 'Five inputs, one verdict per program',
     navCalendarHint: 'When windows open, and when to prepare',
     calTitle: 'Application calendar',
     calLede: 'Every program application window, split into three blocks by how much the date can be trusted. Officially published dates never sit next to inferred ones — mixing them is how people end up preparing against the wrong day.',
@@ -779,6 +871,54 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     emptyRecentCta: 'Start from something you viewed',
     compareIntro: 'Read one field across every column — that is where the difference shows. Up to 4.',
     compareCountLabel: 'Selected',
+
+    // —— Eligibility verdict ——
+    verdictTitle: 'Eligibility check',
+    verdictIntro:
+      'Enter five conditions and get a verdict per program: eligible, one thing missing, or not eligible. Values come from verified fields only — where the data cannot decide, it says so instead of guessing.',
+    verdictProfileTitle: 'Your details',
+    verdictProfileDesc:
+      'These five inputs only affect this check. They stay in this browser, survive a refresh, and are never sent to a server.',
+    verdictPassport: 'Passport',
+    verdictAge: 'Age',
+    verdictEdu: 'Highest education',
+    verdictIelts: 'IELTS overall',
+    verdictIeltsNone: 'Not taken / leave blank',
+    verdictIeltsHint:
+      'Pick "Not taken" if you have no score. That is different from having a score a program does not publish a threshold for, and the verdict differs.',
+    verdictBudget: 'Funds available for proof (CNY)',
+    verdictSubmit: 'Run the check',
+    verdictSubmitHint: 'The check runs in your browser. Nothing is uploaded.',
+    verdictSaved: 'Saved on this device',
+    verdictReset: 'Clear',
+    verdictResultTitle: 'Verdicts',
+    verdictEmpty: 'Fill in the five conditions and run the check — results appear here grouped by verdict.',
+    verdictCountCan: 'Eligible',
+    verdictCountGap: 'One gap',
+    verdictCountUnknown: 'Undecidable',
+    verdictCountCannot: 'Not eligible',
+    verdictSecCan: 'Eligible',
+    verdictSecCanHint: 'All five conditions are met, or the program sets no threshold on that dimension.',
+    verdictSecGap: 'One gap',
+    verdictSecGapHint: 'Something is fixable — the shortfall is calculated, and closing it is enough.',
+    verdictSecUnknown: 'Undecidable',
+    verdictSecUnknownHint:
+      'The official page does not publish it, or the dataset has no comparable figure. Not vouched for either way — open the program page and check the source.',
+    verdictSecCannot: 'Not eligible',
+    verdictSecCannotHint: 'A hard condition fails; extra documents will not change it. The reason sits under each entry.',
+    verdictDetailLink: 'Official source and gaps',
+    verdictDisclaimer:
+      'This is a mechanical comparison against the dataset, not a visa decision. Open each program and confirm against the official text before applying — "eligible" only means nothing in the data rules you out.',
+    verdictInferred: 'Inferred from the official "no nationality restriction" wording',
+    verdictNoVerdicts: 'No program produced a verdict.',
+    verdictRulesVersion: 'Rules version',
+    verdictDimPassport: 'Passport',
+    verdictDimAge: 'Age',
+    verdictDimEdu: 'Education',
+    verdictDimLang: 'Language',
+    verdictDimFunds: 'Proof of funds',
+
+
   },
 };
 
@@ -1002,9 +1142,76 @@ export const MATCH_TEXT: Record<Lang, Record<string, string>> = {
   },
 };
 
+/**
+ * 判定结论文案。key 与 src/lib/verdict.ts 的 DimVerdict.code 一一对应——
+ * 两边同名同义，smoke-test 会检查每个 code 都有 zh 与 en 两条文案，
+ * 否则界面会露出 v.lang_missing 这种裸 key。
+ * 模板占位：{need} 门槛、{have} 本人条件。
+ */
+export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
+  zh: {
+    passport_ok: '护照已登记可申',
+    passport_no: '该护照明确不可申',
+    passport_open: '官方未按国籍设限',
+    passport_conditional: '有条件开放，需查当年公告',
+    passport_unknown: '官方未核实该护照资格',
+    passport_missing: '该护照未登记，且无明文结论',
+    age_ok: '年龄在要求区间内',
+    age_low: '年龄低于下限：要求 {need}，你是 {have}',
+    age_high: '年龄超出上限：要求 {need}，你是 {have}',
+    age_none: '该项目不限年龄',
+    age_unknown: '官方未公布年龄限制，无法判定',
+    edu_ok: '学历达到门槛',
+    edu_low: '学历低于门槛：要求 {need}',
+    edu_years_unknown: '另要求 {need}，在读无法从你填的信息判定',
+    lang_ok: '语言成绩达标',
+    lang_low: '语言成绩不够：要求 {need}，你是 {have}',
+    lang_missing: '要求语言成绩，你没填：需要 {need}',
+    lang_none: '该项目不要求语言成绩',
+    lang_by_design: '官方不设分数线（面试或自证）',
+    lang_cefr: '官方用 CEFR/CLB 档位表述，仓内无对照表，无法判定',
+    lang_no_score: '要求语言证明，但仓内未登记分数线',
+    funds_ok: '资金证明门槛在可动用范围内',
+    funds_short: '资金证明不够：需要 {need}，你能提供 {have}',
+    funds_none: '该项目不要求资金证明',
+    funds_by_design: '要求资金证明但官方不设固定金额（递交时自证）',
+    funds_unknown: '要求资金证明但未登记金额，无法判定',
+    funds_income_basis: '该门槛是年收入（{need}）而非存款，与你填的可动用资金不是同一口径，需按官网核对',
+  },
+  en: {
+    passport_ok: 'Passport recorded as eligible',
+    passport_no: 'This passport is explicitly not eligible',
+    passport_open: 'The authority sets no nationality restriction',
+    passport_conditional: 'Conditionally open — check the current announcement',
+    passport_unknown: 'Passport eligibility not verified',
+    passport_missing: 'This passport is neither listed nor ruled out',
+    age_ok: 'Age is within the required range',
+    age_low: 'Below the minimum age: requires {need}, you are {have}',
+    age_high: 'Above the maximum age: requires {need}, you are {have}',
+    age_none: 'No age limit for this program',
+    age_unknown: 'The authority publishes no age limit — cannot decide',
+    edu_ok: 'Education meets the threshold',
+    edu_low: 'Education is below the threshold: requires {need}',
+    edu_years_unknown: 'Also requires {need}; not decidable from what you entered as a current student',
+    lang_ok: 'Language score meets the requirement',
+    lang_low: 'Language score is short: requires {need}, you have {have}',
+    lang_missing: 'A language score is required and you entered none: needs {need}',
+    lang_none: 'No language score required',
+    lang_by_design: 'No published threshold (interview or self-certified)',
+    lang_cefr: 'Stated as a CEFR/CLB level; no conversion table in the dataset, cannot decide',
+    lang_no_score: 'A language proof is required but no threshold is recorded',
+    funds_ok: 'Proof-of-funds threshold is within what you can show',
+    funds_short: 'Proof of funds falls short: needs {need}, you can show {have}',
+    funds_none: 'No proof of funds required',
+    funds_by_design: 'Proof required but no fixed amount is published (self-certified on submission)',
+    funds_unknown: 'Proof required but no amount recorded — cannot decide',
+    funds_income_basis:
+      'This threshold is annual income ({need}), not savings — a different basis from the funds you entered; check the official page',
+  },
+};
+
 /** 申请进度状态。顺序即看板列顺序。 */
-export const TRACK_STATUS = ['todo', 'preparing', 'submitted', 'interview', 'offer', 'rejected'] as const;
-export type TrackStatus = (typeof TRACK_STATUS)[number];
+export const TRACK_STATUS = ['todo', 'preparing', 'submitted', 'interview', 'offer', 'rejected'] as const;export type TrackStatus = (typeof TRACK_STATUS)[number];
 
 export const TRACK_TEXT: Record<Lang, Record<TrackStatus, string>> = {
   zh: {

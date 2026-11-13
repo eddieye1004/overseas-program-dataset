@@ -10,6 +10,7 @@ import { COMPARE_MAX, useCompare, useRecent, useSaved, useTrack } from './lib/st
 import { ListView } from './components/ListView';
 import { DetailView } from './components/DetailView';
 import { MatchView } from './components/MatchView';
+import { VerdictView } from './components/VerdictView';
 import { TrackView } from './components/TrackView';
 import { SavedView } from './components/SavedView';
 import { CompareView } from './components/CompareView';
@@ -119,6 +120,9 @@ export default function App() {
           )}
           {route.name === 'match' && (
             <MatchView savedIds={saved.list} onToggleSave={toggleSave} />
+          )}
+          {route.name === 'verdict' && (
+            <VerdictView />
           )}
           {route.name === 'track' && <TrackView track={track} />}
           {route.name === 'saved' && (

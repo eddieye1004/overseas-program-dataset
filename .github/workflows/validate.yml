@@ -70,6 +70,14 @@ jobs:
         # 这两个唯一 A 级依据在清单里根本不存在。这条闸门让漂移不可能通过 CI。
         run: python scripts/gen_sources.py --check
 
+      - name: 匹配判定产物必须与数据一致
+        # data/match-flags.json 与 data/match-samples.json 是
+        # scripts/match_readiness.py 的产物，被网页的资格判定页直接读取。
+        # 判据只写在 Python 里一份（见该脚本顶部说明），所以改数据却忘了
+        # 重新 --emit，会让网页拿着旧的年龄上限/语言分数线去判人。
+        # 这条闸门把「忘了生成」变成 CI 红，而不是等到有人发现判定结果不对。
+        run: python scripts/match_readiness.py --check
+
       - name: 检查官方链接存活
         # 链接检查涉及网络请求，可能因目标站点反爬或临时故障产生误报，
         # 因此设置为 continue-on-error，不阻断 CI，但会在日志中报告。
