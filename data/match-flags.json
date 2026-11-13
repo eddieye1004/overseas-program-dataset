@@ -1,5 +1,5 @@
 {
- "rules_version": 5,
+ "rules_version": 6,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
@@ -20,6 +20,7 @@
     "years_required": 4,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -69,6 +70,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -118,6 +120,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -167,6 +170,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -216,6 +220,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -265,6 +270,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -314,6 +320,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -363,6 +370,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -412,6 +420,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -461,6 +470,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": "学历或职业资格须被主管机构认定，且积分达到 6 分",
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -510,6 +520,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -559,6 +570,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -608,6 +620,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -657,6 +670,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -706,6 +720,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -755,6 +770,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -804,6 +820,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -853,6 +870,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -902,6 +920,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -951,6 +970,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1000,6 +1020,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1049,6 +1070,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1098,6 +1120,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1147,6 +1170,7 @@
     "years_required": null,
     "recency_required": 3,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1196,6 +1220,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1245,6 +1270,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1294,6 +1320,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1343,6 +1370,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1392,6 +1420,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1441,6 +1470,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1490,6 +1520,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1539,6 +1570,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1588,6 +1620,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": true,
     "by_sponsor": false
    },
@@ -1637,6 +1670,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1686,6 +1720,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1735,6 +1770,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1784,6 +1820,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": true,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1833,6 +1870,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1882,6 +1920,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": true
    },
@@ -1931,6 +1970,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },
@@ -1980,6 +2020,7 @@
     "years_required": null,
     "recency_required": null,
     "category_required": false,
+    "credential_required": null,
     "place_constrained": false,
     "by_sponsor": false
    },

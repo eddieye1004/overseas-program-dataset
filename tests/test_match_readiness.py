@@ -598,6 +598,51 @@ class Phase2P0(unittest.TestCase):
         self.assertFalse(mr.job_placement_required(self.docs["us-j1-intern"]))
         self.assertFalse(mr.participant_category_required(self.docs["us-j1-intern"]))
 
+    # —— de-chancenkarte：「资格须被主管机构认定」+「积分 ≥6」——
+    def test_chancenkarte_credential_recognition_is_not_silently_passed(self):
+        """`eligibility.passport_types.note` 原文：「两条硬门槛：①学历或职业资格
+        被德国主管机构认定（学历一般通过 anabin 数据库核验）；②满足「专业人士」
+        条件或积分达到 6 分。」
+
+        结构化 education 只有 `bachelor_completed`——那说的是「你最高读到本科」，
+        与「这份学历被 ZAB/anabin 认定为等效」是两件事（认定结论可以是不等效）。
+        画像也不采集积分。过去 B（本科毕业）直接判 edu_ok，于是「学历没被认定」
+        「积分不够」两个都能过。现在必须 `edu_credential_unknown`/`silent`。
+        """
+        self.assertTrue(mr.credential_recognition_required(self.docs["de-chancenkarte"]))
+        self.assertEqual(mr.points_threshold(self.docs["de-chancenkarte"]), 6)
+        for sample in ("B", "C"):
+            d = self.dim("de-chancenkarte", sample, "education")
+            self.assertEqual(d["code"], "edu_credential_unknown", d)
+            self.assertEqual(d["kind"], "silent", d)
+            # need 里两项门槛都要有，少一项就是漏了半条原文
+            self.assertIn("主管机构认定", d["need"], d)
+            self.assertIn("6 分", d["need"], d)
+            self.assertNotEqual(
+                mr.judge(self.docs["de-chancenkarte"], mr.SAMPLES[sample])[0],
+                "can",
+                f"{sample} 在资格认定与积分未采集时判了能申",
+            )
+        # A 是在读本科，层级本身不够，仍应 fail——不能被这条统一吞成 silent
+        a = self.dim("de-chancenkarte", "A", "education")
+        self.assertEqual(a["kind"], "fail", a)
+        self.assertEqual(a["code"], "edu_low", a)
+
+    def test_credential_detector_does_not_swallow_points_only_programs(self):
+        """反例：奥地利红白红卡也写「积分达到 70 分」，但它的原文没有「被主管机构
+        认定」这条硬门槛（仅受管制职业需正式认定，且已在真 note 里写明）。
+        本腿不扩围，命中集合必须精确等于 {de-chancenkarte}——放宽一个词就会把
+        一条无关项目一起改判。
+        """
+        hits = [p for p, d in self.docs.items() if mr.credential_recognition_required(d)]
+        self.assertEqual(hits, ["de-chancenkarte"])
+        self.assertEqual(
+            [p for p, d in self.docs.items() if mr.points_threshold(d)],
+            ["at-rwr-card-vhq", "de-chancenkarte"],
+        )        # 点数探测器只是被认定分支引用；单有积分制的项目不受它影响
+        self.assertEqual(
+            self.dim("at-rwr-card-vhq", "B", "education")["code"], "edu_years_unknown"
+        )
 
 class CliBehaviour(unittest.TestCase):
     def test_emit_writes_both_artifacts(self):

@@ -314,6 +314,126 @@ def participant_category_required(doc: dict) -> bool:
     return bool(PARTICIPANT_CATEGORY.search(edu.get("note") or ""))
 
 
+# 学历/职业资格须经**主管机构认定**（P2-0 de-chancenkarte）。
+#
+# 德国机会卡原文（eligibility.passport_types.note）：「两条硬门槛：①学历或职业
+# 资格被德国主管机构认定（学历一般通过 anabin 数据库核验）；②满足「专业人士」
+# 条件或积分达到 6 分。」结构化 education 只有一个 `bachelor_completed`，含义是
+# 「你的最高学历层级是本科」，与「你这份学历被德国 ZAB/anabin 认定为等效」是两件
+# 事——后者要跑一次学历认定，结论可以是「不等效」。画像也不采集认定结果。
+#
+# 于是「层级到了 = 达标」在这里是最典型的静默判过：一个学历不被 anabin 承认的
+# 人，在画像里与一个被承认的人长得一模一样。
+CREDENTIAL_RECOGNITION = re.compile(
+    r"(?:学历|职业资格|资格)[^。；\n]{0,16}被[^。；\n]{0,12}主管机构[^。；\n]{0,6}(?:认定|认可)"
+)
+
+# 积分门槛的分数。只被上面的认定分支引用（见 judge()）：单看「有积分制」不足以
+# 降级——奥地利红白红卡也写「积分达到 70 分」，但它的资格认定口径不同，属本腿
+# 范围外，硬接进来会把一条无关项目一起改判。
+#
+# 数字前的通配必须排除数字本身（`\d`），否则「积分达到 70 分」会被吃成 7 + 0，
+# 取出 0 分——一个真门槛被读成「0 分就够」。
+POINTS_THRESHOLD = re.compile(
+    r"积分[^。；\n]{0,10}(?:达到|须达|至少|最低)[^。；\n\d]{0,6}(\d+)\s*分"
+)
+
+
+def _recognition_texts(doc: dict) -> list[str]:
+    """读认定要求的三处：education.note、passport_types.note、必填材料。
+
+    只读 required 为真的材料：可选材料里出现同样措辞不构成硬门槛。
+    """
+    el = doc.get("eligibility") or {}
+    texts = [
+        ((el.get("education") or {}).get("note") or ""),
+        ((el.get("passport_types") or {}).get("note") or ""),
+    ]
+    for d in doc.get("documents") or []:
+        if d.get("required") is not True:
+            continue
+        texts.append((d.get("name") or "") + " " + (d.get("note") or ""))
+    return texts
+
+
+def credential_recognition_required(doc: dict) -> bool:
+    """原文是否把「资格须经主管机构认定」写成硬门槛。"""
+    return any(CREDENTIAL_RECOGNITION.search(t) for t in _recognition_texts(doc))
+
+
+def points_threshold(doc: dict) -> int | None:
+    """同一批文本里若写了积分门槛，取出分数；读不到返回 None。
+
+    返回 N 只说明「原文有这个分数」，不代表画像能算分——积分项里有一半（语言
+    等级、经验年限、紧缺职业、在德居留史）画像都没采集。
+    """
+    for text in _recognition_texts(doc):
+        m = POINTS_THRESHOLD.search(text)
+        if m:
+            return int(m.group(1))
+    return None
+
+
+# 学历/职业资格须经**主管机构认定**（P2-0 de-chancenkarte）。
+#
+# 德国机会卡原文（eligibility.passport_types.note）：「两条硬门槛：①学历或职业
+# 资格被德国主管机构认定（学历一般通过 anabin 数据库核验）；②满足「专业人士」
+# 条件或积分达到 6 分。」结构化 education 只有一个 `bachelor_completed`，含义是
+# 「你的最高学历层级是本科」，与「你这份学历被德国 ZAB/anabin 认定为等效」是两件
+# 事——后者要跑一次学历认定，结论可以是「不等效」。画像也不采集认定结果。
+#
+# 于是「层级到了 = 达标」在这里是最典型的静默判过：一个学历不被 anabin 承认的
+# 人，在画像里与一个被承认的人长得一模一样。
+CREDENTIAL_RECOGNITION = re.compile(
+    r"(?:学历|职业资格|资格)[^。；\n]{0,16}被[^。；\n]{0,12}主管机构[^。；\n]{0,6}(?:认定|认可)"
+)
+
+# 积分门槛的分数。只被上面的认定分支引用（见 judge()）：单看「有积分制」不足以
+# 降级——奥地利红白红卡也写「积分达到 70 分」，但它的资格认定口径不同，属本腿
+# 范围外，硬接进来会把一条无关项目一起改判。
+#
+# 数字前的通配必须排除数字本身（`\d`），否则「积分达到 70 分」会被吃成 7 + 0，
+# 取出 0 分——一个真门槛被读成「0 分就够」。
+POINTS_THRESHOLD = re.compile(
+    r"积分[^。；\n]{0,10}(?:达到|须达|至少|最低)[^。；\n\d]{0,6}(\d+)\s*分"
+)
+
+
+def _recognition_texts(doc: dict) -> list[str]:
+    """读认定要求的三处：education.note、passport_types.note、必填材料。
+
+    只读 required 为真的材料：可选材料里出现同样措辞不构成硬门槛。
+    """
+    el = doc.get("eligibility") or {}
+    texts = [
+        ((el.get("education") or {}).get("note") or ""),
+        ((el.get("passport_types") or {}).get("note") or ""),
+    ]
+    for d in doc.get("documents") or []:
+        if d.get("required") is not True:
+            continue
+        texts.append((d.get("name") or "") + " " + (d.get("note") or ""))
+    return texts
+
+
+def credential_recognition_required(doc: dict) -> bool:
+    """原文是否把「资格须经主管机构认定」写成硬门槛。"""
+    return any(CREDENTIAL_RECOGNITION.search(t) for t in _recognition_texts(doc))
+
+
+def points_threshold(doc: dict) -> int | None:
+    """同一批文本里若写了积分门槛，取出分数；读不到返回 None。
+
+    返回 N 只说明「原文有这个分数」，不代表画像能算分——积分项里有一半（语言
+    等级、经验年限、紧缺职业、在德居留史）画像都没采集。
+    """
+    for text in _recognition_texts(doc):
+        m = POINTS_THRESHOLD.search(text)
+        if m:
+            return int(m.group(1))
+    return None
+
+
 CN_NUM = {
     "一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5,
     "六": 6, "七": 7, "八": 8, "九": 9, "十": 10,
@@ -720,6 +840,14 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     have = EDU_RANK.get(pr["education"], 0)
     years_need = edu_years_required(doc)
     recency_need = edu_recency_years(doc)
+    credential_need = None
+    if credential_recognition_required(doc):
+        # 认定 + 积分是同一组硬门槛，合成一句话写进 need：两者都表达不了，拆开
+        # 报两遍就是同一个缺口说两次。
+        pts = points_threshold(doc)
+        credential_need = "学历或职业资格须被主管机构认定"
+        if pts:
+            credential_need += f"，且积分达到 {pts} 分"
     if need and EDU_BY_SPONSOR.search(edu_note):
         # 结构化的 minimum_level 比 note 更严：note 明说法规没规定学位层级、
         # 由 Sponsor 判断。这时拿结构化字段判 fail 是替官方拒绝（§4-5）。
@@ -802,6 +930,27 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 "kind": "silent",
                 "code": "edu_category_unknown",
                 "why": "原文把资格限定为若干类参与人身份之一，是否成立由 Sponsor 判断；画像只采集学历层级，无法判定",
+            }
+        )
+    elif credential_need:
+        # 原文把「资格须被主管机构认定」写成本项目的第一条硬门槛，并另设积分制
+        # （P2-0 de-chancenkarte）。结构化 education 只有 `bachelor_completed`——
+        # 那说的是「你最高读到本科」，与「你这份学历被德国 ZAB/anabin 认定为等
+        # 效」是两件事：后者要跑一次学历认定，结论可以是「不等效」。
+        #
+        # 判 silent 而不是 gap：与 EDU_PLACE 同一口径——认定结论是对你已持有学历
+        # 的一次评价，不是一项还能补交的材料（画像也不采集认定结果）。判 gap 会说
+        # 成「你差一张认定书」，把「可能根本认定不了」伪装成一个待办动作。
+        dims.append(
+            {
+                "dim": "education",
+                "kind": "silent",
+                "code": "edu_credential_unknown",
+                "need": credential_need,
+                "why": (
+                    "原文把「学历或职业资格被主管机构认定」与积分门槛都写成硬门槛；"
+                    "结构化字段只记了学历层级，认定结果与积分总分都未采集，无法判定"
+                ),
             }
         )
     elif EDU_PLACE.search(edu_note):
@@ -1148,7 +1297,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
 # --------------------------------------------------------------------------
 
-RULES_VERSION = 5
+RULES_VERSION = 6
 
 
 def flags_of(doc: dict) -> dict:
@@ -1206,6 +1355,14 @@ def flags_of(doc: dict) -> dict:
             # 原文把资格写成「须属于某几类参与人身份之一」（P2-0）。结构化只有
             # 学历层级，画像也只有学历层级——两处都表达不了身份类别。
             "category_required": participant_category_required(doc),
+            # 原文把「资格须被主管机构认定 + 积分达 N 分」写成硬门槛（P2-0）。
+            # 结构化只记了层级，认定结果与积分总分都没有字段可放。
+            "credential_required": (
+                "学历或职业资格须被主管机构认定"
+                + (f"，且积分达到 {points_threshold(doc)} 分" if points_threshold(doc) else "")
+                if credential_recognition_required(doc)
+                else None
+            ),
             # 学位须在指定国家/名单内院校完成（§4-3/§4-4/§4-6）：结构化只有层级。
             "place_constrained": bool(EDU_PLACE.search(edu.get("note") or "")),
             # 结构化字段比 note 严：以 note 为准（§4-5）。

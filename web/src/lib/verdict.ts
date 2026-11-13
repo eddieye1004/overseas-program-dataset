@@ -49,6 +49,8 @@ export interface ProgramFlags {
     recency_required: number | null;
     /** 原文把资格写成「须属于某几类参与人身份之一」，学历层级表达不了——P2-0 */
     category_required: boolean;
+    /** 原文要求「学历/职业资格须被主管机构认定」（另含积分门槛）——P2-0 */
+    credential_required: string | null;
     /** 学位须在指定国家/名单内院校完成，画像不采集院校与毕业年份——§4-3/4/6 */
     place_constrained: boolean;
     /** 结构化层级比 note 严，原文写「由 Sponsor 判断」，以原文为准——§4-5 */
@@ -104,7 +106,7 @@ export interface MatchFlagsFile {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 5;
+export const RULES_VERSION = 6;
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
@@ -243,6 +245,16 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
       dim: 'education',
       kind: 'silent',
       code: 'edu_category_unknown',
+    });
+  } else if (flags.education.credential_required) {
+    // 原文把「资格须被主管机构认定 + 积分达 N 分」写成第一条硬门槛（P2-0）。
+    // 结构化字段只有层级：认定要跑一次学历认定、结论可以是「不等效」；积分项里
+    // 语言等级/经验年限/紧缺职业/在德居留史画像一个都没采集。判 pass 就是静默放行。
+    dims.push({
+      dim: 'education',
+      kind: 'silent',
+      code: 'edu_credential_unknown',
+      need: flags.education.credential_required,
     });
   } else if (flags.education.place_constrained) {
     // 学位须在指定国家/名单内院校完成（英国毕业生签证 / PGWP 的 DLI /

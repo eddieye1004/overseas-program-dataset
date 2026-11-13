@@ -1,5 +1,5 @@
 {
- "rules_version": 5,
+ "rules_version": 6,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -948,8 +948,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_credential_unknown"
      },
      {
       "dim": "language",
@@ -978,8 +978,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "silent",
+      "code": "edu_credential_unknown"
      },
      {
       "dim": "language",
