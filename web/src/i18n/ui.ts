@@ -1311,6 +1311,7 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     pre_document_basis: '原文该项是递交时自备的材料（租约等），不是身份前置条件',
     pre_unclassified: '该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定',
     pre_job_placement: '原文要求岗位须预先落实：{need}；这一步可以补（报名、面试、拿到 placement）',
+    pre_employer_offer: '原文要求先有具体雇主的合格聘用：{need}；这一步可以补（投简历、面试、签约）',
   },
   en: {
     passport_ok: 'Passport recorded as eligible',
@@ -1370,6 +1371,8 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'This program has a mandatory prior-status / location requirement whose category could not be recognised in the source text — cannot decide',
     pre_job_placement:
       'The source requires the placement to be arranged in advance: {need} — you have not recorded a placement yet, and this is a step you can still complete',
+    pre_employer_offer:
+      'The source requires a concrete job offer from one specific employer first: {need} — this is a step you can still complete (apply, interview, sign)',
   },
 };
 

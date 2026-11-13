@@ -374,64 +374,40 @@ def points_threshold(doc: dict) -> int | None:
     return None
 
 
-# 学历/职业资格须经**主管机构认定**（P2-0 de-chancenkarte）。
+# 岗位前置（第二类）：原文要求「先有一份具体雇主给的、工时与资格都够格的聘用」
+# （P2-0 no-skilled-worker）。
 #
-# 德国机会卡原文（eligibility.passport_types.note）：「两条硬门槛：①学历或职业
-# 资格被德国主管机构认定（学历一般通过 anabin 数据库核验）；②满足「专业人士」
-# 条件或积分达到 6 分。」结构化 education 只有一个 `bachelor_completed`，含义是
-# 「你的最高学历层级是本科」，与「你这份学历被德国 ZAB/anabin 认定为等效」是两件
-# 事——后者要跑一次学历认定，结论可以是「不等效」。画像也不采集认定结果。
-#
-# 于是「层级到了 = 达标」在这里是最典型的静默判过：一个学历不被 anabin 承认的
-# 人，在画像里与一个被承认的人长得一模一样。
-CREDENTIAL_RECOGNITION = re.compile(
-    r"(?:学历|职业资格|资格)[^。；\n]{0,16}被[^。；\n]{0,12}主管机构[^。；\n]{0,6}(?:认定|认可)"
-)
-
-# 积分门槛的分数。只被上面的认定分支引用（见 judge()）：单看「有积分制」不足以
-# 降级——奥地利红白红卡也写「积分达到 70 分」，但它的资格认定口径不同，属本腿
-# 范围外，硬接进来会把一条无关项目一起改判。
-#
-# 数字前的通配必须排除数字本身（`\d`），否则「积分达到 70 分」会被吃成 7 + 0，
-# 取出 0 分——一个真门槛被读成「0 分就够」。
-POINTS_THRESHOLD = re.compile(
-    r"积分[^。；\n]{0,10}(?:达到|须达|至少|最低)[^。；\n\d]{0,6}(\d+)\s*分"
+# 与上面的 JOB_PLACEMENT 分开：那条是「Sponsor 不得为未落实岗位者办入境」的
+# 项目制前置（营地 placement），这条是雇主担保类项目的通用门槛——没有 offer
+# 连申请表都填不了。三条要求（具体雇主 / ≥80% 岗位 / 岗位与资格对应）写在
+# 三处不同的原文里（other_requirements.internship_contract、documents、
+# education.note），但它们是同一件东西的三个属性：一份合格聘用。所以合成一个
+# 探测器、一个 code，不拆成三条重复缺口。
+EMPLOYER_OFFER = re.compile(
+    r"具体雇主的具体聘用|concrete job offer from one specific employer|one specific employer|"
+    r"(?:至少|不低于)\s*80\s*%|80\s*%\s*(?:的)?(?:岗位|工时|position)"
 )
 
 
-def _recognition_texts(doc: dict) -> list[str]:
-    """读认定要求的三处：education.note、passport_types.note、必填材料。
+def employer_offer_required(doc: dict) -> bool:
+    """原文是否把「具体雇主的合格聘用」写成硬性前提（必须有一份 offer）。
 
-    只读 required 为真的材料：可选材料里出现同样措辞不构成硬门槛。
+    读必填材料 + 必填的 internship_contract + education.note 三处：no-skilled-worker
+    把「具体聘用」写成 other_requirements、把「≥80%」写成 documents 的一条、
+    把「岗位须与学历对应」写成 education.note 的末句。
     """
     el = doc.get("eligibility") or {}
-    texts = [
-        ((el.get("education") or {}).get("note") or ""),
-        ((el.get("passport_types") or {}).get("note") or ""),
-    ]
     for d in doc.get("documents") or []:
         if d.get("required") is not True:
             continue
-        texts.append((d.get("name") or "") + " " + (d.get("note") or ""))
-    return texts
-
-
-def credential_recognition_required(doc: dict) -> bool:
-    """原文是否把「资格须经主管机构认定」写成硬门槛。"""
-    return any(CREDENTIAL_RECOGNITION.search(t) for t in _recognition_texts(doc))
-
-
-def points_threshold(doc: dict) -> int | None:
-    """同一批文本里若写了积分门槛，取出分数；读不到返回 None。
-
-    返回 N 只说明「原文有这个分数」，不代表画像能算分——积分项里有一半（语言
-    等级、经验年限、紧缺职业、在德居留史）画像都没采集。
-    """
-    for text in _recognition_texts(doc):
-        m = POINTS_THRESHOLD.search(text)
-        if m:
-            return int(m.group(1))
-    return None
+        if EMPLOYER_OFFER.search((d.get("name") or "") + " " + (d.get("note") or "")):
+            return True
+    for r in el.get("other_requirements") or []:
+        if r.get("required") is not True:
+            continue
+        if EMPLOYER_OFFER.search(r.get("note") or ""):
+            return True
+    return bool(EMPLOYER_OFFER.search((el.get("education") or {}).get("note") or ""))
 
 
 CN_NUM = {
@@ -1271,6 +1247,30 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             }
         )
 
+    # 岗位前置之二：雇主担保类项目的「具体雇主的合格聘用」（P2-0 no-skilled-worker）
+    #
+    # 挪威技术工人原文三条要求写在三处：other_requirements 写「必须有具体雇主的
+    # 具体聘用（`You must have received a concrete job offer from one specific
+    # employer in Norway.`）」、documents 写「岗位须全职或至少 80%」、
+    # education.note 末尾写「岗位须与学历或资格对应」。三处合起来是同一个前提：
+    # 你得先有一份合格聘用。过去这三处一个字节没读，于是「还没 offer」被判能申。
+    #
+    # 判 gap 而不是 silent：offer 是可以去争取的（投简历、面试、签约），属「差
+    # 什么」，与「数据没写这一条」不是一回事。与上面的 pre_job_placement 分开登记：
+    # 那个是 Sponsor 制项目的 placement 前置，这个是雇主担保项目的聘用前置，两者
+    # 不会同时成立（命中集合互斥，见 Phase2P0 的 scoped 断言）。
+    if employer_offer_required(doc):
+        dims.append(
+            {
+                "dim": "precondition",
+                "kind": "gap",
+                "code": "pre_employer_offer",
+                "need": "具体雇主的具体聘用（全职或至少 80% 岗位，且岗位与你的学历/资格对应）",
+                "have": "未采集 offer 情况",
+                "why": "原文把「先拿到具体雇主的合格聘用」写成硬性前提：没有 offer，雇主无法在系统里提交聘用确认，申请表也填不下去",
+            }
+        )
+
     kinds = {d["kind"] for d in dims}
     if "fail" in kinds:
         return "cannot", dims
@@ -1408,6 +1408,9 @@ def flags_of(doc: dict) -> dict:
             # 原文要求「岗位须预先落实」（P2-0）。与 kind 分开存：job_placement 是
             # 材料/流程前提，不是身份类别，两者可以同时成立（camp counselor 就是）。
             "job_placement": job_placement_required(doc),
+            # 原文要求「具体雇主的合格聘用」（P2-0 no-skilled-worker）：雇主担保
+            # 类项目的 offer 前置，与上一条互斥（命中集合不重叠）。
+            "employer_offer": employer_offer_required(doc),
         },
         "window": {
             "type": sch.get("type"),

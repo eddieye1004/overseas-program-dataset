@@ -644,6 +644,55 @@ class Phase2P0(unittest.TestCase):
             self.dim("at-rwr-card-vhq", "B", "education")["code"], "edu_years_unknown"
         )
 
+    # —— no-skilled-worker：「具体雇主 offer」+「≥80%」+「岗位与资格对应」——
+    def test_skilled_worker_employer_offer_is_not_silently_passed(self):
+        """三处原文同属一个前提「先有一份合格聘用」：
+
+        - `other_requirements.internship_contract`：`You must have received a
+          concrete job offer from one specific employer in Norway.`
+        - `documents`：`If you have been offered at least an 80% position, we
+          will accept this.`（低于 80% 不接受）
+        - `education.note` 末句：「岗位须与学历或资格对应」
+
+        过去这三处一个字节没读，B/C（本科毕业）被判 can——「还没 offer」也能申。
+        现在必须 `pre_employer_offer`/`gap`：offer 能争取，属「差什么」。
+        """
+        self.assertTrue(mr.employer_offer_required(self.docs["no-skilled-worker"]))
+        for sample in ("A", "B", "C"):
+            d = self.dim("no-skilled-worker", sample, "precondition")
+            self.assertIsNotNone(d, sample)
+            self.assertEqual(d["code"], "pre_employer_offer", d)
+            self.assertEqual(d["kind"], "gap", d)
+            # 三条要求都要落进 need，只写「要 offer」会漏掉 80% 与岗位匹配两条
+            self.assertIn("80%", d["need"], d)
+            self.assertIn("对应", d["need"], d)
+            self.assertNotEqual(
+                mr.judge(self.docs["no-skilled-worker"], mr.SAMPLES[sample])[0],
+                "can",
+                f"{sample} 在没有具体雇主 offer 时判了能申",
+            )
+        # B/C 不因教育维被判死：缺口只有 offer 这一条，学历层级是够的
+        self.assertEqual(self.dim("no-skilled-worker", "B", "education")["code"], "edu_ok")
+
+    def test_employer_offer_detector_is_scoped(self):
+        """新加坡 EP / S Pass 也要求「有雇主 offer」，但它们要求的是**offer 本身**
+        （`Have a job offer in Singapore`），没有「具体某一个雇主 + ≥80% 岗位 +
+        岗位与资格对应」这三条并列。本腿不扩围：命中集合必须只有挪威这条。
+
+        同时两条岗位前置探测器互斥——营地 placement ≠ 雇主担保 offer，任何一个
+        放宽都会让另一边多报一条重复缺口。
+        """
+        self.assertEqual(
+            [p for p, d in self.docs.items() if mr.employer_offer_required(d)],
+            ["no-skilled-worker"],
+        )
+        self.assertFalse(mr.job_placement_required(self.docs["no-skilled-worker"]))
+        self.assertFalse(mr.employer_offer_required(self.docs["us-j1-camp-counselor"]))
+        # 新加坡 EP 不许被连带降级（它有自己的前置判定口径，本腿不动）
+        self.assertFalse(mr.employer_offer_required(self.docs["sg-employment-pass"]))
+        self.assertEqual(self.dim("sg-employment-pass", "B", "education")["code"], "edu_ok")
+
+
 class CliBehaviour(unittest.TestCase):
     def test_emit_writes_both_artifacts(self):
         """--emit 必须同时写两个文件：只写一个的话，另一个会安静地过期。"""

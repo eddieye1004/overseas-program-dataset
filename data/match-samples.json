@@ -2415,11 +2415,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_employer_offer"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -2445,11 +2450,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_employer_offer"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -2475,6 +2485,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_employer_offer"
      }
     ]
    }

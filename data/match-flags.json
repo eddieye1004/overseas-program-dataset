@@ -42,7 +42,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -92,7 +93,8 @@
    },
    "precondition": {
     "kind": "outside",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -142,7 +144,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "fixed_dates",
@@ -192,7 +195,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -242,7 +246,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -292,7 +297,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "fixed_dates",
@@ -342,7 +348,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -392,7 +399,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -442,7 +450,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -492,7 +501,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -542,7 +552,8 @@
    },
    "precondition": {
     "kind": "citizenship",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "no_window",
@@ -592,7 +603,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -642,7 +654,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -692,7 +705,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -742,7 +756,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -792,7 +807,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -842,7 +858,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -892,7 +909,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "fixed_dates",
@@ -942,7 +960,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -992,7 +1011,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1042,7 +1062,8 @@
    },
    "precondition": {
     "kind": "home_residence",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "annual_cycle",
@@ -1092,7 +1113,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "fixed_dates",
@@ -1142,7 +1164,8 @@
    },
    "precondition": {
     "kind": "document",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1192,7 +1215,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1242,7 +1266,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": true
    },
    "window": {
     "type": "rolling",
@@ -1292,7 +1317,8 @@
    },
    "precondition": {
     "kind": "home_residence",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "annual_cycle",
@@ -1342,7 +1368,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1392,7 +1419,8 @@
    },
    "precondition": {
     "kind": "outside",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1442,7 +1470,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1492,7 +1521,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1542,7 +1572,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "fixed_dates",
@@ -1592,7 +1623,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1642,7 +1674,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1692,7 +1725,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1742,7 +1776,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "fixed_dates",
@@ -1792,7 +1827,8 @@
    },
    "precondition": {
     "kind": "local_status",
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1842,7 +1878,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": true
+    "job_placement": true,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1892,7 +1929,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1942,7 +1980,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -1992,7 +2031,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",
@@ -2042,7 +2082,8 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false
+    "job_placement": false,
+    "employer_offer": false
    },
    "window": {
     "type": "rolling",

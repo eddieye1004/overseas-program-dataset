@@ -89,6 +89,8 @@ export interface ProgramFlags {
       | null;
     /** 原文要求「岗位须预先落实」——材料/流程前提，与 kind 可同时成立——P2-0 */
     job_placement?: boolean;
+    /** 原文要求「具体雇主的合格聘用」（雇主担保类：offer + ≥80% + 岗位对得上）——P2-0 */
+    employer_offer?: boolean;
   };
   window: {
     type: string | null;
@@ -415,6 +417,19 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
       code: 'pre_job_placement',
       need: '预先落实的岗位（Sponsor 不得为未落实岗位者办理入境）',
       have: '未采集岗位落实情况',
+    });
+  }
+
+  // 聘用前置（P2-0 no-skilled-worker）：雇主担保类项目的 offer 门槛。与上面那个
+  // placement 前提互斥（一个是 Sponsor 制项目的 placement，一个是雇主担保项目的
+  // 具体聘用），但同样不与 kind 构成 if/else——三者可以并存，故各判各的。
+  if (flags.precondition?.employer_offer) {
+    dims.push({
+      dim: 'precondition',
+      kind: 'gap',
+      code: 'pre_employer_offer',
+      need: '具体雇主的具体聘用（全职或至少 80% 岗位，且岗位与你的学历/资格对应）',
+      have: '未采集 offer 情况',
     });
   }
 
