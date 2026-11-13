@@ -171,7 +171,7 @@
 - 网页部分需要 Node 20 + pnpm 9
 - 仓库文档统一写 `python`；如果你的系统只有 `python3`，把命令里的 `python` 换成 `python3` 即可
 
-### 提交前必跑（CI 会拦）
+### 提交前必跑（与 CI 使用同一批脚本）
 
 | 命令 | 作用 | 出处 |
 |---|---|---|
@@ -196,7 +196,7 @@
 
 ### 改了数据后要重新生成的产物
 
-生成物必须和源数据放在**同一个 commit** 里提交；CI 的 `--check` 会拦下手改或忘记重生成。
+生成物必须和源数据放在**同一个 commit** 里提交。`data/sources.md` 与 `data/match-*.json` 有 CI 一致性闸门（`--check`）会逐字比对；`data/tracking.json`、`data/FRESHNESS.md`、`data/calendar.json` 目前没有逐字比对，但站点和台账会直接读旧值，改完数据仍要手动重生成并提交。
 
 | 改动 | 还要运行 | 产物 | 出处 |
 |---|---|---|---|
@@ -258,7 +258,7 @@
 - [ ] 护照类型（`passport_types`）填写准确，不确定就填 `unknown`，不猜测
 - [ ] PR 描述中说明了修改原因、来源，并填好 `.github/PULL_REQUEST_TEMPLATE.md` 的来源表
 
-> 改动 `CONTRIBUTING.md` 本身也会触发 `validate.yml`（其 `paths` 包含该文件），所以文档 PR 同样要过上面这些校验。
+> 改动 `CONTRIBUTING.md` 本身也会触发 `validate.yml`（其 `paths` 包含该文件），所以文档 PR 同样会跑数据校验与测试。
 
 ---
 
