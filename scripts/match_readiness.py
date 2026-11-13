@@ -184,6 +184,28 @@ EDU_YEARS_STRICT = re.compile(
 )
 EDU_YEARS_DISQUALIFY = re.compile(r"不满足|不达|不符合")
 
+# 学历：note 另写的「须在申请日/递交日之前 N 年内完成学业或取得学位」这类
+# **毕业时限**（P2-0 nl-orientation-year）。
+#
+# 这与上面 EDU_YEARS_STRICT 是两件不同的事：那条说的是「读了几年」，这条说的是
+# 「什么时候毕业」。结构化 education 里只有层级与学制年数，没有任何字段能表达
+# 「毕业日在申请日往前 N 年之内」——补一个 `graduation_within_years` 字段也只是
+# 把 note 的话抄一遍，画像不采集毕业年份，一样判不了。所以按站规降到不可判，
+# 而不是判达标。
+#
+# 锚点必须是「申请日 / 递交日」而不是笼统的「申请前」，末尾必须落到「完成学业 /
+# 完成研究 / 从事过科研 / 取得学位」这类**毕业或科研结束时点**。两条限制都是为了
+# 不误伤同库里另两种「N 年内」写法：
+#   de-16e-internship「②在申请前 2 年内已取得学历」——①在读 / ②毕业两条是**或**
+#     的关系，不是硬门槛，按硬门槛判会把在读的人误降级；
+#   uk-hpi-visa「学位须在申请前 5 年内授予」——已由 EDU_PLACE（edu_place_unknown）
+#     覆盖，这里再命中一次就是同一个缺口报两遍。
+EDU_RECENCY = re.compile(
+    r"(?:申请日|递交(?:申请)?之?日)(?:之?前|起)?[^。；\n]{0,10}?"
+    r"([一二三四五六七八九十两\d]+)\s*年(?:内|以内)"
+    r"[^。；\n]{0,30}?(?:完成学业|完成研究|从事过科研|取得[^。；\n]{0,40}?(?:学位|硕士))"
+)
+
 # 学历：学位必须在**指定国家/指定名单内院校**完成。结构化字段只有层级，没有
 # 「在哪读的」「读了多少个月」，因此这一维在画像缺院校信息时只能判不可判。
 EDU_PLACE = re.compile(
@@ -230,6 +252,7 @@ PRE_HOME_RESIDENCE = re.compile(r"居住于其国籍国|须居住且常驻|常�
 PRE_CITIZENSHIP = re.compile(r"参与国公民|协议国公民|须为[^。；]{0,12}国民")
 PRE_DOCUMENT = re.compile(r"租房或购房合同|租赁合同|租房合同|购房合同|租约")
 
+
 CN_NUM = {
     "一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5,
     "六": 6, "七": 7, "八": 8, "九": 9, "十": 10,
@@ -262,6 +285,28 @@ def edu_years_required(doc: dict) -> int | None:
     years = cn_int(m.group(1))
     if years and years >= 3:
         return years
+    return None
+
+
+def edu_recency_years(doc: dict) -> int | None:
+    """note 里另写的「须在申请日前 N 年内完成学业/取得学位」的毕业时限。
+
+    读的是 `education.note` 与 `age.note` 两处：nl-orientation-year 把这条时限
+    写在 education.note（七类路径里两处「申请日前 3 年内」），同时在 age.note 里
+    复述了一遍——它被塞进年龄维是因为结构上没有别的字段可放，不代表它属于年龄。
+    两处都读，是为了不明显依赖某一条 note 的措辞位置。
+
+    只读、不推断：拿不到 N 或读不懂就返回 None，由调用方决定是否降级。返回 N
+    只说明「原文有这么一条时限」，不代表画像能判它。
+    """
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    age = (doc.get("eligibility") or {}).get("age") or {}
+    for note in (edu.get("note") or "", age.get("note") or ""):
+        m = EDU_RECENCY.search(note)
+        if m:
+            years = cn_int(m.group(1))
+            if years and years >= 1:
+                return years
     return None
 
 
@@ -613,6 +658,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     need = EDU_RANK.get(edu.get("minimum_level") or "any", 0)
     have = EDU_RANK.get(pr["education"], 0)
     years_need = edu_years_required(doc)
+    recency_need = edu_recency_years(doc)
     if need and EDU_BY_SPONSOR.search(edu_note):
         # 结构化的 minimum_level 比 note 更严：note 明说法规没规定学位层级、
         # 由 Sponsor 判断。这时拿结构化字段判 fail 是替官方拒绝（§4-5）。
@@ -658,6 +704,26 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 "kind": "silent",
                 "code": "edu_years_unknown",
                 "why": f"另要求已完成 {edu['years_completed']} 年本科，在读无法从他填的信息判定",
+            }
+        )
+    elif recency_need:
+        # note 另写「须在申请日之前 N 年内完成学业或研究」（P2-0）。结构化
+        # education 里只有层级与学制年数，没有「毕业年份」；画像也不采集毕业
+        # 时间，因此不能默认「层级到了 = 达标」。
+        #
+        # 判 silent 而非 fail：毕业超过 N 年确实不满足，但画像只知道学历层级，
+        # 一个刚毕业的人与一个毕业十年的人在画像里长得一样——替他判「不能申」
+        # 同样是替官方拒绝。
+        dims.append(
+            {
+                "dim": "education",
+                "kind": "silent",
+                "code": "edu_recency_unknown",
+                "need": f"申请日前 {recency_need} 年内完成学业或研究",
+                "why": (
+                    f"原文另要求「申请日前 {recency_need} 年内完成学业/取得学位」，"
+                    "你的毕业时间未采集，无法判定是否在时限内"
+                ),
             }
         )
     elif EDU_PLACE.search(edu_note):
@@ -985,7 +1051,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
 # --------------------------------------------------------------------------
 
-RULES_VERSION = 4
+RULES_VERSION = 5
 
 
 def flags_of(doc: dict) -> dict:
@@ -1037,7 +1103,9 @@ def flags_of(doc: dict) -> dict:
             # note 另写的硬性年限门槛（§4-2）。结构化字段没有它时，靠它把
             # 「本科毕业」判成不可判，而不是直接判达标。
             "years_required": edu_years_required(doc),
-            # 学位须在指定国家/名单内院校完成（§4-3/§4-4/§4-6）：结构化只有层级。
+            # note 另写的「须在申请日前 N 年内完成学业」毕业时限（P2-0）。
+            # 与 years_required 是两件事：那条说读了几年，这条说什么时候毕业。
+            "recency_required": edu_recency_years(doc),
             "place_constrained": bool(EDU_PLACE.search(edu.get("note") or "")),
             # 结构化字段比 note 严：以 note 为准（§4-5）。
             "by_sponsor": bool(

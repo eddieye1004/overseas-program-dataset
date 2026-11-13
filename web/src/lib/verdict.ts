@@ -45,6 +45,8 @@ export interface ProgramFlags {
     years_completed: number | null;
     /** note 另写的硬性年限门槛（结构化字段没有时靠它判不可判）——§4-2 */
     years_required: number | null;
+    /** note 另写的「须在申请日前 N 年内完成学业/取得学位」毕业时限——P2-0 */
+    recency_required: number | null;
     /** 学位须在指定国家/名单内院校完成，画像不采集院校与毕业年份——§4-3/4/6 */
     place_constrained: boolean;
     /** 结构化层级比 note 严，原文写「由 Sponsor 判断」，以原文为准——§4-5 */
@@ -98,7 +100,7 @@ export interface MatchFlagsFile {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 4;
+export const RULES_VERSION = 5;
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
@@ -218,6 +220,15 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
       kind: 'silent',
       code: 'edu_years_unknown',
       need: `已完成 ${flags.education.years_completed} 年本科`,
+    });
+  } else if (flags.education.recency_required) {
+    // note 另写「须在申请日前 N 年内完成学业或取得学位」（P2-0）。结构化 education
+    // 只有层级与学制年数，没有毕业年份；画像也不采集，所以不能默认判达标。
+    dims.push({
+      dim: 'education',
+      kind: 'silent',
+      code: 'edu_recency_unknown',
+      need: `申请日前 ${flags.education.recency_required} 年内完成学业或研究`,
     });
   } else if (flags.education.place_constrained) {
     // 学位须在指定国家/名单内院校完成（英国毕业生签证 / PGWP 的 DLI /

@@ -475,6 +475,75 @@ class Phase1Fixes(unittest.TestCase):
         self.assertEqual(self.dim("uk-hpi-visa", "B", "education")["code"], "edu_place_unknown")
 
 
+class Phase2P0(unittest.TestCase):
+    """二期 P2-0 第 1 腿（nl-orientation-year）的回归断言。
+
+    守的仍是「不许静默判过」：原文写了、结构化字段表达不了的要求，结论必须
+    降级并写明差什么，不许因为字段位在就判达标。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs = {d["program"]["id"]: d for d in mr.load_programs()}
+
+    def dim(self, pid, sample, dim):
+        _, dims = mr.judge(self.docs[pid], mr.SAMPLES[sample])
+        for d in dims:
+            if d["dim"] == dim:
+                return d
+        return None
+
+    # —— nl-orientation-year：「申请日前 3 年内完成学业/研究」——
+    def test_nl_orientation_recency_window_is_not_silently_passed(self):
+        """原文两处「在申请日前 3 年内于荷兰从事过科研 / 取得 Erasmus Mundus 学位」，
+        age.note 另写「须在申请日之前 3 年内完成学业或研究」。
+
+        结构化 education 只有 `bachelor_completed`，没有毕业年份；画像也只采集
+        学历层级。B（本科毕业）与 C（本科毕业）原先都是 `edu_ok`——一个已毕业
+        十年的人会被判「能申」。现在必须 `edu_recency_unknown`/`silent`。
+
+        A 是在读本科，层级就不够，仍应 edu_low/fail，不能被这条吞掉。
+        """
+        self.assertEqual(mr.edu_recency_years(self.docs["nl-orientation-year"]), 3)
+        for sample in ("B", "C"):
+            d = self.dim("nl-orientation-year", sample, "education")
+            self.assertEqual(d["code"], "edu_recency_unknown", d)
+            self.assertEqual(d["kind"], "silent", d)
+            self.assertIn("3 年", d["need"], d)
+            self.assertNotEqual(
+                mr.judge(self.docs["nl-orientation-year"], mr.SAMPLES[sample])[0],
+                "can",
+                f"{sample} 不应在毕业时限未采集时判能申",
+            )
+        # A 仍因学历层级不足判 fail（不能把所有画像统一降级成 silent 了事）
+        a = self.dim("nl-orientation-year", "A", "education")
+        self.assertEqual(a["kind"], "fail")
+        self.assertEqual(a["code"], "edu_low")
+
+    def test_recency_detector_does_not_swallow_neighbour_programs(self):
+        """反例必须留在反例状态：同库另两处「N 年内」不是毕业时限硬门槛。
+
+        - `de-16e-internship`「②在申请前 2 年内已取得学历」与「①在读」是**或**
+          关系，按硬门槛判会把在读的人误降级；
+        - `uk-hpi-visa`「学位须在申请前 5 年内授予」已由 edu_place_unknown 覆盖，
+          再命中一次就是同一缺口报两遍。
+
+        命中集合精确等于 {nl-orientation-year}，否则这条正则放宽了。
+        """
+        hits = {
+            pid: mr.edu_recency_years(doc)
+            for pid, doc in self.docs.items()
+            if mr.edu_recency_years(doc)
+        }
+        self.assertEqual(hits, {"nl-orientation-year": 3})
+        self.assertEqual(
+            self.dim("de-16e-internship", "B", "education")["code"], "edu_ok"
+        )
+        self.assertEqual(
+            self.dim("uk-hpi-visa", "C", "education")["code"], "edu_place_unknown"
+        )
+
+
 class CliBehaviour(unittest.TestCase):
     def test_emit_writes_both_artifacts(self):
         """--emit 必须同时写两个文件：只写一个的话，另一个会安静地过期。"""

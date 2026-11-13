@@ -1283,6 +1283,7 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     edu_ok: '学历达到门槛',
     edu_low: '学历低于门槛：要求 {need}',
     edu_years_unknown: '另要求 {need}，在读无法从你填的信息判定',
+    edu_recency_unknown: '另要求 {need}；你的毕业时间未采集，无法判定是否在时限内',
     edu_place_unknown: '原文要求学位在指定国家/名单内院校完成，院校与毕业年份未采集，无法判定',
     edu_by_sponsor: '原文写明学历层级由 Sponsor 判断，不作硬性门槛',
     lang_ok: '语言成绩达标',
@@ -1323,6 +1324,8 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     edu_ok: 'Education meets the threshold',
     edu_low: 'Education is below the threshold: requires {need}',
     edu_years_unknown: 'Also requires {need}; not decidable from what you entered as a current student',
+    edu_recency_unknown:
+      'Also requires {need}; your graduation date is not collected, so whether you are within that window cannot be decided',
     edu_place_unknown:
       'The source requires the degree to come from an institution in a specified country or on an approved list; your institution and graduation year are not collected — cannot decide',
     edu_by_sponsor:
