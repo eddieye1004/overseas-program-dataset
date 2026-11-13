@@ -727,6 +727,117 @@ SAMPLES = OrderedDict(
 )
 
 
+# --------------------------------------------------------------------------
+# 不可判的两分法（P2-1，2026-11-14 Muse 裁决）
+#
+# 「不可判」不是同一种东西，混在一个分子里量出来的比率会同时惩罚两件事：
+# 数据债，和诚实地说「这件事得由 Sponsor 判断」。所以按 code 分两类：
+#
+#   甲类（设计性不可判）—— 补字段也判不了：原文把结论交给第三方主体判断，
+#     或官方根本没有阈值。补进去的只能是某个 Sponsor 的口头答复，冒充成项目
+#     规则正是 P2-0 站规禁止的事。准入语义只有两种（见下 BY_DESIGN_CODES 注释）。
+#   乙类（可避免不可判）—— 现有字段或一条能明确定义的新字段就能表达，判不了
+#     只是因为数据没登记 / 画像没采集 / 换算表没建。每一项都写得出「补什么能判」。
+#
+# 停工线仍然只绑**乙类**，阈值 1/3 一个数字没动：闸门防的是债，不是表达力。
+# 全口径（乙+甲混算）继续输出但只许不增，作为历史可比与防洗白的第二道尺子。
+# 甲类不设硬闸，只设一条软线（≥5 项在报告里要求人工解释），理由：甲类膨胀
+# 说明的是 note 读不懂，该停下来看，不该让 CI 代替评审。
+#
+# 每一个甲类 code 必须在 docs/audit/2026-11-14-P2-1-不可判拆分提案.md §1.2
+# 找得到「为什么补字段也判不了」的那一行，否则不许加。
+# --------------------------------------------------------------------------
+
+
+# 甲类白名单。准入语义只有两种，二者皆不满足的不许进来：
+#   ① 原文把结论交给第三方主体逐人判断（edu_by_sponsor：法规未规定学位层级，
+#      由 Sponsor 判断「同等经历」是否存在，没有任何字段能表达这件事）；
+#   ② 官方无阈值，逐项目/逐 Sponsor 各不相同（age_unknown：正文无年龄条款，
+#      下限由各 Sponsor 自行规定；登记一个数字即等于替某个 Sponsor 立法）。
+#
+# 反例备忘：edu_credential_unknown 的「认定」部分形态上属①，但它与可算的积分制
+# 打包在同一个 code 里，按混合项规则（undecidable_class）整体归乙——不进来。
+BY_DESIGN_CODES = frozenset(
+    {
+        "edu_by_sponsor",  # 法规未规定学位层级，由 Sponsor 判断「同等经历」
+        "age_unknown",  # 官方正文无年龄条款，下限由各 Sponsor 自行规定
+    }
+)
+
+# 乙类：其余所有 silent code，逐个显式登记。未登记即测试红——
+# 这是「不许把乙塞进甲以绕闸」的那道机械闸（按 code 登记，不按项目）。
+CLASS_B_CODES = frozenset(
+    {
+        "passport_conditional",  # 有条件开放，note 未给当年结论
+        "passport_missing",  # 该护照未登记，note 无可判结论（数据债）
+        "passport_unknown",  # 双边安排未核实（数据债）
+        "edu_years_unknown",  # 学制年数未采集（画像债）
+        "edu_recency_unknown",  # 毕业年份未采集（画像债）
+        "edu_credential_unknown",  # 认定结论无字段 + 无 CEFR 换算（混合项，按债计）
+        "edu_category_unknown",  # 参与人身份类别无字段（可与 Sponsor 判断拆开）
+        "edu_place_unknown",  # 院校/名单数据未登记（数据债）
+        "lang_no_score",  # 有分数线但仓内未逐项登记（数据债）
+        "lang_cefr",  # 官方给 CEFR/CLB 档位，仓内无换算表（缺口可补）
+        "funds_unknown",  # 要求资金证明但未登记金额（数据债）
+        "funds_income_basis",  # 门槛是年收入，画像只采集可动用资金（画像债）
+        "funds_amount_inferred",  # 金额为同类口径沿用，属登记债
+        "funds_term_unknown",  # 月额门槛缺停留期上限（数据债）
+        "pre_outside_country",  # 画像不采集现居地（画像债）
+        "pre_home_residence",  # 画像不采集现居地（画像债）
+        "pre_unclassified",  # 有必填前置要求但类别未识别（识别能力债）
+    }
+)
+
+# 两条线的数值：停工线（硬，只看乙类）与甲类软线（只报警、不红）。
+STOP_LINE_RATIO = 1 / 3
+BY_DESIGN_ALERT_COUNT = 5
+
+# age_unknown 归甲是**有条件**的（Muse 裁决 1）：note 必须同时给出「官方无阈值 /
+# 由 Sponsor 自行规定」的证据，并且标了 ⚠️ 未核实。缺证据的 age_unknown 不是
+# 设计性不可判，而是「没去查」的数据债 —— 甲类豁免不成立，按乙类计，并要求
+# 单独出现在 audit()["design_exemptions_missing"] 里（改数据是另一单事，本腿
+# 只把它照实报出来，不许顺手改项目数据）。
+AGE_NO_THRESHOLD_EVIDENCE = re.compile(
+    r"未出现[^。]{0,24}(?:年龄|years of age)|无年龄限制条款|年龄限制条款|Sponsor"
+)
+
+
+def design_exemption_holds(code: str, doc: dict) -> bool:
+    """甲类豁免的语义复核：白名单只写 code，证据在数据里，两者都要成立。
+
+    - edu_by_sponsor：judge() 只有命中 EDU_BY_SPONSOR（原文写明由 Sponsor 判断）
+      才会发出这个 code，证据由探测器本身保证。
+    - age_unknown：judge() 只看 ⚠️ 前缀，不看为什么未核实。所以这里补一道：
+      note 必须写明「官方正文无年龄条款」或「由各 Sponsor 自行规定」。
+    """
+    if code == "age_unknown":
+        note = ((doc.get("eligibility") or {}).get("age") or {}).get("note") or ""
+        return bool(UNVERIFIED_PREFIX.match(note.strip())) and bool(
+            AGE_NO_THRESHOLD_EVIDENCE.search(note)
+        )
+    return True
+
+
+def undecidable_class(dims: list[dict], doc: dict | None = None) -> str | None:
+    """返回 None / "design"（甲）/ "avoidable"（乙）。
+
+    混合项只要有一条乙因就算 avoidable：同一项目里还有一条可修的债，它仍欠
+    一次修复。反向规则（主因是甲就算甲）会让 de-chancenkarte 把一条明显可修
+    的 CEFR 缺口洗成设计性——那正是 R2 要堵的口子。
+
+    传了 doc 时额外做甲类语义复核（design_exemption_holds）：code 在白名单里
+    不等于豁免成立，证据还得在数据里。
+    """
+    silent = {d.get("code") for d in dims if d.get("kind") == "silent"}
+    if not silent:
+        return None
+    if not silent <= BY_DESIGN_CODES:
+        return "avoidable"
+    if doc is not None and not all(design_exemption_holds(c, doc) for c in silent):
+        return "avoidable"
+    return "design"
+
+
 def passport_value(pt: dict, key: str):
     """读一条项目的某护照结论，兼容两种历史写法。
 
@@ -1500,6 +1611,10 @@ def audit() -> dict:
     docs = load_programs()
     rows = []
     dim_counter: dict[str, Counter] = {k: Counter() for k in PROBES}
+    # 甲类白名单里、但数据拿不出证据的豁免（应为空）。非空即说明有人拿
+    # 「没去查」冒充「设计性不可判」——那是数据债，必须单独列出来报，不许
+    # 顺手改数据洗掉（Muse 裁决 1）。
+    unproven_exemptions = []
 
     for doc in docs:
         pid = doc["program"]["id"]
@@ -1524,18 +1639,46 @@ def audit() -> dict:
         verdicts = OrderedDict()
         for name, pr in SAMPLES.items():
             state, dims = judge(doc, pr)
-            verdicts[name] = {"state": state, "dims": dims}
+            verdicts[name] = {
+                "state": state,
+                "dims": dims,
+                # 甲 / 乙 / None —— 只有 unknown 的项才有类
+                "cls": undecidable_class(dims, doc) if state == "unknown" else None,
+            }
+            if state == "unknown":
+                for d in dims:
+                    if (
+                        d["kind"] == "silent"
+                        and d["code"] in BY_DESIGN_CODES
+                        and not design_exemption_holds(d["code"], doc)
+                    ):
+                        unproven_exemptions.append("%s/%s/%s" % (pid, name, d["code"]))
         rows.append({"id": pid, "name": doc["program"]["name"], "cells": cells, "verdicts": verdicts})
 
     per_sample = OrderedDict()
     for name in SAMPLES:
         c = Counter(r["verdicts"][name]["state"] for r in rows)
+        cls = Counter(r["verdicts"][name]["cls"] for r in rows)
+        undecidable = c["unknown"]
         per_sample[name] = {
             "can": c["can"],
             "cannot": c["cannot"],
             "gap": c["gap"],
-            "unknown": c["unknown"],
-            "unknown_ratio": round(c["unknown"] / len(rows), 4),
+            "unknown": undecidable,
+            "unknown_ratio": round(undecidable / len(rows), 4),
+            # 甲：设计性不可判（补字段也判不了，见 BY_DESIGN_CODES）
+            "unknown_by_design": cls["design"],
+            "by_design_ratio": round(cls["design"] / len(rows), 4),
+            # 乙：可避免不可判 —— 停工线只看这一列
+            "unknown_class_b": cls["avoidable"],
+            "ratio_class_b": round(cls["avoidable"] / len(rows), 4),
+            # 加总自检：甲 + 乙 必须等于 unknown，任何一类漏登记都会在这里露馅
+            "class_b_ids": sorted(
+                r["id"] for r in rows if r["verdicts"][name]["cls"] == "avoidable"
+            ),
+            "by_design_ids": sorted(
+                r["id"] for r in rows if r["verdicts"][name]["cls"] == "design"
+            ),
         }
 
     any_gap = 0
@@ -1552,12 +1695,57 @@ def audit() -> dict:
         "programs_with_gap": any_gap,
         "program_gap_ratio": round(any_gap / len(rows), 4),
         "samples": per_sample,
+        # 全口径（甲+乙混算）：保留输出，但**不是闸门**，只作历史可比与防洗白。
         "max_unknown_ratio": max(v["unknown_ratio"] for v in per_sample.values()),
+        # 乙类全口径：这才是停工线量的东西（阈值 STOP_LINE_RATIO = 1/3）
+        "max_ratio_class_b": max(v["ratio_class_b"] for v in per_sample.values()),
+        # 甲类全口径：软线，报警但不变红
+        "max_by_design_count": max(v["unknown_by_design"] for v in per_sample.values()),
+        "max_by_design_ratio": max(v["by_design_ratio"] for v in per_sample.values()),
+        "stop_line_ratio": STOP_LINE_RATIO,
+        "by_design_alert_count": BY_DESIGN_ALERT_COUNT,
+        # 白名单里但证据不成立的豁免（应为空；非空是数据债，见 audit() 注释）
+        "design_exemptions_missing": unproven_exemptions,
     }
 
 
 MARK = {"ok": "在位", "partial": "语义不足", "text": "可从文本提取", "absent": "缺失", "na": "不适用"}
 STATE_ZH = {"can": "能申", "cannot": "不能申", "gap": "差什么", "unknown": "不可判"}
+CLASS_ZH = {"design": "甲", "avoidable": "乙"}
+
+
+def ratio_text(x: float) -> str:
+    """把 1/3 这类阈值显示成它本来的样子，而不是像 33.3% 那样被舍入过的文案。
+
+    写死「33.3%」的后果是文案与常量各自漂移：改了阈值忘了改文案，报告会
+    指着一条已经不在管事的线说「越线了」。所以阈值只从常量取，只在这一处
+    做显示格式化。
+    """
+    for denom in (2, 3, 4, 5, 6, 8, 10):
+        if abs(x * denom - round(x * denom)) < 1e-9:
+            return "%d/%d" % (round(x * denom), denom)
+    return "%.1f%%" % (x * 100)
+
+
+def metric_line(rep: dict, name: str) -> str:
+    """三口径同行打印（P2-1 R6）。
+
+    必须一直是**同一行**：分成三行贴出去，读者会挑最顺眼的那行引用；写在一行
+    里，「闸门 1/3 只看乙类」这层关系就没法被断章取义。全口径标「仅记录」、
+    甲类标「软线 N 项」，是为了让人一眼看出哪个数字会停工、哪个只是提醒。
+    """
+    v = rep["samples"][name]
+    return (
+        "乙类 %.1f%%（闸门 %s）｜全口径 %.1f%%（仅记录）｜甲类 %d 项（软线 %d）"
+        % (
+            v["ratio_class_b"] * 100,
+            ratio_text(rep["stop_line_ratio"]),
+            v["unknown_ratio"] * 100,
+            v["unknown_by_design"],
+            rep["by_design_alert_count"],
+        )
+    )
+
 
 # 缺口处置建议：按维度给，写在这里而不是逐项目手写，是为了新增项目时
 # 报告自动带上建议，不会出现「新项目列进缺口表却没有处置口径」。
@@ -1596,23 +1784,45 @@ def render_markdown(rep: dict) -> str:
         % (rep["programs_with_gap"], rep["total"], rep["program_gap_ratio"] * 100)
     )
     L.append(
-        "- **项目级不可判率**（三样例画像）：A %.1f%% / B %.1f%% / C %.1f%%。"
+        "- **项目级不可判率**（三样例画像，全口径 = 甲 + 乙）：A %.1f%% / B %.1f%% / C %.1f%%。"
         % tuple(
             rep["samples"][k]["unknown_ratio"] * 100 for k in ("A", "B", "C")
         )
     )
-    worst = max(("A", "B", "C"), key=lambda k: rep["samples"][k]["unknown_ratio"])
+    worst = max(("A", "B", "C"), key=lambda k: rep["samples"][k]["ratio_class_b"])
     L.append(
-        "- 派单的停工线是「超过 1/3 项目不可判」。实测最高为画像 %s 的 %.1f%%；"
-        "**%s**。"
+        "- **停工线只看乙类（可避免不可判），阈值 %s 一个数字未动**。实测最高为画像 %s 的"
+        " %.1f%%；**%s**。全口径与甲类数字见下表，它们不参与停工判定。"
         % (
+            ratio_text(rep["stop_line_ratio"]),
             worst,
-            rep["samples"][worst]["unknown_ratio"] * 100,
-            "已越过 1/3，须停工报 Muse 裁决"
-            if rep["max_unknown_ratio"] > 1 / 3
-            else "未越过 1/3，可继续 M2",
+            rep["samples"][worst]["ratio_class_b"] * 100,
+            "已越过停工线，须停工报 Muse 裁决"
+            if rep["max_ratio_class_b"] > rep["stop_line_ratio"]
+            else "未越过停工线，可继续",
         )
     )
+    L.append(
+        "- 甲类软线 %d 项：实测最高 %d 项；%s。甲类只要求人工解释，不使 CI 变红。"
+        % (
+            rep["by_design_alert_count"],
+            rep["max_by_design_count"],
+            "**已触及软线，须在报告里解释甲类构成**"
+            if rep["max_by_design_count"] >= rep["by_design_alert_count"]
+            else "未触及软线",
+        )
+    )
+    L.append("")
+    L.append(
+        "> **闸门只看乙类。** 甲类 = 补字段也判不了（原文交由 Sponsor 等第三方主体判断、"
+        "或官方根本无阈值）；乙类 = 数据/画像补上就能判的债。混算口径继续输出，但只许不增。"
+    )
+    if rep["design_exemptions_missing"]:
+        L.append("")
+        L.append(
+            "> ⚠️ 以下甲类豁免拿不出证据（按乙类计，属数据债）：%s"
+            % "、".join(rep["design_exemptions_missing"])
+        )
     L.append("")
     L.append("### 各维度状态分布")
     L.append("")
@@ -1626,26 +1836,44 @@ def render_markdown(rep: dict) -> str:
     L.append("")
     L.append("## 2. 三样例画像的判定分布")
     L.append("")
-    L.append("| 画像 | 能申 | 不能申 | 差什么 | 不可判 | 不可判占比 |")
-    L.append("|---|---|---|---|---|---|")
+    L.append("| 画像 | 能申 | 不能申 | 差什么 | 不可判 | 全口径占比 | 乙类（%s 闸门） | 乙类占比 | 甲类 | 甲类占比 |"
+             % ratio_text(rep["stop_line_ratio"]))
+    L.append("|---|---|---|---|---|---|---|---|---|---|")
     for k, v in rep["samples"].items():
         L.append(
-            "| %s | %d | %d | %d | %d | %.1f%% |"
-            % (k, v["can"], v["cannot"], v["gap"], v["unknown"], v["unknown_ratio"] * 100)
+            "| %s | %d | %d | %d | %d | %.1f%% | %d | %.1f%% | %d | %.1f%% |"
+            % (
+                k,
+                v["can"],
+                v["cannot"],
+                v["gap"],
+                v["unknown"],
+                v["unknown_ratio"] * 100,
+                v["unknown_class_b"],
+                v["ratio_class_b"] * 100,
+                v["unknown_by_design"],
+                v["by_design_ratio"] * 100,
+            )
         )
+    L.append("")
+    L.append("三口径同行（闸门只看乙类）：")
+    L.append("")
+    for k in ("A", "B", "C"):
+        L.append("- 画像 %s：%s" % (k, metric_line(rep, k)))
     L.append("")
     L.append("## 3. 逐项目缺口表")
     L.append("")
     cols = ["passport", "age", "education", "language", "funds", "window"]
-    L.append("| 项目 id | " + " | ".join(cols) + " | 画像 A/B/C |")
-    L.append("|---|" + "---|" * (len(cols) + 1))
+    L.append("| 项目 id | " + " | ".join(cols) + " | 画像 A/B/C | 不可判归类 A/B/C |")
+    L.append("|---|" + "---|" * (len(cols) + 2))
     for r in rep["rows"]:
         cells = " | ".join(
             "%s%s" % (MARK[r["cells"][c]["status"]], "" if r["cells"][c]["status"] in ("ok", "na") else "⚠")
             for c in cols
         )
         vs = "/".join(STATE_ZH[r["verdicts"][k]["state"]] for k in ("A", "B", "C"))
-        L.append("| `%s` | %s | %s |" % (r["id"], cells, vs))
+        cls = "/".join(CLASS_ZH.get(r["verdicts"][k]["cls"], "—") for k in ("A", "B", "C"))
+        L.append("| `%s` | %s | %s | %s |" % (r["id"], cells, vs, cls))
     L.append("")
     L.append("## 4. 缺口明细（缺什么、能不能从已有文本提取）")
     L.append("")
@@ -1700,8 +1928,9 @@ def render_markdown(rep: dict) -> str:
     )
     L.append("")
     L.append(
-        "若把第 3 条也计入不可判，三样例的不可判率会升到 A 22.0% / B 39.0% / C 43.9%，"
-        "其中 B、C 越过 1/3 停工线。所以这条口径必须先讲清再谈结论 —— "
+        "若把第 3 条也计入不可判，全口径会升到 A 22.0% / B 39.0% / C 43.9%；"
+        "这类新增全是「口径/登记」债，按 P2-1 的分法会落进乙类，于是 B、C 将越过 "
+        "1/3 停工线（甲类不占分子，救不了这条）。所以这条口径必须先讲清再谈结论 —— "
         "**若 Muse 认为「不设门槛」也应算作「不可判」，本单应停工等裁决**。"
     )
     L.append("")
@@ -1734,9 +1963,28 @@ def main() -> int:
         rep["total"], rep["programs_with_gap"], rep["program_gap_ratio"] * 100))
     for dim, cnt in rep["dimension_counts"].items():
         print("  %-10s %s" % (dim, " ".join("%s=%d" % (k, cnt.get(k, 0)) for k in MARK)))
-    print("样例画像不可判占比：", " ".join(
+    print("样例画像不可判占比（全口径）：", " ".join(
         "%s=%.1f%%" % (k, v["unknown_ratio"] * 100) for k, v in rep["samples"].items()))
-    print("最高不可判占比 %.1f%%（停工线 33.3%%）" % (rep["max_unknown_ratio"] * 100))
+    for k in rep["samples"]:
+        print("  %s  %s" % (k, metric_line(rep, k)))
+    print(
+        "最高乙类占比 %.1f%%（停工线 %s，只看乙类）｜最高全口径 %.1f%%（仅记录）｜最高甲类 %d 项（软线 %d）"
+        % (
+            rep["max_ratio_class_b"] * 100,
+            ratio_text(rep["stop_line_ratio"]),
+            rep["max_unknown_ratio"] * 100,
+            rep["max_by_design_count"],
+            rep["by_design_alert_count"],
+        )
+    )
+    if rep["max_ratio_class_b"] > rep["stop_line_ratio"]:
+        print("  停工：乙类不可判率已越过停工线，须停工报 Muse 裁决")
+    if rep["max_by_design_count"] >= rep["by_design_alert_count"]:
+        print("  报警：甲类已达软线 %d 项，须在报告里解释甲类构成（不使 CI 变红）"
+              % rep["by_design_alert_count"])
+    if rep["design_exemptions_missing"]:
+        print("  数据债：以下甲类豁免拿不出证据，已按乙类计 —— %s"
+              % "、".join(rep["design_exemptions_missing"]))
 
     if args.write:
         os.makedirs(os.path.dirname(DOC), exist_ok=True)

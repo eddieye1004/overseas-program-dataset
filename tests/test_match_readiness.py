@@ -254,17 +254,206 @@ class VerdictSemantics(unittest.TestCase):
         for name, v in rep["samples"].items():
             self.assertAlmostEqual(v["unknown_ratio"], v["unknown"] / total, places=4, msg=name)
 
-    def test_stop_line_is_one_third(self):
-        """阈值 1/3 是派单写死的。这里钉住它的数值，防止有人为了让单子
-        不被停工而悄悄把 1/3 改成 2/5。"""
+    def test_stop_line_binds_class_b_only(self):
+        """停工线只绑乙类（可避免不可判），阈值仍是 1/3，一个数字都没动。
+
+        2026-11-14 P2-1 裁决：原 test_stop_line_is_one_third 把甲类（设计性
+        不可判：原文交由 Sponsor 判断、或官方本无阈值）也算进分子，导致
+        「诚实地说不知道」与「我们欠的债」同罪，而且逼团队在「让 CI 变绿」
+        与「不许硬判」之间二选一——最后一定是硬判。拆分后闸门只盯债，
+        甲类单列报告（软线 5 项，不红）。
+
+        替换而不是并存两条硬闸：两条里只要有一条红就算停工，等于口径没改。
+        """
         rep = mr.audit()
-        self.assertLessEqual(rep["max_unknown_ratio"], 1.0)
-        # 当前数据未越线；越线时这里会红，提醒先看报告再改代码
+        for name, v in rep["samples"].items():
+            self.assertAlmostEqual(
+                v["ratio_class_b"], v["unknown_class_b"] / rep["total"], places=4, msg=name
+            )
         self.assertLessEqual(
-            rep["max_unknown_ratio"],
+            rep["max_ratio_class_b"],
             1 / 3,
-            "不可判率已越过 1/3 停工线，按派单要求应停工报 Muse 裁决",
+            "乙类不可判率已越过 1/3 停工线（甲类不占分子），应停工报 Muse 裁决",
         )
+        # 加总自检：甲 + 乙必须等于不可判总数，任何一类漏登记都在这里露馅
+        for name, v in rep["samples"].items():
+            self.assertEqual(
+                v["unknown_by_design"] + v["unknown_class_b"],
+                v["unknown"],
+                f"画像 {name} 的甲+乙 与不可判总数对不上，说明有 unknown 项没归类",
+            )
+
+    def test_full_ratio_still_reported(self):
+        """混算口径不删、仍输出，且只许不增：C 的 14/41 = 0.3415 是 2026-11-14 的实测上限。
+
+        留着它有两个用处：① 历史可比；② 防止有人把「甲类变多」用拆分藏掉——
+        甲类一多，全口径会自己顶上来。
+        """
+        rep = mr.audit()
+        # 注意：unknown_ratio 是 4 位小数的舍入值（0.3415），直接与 14/41
+        # （0.341463…）比会因舍入而假红。所以钉「项目条数 ≤ 14」+「比率等于
+        # 该条数 / 总数」，两者合起来才是提案那条断言的本意。
+        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 14)
+        self.assertEqual(
+            rep["max_unknown_ratio"],
+            round(14 / rep["total"], 4),
+            "全口径上限被突破了：这是「甲类变多也不许藏」的那把尺子",
+        )
+        self.assertLessEqual(rep["max_unknown_ratio"], 14 / 41 + 1e-4)
+        # 它不再是闸门：当前 0.3415 > 1/3，但仍必须跑得下去（红的是上面的乙类线）
+        self.assertGreater(rep["max_unknown_ratio"], 1 / 3)
+        for name, v in rep["samples"].items():
+            self.assertAlmostEqual(
+                v["unknown_ratio"], v["unknown"] / rep["total"], places=4, msg=name
+            )
+
+    def test_every_silent_code_is_classified(self):
+        """任何出现在 silent 维上的 code 必须登记进甲名单或乙名单，未登记即红。
+
+        这是「把乙塞进甲以绕闸」的机械闸（提案 R1）：登记按 code 不按项目，
+        要洗白一个项目得先洗白一个 code，影响面立刻可见。
+        """
+        seen = set()
+        for pid in self.docs:
+            for name in mr.SAMPLES:
+                _, dims = mr.judge(self.docs[pid], mr.SAMPLES[name])
+                for d in dims:
+                    if d["kind"] == "silent":
+                        seen.add(d["code"])
+        unclassified = sorted(seen - mr.BY_DESIGN_CODES - mr.CLASS_B_CODES)
+        self.assertEqual(
+            unclassified,
+            [],
+            "以下 silent code 未登记甲乙分类：%s。甲类准入语义只有"
+            "「交给第三方主体判断」「官方无阈值」两种，其余必须进 CLASS_B_CODES"
+            % unclassified,
+        )
+        self.assertEqual(
+            sorted(mr.BY_DESIGN_CODES),
+            ["age_unknown", "edu_by_sponsor"],
+            "甲类白名单变动须 Muse 复核（见提案 §1.2 的逐条论证）",
+        )
+        self.assertEqual(
+            mr.BY_DESIGN_CODES & mr.CLASS_B_CODES, frozenset(), "同一个 code 不许同时在甲乙两张表里"
+        )
+
+    def test_class_b_members_are_pinned(self):
+        """C 画像（停工线驱动画像）的乙类项目集合钉成 11 条，增删都要做一次显式决定。
+
+        改这个清单意味着「某个项目从债变成能判」或反之，那是产品结论变化，
+        不该顺带发生。
+        """
+        rep = mr.audit()
+        self.assertEqual(
+            rep["samples"]["C"]["class_b_ids"],
+            [
+                "at-rwr-card-vhq",
+                "au-407-training",
+                "ca-pgwp",
+                "de-chancenkarte",
+                "dk-working-holiday",
+                "jp-working-holiday",
+                "mt-nomad-residence",
+                "nl-orientation-year",
+                "nz-china-whv",
+                "nz-post-study-work",
+                "uk-hpi-visa",
+            ],
+        )
+        self.assertEqual(
+            rep["samples"]["C"]["by_design_ids"],
+            [
+                "global-aiesec-global-talent",
+                "us-j1-research-scholar",
+                "us-j1-summer-work-travel",
+            ],
+        )
+
+        # 甲类与画像无关：三个 code 都不读画像值，换个人不该让它们消失
+        a = mr.audit()["samples"]
+        for name in ("A", "B", "C"):
+            self.assertEqual(a[name]["unknown_by_design"], 3, name)
+
+    def test_mixed_cause_program_counts_as_debt(self):
+        """de-chancenkarte 同时有「认定」（甲因）与「CEFR 换算」（乙因），按混合项规则
+        必须整项计乙，否则那条明显可修的 CEFR 债就被「主因是甲」洗掉了（提案 R2）。
+        """
+        rep = mr.audit()
+        row = next(r for r in rep["rows"] if r["id"] == "de-chancenkarte")
+        self.assertEqual(row["verdicts"]["C"]["state"], "unknown")
+        self.assertEqual(row["verdicts"]["C"]["cls"], "avoidable")
+        codes = {d["code"] for d in row["verdicts"]["C"]["dims"] if d["kind"] == "silent"}
+        self.assertEqual(codes, {"edu_credential_unknown", "lang_cefr"})
+        # 混合判据本身：只要有一条不在甲名单里就是乙
+        self.assertEqual(mr.undecidable_class([{"kind": "silent", "code": "edu_by_sponsor"},
+                                               {"kind": "silent", "code": "lang_cefr"}]), "avoidable")
+        self.assertEqual(mr.undecidable_class([{"kind": "silent", "code": "edu_by_sponsor"}]), "design")
+        self.assertIsNone(mr.undecidable_class([{"kind": "pass", "code": "edu_ok"}]))
+
+    def test_age_unknown_requires_sponsor_evidence(self):
+        """age_unknown 归甲是**有条件**的（Muse 裁决 1）：只有当 note 带「⚠️ 未核实」
+        且给出「官方无阈值 / 由 Sponsor 自行规定」的证据时才成立。
+
+        若将来有人因为「没去查」就把项目标成未核实年龄，这个 code 会变成
+        逃避核实的通用出口，甲类闸就形同虚设。这里把触发面和证据面都钉住：
+        code 在白名单里 ≠ 豁免成立，证据还得在数据里。
+        """
+        rep = mr.audit()
+        self.assertEqual(
+            rep["design_exemptions_missing"],
+            [],
+            "有甲类豁免拿不出证据：%s 属数据债，不许按设计性不可判免责"
+            % rep["design_exemptions_missing"],
+        )
+        hits = [
+            pid
+            for pid, doc in self.docs.items()
+            if doc.get("eligibility", {}).get("age", {}).get("note", "").strip().startswith("⚠️")
+        ]
+        self.assertEqual(len(hits), 2, f"age_unknown 触发面变成 {hits}，不是既定的 2 项")
+        self.assertEqual(sorted(hits), ["global-aiesec-global-talent", "us-j1-summer-work-travel"])
+        for pid in hits:
+            note = self.docs[pid]["eligibility"]["age"]["note"]
+            self.assertTrue(
+                mr.AGE_NO_THRESHOLD_EVIDENCE.search(note),
+                f"{pid} 的 age.note 没有「官方无阈值 / 由 Sponsor 自行规定」的证据，不许以 age_unknown 免责",
+            )
+            code = {d["code"] for d in mr.judge(self.docs[pid], mr.SAMPLES["C"])[1]
+                    if d["dim"] == "age"}
+            self.assertEqual(code, {"age_unknown"}, pid)
+
+        # 反例：同样是 ⚠️ 前缀，但 note 只说「没查」——必须落乙类，不许免责
+        bare = {
+            "eligibility": {"age": {"min": 0, "max": 99, "note": "⚠️ 未核实，尚未查官网。"}},
+            "program": {"id": "synthetic", "name": "synthetic"},
+        }
+        dims = [{"dim": "age", "kind": "silent", "code": "age_unknown"}]
+        self.assertFalse(mr.design_exemption_holds("age_unknown", bare))
+        self.assertEqual(mr.undecidable_class(dims, bare), "avoidable")
+        # 不传 doc 时只看 code（judge() 内部与前端契约不受影响）
+        self.assertEqual(mr.undecidable_class(dims), "design")
+
+    def test_stop_line_message_matches_threshold(self):
+        """报告与终端文案里的阈值必须与常量同源（提案 R4）。
+
+        原先 render_markdown 与 --json 各自写死「33.3%」，阈值一改就两处漂移，
+        报告会指着一条已经不在管事的线说「越线了」。
+        """
+        rep = mr.audit()
+        for text in (mr.render_markdown(rep), mr.ratio_text(mr.STOP_LINE_RATIO)):
+            self.assertIn("1/3", text)
+            self.assertNotIn("33.3%", text)
+        r = run_cli()
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("1/3", r.stdout)
+        self.assertNotIn("33.3%", r.stdout)
+        self.assertIn("只看乙类", r.stdout)
+        # 三口径必须在同一行上（提案 R6）
+        for name in ("A", "B", "C"):
+            line = [ln for ln in r.stdout.splitlines() if ln.strip().startswith(name + " ")][0]
+            self.assertIn("乙类", line)
+            self.assertIn("全口径", line)
+            self.assertIn("甲类", line)
 
 
 class Phase1Fixes(unittest.TestCase):
