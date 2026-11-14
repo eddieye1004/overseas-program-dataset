@@ -54,7 +54,7 @@
         "note": "申请时人必须在澳大利亚境内（且不在出入境查验中）。官方原文：`You must be in Australia (but not in immigration clearance) when you apply for this visa.` 后续入境者（subsequent entrants）可在境内或境外申请。"
       },
       {
-        "type": "enrollment_proof",
+        "type": "degree_completed_proof",
         "required": true,
         "note": "须证明在申请前 6 个月内已取得 associate degree / diploma / trade qualification，并满足 485 的 Australian study requirement。这是「证明已完成该段学业」的材料，不是在读期间的学籍证明——本类别面向已毕业者。**毕业超过 6 个月就不能申**，这一点与英国 Graduate 的「学签到期前」不同。"
       },
@@ -79,7 +79,7 @@
         "note": "申请人及 16 岁及以上随行家属须满足品行要求（meet our character requirement）。"
       },
       {
-        "type": "no_dependents",
+        "type": "dependents_allowed",
         "required": false,
         "note": "官方允许携带家属（`bring your family members`），与打工度假类不允许携带家属不同。家属须一并满足健康与品行要求。"
       }
