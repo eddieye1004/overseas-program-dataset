@@ -224,7 +224,15 @@
                   "health_check", "criminal_record", "insurance",
                   "no_dependents", "return_ticket", "government_support_letter",
                   "enrollment_proof", "internship_contract", "blocked_account",
-                  "no_prior_visa", "residency_requirement"
+                  "no_prior_visa", "residency_requirement",
+                  "no_child_dependents", "no_other_dependents", "dependents_cannot_work",
+                  "dependents_allowed", "dependents_separate_application",
+                  "program_once_in_lifetime", "program_once_per_project",
+                  "prior_same_category_visa", "program_participation_cap",
+                  "prior_specific_visa_required",
+                  "degree_completed_proof", "enrollment_or_degree_proof",
+                  "credential_scoring_input",
+                  "declaration_document"
                 ]
               },
               "required": { "type": "boolean" },

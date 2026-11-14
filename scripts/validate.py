@@ -116,6 +116,19 @@ VALID_REQUIREMENT_TYPES = {
     "return_ticket", "government_support_letter", "enrollment_proof",
     "internship_contract", "blocked_account", "no_prior_visa",
     "residency_requirement",
+    # —— P1b-1 拆分：原值 above 保留兼容，新增值承担被拆分出去的具体语义 ——
+    # 家属类（原 no_dependents 的 5 种实际语义）
+    "no_child_dependents", "no_other_dependents", "dependents_cannot_work",
+    "dependents_allowed", "dependents_separate_application",
+    # 签证史/参加史类（原 no_prior_visa 的 5 种实际语义）
+    "program_once_in_lifetime", "program_once_per_project",
+    "prior_same_category_visa", "program_participation_cap",
+    "prior_specific_visa_required",
+    # 学籍/学历证明类（原 enrollment_proof 的 3 种实际语义）
+    "degree_completed_proof", "enrollment_or_degree_proof",
+    "credential_scoring_input",
+    # 其他：声明文件（原挂在 no_dependents 下的婚姻状况声明）
+    "declaration_document",
 }
 
 VALID_RISK_LEVELS = {"info", "warning", "critical"}
