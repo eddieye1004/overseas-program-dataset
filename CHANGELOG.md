@@ -8,6 +8,30 @@
 
 ## [未发布]
 
+### 变更 — 把 P1b-1 迁好的 typed 值接进判定引擎（rules_version 6 → 7，2026-11-15）
+
+P1b-1 把三个「一个 type 名装十种语义」的值拆成了 13 个具体值，但引擎一个字节都没读：`other_requirements` 里除 `residency_requirement` 之外全部进不了判定面。于是「本项目不许带家属」「一生只能参加一次」「须已毕业」这些**原文写明的硬条件**在画像页上完全看不见，所有项目看起来都比实际宽松。
+
+本单接线三个家族共 13 个值：
+
+| 家族 | 接进判定的值 | 判定方向 |
+|---|---|---|
+| 家属 | `no_child_dependents` / `no_other_dependents` / `dependents_cannot_work` | 禁令：有该事实状态即 fail |
+| 家属（非闸门） | `dependents_allowed` / `dependents_separate_application` / `declaration_document` | 判 na 留痕，不挡人 |
+| 签证史 | `program_once_in_lifetime` / `program_once_per_project` / `prior_same_category_visa` / `program_participation_cap` | 参加过/持过即 fail |
+| 签证史（正向） | `prior_specific_visa_required` | **须持过**（与上一条方向相反），判 silent |
+| 学籍 | `enrollment_proof`（保留原值，仅 IAESTE / J-1 SWT 两条真在读） | 须在读，已毕业 fail |
+| 学历 | `degree_completed_proof` / `enrollment_or_degree_proof` | 须已毕业 / 二者其一 |
+| 打分 | `credential_scoring_input` | 不是资格闸，判 na |
+
+**关键方向修正**：`au-485-graduate` 原先挂在 `no_prior_visa`（未持过任何签证）下，而原文是 `have held a Student visa in the last 6 months`——**须持过**，方向完全相反。照 type 名接线会把两类人都判反，现已改接 `prior_specific_visa_required`。
+
+**画像扩充**：三张样例画像补齐 4 个字段的显式取值（`dependents` / `prior_participation` / `prior_same_category_visa` / `enrollment_status`）。这与「引擎缺省即未知」是两件事：字段取不到时仍一律判 silent，有 `test_missing_profile_fields_stay_silent` 钉住。
+
+**实测**（接线前 → 后）：乙类不可判率 A 9.8% → 9.8%｜B 7.3% → 7.3%｜C 26.8% → 26.8%，最高仍 0.2683，未越 1/3 停工线；全口径 C 34.2% → 31.7%。
+
+**未接线**：冷却期 4 段（`au-485-graduate` 6 个月、`us-j1-research-scholar` 24/12 个月与 212(e)）按派单移交 P2，本次确认未动。
+
 ### 新增 — 补两条毕业后通道：爱尔兰 Stamp 1G 与澳洲 485 职业教育类别（39 → 41，2026-11-11）
 
 D1 的第一批。挑的是两个真实缺口，不是凑数：

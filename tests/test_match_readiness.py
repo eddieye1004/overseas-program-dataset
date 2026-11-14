@@ -181,13 +181,26 @@ class VerdictSemantics(unittest.TestCase):
 
         HPI 另有一条（§4-6）：edu note 要求「认可名单内院校 + 学位授予 5 年内」，
         结构化字段只有 bachelor_completed，因此教育维也是 silent（edu_place_unknown）。
-        这里钉住整组 code，就是为了让「教育维悄悄判过」立刻红。"""
+        这里钉住整组 code，就是为了让「教育维悄悄判过」立刻红。
+
+        P1b-2 起另带两条前置维：HPI 原文既禁「曾持 Graduate visa / DES 身份」
+        （`prior_same_category_visa`）又限「一生一次」（`program_once_in_lifetime`）。
+        画像 C 两项都填了"none"，所以它们是 pass 而不是 silent——结论仍是 unknown，
+        驱动它的仍只有教育维那一条。"""
         pr = dict(mr.SAMPLES["C"])
         state, dims = mr.judge(self.docs["uk-hpi-visa"], pr)
         self.assertEqual(state, "unknown")
         self.assertEqual(
             {d["code"] for d in dims},
-            {"passport_ok", "age_none", "edu_place_unknown", "lang_no_score", "funds_ok"},
+            {
+                "passport_ok",
+                "age_none",
+                "edu_place_unknown",
+                "lang_no_score",
+                "funds_ok",
+                "pre_prior_visa_none",
+                "pre_participation_none",
+            },
         )
 
     # —— 4. 状态优先级 ——
@@ -284,24 +297,31 @@ class VerdictSemantics(unittest.TestCase):
             )
 
     def test_full_ratio_still_reported(self):
-        """混算口径不删、仍输出，且只许不增：C 的 14/41 = 0.3415 是 2026-11-14 的实测上限。
+        """混算口径不删、仍输出，且只许不增：C 的 13/41 = 0.3171 是 2026-11-15 的实测上限。
 
         留着它有两个用处：① 历史可比；② 防止有人把「甲类变多」用拆分藏掉——
         甲类一多，全口径会自己顶上来。
+
+        P1b-2 记录：接线前该值是 14/41 = 0.3415。本单把家属/签证史/学籍三个家族
+        接进判定后，**全口径反而降到 13/41**，因为三张样例画像补齐了新字段的
+        显式取值（A=21 岁在读生、B/C=已毕业），这些条件在画像上有答案，判出来
+        是 pass/fail 而不是 silent。这不是「把不可判洗掉」：引擎在字段缺失时
+        仍然判 silent，有 test_missing_profile_fields_stay_silent 钉住。
         """
         rep = mr.audit()
-        # 注意：unknown_ratio 是 4 位小数的舍入值（0.3415），直接与 14/41
-        # （0.341463…）比会因舍入而假红。所以钉「项目条数 ≤ 14」+「比率等于
+        # 注意：unknown_ratio 是 4 位小数的舍入值（0.3171），直接与 13/41
+        # （0.31707…）比会因舍入而假红。所以钉「项目条数 ≤ 13」+「比率等于
         # 该条数 / 总数」，两者合起来才是提案那条断言的本意。
-        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 14)
+        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 13)
         self.assertEqual(
             rep["max_unknown_ratio"],
-            round(14 / rep["total"], 4),
+            round(13 / rep["total"], 4),
             "全口径上限被突破了：这是「甲类变多也不许藏」的那把尺子",
         )
+        self.assertLessEqual(rep["max_unknown_ratio"], 13 / 41 + 1e-4)
+        # 它不再是闸门：只许不增，仍须跑得下去（红的是上面的乙类线）。
+        # 接线后 0.3171 < 1/3，因此这里改为断言「不超过接线前实测上限」。
         self.assertLessEqual(rep["max_unknown_ratio"], 14 / 41 + 1e-4)
-        # 它不再是闸门：当前 0.3415 > 1/3，但仍必须跑得下去（红的是上面的乙类线）
-        self.assertGreater(rep["max_unknown_ratio"], 1 / 3)
         for name, v in rep["samples"].items():
             self.assertAlmostEqual(
                 v["unknown_ratio"], v["unknown"] / rep["total"], places=4, msg=name
@@ -365,14 +385,19 @@ class VerdictSemantics(unittest.TestCase):
             [
                 "global-aiesec-global-talent",
                 "us-j1-research-scholar",
-                "us-j1-summer-work-travel",
             ],
         )
 
-        # 甲类与画像无关：三个 code 都不读画像值，换个人不该让它们消失
+        # 甲类与画像无关：三个 code 都不读画像值，换个人不该让它们消失。
+        # P1b-2 记录：接线后 A/B/C 的甲类从 3 降到 2（B、C）——因为
+        # `us-j1-summer-work-travel` 在 B/C 上被新接的在读要求判成「不能申」
+        # （已毕业 ≠ 在读），不再是 unknown，自然也就没有甲类。这不是甲类口径
+        # 改动，是这个项目**本来就该给出的结论**终于判出来了；甲类白名单本身
+        # 一个 code 都没动（test_every_silent_code_is_classified 仍钉死两个）。
         a = mr.audit()["samples"]
-        for name in ("A", "B", "C"):
-            self.assertEqual(a[name]["unknown_by_design"], 3, name)
+        self.assertEqual(a["A"]["unknown_by_design"], 3, "A")
+        self.assertEqual(a["B"]["unknown_by_design"], 2, "B")
+        self.assertEqual(a["C"]["unknown_by_design"], 2, "C")
 
     def test_mixed_cause_program_counts_as_debt(self):
         """de-chancenkarte 同时有「认定」（甲因）与「CEFR 换算」（乙因），按混合项规则
@@ -880,6 +905,211 @@ class Phase2P0(unittest.TestCase):
         # 新加坡 EP 不许被连带降级（它有自己的前置判定口径，本腿不动）
         self.assertFalse(mr.employer_offer_required(self.docs["sg-employment-pass"]))
         self.assertEqual(self.dim("sg-employment-pass", "B", "education")["code"], "edu_ok")
+
+
+class P1b2TypedValues(unittest.TestCase):
+    """P1b-2：把 P1b-1 迁好的 typed 值接进判定后的方向回归（派单 2026-11-15）。
+
+    这一组守的是**判定方向**，不是「当前结论长什么样」。三个家族里各有一条
+    方向相反的条目，照 type 名字猜方向会把人判反——而且反得很难发现，因为
+    另一种读法在字面上也说得通。
+
+    编号 ①–⑤ 与派单「硬规则」的方向性回归清单一一对应，改动时不要重排。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs = {d["program"]["id"]: d for d in mr.load_programs()}
+
+    def pre(self, pid, sample="B", **override):
+        pr = dict(mr.SAMPLES[sample])
+        pr.update(override)
+        _, dims = mr.judge(self.docs[pid], pr)
+        return [d for d in dims if d["dim"] == "precondition"]
+
+    def dim(self, pid, sample, dim):
+        _, dims = mr.judge(self.docs[pid], mr.SAMPLES[sample])
+        return next((d for d in dims if d["dim"] == dim), None)
+
+    # —— ① au-485-graduate：须持过学签，不许再被读成「未持过」——
+    def test_485_graduate_is_positive_prior_visa_not_negative(self):
+        """原文是 `have held a Student visa in the last 6 months`——**须持过**。
+
+        P1b-1 之前这条挂在 `no_prior_visa`（未持过任何签证）下，语义完全相反：
+        照名字接线会把「持过学签」的正常申请人判成不满足，把「没持过」的人
+        判成满足。两类的结论都反。
+
+        现在必须是 `prior_specific_visa_required`，判 silent（画像不采集签证史），
+        且**绝不能**产出「未持过」那种口径的 code。
+        """
+        doc = self.docs["au-485-graduate"]
+        self.assertIn("prior_specific_visa_required", mr.requirement_types(doc))
+        self.assertNotIn("no_prior_visa", mr.requirement_types(doc))
+        for sample in ("A", "B", "C"):
+            codes = {d["code"] for d in self.pre("au-485-graduate", sample)}
+            self.assertIn("pre_prior_visa_required", codes, sample)
+            # 反向读法的 code 一个都不许出现
+            self.assertNotIn("pre_prior_visa_none", codes, sample)
+            self.assertNotIn("pre_prior_visa_used", codes, sample)
+            d = next(x for x in self.pre("au-485-graduate", sample)
+                     if x["code"] == "pre_prior_visa_required")
+            self.assertEqual(d["kind"], "silent", d)
+
+    # —— ② 三个项目的家属「允许」不得判成禁止 ——
+    def test_dependents_allowed_is_not_read_as_forbidden(self):
+        """au-485-vocational / uk-graduate-visa 原文明确**允许**家属随行
+        （`bring your family members`），us-f1-opt 是「家属可随行但不得就业」。
+
+        这三个值过去都挂在 `no_dependents`（不可带家属）下。照名字接线会让
+        「本项目允许带家属」变成「本项目不许带家属」——正好相反的一条建议。
+        """
+        for pid in ("au-485-vocational", "uk-graduate-visa"):
+            doc = self.docs[pid]
+            self.assertIn("dependents_allowed", mr.requirement_types(doc, required_only=False))
+            self.assertNotIn("no_dependents", mr.requirement_types(doc))
+            for sample in ("A", "B", "C"):
+                deps = [d for d in self.pre(pid, sample) if d["code"].startswith("pre_dependents")]
+                codes = {d["code"] for d in deps}
+                # 判 na（只作展示，不构成闸门），且不出现任何禁令 code
+                self.assertIn("pre_dependents_allowed", codes, f"{pid}/{sample}")
+                self.assertNotIn("pre_dependents_child_present", codes, f"{pid}/{sample}")
+                self.assertNotIn("pre_dependents_other_present", codes, f"{pid}/{sample}")
+                # 只在**家属维**上断言不判 fail：同一项目的学历维可能合法地判 fail
+                self.assertNotIn(
+                    "fail", {d["kind"] for d in deps}, f"{pid}/{sample} 家属允许被读成了禁止"
+                )
+        # us-f1-opt：禁的是「就业」不是「同行」，无家属时应 pass 而非 fail
+        d = next(x for x in self.pre("us-f1-opt", "B") if x["code"].startswith("pre_dependents"))
+        self.assertEqual(d["code"], "pre_dependents_none", d)
+        self.assertEqual(d["kind"], "pass", d)
+
+    # —— ③ SWT 在读判 pass、毕业生不因此 pass ——
+    def test_swt_enrollment_direction(self):
+        """`enrollment_proof` 是三个学籍值里**唯一真该在读**的一个
+        （global-iaeste / us-j1-summer-work-travel 两条）。
+
+        在读 → pass；已毕业 → fail（在读要求做不到）。判反会让毕业生以为能申。
+        """
+        for pid in ("us-j1-summer-work-travel", "global-iaeste"):
+            self.assertIn("enrollment_proof", mr.requirement_types(self.docs[pid]))
+            d_in = next(x for x in self.pre(pid, "A") if x["code"].startswith("pre_enroll")
+                        or x["code"] == "pre_not_enrolled")
+            self.assertEqual(d_in["code"], "pre_enrolled_ok", pid)
+            self.assertEqual(d_in["kind"], "pass", pid)
+            d_grad = next(x for x in self.pre(pid, "B") if x["code"].startswith("pre_enroll")
+                          or x["code"] == "pre_not_enrolled")
+            self.assertEqual(d_grad["code"], "pre_not_enrolled", pid)
+            self.assertEqual(d_grad["kind"], "fail", pid)
+            self.assertEqual(mr.judge(self.docs[pid], mr.SAMPLES["B"])[0], "cannot", pid)
+
+    # —— ④ ie-third-level-graduate 的毕业证明被识别 ——
+    def test_ie_degree_proof_is_recognised(self):
+        """`degree_completed_proof` = 须已毕业，与 `enrollment_proof` 方向相反。
+
+        爱尔兰这条原文是 `evidence of the final award being attained`，
+        明确「不是在读期间续签」。B/C（已毕业）应 pass，A（在读）应 fail。
+        """
+        self.assertIn("degree_completed_proof", mr.requirement_types(self.docs["ie-third-level-graduate"]))
+        for sample in ("B", "C"):
+            d = next(x for x in self.pre("ie-third-level-graduate", sample)
+                     if x["code"] in ("pre_degree_ok", "pre_degree_missing"))
+            self.assertEqual(d["code"], "pre_degree_ok", sample)
+            self.assertEqual(d["kind"], "pass", sample)
+        d_a = next(x for x in self.pre("ie-third-level-graduate", "A")
+                   if x["code"] in ("pre_degree_ok", "pre_degree_missing"))
+        self.assertEqual(d_a["code"], "pre_degree_missing", d_a)
+        self.assertEqual(d_a["kind"], "fail", d_a)
+
+    # —— ⑤ 4 条「诚实条目」行为与改前一致 ——
+    def test_four_honest_entries_unchanged(self):
+        """设计稿 §5.4 点名的 4 条 name-honest 条目：接线不得改变它们的结论。
+
+        `kr-h1` / `uk-short-term-study-visa`（家属统称）、`global-iaeste` /
+        `us-j1-summer-work-travel`（真在读）。前两条的判定由别的维驱动，
+        后两条本单确实改判了（在读要求判出来了）——所以这里钉的是
+        **它们的前置维口径与其原文一致**，不是「结论不许变」。
+        """
+        # kr-h1：禁「家属统称」，画像无家属 → pass；有子女 → 也是 fail（统称包含子女）
+        d = next(x for x in self.pre("kr-h1-working-holiday", "B") if x["code"].startswith("pre_dependents"))
+        self.assertEqual((d["code"], d["kind"]), ("pre_dependents_none", "pass"), d)
+        d = next(x for x in self.pre("kr-h1-working-holiday", "B", dependents="children")
+                 if x["code"].startswith("pre_dependents"))
+        self.assertEqual((d["code"], d["kind"]), ("pre_dependents_other_present", "fail"), d)
+        # uk-short-term-study-visa：同上
+        d = next(x for x in self.pre("uk-short-term-study-visa", "B") if x["code"].startswith("pre_dependents"))
+        self.assertEqual((d["code"], d["kind"]), ("pre_dependents_none", "pass"), d)
+        # 两条真在读项目：A（在读）pass
+        for pid in ("global-iaeste", "us-j1-summer-work-travel"):
+            d = next(x for x in self.pre(pid, "A") if x["code"].startswith("pre_enroll"))
+            self.assertEqual(d["kind"], "pass", pid)
+
+    # —— 缺省即未知：这是全组的地基，单独钉一遍 ——
+    def test_missing_profile_fields_stay_silent(self):
+        """画像缺字段时必须判 silent（不可判），**绝不默认 pass**。
+
+        这条与「三张样例画像填了值」是两件事，必须分开钉：
+        样例画像填值让多数项目能判出来，但引擎本身的缺省行为必须仍是 silent。
+        否则「补夹具」与「洗白」在代码上看不出区别——将来有人删掉这个分支，
+        样例画像照样全绿，而真实用户会开始看到虚假的「能申」。
+        """
+        cases = [
+            ("au-462-work-holiday", "dependents", "pre_dependents_unknown"),
+            ("kr-h1-working-holiday", "dependents", "pre_dependents_unknown"),
+            ("us-f1-opt", "dependents", "pre_dependents_unknown"),
+            ("ca-pgwp", "prior_participation", "pre_participation_unknown"),
+            ("nz-post-study-work", "prior_participation", "pre_participation_unknown"),
+            ("au-462-work-holiday", "prior_same_category_visa", "pre_prior_visa_unknown"),
+            ("uk-hpi-visa", "prior_same_category_visa", "pre_prior_visa_unknown"),
+            ("global-iaeste", "enrollment_status", "pre_enrollment_unknown"),
+            ("us-j1-summer-work-travel", "enrollment_status", "pre_enrollment_unknown"),
+        ]
+        for pid, field, want in cases:
+            pr = {k: v for k, v in mr.SAMPLES["B"].items() if k != field}
+            self.assertNotIn(field, pr, f"{pid} 的用例没能真正去掉 {field}")
+            _, dims = mr.judge(self.docs[pid], pr)
+            got = {d["code"]: d["kind"] for d in dims if d["dim"] == "precondition"}
+            self.assertIn(want, got, f"{pid} 缺 {field} 时未判 silent：{got}")
+            self.assertEqual(got[want], "silent", f"{pid} 缺 {field} 时判成了 {got[want]}")
+
+    # —— 非闸门值：不许把材料当成门槛 ——
+    def test_non_gate_values_are_na_not_silent(self):
+        """`credential_scoring_input` / `declaration_document` 明确不是资格闸。
+
+        判 silent 会让本来能申的项目变「不可判」——把「我们把材料当成了门槛」
+        这件事伪装成数据债。
+        """
+        for pid in ("sg-employment-pass", "sg-s-pass"):
+            self.assertIn("credential_scoring_input",
+                          mr.requirement_types(self.docs[pid], required_only=False))
+            d = next(x for x in self.pre(pid, "B") if x["code"] == "pre_scoring_input_only")
+            self.assertEqual(d["kind"], "na", pid)
+            # 别被连带降级：EP / S Pass 对 B 仍应能申（与既有口径一致）
+            self.assertEqual(mr.judge(self.docs[pid], mr.SAMPLES["B"])[0], "can", pid)
+        self.assertIn("declaration_document",
+                      mr.requirement_types(self.docs["fr-recherche-emploi"], required_only=False))
+        d = next(x for x in self.pre("fr-recherche-emploi", "B")
+                 if x["code"] == "pre_declaration_only")
+        self.assertEqual(d["kind"], "na", d)
+
+    # —— 冷却期本单不接线：确认没被顺手接进来 ——
+    def test_cooldown_periods_not_wired(self):
+        """冷却期 4 段（au-485-graduate 6 个月、research-scholar 24/12 个月与 212(e)）
+        本单不接线（P2），必须保持现状。
+
+        判据：这两条项目的 note 里仍带月数/年数，而引擎不对它产出任何
+        「按日期比较」的 code——它们落 silent，且 silent 的理由是「未采集签证史」，
+        不是「已按冷却期算过」。
+        """
+        for pid in ("au-485-graduate", "us-j1-research-scholar"):
+            codes = {d["code"] for d in self.pre(pid, "B")}
+            # 没有任何 code 表示「冷却期已计算」
+            self.assertFalse(
+                [c for c in codes if "cool" in c or "month" in c],
+                f"{pid} 出现了冷却期相关 code：{codes}",
+            )
+        # research-scholar 仍未接任何签证史分支（它挂的是 no_prior_visa 原值，本单不认）
+        doc = self.docs["us-j1-research-scholar"]
+        self.assertIn("no_prior_visa", mr.requirement_types(doc))
 
 
 class CliBehaviour(unittest.TestCase):

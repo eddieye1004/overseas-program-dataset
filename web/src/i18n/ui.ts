@@ -1340,6 +1340,28 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     pre_unclassified: '该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定',
     pre_job_placement: '原文要求岗位须预先落实：{need}；这一步可以补（报名、面试、拿到 placement）',
     pre_employer_offer: '原文要求先有具体雇主的合格聘用：{need}；这一步可以补（投简历、面试、签约）',
+    // —— P1b-2：家属 / 签证史 / 学籍三个家族的 typed 值 ——
+    pre_dependents_unknown: '原文对家属随行有限制，画像未采集你的家属构成，无法判定',
+    pre_dependents_none: '原文的家属限制：你填了无家属随行，此项不适用',
+    pre_dependents_child_present: '原文禁止携带受抚养子女，你填了有受抚养子女',
+    pre_dependents_other_present: '原文禁止携带家属（含配偶与子女），你填了有家属随行',
+    pre_dependents_work_unknown: '原文允许家属随行但不得就业；你是否打算让家属工作未采集，无法判定',
+    pre_dependents_separate: '原文要求家属同行须各自单独递交申请；这是办理程序，不构成资格门槛',
+    pre_dependents_allowed: '原文明确允许家属随行（仅作说明，不构成资格门槛）',
+    pre_declaration_only: '原文材料清单里有一份声明文件；这是递交材料，不构成资格门槛',
+    pre_participation_unknown: '原文限制既往参加过本项目/同类项目者，画像未采集既往参加史，无法判定',
+    pre_participation_none: '原文限制既往参加过者，你填了未参加过',
+    pre_participation_used: '原文限制已参加过本项目/同类项目者再次申请，你填了参加过',
+    pre_prior_visa_unknown: '原文限制曾持同类签证者，画像未采集同类签证史，无法判定',
+    pre_prior_visa_none: '原文限制曾持同类签证者，你填了未持过',
+    pre_prior_visa_used: '原文限制曾持同类签证者再次申请，你填了持过',
+    pre_prior_visa_required: '原文要求**须持过**指定类别签证（不是「未持过」）；画像未采集签证史，无法判定',
+    pre_enrollment_unknown: '原文要求当前在册/全程保持学籍，画像未采集在读状态，无法判定',
+    pre_enrolled_ok: '原文要求当前在册，你填了在读',
+    pre_not_enrolled: '原文要求当前在册（在读期间保持注册），你填了已毕业',
+    pre_degree_ok: '原文要求已取得学位/文凭，你的学历状态满足',
+    pre_degree_missing: '原文要求已取得学位/文凭（须已毕业），你填了本科在读',
+    pre_scoring_input_only: '原文该项是学历/资质作为打分或材料审核的输入，不是资格门槛',
   },
   en: {
     passport_ok: 'Passport recorded as eligible',
@@ -1401,6 +1423,47 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'The source requires the placement to be arranged in advance: {need} — you have not recorded a placement yet, and this is a step you can still complete',
     pre_employer_offer:
       'The source requires a concrete job offer from one specific employer first: {need} — this is a step you can still complete (apply, interview, sign)',
+    // —— P1b-2 ——
+    pre_dependents_unknown:
+      'The source restricts dependants, and your dependant situation is not collected — cannot decide',
+    pre_dependents_none:
+      'The source restricts dependants; you entered that no dependants will accompany you, so this does not apply',
+    pre_dependents_child_present:
+      'The source does not allow dependent children to accompany you; you entered that you have dependent children',
+    pre_dependents_other_present:
+      'The source does not allow dependants (spouse and children included); you entered that dependants will accompany you',
+    pre_dependents_work_unknown:
+      'Dependants may accompany you but may not work; whether your dependants intend to work is not collected — cannot decide',
+    pre_dependents_separate:
+      'The source requires accompanying dependants to apply separately; this is a procedural step, not an eligibility threshold',
+    pre_dependents_allowed:
+      'The source explicitly allows dependants to accompany you (shown for information; not an eligibility threshold)',
+    pre_declaration_only:
+      'The document list includes a signed declaration; this is a submission item, not an eligibility threshold',
+    pre_participation_unknown:
+      'The source restricts those who have previously taken part in this or a comparable programme; your participation history is not collected — cannot decide',
+    pre_participation_none:
+      'The source restricts previous participants; you entered that you have not taken part',
+    pre_participation_used:
+      'The source bars those who have already taken part in this or a comparable programme; you entered that you have taken part',
+    pre_prior_visa_unknown:
+      'The source restricts those who have previously held a visa of the same category; your visa history is not collected — cannot decide',
+    pre_prior_visa_none:
+      'The source restricts previous holders of a same-category visa; you entered that you have not held one',
+    pre_prior_visa_used:
+      'The source bars those who have already held a same-category visa; you entered that you have held one',
+    pre_prior_visa_required:
+      'The source requires you to **have held** a specified category of visa (not the reverse); your visa history is not collected — cannot decide',
+    pre_enrollment_unknown:
+      'The source requires you to be currently enrolled / to keep your enrolment; your enrolment status is not collected — cannot decide',
+    pre_enrolled_ok: 'The source requires current enrolment; you entered that you are enrolled',
+    pre_not_enrolled:
+      'The source requires current enrolment (registration kept during study); you entered that you have graduated',
+    pre_degree_ok: 'The source requires a completed degree/diploma, and your education status meets it',
+    pre_degree_missing:
+      'The source requires a completed degree/diploma (you must have graduated); you entered that you are still an undergraduate',
+    pre_scoring_input_only:
+      'The source treats your credential as input to scoring or document review, not as an eligibility threshold',
   },
 };
 

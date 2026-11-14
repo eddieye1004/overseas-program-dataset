@@ -21,6 +21,14 @@ export interface VerdictProfile {
   /** 雅思总分；没考过填 null —— 这与「考了但项目没登记分数线」是两件事 */
   ielts: number | null;
   budget_cny: number;
+  /** 家属构成：none | children | partner | other。缺省 = 未知（不是「没有」） */
+  dependents?: 'none' | 'children' | 'partner' | 'other' | null;
+  /** 既往参加过本项目/同类项目：none | used。缺省 = 未知 */
+  prior_participation?: 'none' | 'used' | null;
+  /** 曾持过同类签证：none | used。缺省 = 未知 */
+  prior_same_category_visa?: 'none' | 'used' | null;
+  /** 在读 / 已毕业：enrolled | completed。缺省 = 未知 */
+  enrollment_status?: 'enrolled' | 'completed' | null;
 }
 
 export const EMPTY_VERDICT_PROFILE: VerdictProfile = {
@@ -91,6 +99,22 @@ export interface ProgramFlags {
     job_placement?: boolean;
     /** 原文要求「具体雇主的合格聘用」（雇主担保类：offer + ≥80% + 岗位对得上）——P2-0 */
     employer_offer?: boolean;
+    /** P1b-2：家属 / 签证史 / 学籍三个家族的 typed 值（项目侧布尔，画像侧由前端重演） */
+    p1b2?: {
+      forbid_child: boolean;
+      forbid_other: boolean;
+      cannot_work: boolean;
+      separate: boolean;
+      allowed: boolean;
+      declaration: boolean;
+      participation: boolean;
+      same_category_visa: boolean;
+      specific_visa_required: boolean;
+      enrollment: boolean;
+      degree_completed: boolean;
+      either: boolean;
+      scoring_input: boolean;
+    };
   };
   window: {
     type: string | null;
@@ -108,7 +132,7 @@ export interface MatchFlagsFile {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 6;
+export const RULES_VERSION = 7;
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
@@ -431,6 +455,161 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
       need: '具体雇主的具体聘用（全职或至少 80% 岗位，且岗位与你的学历/资格对应）',
       have: '未采集 offer 情况',
     });
+  }
+
+  // —— P1b-2：家属 / 签证史 / 学籍三个家族的 typed 值 ——
+  //
+  // 与 Python 的 p1b2_precondition_dims() **逐条镜像**：顺序、code、kind 必须
+  // 完全一致，smoke-test 拿 data/match-samples.json 比的是
+  // "dim:kind:code" 拼成的整串，顺序错一位也会红。
+  //
+  // 这里只做类型层面的比较，不做任何 note 判读——判据全在 Python 侧算好落成
+  // flags.precondition.p1b2 的状态量。
+  const p = flags.precondition?.p1b2;
+  if (p) {
+    // 画像侧的取值。缺省（undefined / null）一律当「未知」处理 → silent，绝不默认 pass。
+    const dep = pr.dependents ?? null;
+    const part = pr.prior_participation ?? null;
+    const visa = pr.prior_same_category_visa ?? null;
+    const enroll = pr.enrollment_status ?? null;
+    // 家属禁令（两个值的边界不同，分别判）
+    if (p.forbid_child) {
+      if (dep === null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_dependents_unknown' });
+      } else if (dep === 'children') {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_dependents_child_present',
+          need: '无受抚养子女随行',
+          have: '有受抚养子女',
+        });
+      } else if (dep === 'other') {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_dependents_unknown' });
+      } else {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_dependents_none' });
+      }
+    }
+    if (p.forbid_other) {
+      if (dep === null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_dependents_unknown' });
+      } else if (dep === 'none') {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_dependents_none' });
+      } else {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_dependents_other_present',
+          need: '无家属随行',
+          have: '有家属随行',
+        });
+      }
+    }
+    if (p.cannot_work) {
+      if (dep === null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_dependents_unknown' });
+      } else if (dep === 'none') {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_dependents_none' });
+      } else {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_dependents_work_unknown' });
+      }
+    }
+    if (p.separate) {
+      dims.push({ dim: 'precondition', kind: 'na', code: 'pre_dependents_separate' });
+    }
+    if (p.allowed) {
+      dims.push({ dim: 'precondition', kind: 'na', code: 'pre_dependents_allowed' });
+    }
+    if (p.declaration) {
+      dims.push({ dim: 'precondition', kind: 'na', code: 'pre_declaration_only' });
+    }
+
+    // 既往参加史（按人 / 按项目段 / 按次数，方向一致）
+    if (p.participation) {
+      if (part === null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_participation_unknown' });
+      } else if (part === 'used') {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_participation_used',
+          need: '未曾参加过本项目/同类项目',
+          have: '已参加过',
+        });
+      } else {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_participation_none' });
+      }
+    }
+
+    // 同类别签证史
+    if (p.same_category_visa) {
+      if (visa === null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_prior_visa_unknown' });
+      } else if (visa === 'used') {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_prior_visa_used',
+          need: '未曾持过同类签证',
+          have: '曾持过',
+        });
+      } else {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_prior_visa_none' });
+      }
+    }
+
+    // **正向**：须持过指定类别签证（au-485-graduate）。方向与上面三条相反，
+    // 判 silent（画像不采集签证史）。
+    if (p.specific_visa_required) {
+      dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_prior_visa_required' });
+    }
+
+    // 学籍 / 学历证明：三个值方向各不相同
+    if (p.enrollment) {
+      if (enroll === null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_enrollment_unknown' });
+      } else if (enroll === 'enrolled') {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_enrolled_ok' });
+      } else {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_not_enrolled',
+          need: '当前在读',
+          have: '已毕业',
+        });
+      }
+    }
+    if (p.degree_completed) {
+      if (pr.education === 'bachelor_in_progress') {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_degree_missing',
+          need: '已毕业（取得学位/文凭）',
+          have: '本科在读',
+        });
+      } else {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_degree_ok' });
+      }
+    }
+    if (p.either) {
+      const completed =
+        pr.education === 'bachelor_completed' ||
+        pr.education === 'master' ||
+        pr.education === 'vocational' ||
+        pr.education === 'high_school';
+      if (pr.education === 'bachelor_in_progress' || enroll === 'enrolled') {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_degree_ok' });
+      } else if (enroll === 'completed' || completed) {
+        dims.push({ dim: 'precondition', kind: 'pass', code: 'pre_degree_ok' });
+      } else {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_enrollment_unknown' });
+      }
+    }
+    if (p.scoring_input) {
+      dims.push({ dim: 'precondition', kind: 'na', code: 'pre_scoring_input_only' });
+    }
   }
 
   const kinds = new Set(dims.map((d) => d.kind));

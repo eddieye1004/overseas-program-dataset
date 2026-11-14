@@ -1,5 +1,5 @@
 {
- "rules_version": 6,
+ "rules_version": 7,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
@@ -43,7 +43,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -94,7 +109,22 @@
    "precondition": {
     "kind": "outside",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -145,7 +175,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": true,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": true,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -196,7 +241,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": true,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -247,7 +307,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": true,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -298,7 +373,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -349,7 +439,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -400,7 +505,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -451,7 +571,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -502,7 +637,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -553,7 +703,22 @@
    "precondition": {
     "kind": "citizenship",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "no_window",
@@ -604,7 +769,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -655,7 +835,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -706,7 +901,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": true,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -757,7 +967,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -808,7 +1033,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": true,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -859,7 +1099,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -910,7 +1165,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -961,7 +1231,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1012,7 +1297,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1063,7 +1363,22 @@
    "precondition": {
     "kind": "home_residence",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": true,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "annual_cycle",
@@ -1114,7 +1429,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": true,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": true,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -1165,7 +1495,22 @@
    "precondition": {
     "kind": "document",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1216,7 +1561,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1267,7 +1627,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": true
+    "employer_offer": true,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1318,7 +1693,22 @@
    "precondition": {
     "kind": "home_residence",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": true,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": true,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": true,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "annual_cycle",
@@ -1369,7 +1759,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1420,7 +1825,22 @@
    "precondition": {
     "kind": "outside",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1471,7 +1891,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": true
+    }
    },
    "window": {
     "type": "rolling",
@@ -1522,7 +1957,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": true
+    }
    },
    "window": {
     "type": "rolling",
@@ -1573,7 +2023,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -1624,7 +2089,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": true,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1675,7 +2155,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": true,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1726,7 +2221,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": true,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1777,7 +2287,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": true,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -1828,7 +2353,22 @@
    "precondition": {
     "kind": "local_status",
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": true,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1879,7 +2419,22 @@
    "precondition": {
     "kind": null,
     "job_placement": true,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1930,7 +2485,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": true,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -1981,7 +2551,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -2032,7 +2617,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": true,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",
@@ -2083,7 +2683,22 @@
    "precondition": {
     "kind": null,
     "job_placement": false,
-    "employer_offer": false
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false
+    }
    },
    "window": {
     "type": "rolling",

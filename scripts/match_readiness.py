@@ -523,7 +523,240 @@ def precondition_text(doc: dict) -> str:
     return ""
 
 
+# --------------------------------------------------------------------------
+# P1b-2：把 P1b-1 迁好的 typed 值接进判定（三个家族）
+#
+# P1b-1 把原来「一个 type 名装十种语义」的三个值拆成了 13 个具体值，但引擎
+# 一个字节都没读——`other_requirements` 里除了 residency_requirement，其余
+# 全都进不了判定面。于是「这个项目不许带家属」「一生只能参加一次」这类**原文
+# 写得很清楚的硬条件**，在画像页上完全看不见。
+#
+# 本节的接线原则（照设计稿 §1.13 / §2.13 / §3.3 的判定表逐值实现）：
+#
+#   ① 引擎按 `type` 接线，不读 note 散文（batch8 裁决 4）。所以这里的每个分支
+#      只比较 type 集合，不对中文做正则。
+#   ② 画像缺对应信息 → 判 silent（不可判），**绝不默认 pass**。这是本单最容易
+#      出错的地方：一句「默认满足」就能让所有存量用户看到虚假的「能申」。
+#   ③ 方向必须与原文一致。三个家族里各有一条方向相反的（须持过签证 / 须已毕业 /
+#      家属被允许），照 type 名字猜方向会判反——见 tests 的方向回归组。
+#
+# 值的语义归属（设计稿逐条判定表的结论，不是按名字推的）：
+#   禁令类（做不到就不满足）：no_child_dependents / no_other_dependents /
+#     dependents_cannot_work / program_once_in_lifetime / program_once_per_project /
+#     prior_same_category_visa / program_participation_cap /
+#     prior_specific_visa_required / enrollment_proof / degree_completed_proof /
+#     enrollment_or_degree_proof
+#   非闸门类（只作材料呈现，判 na 留痕）：dependents_allowed /
+#     dependents_separate_application / declaration_document / credential_scoring_input
+# --------------------------------------------------------------------------
+
+# 家属禁令：两个值的边界不同，不能合成一个布尔。
+#   no_child_dependents  只禁「受抚养子女」（au-462 / nz-china-whv /
+#                        uk-youth-mobility-scheme 三条）
+#   no_other_dependents  禁「其他家属」统称，含配偶与子女（kr-h1 / uk-short-term-study-visa）
+DEP_FORBID_CHILD = "no_child_dependents"
+DEP_FORBID_OTHER = "no_other_dependents"
+DEP_CANNOT_WORK = "dependents_cannot_work"
+DEP_SEPARATE = "dependents_separate_application"
+DEP_ALLOWED = "dependents_allowed"
+DECLARATION_ONLY = "declaration_document"
+
+# 既往参加史：按「计账单位」分成三个值，判定方向一致（参加过 = 不满足）。
+# 计数单位（按人/按项目段/按次数）写在 type 名里，本单不做账本运算——那是 P2。
+HIST_ONCE_LIFETIME = "program_once_in_lifetime"
+HIST_ONCE_PER_PROJECT = "program_once_per_project"
+HIST_PARTICIPATION_CAP = "program_participation_cap"
+HIST_SAME_CATEGORY_VISA = "prior_same_category_visa"
+# 正向：须**持过**某类签证（au-485-graduate）。与上面几条方向相反。
+HIST_SPECIFIC_VISA_REQUIRED = "prior_specific_visa_required"
+
+# 学籍/学历证明：三个值的方向各不相同，这是 §3 的核心陷阱。
+ENROLL_ENROLLED = "enrollment_proof"  # 须当前在册（只有 IAESTE / J-1 SWT 两条）
+ENROLL_DEGREE = "degree_completed_proof"  # 须已毕业（5 条）
+ENROLL_EITHER = "enrollment_or_degree_proof"  # 在读或毕业，二者其一（J-1 intern）
+SCORING_INPUT = "credential_scoring_input"  # 只是打分/材料输入，不是资格闸
+
+
+def requirement_types(doc: dict, required_only: bool = True) -> set[str]:
+    """读出 `other_requirements` 里的 type 集合。
+
+    `required_only=True` 时只取 required 为真的条目——可选材料不构成门槛。
+    非闸门类（dependents_allowed 等）在数据里是 required: false，需要显式放宽。
+    """
+    out = set()
+    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
+        if required_only and r.get("required") is not True:
+            continue
+        t = r.get("type")
+        if t:
+            out.add(t)
+    return out
+
+
+def _dependents_of(pr: dict):
+    """画像里的家属构成；取不到返回 None（= 未知，不是「没有」）。"""
+    return pr.get("dependents")
+
+
+def p1b2_precondition_dims(doc: dict, pr: dict) -> list[dict]:
+    """按 typed 值产出前置条件维的新条目（P1b-2）。
+
+    顺序即输出顺序，前端 verdict.ts 必须逐一镜像——两侧比对是逐条 (dim,kind,code)
+    的字符串相等，顺序也要一致。
+    """
+    need = requirement_types(doc, required_only=True)
+    anyv = requirement_types(doc, required_only=False)
+    dep = _dependents_of(pr)
+    part = pr.get("prior_participation")
+    visa = pr.get("prior_same_category_visa")
+    enroll = pr.get("enrollment_status")
+    edu = pr.get("education")
+    out: list[dict] = []
+
+    def add(code: str, kind: str, why: str, **extra):
+        d = {"dim": "precondition", "kind": kind, "code": code, "why": why}
+        d.update(extra)
+        out.append(d)
+
+    # —— 家属禁令 ——
+    # 判 fail 而不是 gap：家属构成是申请人自己的事实，不是「差一步能补的手续」。
+    if DEP_FORBID_CHILD in need:
+        if dep is None:
+            add("pre_dependents_unknown", "silent", "原文禁止携带受抚养子女，画像未采集家属构成，无法判定")
+        elif dep == "children":
+            add("pre_dependents_child_present", "fail", "原文禁止携带受抚养子女，你填了有受抚养子女",
+                need="无受抚养子女随行", have="有受抚养子女")
+        elif dep == "other":
+            # 「其他」可能包含子女，也明确不含子女，画像这一档切不出来。
+            add("pre_dependents_unknown", "silent",
+                "原文禁止携带受抚养子女；你填的家属类型未区分是否含子女，无法判定")
+        else:
+            add("pre_dependents_none", "pass", "原文禁止携带受抚养子女，你填了无受抚养子女")
+    if DEP_FORBID_OTHER in need:
+        if dep is None:
+            add("pre_dependents_unknown", "silent", "原文禁止携带家属，画像未采集家属构成，无法判定")
+        elif dep == "none":
+            add("pre_dependents_none", "pass", "原文禁止携带家属，你填了无家属随行")
+        else:
+            add("pre_dependents_other_present", "fail",
+                "原文禁止携带家属（统称，含配偶与子女），你填了有家属随行",
+                need="无家属随行", have="有家属随行")
+
+    # —— 家属不得工作（us-f1-opt）：禁的是「就业」，不是「同行」 ——
+    # 家属可以跟着去，但不能凭这个身份工作。所以有家属时不能判 fail——
+    # 那是把「同行」当成「就业」；也不能判 pass——那等于替家属保证不工作。
+    if DEP_CANNOT_WORK in need:
+        if dep is None:
+            add("pre_dependents_unknown", "silent", "原文规定家属不得就业，画像未采集家属构成，无法判定")
+        elif dep == "none":
+            add("pre_dependents_none", "pass", "原文规定家属不得就业；你填了无家属随行，此项不适用")
+        else:
+            add("pre_dependents_work_unknown", "silent",
+                "原文允许家属随行但不得就业；你是否打算让家属工作未采集，无法判定")
+
+    # —— 家属须各自单独申请（nz-china-whv）：程序约束，不是资格闸 ——
+    if DEP_SEPARATE in need:
+        add("pre_dependents_separate", "na",
+            "原文要求家属同行须各自单独递交申请；这是办理程序，不构成资格门槛")
+
+    # —— 明确允许家属（au-485-vocational / uk-graduate-visa）——
+    # 设计稿 §1.13 配套决定 1：这两个值在数据里是 required: false，若照旧跳过，
+    # 用户看不到「本项目允许带家属」这个**正向信息**（它正是这几个项目与其他短期
+    # 签证的区别点）。所以按「只作展示、不进判定」处理：判 na 并留一条痕。
+    if DEP_ALLOWED in anyv:
+        add("pre_dependents_allowed", "na", "原文明确允许家属随行（本条只作材料呈现，不构成资格闸）")
+
+    # —— 声明文件（fr-recherche-emploi 的非一夫多妻声明）：同样是材料呈现 ——
+    if DECLARATION_ONLY in anyv:
+        add("pre_declaration_only", "na",
+            "原文材料清单里有一份声明文件；这是递交材料，不构成资格门槛")
+
+    # —— 既往参加史（按人 / 按项目段 / 按次数）——
+    # 三者判定方向一致：参加过就不满足。计账单位的差别（一生一次 vs 换项目重置
+    # vs 有次数上限）落在 note 里，本单不做账本运算（P2 账本维）。
+    if need & {HIST_ONCE_LIFETIME, HIST_ONCE_PER_PROJECT, HIST_PARTICIPATION_CAP}:
+        if part is None:
+            add("pre_participation_unknown", "silent",
+                "原文对既往参加过本项目/同类项目设有限制，画像未采集既往参加史，无法判定")
+        elif part == "used":
+            add("pre_participation_used", "fail",
+                "原文限制已参加过本项目/同类项目者再次申请，你填了参加过",
+                need="未曾参加过本项目/同类项目", have="已参加过")
+        else:
+            add("pre_participation_none", "pass",
+                "原文限制既往参加过者，你填了未参加过")
+
+    # —— 同类别签证史（au-462 / kr-h1 / nz-china-whv / uk-hpi-visa）——
+    # 与「参加史」是两个维度：持过 WHV 签证 ≠ 参加过该项目，所以单独一个画像字段。
+    if HIST_SAME_CATEGORY_VISA in need:
+        if visa is None:
+            add("pre_prior_visa_unknown", "silent",
+                "原文限制曾持同类签证者，画像未采集同类签证史，无法判定")
+        elif visa == "used":
+            add("pre_prior_visa_used", "fail",
+                "原文限制曾持同类签证者再次申请，你填了持过",
+                need="未曾持过同类签证", have="曾持过")
+        else:
+            add("pre_prior_visa_none", "pass", "原文限制曾持同类签证者，你填了未持过")
+
+    # —— 正向：须持过某类签证（au-485-graduate）——
+    #
+    # **这是本单最重要的一条方向回归。** 该条在 P1b-1 之前挂的是 `no_prior_visa`
+    # （未持过任何签证），语义与原文完全相反：原文是 `have held a Student visa in
+    # the last 6 months`——**须持过**。若照 type 名接线，会把「持过学签」的正常
+    # 申请人判成不满足，把「没持过」的人判成满足，两类人都判反。
+    #
+    # 判 silent：画像不采集签证史，补一条就能判（P2 的时效维会连 6 个月窗口一起做）。
+    if HIST_SPECIFIC_VISA_REQUIRED in need:
+        add("pre_prior_visa_required", "silent",
+            "原文要求**须持过**指定类别签证（正向要求，不是「未持过」）；画像未采集签证史，无法判定")
+
+    # —— 学籍 / 学历证明（§3 的同名异义陷阱）——
+    #
+    # 原值 enrollment_proof 的中文标签是「需在读证明」，但 11 条里只有 2 条真是
+    # 在读。三个新值各按自己的方向判，绝不共用一个分支。
+    if ENROLL_ENROLLED in need:
+        if enroll is None:
+            add("pre_enrollment_unknown", "silent",
+                "原文要求当前在册/全程保持学籍，画像未采集在读状态，无法判定")
+        elif enroll == "enrolled":
+            add("pre_enrolled_ok", "pass", "原文要求当前在册，你填了在读")
+        else:
+            add("pre_not_enrolled", "fail",
+                "原文要求当前在册（在读期间保持注册），你填了已毕业",
+                need="当前在读", have="已毕业")
+
+    if ENROLL_DEGREE in need:
+        # 只判「是否已完成某段学业」，**不判层级**：层级由 education 维负责。
+        # 两条一起判会让 au-485-vocational 这类「文凭即可」的项目重复扣一次。
+        if edu == "bachelor_in_progress":
+            add("pre_degree_missing", "fail",
+                "原文要求已取得学位/文凭（须已毕业），你填了本科在读",
+                need="已毕业（取得学位/文凭）", have="本科在读")
+        else:
+            add("pre_degree_ok", "pass", "原文要求已取得学位/文凭，你填了已完成学历")
+
+    if ENROLL_EITHER in need:
+        if edu == "bachelor_in_progress" or enroll == "enrolled":
+            add("pre_degree_ok", "pass", "原文接受在读证明或毕业证明，你填了在读")
+        elif enroll == "completed" or edu in ("bachelor_completed", "master", "vocational", "high_school"):
+            add("pre_degree_ok", "pass", "原文接受在读证明或毕业证明，你填了已完成学历")
+        else:
+            add("pre_enrollment_unknown", "silent",
+                "原文接受在读证明或毕业证明，画像未采集在读状态，无法判定")
+
+    # —— 学历只作打分/评估输入（sg-employment-pass / sg-s-pass）——
+    # 原文明确「不是在读要求」「是支撑材料」，不构成资格闸。判 na 留痕，
+    # 不判 silent——否则一个本来能申的项目会因为「我们把材料当成了门槛」变不可判。
+    if SCORING_INPUT in anyv:
+        add("pre_scoring_input_only", "na",
+            "原文该项是学历/资质作为打分或材料审核的输入，不是资格门槛")
+
+    return out
+
+
 def load_programs() -> list[dict]:
+
     out = []
     for path in sorted(glob.glob(os.path.join(PROGRAMS, "*.json"))):
         with io.open(path, encoding="utf-8") as fh:
@@ -691,6 +924,29 @@ PROBES = OrderedDict(
 # tests 双向钉住：同三个样例画像必须给出同一组条数）
 # --------------------------------------------------------------------------
 
+# 画像里新增的三组字段（P1b-2）。它们与 passport / age / education 同级：都是
+# 「这个人是谁」的一部分，不是「引擎猜出来的结论」。
+#
+# 为什么必须补在夹具上而不是留在引擎里判 silent：
+#   三张样例画像本来就是一个**具体的人**（A=21 岁在读生、B=28 岁本科毕业、
+#   C=25 岁本科毕业）。家属构成、既往参加史、在读/毕业状态，与年龄学历同属这个
+#   人设本身。留着不填，等于夹具欠定义，却把由此产生的 silent 记成引擎的债 ——
+#   那是度量错位（债在夹具，不在引擎）。
+#
+# 而「缺省即未知」的语义**没有被取消**：下面每个字段在 judge() 里取不到时仍然
+# 一律判 silent，绝不默认 pass。tests 里有专门的用例
+# （test_missing_profile_fields_stay_silent）把这条钉住，防止将来有人拿
+# 「夹具填了值」去冒充「引擎能判」。
+#
+# 字段取值（缺省键 = 未知，与显式写 None 等价）：
+#   dependents             none | children | partner | other
+#                          —— 「你是否有受抚养/随行家属」
+#   prior_participation    none | used
+#                          —— 「你是否参加过该项目/该类项目」
+#   prior_same_category_visa  none | used
+#                          —— 「你是否持过同类别签证」（与上一条不同：参加史 ≠ 签证史）
+#   enrollment_status      enrolled | completed
+#                          —— 「你现在是在读还是已毕业」
 SAMPLES = OrderedDict(
     [
         (
@@ -701,6 +957,11 @@ SAMPLES = OrderedDict(
                 "education": "bachelor_in_progress",
                 "ielts": 6.0,
                 "budget_cny": 30000,
+                # 21 岁在读本科生：无家属、无既往参加史、无同类签证史、在读
+                "dependents": "none",
+                "prior_participation": "none",
+                "prior_same_category_visa": "none",
+                "enrollment_status": "enrolled",
             },
         ),
         (
@@ -711,6 +972,11 @@ SAMPLES = OrderedDict(
                 "education": "bachelor_completed",
                 "ielts": None,
                 "budget_cny": 80000,
+                # 28 岁已毕业：同样无家属、无既往史，但已不在读
+                "dependents": "none",
+                "prior_participation": "none",
+                "prior_same_category_visa": "none",
+                "enrollment_status": "completed",
             },
         ),
         (
@@ -721,6 +987,10 @@ SAMPLES = OrderedDict(
                 "education": "bachelor_completed",
                 "ielts": 6.5,
                 "budget_cny": 50000,
+                "dependents": "none",
+                "prior_participation": "none",
+                "prior_same_category_visa": "none",
+                "enrollment_status": "completed",
             },
         ),
     ]
@@ -785,6 +1055,15 @@ CLASS_B_CODES = frozenset(
         "pre_outside_country",  # 画像不采集现居地（画像债）
         "pre_home_residence",  # 画像不采集现居地（画像债）
         "pre_unclassified",  # 有必填前置要求但类别未识别（识别能力债）
+        # —— P1b-2 新增：三个家族接进判定后暴露的不可判面 ——
+        # 这几条全是「画像没采集那个人自己的事实」，按 P2-1 判据属乙类：
+        # 补一条画像字段就能判，不是「原文交给第三方判断」。
+        "pre_dependents_unknown",  # 画像不采集家属构成（画像债）
+        "pre_dependents_work_unknown",  # 家属可随行但不得就业：不知你是否打算让家属工作（画像债）
+        "pre_participation_unknown",  # 画像不采集既往参加史（画像债）
+        "pre_prior_visa_unknown",  # 画像不采集同类签证史（画像债）
+        "pre_prior_visa_required",  # 正向：须持过某类签证，画像不采集签证史（画像债）
+        "pre_enrollment_unknown",  # 画像不采集在读/毕业状态（画像债）
     }
 )
 
@@ -1382,6 +1661,16 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             }
         )
 
+    # P1b-2：把 P1b-1 迁好的 typed 值接进判定（家属 / 签证史 / 学籍三个家族）。
+    #
+    # 这一段过去不存在：`other_requirements` 只有 residency_requirement 进过判定面，
+    # 其余 type 全都没读。于是「本项目不许带家属」「一生只能参加一次」「须已毕业」
+    # 这些**原文写明的硬条件**在画像页上完全看不见，所有项目看起来都比实际宽松。
+    #
+    # 放在 employer_offer 之后：新增维度只追加，不改既有六维的相对顺序，前端
+    # verdict.ts 的镜像顺序也必须与这里一致（smoke-test 逐条比对 dims 串）。
+    dims.extend(p1b2_precondition_dims(doc, pr))
+
     kinds = {d["kind"] for d in dims}
     if "fail" in kinds:
         return "cannot", dims
@@ -1408,7 +1697,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
 # --------------------------------------------------------------------------
 
-RULES_VERSION = 6
+RULES_VERSION = 7
 
 
 def flags_of(doc: dict) -> dict:
@@ -1522,6 +1811,16 @@ def flags_of(doc: dict) -> dict:
             # 原文要求「具体雇主的合格聘用」（P2-0 no-skilled-worker）：雇主担保
             # 类项目的 offer 前置，与上一条互斥（命中集合不重叠）。
             "employer_offer": employer_offer_required(doc),
+            # P1b-2：家属 / 签证史 / 学籍三个家族的 typed 值。
+            #
+            # 这里只放**项目侧的布尔量**（原文有没有要求）。画像侧的取值
+            # （dependents / prior_participation / ...）由前端从它自己持有的
+            # 画像对象里读，不写进 flags——flags 是「项目数据」，样本画像是
+            # 「用户输入」，两者混在一个文件里会让每一份用户画像都要重生成产物。
+            #
+            # 前端 verdict.ts 的 p1b2 块按这些布尔 + 自己的画像逐条重演，两条
+            # 路径的 (dim,kind,code) 由 smoke-test 逐条比对。
+            "p1b2": p1b2_project_flags(doc),
         },
         "window": {
             "type": sch.get("type"),
@@ -1530,6 +1829,36 @@ def flags_of(doc: dict) -> dict:
             "open": sch.get("open_date"),
             "close": sch.get("close_date"),
         },
+    }
+
+
+def p1b2_project_flags(doc: dict) -> dict:
+    """项目侧的 P1b-2 布尔量：原文对每个家族有没有提出要求。
+
+    只回答「这个项目有没有这一条」，不回答「这个人满不满足」——后者要画像，
+    由前端拿它自己的画像在这组布尔上重演（见 verdict.ts 的 p1b2 块）。
+    """
+    need = requirement_types(doc, required_only=True)
+    anyv = requirement_types(doc, required_only=False)
+    return {
+        # 家属
+        "forbid_child": DEP_FORBID_CHILD in need,
+        "forbid_other": DEP_FORBID_OTHER in need,
+        "cannot_work": DEP_CANNOT_WORK in need,
+        "separate": DEP_SEPARATE in need,
+        "allowed": DEP_ALLOWED in anyv,
+        "declaration": DECLARATION_ONLY in anyv,
+        # 签证史 / 参加史
+        "participation": bool(
+            need & {HIST_ONCE_LIFETIME, HIST_ONCE_PER_PROJECT, HIST_PARTICIPATION_CAP}
+        ),
+        "same_category_visa": HIST_SAME_CATEGORY_VISA in need,
+        "specific_visa_required": HIST_SPECIFIC_VISA_REQUIRED in need,
+        # 学籍 / 学历
+        "enrollment": ENROLL_ENROLLED in need,
+        "degree_completed": ENROLL_DEGREE in need,
+        "either": ENROLL_EITHER in need,
+        "scoring_input": SCORING_INPUT in anyv,
     }
 
 
