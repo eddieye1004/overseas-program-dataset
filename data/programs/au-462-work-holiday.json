@@ -93,9 +93,9 @@
         "note": "未强制要求，但强烈建议购买医疗保险"
       },
       {
-        "type": "no_dependents",
+        "type": "no_child_dependents",
         "required": true,
-        "note": "不可携带未成年子女一同赴澳"
+        "note": "不可携带受抚养子女（dependent children）一同赴澳。官方原文 `not be accompanied by dependent children`（Work and Holiday visa (subclass 462) — First Work and Holiday visa，sources[1]）按受抚养关系定义，不设年龄上限；此处不沿用旧记法「未成年子女」。"
       },
       {
         "type": "return_ticket",
@@ -108,7 +108,7 @@
         "note": "中国大陆申请人需取得中国政府支持信，由 CICETE（中国国际经济技术交流中心）出具"
       },
       {
-        "type": "no_prior_visa",
+        "type": "prior_same_category_visa",
         "required": true,
         "note": "未曾以 462 或 417 签证进入过澳大利亚。一生仅可申请一次首个 462 签证。"
       }
