@@ -56,11 +56,16 @@
       {
         "type": "residency_requirement",
         "required": true,
-        "note": "递交 I-765 时须在美国境内且持有效 F-1 身份。境外无法递交。"
+        "note": "申请 OPT（递交 I-765）时须持有效 F-1 学生身份，且该身份在递交当日仍未失效；同时还须已在 SEVP 认证院校完成至少一整个学年的全日制注册（8 CFR 214.2(f) 只按 F-1 身份判定，不设国籍限制）。身份已失效或从未持过 F-1 者不能申请；本项不是在美居留的地址要求。"
       },
       {
-        "type": "no_dependents",
-        "required": false,
+        "type": "residency_requirement",
+        "required": true,
+        "note": "递交 I-765 时本人须在美国境内；从境外无法递交。本项是所在地要求，与持何种签证身份是两件事。"
+      },
+      {
+        "type": "dependents_cannot_work",
+        "required": true,
         "note": "F-2 家属可继续随行，但不能凭 OPT 工作；F-2 自身不得就业。"
       }
     ]
