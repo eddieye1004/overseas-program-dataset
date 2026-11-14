@@ -58,7 +58,7 @@
         "note": "须持冰岛学生居留并在毕业后续签本许可。修法后另有一条对博士的独立安排：在冰岛取得博士学位者，可续签 specialist 居留最多 12 个月用于求职（`foreign nationals who have completed a doctoral degree in Iceland may renew a specialist residence permit for up to 12 months to seek employment`）。"
       },
       {
-        "type": "enrollment_proof",
+        "type": "degree_completed_proof",
         "required": true,
         "note": "须提供冰岛大学授予的学位证明（学士/硕士/博士任一），用以核实已毕业、已完成该段学业——本许可面向的是毕业生，不是在读生，因此不是「保持学籍」那类要求。本许可是学生居留的续签，还须能证明此前持冰岛学生居留。"
       }

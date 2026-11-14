@@ -54,7 +54,7 @@
         "note": "须已持爱尔兰学生许可（Stamp 2）并在此身份下完成学业。另有一条累计上限：学生身份（Stamp 2）与本计划（Stamp 1G）的时间合计不得超过 **7 年**；Level 9 及以上走续期路径的为 **8 年**上限。官方原文：`time spent on Stamp 2 as a student and on Stamp 1G under this programme cannot exceed an aggregate time of seven years in total`。"
       },
       {
-        "type": "enrollment_proof",
+        "type": "degree_completed_proof",
         "required": true,
         "note": "须提交最终学位的证明：学位证书（parchment），或毕业典礼尚未举行时由授予机构出具的**官方信函**确认学位已取得。官方原文：`Must present evidence of the final award being attained by way of a parchment or, in circumstances where the graduation ceremony is yet to take place, an official letter for the awarding body / institution confirming that the award has been achieved.` 注意：本计划是「已毕业」才申请，不是在读期间续签。"
       },

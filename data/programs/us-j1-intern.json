@@ -59,7 +59,7 @@
         "note": "须有雇主签署的 DS-7002（Training/Internship Placement Plan），逐项写明培训内容与岗位职责。Sponsor 必须先拿到全部签字才能签发 DS-2019。"
       },
       {
-        "type": "enrollment_proof",
+        "type": "enrollment_or_degree_proof",
         "required": true,
         "note": "在读生须提供境外院校的在读证明；应届生须提供毕业证明，且毕业日期距项目开始不超过 12 个月。"
       }

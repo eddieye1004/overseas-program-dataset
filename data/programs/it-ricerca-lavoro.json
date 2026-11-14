@@ -53,7 +53,7 @@
         "note": "须持意大利学习居留并在其有效期内申请转换。转换时点跟着学习居留到期走，无年度开放窗口。"
       },
       {
-        "type": "enrollment_proof",
+        "type": "degree_completed_proof",
         "required": true,
         "note": "须提交在意大利取得的文凭（或毕业证明）。这是「学生转求职」的资格基础。"
       },
