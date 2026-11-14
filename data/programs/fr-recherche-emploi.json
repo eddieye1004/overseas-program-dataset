@@ -59,7 +59,7 @@
         "note": "材料清单含 Justificatif d'assurance maladie（医疗保险证明）。"
       },
       {
-        "type": "no_dependents",
+        "type": "declaration_document",
         "required": false,
         "note": "官方材料清单包含 « Déclaration sur l'honneur de non polygamie »（非一夫多妻声明），仅对已婚且来源国允许一夫多妻者适用。不是对中国申请人的额外要求，但清单里确实有这一项。"
       }

@@ -54,7 +54,7 @@
         "note": "须有新加坡雇主提供的工作 offer 并由雇主递交申请。雇主还须先满足公平考量框架（Fair Consideration Framework）的招聘广告要求：`Employers must continue to meet the Fair Consideration Framework (FCF) job advertising requirement before submitting new EP applications.`"
       },
       {
-        "type": "enrollment_proof",
+        "type": "credential_scoring_input",
         "required": false,
         "note": "学历证明是 COMPASS 打分与材料审核的一部分，不是「在读」要求；已毕业者提交学位证与成绩单即可。"
       }
