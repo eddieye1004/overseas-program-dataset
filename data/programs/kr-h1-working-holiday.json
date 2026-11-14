@@ -68,7 +68,7 @@
         "note": "官方原文 `Health Insurance which remains valid throughout your stay in Korea (Coverage: KRW 40,000,000 minimum)`，保额不低于 4,000 万韩元。旧记录里附带的欧元折算已删除，不臆测汇率。"
       },
       {
-        "type": "no_dependents",
+        "type": "no_other_dependents",
         "required": true,
         "note": "不可携带家属"
       },
@@ -78,7 +78,7 @@
         "note": "须提供往返机票，或等额机票款的存款证明"
       },
       {
-        "type": "no_prior_visa",
+        "type": "prior_same_category_visa",
         "required": true,
         "note": "资格条件写 `Not have previously entered Korea on a working holiday visa`。一般规则是一生一次；例外按双边协议：加拿大、日本公民可参加两次（加拿大每次最长 24 个月）。手册 FAQ 原文：`if you have previously been granted a Korean Working Holiday Visa, you cannot apply for another one. However, exceptions apply depending on nationality.`"
       }

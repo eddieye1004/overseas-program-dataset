@@ -57,7 +57,7 @@
         "note": "官方原文 `you can pay for your return or onward journey`。"
       },
       {
-        "type": "no_dependents",
+        "type": "no_other_dependents",
         "required": true,
         "note": "官方明文 `bring family members ('dependants') with you on this visa` 属于不可以做的事。"
       }

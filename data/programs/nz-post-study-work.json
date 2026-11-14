@@ -54,7 +54,7 @@
     },
     "other_requirements": [
       {
-        "type": "no_prior_visa",
+        "type": "program_once_in_lifetime",
         "required": true,
         "note": "一生只能拿一次（官方原文 `You can only have this visa once.`）。读完第二个学历也不能再申请第二次。"
       },

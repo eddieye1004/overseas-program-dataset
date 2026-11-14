@@ -54,9 +54,14 @@
     },
     "other_requirements": [
       {
-        "type": "no_prior_visa",
+        "type": "program_once_in_lifetime",
         "required": true,
-        "note": "一生只能申请一次（官方原文 `You can only apply for an HPI visa once.`）。已经拿过毕业生签证（Graduate visa）或曾以 Doctorate Extension Scheme 学生身份来英的人不能再申请。"
+        "note": "一生只能申请一次（官方原文 `You can only apply for an HPI visa once.`）。"
+      },
+      {
+        "type": "prior_same_category_visa",
+        "required": true,
+        "note": "已经拿过毕业生签证（Graduate visa）或曾以 Doctorate Extension Scheme 学生身份来英的人不能再申请。禁的是这两个具名签证，不是持过英国任意签证。"
       },
       {
         "type": "government_support_letter",

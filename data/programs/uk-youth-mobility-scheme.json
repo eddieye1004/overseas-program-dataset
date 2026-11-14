@@ -63,9 +63,14 @@
         "note": "不做普遍要求。官方只点名三个来源地：安道尔（Andorran certificate of criminal records）、冰岛（Sakavottorð）、圣马力诺（外交部 suitability 函），且都要求签发日在申请前 6 个月内。中国香港、中国台湾申请人不交无犯罪记录，改为提交内政部确认抽签中签的邮件。"
       },
       {
-        "type": "no_dependents",
+        "type": "no_child_dependents",
         "required": true,
-        "note": "官方三条硬性排除：`children under the age of 18 who live with you`、`children you're financially responsible for`、`already been in the UK under the scheme`。前两条的措辞是「有未成年子女同住」或「负有抚养义务」，不只是「不带孩子过去」；第三条意味着一生只能参加一次。"
+        "note": "官方两条硬性排除，措辞是「有未成年子女同住」（`children under the age of 18 who live with you`）与「负有抚养义务」（`children you're financially responsible for`）——判的是申请人是否有该事实状态，不只是「不带孩子过去」。注：官方第三条 `already been in the UK under the scheme`（一生只能参加一次）与家属无关，已单列。"
+      },
+      {
+        "type": "program_once_in_lifetime",
+        "required": true,
+        "note": "官方第三条硬性排除：`already been in the UK under the scheme`——曾在英国参加过本计划的人不能再申请，即一生只能参加一次。"
       }
     ]
   },

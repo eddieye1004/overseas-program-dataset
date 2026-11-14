@@ -91,9 +91,14 @@
         "note": "必须购买医疗保险和旅行保险，覆盖全程"
       },
       {
-        "type": "no_dependents",
+        "type": "no_child_dependents",
         "required": true,
-        "note": "不可携带子女。伴侣同行需各自申请。"
+        "note": "不可携带子女。伴侣同行需各自申请（后者另立一条程序约束，见下一条）。"
+      },
+      {
+        "type": "dependents_separate_application",
+        "required": true,
+        "note": "伴侣可同行，但须各自单独递交申请，不能作为随行家属一并办理。"
       },
       {
         "type": "return_ticket",
@@ -101,7 +106,7 @@
         "note": "需有回程机票或足够购买机票的资金"
       },
       {
-        "type": "no_prior_visa",
+        "type": "prior_same_category_visa",
         "required": true,
         "note": "未曾持有过新西兰 WHV 签证。此签证一生只能申请一次。"
       },

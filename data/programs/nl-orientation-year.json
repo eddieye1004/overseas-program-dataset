@@ -69,7 +69,7 @@
         "note": "在荷兰境内可在线申请（需 DigiD、BSN、BRP 登记、且毕业后仍持有效居留）；在境外则向荷兰使领馆申请 MVV 与居留许可，两者同时递交。已离境且原居留过期不超过 2 年的人仍在覆盖范围内。"
       },
       {
-        "type": "no_prior_visa",
+        "type": "program_once_per_project",
         "required": true,
         "note": "不得为同一段科研、同一个学习项目或博士项目重复申请过 orientation year 居留。但换一段科研或换一个项目后可以再申请一次——官方原文把「第二次及以后」单列了一节。"
       }
