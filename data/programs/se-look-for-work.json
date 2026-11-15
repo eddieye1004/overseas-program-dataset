@@ -59,7 +59,7 @@
         "note": "须持覆盖瑞典就医的综合医疗保险，有效期覆盖整个停留期。官方原文：`The comprehensive health insurance must be valid for the entire time you will be in Sweden and cover the cost of urgent and other medical care, hospitalisation, and emergency dental care. It must also cover the cost of medical repatriation, if you need to return to your country of origin for health reasons.` 四项缺一不可：急诊与其他医疗、住院、急诊牙科、因健康原因的医疗送返。"
       },
       {
-        "type": "residency_requirement",
+        "type": "location_requirement",
         "required": true,
         "note": "递交时人必须在瑞典境外（`You must currently be located outside of Sweden`）。首次申请若在瑞典境内递交，可能直接被拒（`If you are applying for a residence permit for the first time, you must do so from outside Sweden, otherwise your application may be rejected.`）。这一点与「在瑞典读完书的人」那条路径正好相反——那条可以从境内申请。"
       },

@@ -49,7 +49,7 @@
     },
     "other_requirements": [
       {
-        "type": "residency_requirement",
+        "type": "location_requirement",
         "required": true,
         "note": "递交时人必须在澳洲境内（官方原文 `be in Australia when you apply for this visa`），且不能在出入境查验区（`You can be in Australia (but not in immigration clearance) when you apply`）。获批时可在境内或境外。"
       },

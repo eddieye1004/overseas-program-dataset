@@ -129,6 +129,12 @@ VALID_REQUIREMENT_TYPES = {
     "credential_scoring_input",
     # 其他：声明文件（原挂在 no_dependents 下的婚姻状况声明）
     "declaration_document",
+    # —— P1c：把「在地」从 residency_requirement 里拆出来 ——
+    # 原值同时装着「持何身份」与「递交时人不在地理哪一侧」两种语义，引擎只能
+    # 靠一条兜底正则把后者当身份判，判出来的类别是错的（方向也错：把「你必须
+    # 人在英国才能递交」说成「你差一段留学经历」）。拆开后 identity→residency、
+    # location→本值，`precondition_kind()` 对两者显式双映射。
+    "location_requirement",
 }
 
 VALID_RISK_LEVELS = {"info", "warning", "critical"}

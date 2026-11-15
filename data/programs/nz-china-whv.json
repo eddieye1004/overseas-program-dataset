@@ -111,7 +111,7 @@
         "note": "未曾持有过新西兰 WHV 签证。此签证一生只能申请一次。"
       },
       {
-        "type": "residency_requirement",
+        "type": "location_requirement",
         "required": true,
         "note": "申请时须居住且常驻中国"
       }

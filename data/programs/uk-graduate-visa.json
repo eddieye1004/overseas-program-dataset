@@ -48,7 +48,7 @@
     },
     "other_requirements": [
       {
-        "type": "residency_requirement",
+        "type": "location_requirement",
         "required": true,
         "note": "递交申请时人必须在英国境内（官方原文 `you're in the UK`、`You must be in the UK when you apply.`）。"
       },

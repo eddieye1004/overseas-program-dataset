@@ -1123,7 +1123,8 @@ export const ENUM_LABELS: Record<Lang, Record<string, string>> = {  zh: {
     credential_scoring_input: '学历证明（打分/评估用）',
     declaration_document: '需提交指定声明文件',
     return_ticket: '需返程机票',
-    residency_requirement: '需居住在当地',
+    residency_requirement: '需持当地身份',
+    location_requirement: '需人已在该国境内',
     insurance: '需医疗保险',
     IELTS: 'IELTS',
     TOEFL_iBT: 'TOEFL iBT',
@@ -1215,6 +1216,7 @@ export const ENUM_LABELS: Record<Lang, Record<string, string>> = {  zh: {
     declaration_document: 'Signed declaration required',
     return_ticket: 'Return ticket',
     residency_requirement: 'Local residency',
+    location_requirement: 'Must already be in the country',
     insurance: 'Health insurance',
     IELTS: 'IELTS',
     TOEFL_iBT: 'TOEFL iBT',
@@ -1333,6 +1335,7 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     funds_term_unknown: '该门槛是每月金额（{need}），须乘停留月数才是总额；仓内未登记停留期上限，无法折算',
     funds_amount_inferred: '该金额（{need}）在仓内标注为按同类口径沿用/归类推定，不是本项目的独立规定，不作达标判断',
     pre_local_status: '原文把「先在该国持学生签/居留并完成学业」写成本项目的前置身份：{need}',
+    pre_inside_country: '原文要求在递交时人位于该国境内，画像不采集现居地，无法判定',
     pre_outside_country: '原文要求在递交时人位于该国境外，画像不采集现居地，无法判定',
     pre_home_residence: '原文要求常驻护照所属地区，画像不采集现居地，无法判定',
     pre_citizenship_basis: '原文该项是国籍条件，已由护照维判定，不另算缺口',
@@ -1409,6 +1412,8 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'This amount ({need}) is marked in the dataset as borrowed from a comparable category / an inferred figure, not a rule of this permit — no pass/fail judgement',
     pre_local_status:
       'The source makes a prior status a prerequisite: you must already hold a student permit/residence there and have completed study there — {need}',
+    pre_inside_country:
+      'The source requires you to be inside that country when applying; your current location is not collected — cannot decide',
     pre_outside_country:
       'The source requires you to be outside that country when applying; your current location is not collected — cannot decide',
     pre_home_residence:
