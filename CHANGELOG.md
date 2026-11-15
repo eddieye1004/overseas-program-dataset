@@ -8,6 +8,36 @@
 
 ## [未发布]
 
+### 变更 — 把「在地」从身份要求里拆出来：新类别 `location_requirement`（rules_version 7 → 8，2026-11-15）
+
+`residency_requirement` 一个 type 值里装着两类语义：**身份**（「须已在该国持学生签/居留并在当地完成学业」）与**在地**（「递交时人须在该国境内/境外」）。引擎过去靠 `PRE_LOCAL_STATUS` 的末支正则 `(必须|须)在…(境内|国内)` 把后者当成前者判，于是「你必须人在英国才能递交」在报告里被说成「你差一段在英国读书的经历」——**方向错**（可补的经历 vs 时点门槛），而且对目标人群（已经在该国读书的人）恰恰是错的建议。
+
+**改法**（批次 9a 裁决 1 + P1a 待核 C 的合并规格）：
+
+| 项 | 改前 | 改后 |
+|---|---|---|
+| 在地要求归类 | 被 `PRE_LOCAL_STATUS` 末支吞成身份 | 独立类别 `inside` / `outside` / `home_residence` |
+| type 值 | 两类共用 `residency_requirement` | 拆出 `location_requirement`（schema / validate / i18n 三处同步） |
+| 身份支锚点 | 「须持」「须已持」 | 放宽到「（须\|且）持」「（须\|且）已持」——不扩会让「…且该身份在递交当日仍未失效」这类「且」起头的并列句掉成 unclassified |
+| us-f1-opt | 在地条借身份条的 code 发声，那条要求本身零读点 | `precondition_kinds()` 返回 `['local_status','inside']`，两条要求各自留痕 |
+| 引擎函数 | `precondition_kind()` 单值 | `precondition_kinds()` 全量 + `precondition_kind()` 保留单值形状（取第一项） |
+
+**新码 `pre_inside_country`**（silent，已登记 `CLASS_B_CODES`）：与 `pre_outside_country` 互为镜像，**不并进 outside**——方向相反的两条要求共用一个 code 会让「必须人在境外」与「必须人在境内」在报告里长得一样。
+
+**数据侧**（9 条改在地，逐条引官方原文）：`au-407-training`（outside）｜`au-485-graduate` / `au-485-vocational` / `uk-graduate-visa` / `de-20-job-search` / `us-f1-opt`（inside）｜`se-look-for-work`（outside）｜`jp-working-holiday` / `nz-china-whv`（home_residence）。`de-20-job-search` 原句是双语复合句，按 us-f1-opt 先例拆成身份条 + 在地条。
+
+**实测影响**（改前 970d7cb → 改后）：
+
+| 画像 | 乙类 | 全口径 |
+|---|---|---|
+| A | 4 → 4（9.8%） | 7 → 7 |
+| B | 3 → 4（9.8%） | 5 → 6 |
+| C | **11 → 14（34.2%）** | 13 → 16（39.0%） |
+
+**C 画像乙类已越 1/3 停工线**（14/41 = 0.3415）。新增的 3 条是 `au-485-graduate` / `au-485-vocational` / `uk-graduate-visa`：它们从 `gap / pre_local_status`（错的可补建议）诚实降级为 `silent / pre_inside_country`（画像不采集现居地）。这 3 条按 P2-1 判据必须记乙类，不许塞甲类洗白。是否补 `current_location` 字段让它们可判，待 Muse 裁决——接地会改 `PRE_OUTSIDE` 行为并翻转 13 行 verdict，超出本单边界。
+
+**顺带**：`p21_worksheets.py` 的闸门表由单值 `precondition_kind()` 改为按 `precondition_kinds()` 全集判，判读面加收 `location_requirement`；不同步会让 `PRE_INSIDE` 那一行永远报「未拉起」，把已兜住的要求说成漏网。
+
 ### 变更 — 把 P1b-1 迁好的 typed 值接进判定引擎（rules_version 6 → 7，2026-11-15）
 
 P1b-1 把三个「一个 type 名装十种语义」的值拆成了 13 个具体值，但引擎一个字节都没读：`other_requirements` 里除 `residency_requirement` 之外全部进不了判定面。于是「本项目不许带家属」「一生只能参加一次」「须已毕业」这些**原文写明的硬条件**在画像页上完全看不见，所有项目看起来都比实际宽松。

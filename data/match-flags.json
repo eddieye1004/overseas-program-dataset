@@ -583,9 +583,10 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "unclassified",
+    "kind": "local_status",
     "kinds": [
-     "unclassified"
+     "local_status",
+     "inside"
     ],
     "job_placement": false,
     "employer_offer": false,

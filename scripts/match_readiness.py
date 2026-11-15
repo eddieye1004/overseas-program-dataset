@@ -637,6 +637,20 @@ def precondition_text(doc: dict) -> str:
 #   no_child_dependents  只禁「受抚养子女」（au-462 / nz-china-whv /
 #                        uk-youth-mobility-scheme 三条）
 #   no_other_dependents  禁「其他家属」统称，含配偶与子女（kr-h1 / uk-short-term-study-visa）
+#
+# 「受抚养子女」**不设年龄上限**（P1c §0.2，Muse 待裁②裁决）。
+# 官方原文是 `not be accompanied by dependent children`——按**受抚养关系**定义，
+# 不按年龄定义。18 岁以上仍在校且受抚养者，照样在禁内。P1b-1 之前 au-462 的
+# note 把这条收窄成「未成年子女」，是记法造成的偏差，不是原文的边界（该 note
+# 已在 1b5552d 按官方原文改回）。
+#
+# 引擎侧怎么落地这条：画像的 `dependents` 只有 none / children / partner / other
+# 四档，**没有年龄粒度**，而 `children` 这一档本身就是「有受抚养子女」这个
+# 与年龄无关的事实——所以「成年受抚养子女」在这里不另设分支，它落的就是
+# `children`，判定结果是禁（fail）。**不要**为了「看起来支持成年子女」再加一档
+# `adult_children`：那会把一个以受抚养关系定义的桶按年龄切两半，切出来的两半
+# 都不再是原文的那个桶。若将来画像真要加年龄粒度，判断依据必须是「是否受抚养」
+# 而不是「是否满 18 岁」。
 DEP_FORBID_CHILD = "no_child_dependents"
 DEP_FORBID_OTHER = "no_other_dependents"
 DEP_CANNOT_WORK = "dependents_cannot_work"

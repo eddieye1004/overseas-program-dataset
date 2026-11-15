@@ -297,31 +297,34 @@ class VerdictSemantics(unittest.TestCase):
             )
 
     def test_full_ratio_still_reported(self):
-        """混算口径不删、仍输出，且只许不增：C 的 13/41 = 0.3171 是 2026-11-15 的实测上限。
+        """混算口径不删、仍输出：它不再是闸门，但仍是「甲类变多不许藏」的那把尺子。
 
         留着它有两个用处：① 历史可比；② 防止有人把「甲类变多」用拆分藏掉——
         甲类一多，全口径会自己顶上来。
 
-        P1b-2 记录：接线前该值是 14/41 = 0.3415。本单把家属/签证史/学籍三个家族
-        接进判定后，**全口径反而降到 13/41**，因为三张样例画像补齐了新字段的
-        显式取值（A=21 岁在读生、B/C=已毕业），这些条件在画像上有答案，判出来
-        是 pass/fail 而不是 silent。这不是「把不可判洗掉」：引擎在字段缺失时
-        仍然判 silent，有 test_missing_profile_fields_stay_silent 钉住。
+        版本轨迹（均为实测，不是推算）：
+
+        | 版本 | C 全口径 | 说明 |
+        |---|---|---|
+        | P1b-2 前 | 14/41 = 0.3415 | 家属/签证史/学籍三族还没接线 |
+        | P1b-2 后 | 13/41 = 0.3171 | 三画像补齐新字段显式取值，三族判出 pass/fail |
+        | **P1c 后** | **16/41 = 0.3902** | 在地条拆出独立类别，原先被误判成 gap 的 3 项转成诚实 silent |
+
+        本单上调上限是**记录事实**，不是放宽标准：那 3 项从 `gap` 变 `silent` 是
+        「把错的建议（你差一段留学经历）换成正确的不确定（你人在不在那儿我们不知道）」，
+        全口径因此上升。全口径从来不是停工闸门，闸门在
+        `test_stop_line_binds_class_b_only`，它的 1/3 一个数字没改。
         """
         rep = mr.audit()
-        # 注意：unknown_ratio 是 4 位小数的舍入值（0.3171），直接与 13/41
-        # （0.31707…）比会因舍入而假红。所以钉「项目条数 ≤ 13」+「比率等于
-        # 该条数 / 总数」，两者合起来才是提案那条断言的本意。
-        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 13)
+        # 注意：unknown_ratio 是 4 位小数的舍入值，直接与分式比会因舍入假红。
+        # 所以钉「项目条数」+「比率等于该条数 / 总数」，两者合起来才是断言本意。
+        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 16)
         self.assertEqual(
             rep["max_unknown_ratio"],
-            round(13 / rep["total"], 4),
+            round(16 / rep["total"], 4),
             "全口径上限被突破了：这是「甲类变多也不许藏」的那把尺子",
         )
-        self.assertLessEqual(rep["max_unknown_ratio"], 13 / 41 + 1e-4)
-        # 它不再是闸门：只许不增，仍须跑得下去（红的是上面的乙类线）。
-        # 接线后 0.3171 < 1/3，因此这里改为断言「不超过接线前实测上限」。
-        self.assertLessEqual(rep["max_unknown_ratio"], 14 / 41 + 1e-4)
+        self.assertLessEqual(rep["max_unknown_ratio"], 16 / 41 + 1e-4)
         for name, v in rep["samples"].items():
             self.assertAlmostEqual(
                 v["unknown_ratio"], v["unknown"] / rep["total"], places=4, msg=name
@@ -358,10 +361,32 @@ class VerdictSemantics(unittest.TestCase):
         )
 
     def test_class_b_members_are_pinned(self):
-        """C 画像（停工线驱动画像）的乙类项目集合钉成 11 条，增删都要做一次显式决定。
+        """C 画像（停工线驱动画像）的乙类项目集合钉成当前实测清单，增删都要做一次显式决定。
 
         改这个清单意味着「某个项目从债变成能判」或反之，那是产品结论变化，
-        不该顺带发生。
+        不该顺带发生。以下增删逐条对得上（改前 → 改后各为实测，见
+        `.legs/p1c_before_dump.out.txt` 与 `.legs/p1c_measure2.out.txt`）：
+
+        **C 画像 11 → 14 条，净 +3，全部是新增，无一条移除**：
+
+        | 项目 | 改前 | 改后 | 原因 |
+        |---|---|---|---|
+        | `au-485-graduate` | gap | unknown | 原文 `be in Australia when you apply` 是**在地**要求 |
+        | `au-485-vocational` | gap | unknown | 原文 `You must be in Australia ... when you apply` |
+        | `uk-graduate-visa` | gap | unknown | 原文 `You must be in the UK when you apply` |
+
+        这三项改前靠 PRE_LOCAL_STATUS 末支判成 `gap / pre_local_status`
+        （「你差一段在该国读书的经历」），而它们恰恰是「已经在该国读书的人」——
+        那条建议对目标人群是错的。拆成独立在地类别后判 `silent /
+        pre_inside_country`，整体诚实降级为 unknown。
+
+        **de-20-job-search 的 -1 发生在 B 画像、不在 C**：B 改前 unknown
+        （`pre_unclassified`），双语复合句拆条后身份半句判出
+        `gap / pre_local_status`，B 的乙类 3 → 4（+1 是 uk-graduate-visa）。
+        C 上它改前改后都是 gap，从未进过 C 的乙类清单。
+
+        停工线：14/41 = 0.3415 > 1/3，**已越线**。这条红是停工信号本身，
+        处置待 Muse 裁决（见 `.legs/fix-p1c.progress` §3.4 三案）。
         """
         rep = mr.audit()
         self.assertEqual(
@@ -369,6 +394,8 @@ class VerdictSemantics(unittest.TestCase):
             [
                 "at-rwr-card-vhq",
                 "au-407-training",
+                "au-485-graduate",
+                "au-485-vocational",
                 "ca-pgwp",
                 "de-chancenkarte",
                 "dk-working-holiday",
@@ -377,6 +404,7 @@ class VerdictSemantics(unittest.TestCase):
                 "nl-orientation-year",
                 "nz-china-whv",
                 "nz-post-study-work",
+                "uk-graduate-visa",
                 "uk-hpi-visa",
             ],
         )
@@ -594,40 +622,61 @@ class Phase1Fixes(unittest.TestCase):
 
     # —— §4-3 英国毕业生签证：前置身份整类未参与判定 ——
     def test_4_3_uk_graduate_visa_precondition_is_read(self):
-        """`other_requirements` 里 required 的 residency_requirement 必须进入判定。
-        B（大陆本科，从未在英国读书）不许判「能申」，且必须说出差的是
-        「先在英国持学生签完成课程」这一项（gap，能补），不是笼统一句不可判。"""
-        self.assertEqual(mr.precondition_kind(self.docs["uk-graduate-visa"]), "local_status")
-        d = self.dim("uk-graduate-visa", "B", "precondition")
-        self.assertIsNotNone(d)
-        self.assertEqual(d["code"], "pre_local_status", d)
-        self.assertEqual(d["kind"], "gap", d)
-        state = mr.judge(self.docs["uk-graduate-visa"], mr.SAMPLES["B"])[0]
-        self.assertEqual(state, "gap")
+        """`other_requirements` 里 required 的前置要求必须进入判定，且**类别要对**。
 
-    def test_4_3_no_program_with_residency_requirement_judges_can(self):
-        """全库顺查（§4-3 的影响面是 17 个项目）：只要项目有 required 的
-        residency_requirement，三画像下都不许判「能申」。
+        P1c 改口径：uk-graduate-visa 的原文是 `You must be in the UK when you
+        apply`——**在地**要求，不是「须先在英国持学生签完成课程」那种身份前置。
+        旧断言钉的是 `local_status / pre_local_status / gap`，那正是 PRE_LOCAL_STATUS
+        末支把在地吞成身份的产物（batch8 §1.2② 立项的那条错误）。
+
+        现在它必须是 `inside / pre_inside_country / silent`：画像不采集现居地，
+        诚实结论是「不可判」，不是「差一段留学经历」这种可补的 gap。
+        """
+        self.assertEqual(mr.precondition_kinds(self.docs["uk-graduate-visa"]), ["inside"])
+        self.assertEqual(mr.precondition_kind(self.docs["uk-graduate-visa"]), "inside")
+        pre = [d for d in mr.judge(self.docs["uk-graduate-visa"], mr.SAMPLES["B"])[1]
+               if d["dim"] == "precondition" and d["code"].startswith("pre_inside")]
+        self.assertEqual(len(pre), 1)
+        self.assertEqual(pre[0]["code"], "pre_inside_country", pre[0])
+        self.assertEqual(pre[0]["kind"], "silent", pre[0])
+        # 旧口径的三件套一个都不许再出现（方向错的 gap 会让人以为补一段经历就行）
+        codes = {d["code"] for d in mr.judge(self.docs["uk-graduate-visa"], mr.SAMPLES["B"])[1]}
+        self.assertNotIn("pre_local_status", codes)
+        self.assertNotIn("pre_unclassified", codes)
+        state = mr.judge(self.docs["uk-graduate-visa"], mr.SAMPLES["B"])[0]
+        self.assertEqual(state, "unknown")
+
+    def test_4_3_no_program_with_precondition_judges_can(self):
+        """全库顺查：只要项目有 required 的**任一**前置族，三画像下都不许判「能申」。
 
         这一条比单点断言更狠：它不依赖某个项目当前的具体结论，只守
-        「有前置要求就不能说谁都能申」。落 None（读不懂）也算违规 ——
+        「有前置要求就不能说谁都能申」。落空（读不懂）也算违规 ——
         读不懂必须落 unclassified/silent，不能当作「没有要求」。
+
+        P1c 改口径：影响面从「17 个项目有 residency_requirement」变成
+        「17 个项目有前置族中的至少一族」。**条数仍是 17**，但构成变了：
+        9 个项目只剩在地族、6 个只剩身份族、2 个（de-20 / us-f1-opt）两族都有。
+        所以这里按「任一前置族」取，而不是给两个 type 各写一遍（那会把
+        de-20 / us-f1-opt 数两遍，17 变 19）。
         """
+        PRE_TYPES = (mr.REQ_TYPE_RESIDENCY, mr.REQ_TYPE_LOCATION)
         checked = 0
         for pid, doc in self.docs.items():
             reqs = [
                 r
                 for r in ((doc.get("eligibility") or {}).get("other_requirements") or [])
-                if r.get("required") is True and r.get("type") == "residency_requirement"
+                if r.get("required") is True and r.get("type") in PRE_TYPES
             ]
             if not reqs:
                 continue
             checked += 1
-            self.assertIsNotNone(mr.precondition_kind(doc), f"{pid} 有前置要求但没读出类别")
+            self.assertTrue(
+                mr.precondition_kinds(doc), f"{pid} 有前置要求但没读出任何类别"
+            )
             for sample in ("A", "B", "C"):
                 state = mr.judge(doc, mr.SAMPLES[sample])[0]
-                self.assertNotEqual(state, "can", f"{pid}/{sample} 有前置身份要求却判了能申")
-        self.assertEqual(checked, 17, f"带 required residency_requirement 的项目数变了：{checked}")
+                self.assertNotEqual(state, "can", f"{pid}/{sample} 有前置要求却判了能申")
+        self.assertEqual(checked, 17, f"带 required 前置要求的项目数变了：{checked}")
 
     # —— §4-4 加拿大 PGWP：教育维漏判 DLI / 8 个月 ——
     def test_4_4_ca_pgwp_education_is_not_edu_ok(self):
@@ -1110,6 +1159,195 @@ class P1b2TypedValues(unittest.TestCase):
         # research-scholar 仍未接任何签证史分支（它挂的是 no_prior_visa 原值，本单不认）
         doc = self.docs["us-j1-research-scholar"]
         self.assertIn("no_prior_visa", mr.requirement_types(doc))
+
+
+class P1cPreconditionSplit(unittest.TestCase):
+    """P1c：身份与在地拆成两个独立类别后的方向回归（派单 2026-11-15 续腿）。
+
+    守的是**类别归属**与**方向**，不是「当前结论长什么样」。本组每条都写明
+    「若照旧接线会错成什么」，因为两种读法在字面上都说得通。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs = {d["program"]["id"]: d for d in mr.load_programs()}
+
+    def pre(self, pid, sample="B"):
+        _, dims = mr.judge(self.docs[pid], mr.SAMPLES[sample])
+        return [d for d in dims if d["dim"] == "precondition"]
+
+    # —— ① 在地归 inside，不再借身份的 code 发声 ——
+    def test_inside_requirements_are_not_read_as_identity(self):
+        """三条 `You must be in ... when you apply` 必须判 inside，不是 local_status。
+
+        改前它们靠 `PRE_LOCAL_STATUS` 末支判成 `gap / pre_local_status`，
+        need 写的是「先在该国持学生/居留身份并完成学业」——对已经在该国读完书
+        的申请人（正是这三个项目的目标人群）等于一句反向建议。
+        """
+        for pid in ("au-485-graduate", "au-485-vocational", "uk-graduate-visa"):
+            self.assertEqual(mr.precondition_kinds(self.docs[pid]), ["inside"], pid)
+            for sample in ("A", "B", "C"):
+                codes = {d["code"] for d in self.pre(pid, sample)}
+                self.assertIn("pre_inside_country", codes, f"{pid}/{sample}")
+                self.assertNotIn("pre_local_status", codes, f"{pid}/{sample}")
+                # 也不能掉成读不懂（那是把已识别的要求说成没识别）
+                self.assertNotIn("pre_unclassified", codes, f"{pid}/{sample}")
+                d = next(x for x in self.pre(pid, sample) if x["code"] == "pre_inside_country")
+                self.assertEqual(d["kind"], "silent", d)
+
+    # —— ② 身份与在地同时存在时，两条都要出结论（不吞并）——
+    def test_identity_and_location_both_reported(self):
+        """us-f1-opt / de-20-job-search 各有两份 source，两族必须各自留痕。
+
+        裁决 2「借接的 code 不算兜住」：改前 us-f1-opt 的在地条靠身份条拉起的
+        `pre_local_status` 发声，看上去「已判」，实际那条要求零读点。
+        """
+        for pid, want in (
+            ("us-f1-opt", ["local_status", "inside"]),
+            ("de-20-job-search", ["local_status", "inside"]),
+        ):
+            self.assertEqual(mr.precondition_kinds(self.docs[pid]), want, pid)
+            codes = {d["code"] for d in self.pre(pid, "B")}
+            self.assertIn("pre_local_status", codes, pid)
+            self.assertIn("pre_inside_country", codes, pid)
+            # 单值形状仍取第一项（身份族在前），给老调用方留的兼容口
+            self.assertEqual(mr.precondition_kind(self.docs[pid]), "local_status", pid)
+
+    # —— ③ 删末支不能把真身份句一起删掉 ——
+    def test_identity_anchor_widened_keeps_real_identity_sentences(self):
+        """删掉末支后，靠扩展锚点保住的是「且持」这类并列句。
+
+        us-f1-opt 的真身份句是「须持有效 F-1 学生身份，**且该身份**在递交当日
+        仍未失效」——「且」起头。锚点若不放宽到「（须|且）持」，这条会跟着
+        末支一起掉成 unclassified（batch9a §1.2 实测：只删末支则 11 项里 5 项
+        掉 unclassified，补「且持」救回 us-f1-opt）。
+        """
+        self.assertIn("local_status", mr.precondition_kinds(self.docs["us-f1-opt"]))
+        # 身份族真身份句必须仍判 local_status（不是 home_residence / citizenship）
+        ident = mr._classify_identity(
+            mr._precondition_notes(self.docs["us-f1-opt"], mr.REQ_TYPE_RESIDENCY)
+        )
+        self.assertEqual(ident, "local_status")
+
+    # —— ④ 全库顺查：两族 type 的每个值都读得出来，且不落 unclassified ——
+    def test_every_precondition_program_classifies(self):
+        """17 个带必填前置的项目，两族都要读出一个具体类别。
+
+        允许 unclassified（那是「有要求但没读懂」的诚实留痕），只要不是**两族
+        全空**——全空意味着「有要求却被当成没有要求」，那是 §4-3 的原始错误。
+        """
+        PRE = (mr.REQ_TYPE_RESIDENCY, mr.REQ_TYPE_LOCATION)
+        n = 0
+        for pid, doc in self.docs.items():
+            reqs = [
+                r
+                for r in ((doc.get("eligibility") or {}).get("other_requirements") or [])
+                if r.get("required") is True and r.get("type") in PRE
+            ]
+            if not reqs:
+                self.assertEqual(mr.precondition_kinds(doc), [], pid)
+                continue
+            n += 1
+            self.assertTrue(mr.precondition_kinds(doc), f"{pid} 两族全空")
+        self.assertEqual(n, 17)
+
+    # —— ⑤ outside 方向不许被 inside 抢走（镜像关系）——
+    def test_outside_is_not_swallowed_by_inside(self):
+        """`se-look-for-work` 要「境外」、`uk-graduate-visa` 要「境内」，互为镜像。
+
+        两条要求共用一个 code 会让「必须人在境外」与「必须人在境内」在报告里
+        长得一模一样（batch8 立项理由）。合在一起判等于把方向抹平。
+        """
+        self.assertEqual(mr.precondition_kinds(self.docs["se-look-for-work"]), ["outside"])
+        self.assertEqual(mr.precondition_kinds(self.docs["au-407-training"]), ["outside"])
+        for pid in ("se-look-for-work", "au-407-training"):
+            codes = {d["code"] for d in self.pre(pid, "B")}
+            self.assertIn("pre_outside_country", codes, pid)
+            self.assertNotIn("pre_inside_country", codes, pid)
+
+    # —— ⑥ 新码必须登记乙类，且与 outside 同在 CLASS_B ——
+    def test_inside_code_is_registered_as_class_b(self):
+        """新 silent code 不登记就会撞上 `test_every_silent_code_is_classified`。
+
+        同时钉住它**不是**甲类：现居地是「画像没采集的个人事实」，补一个
+        `current_location` 字段就能判——按 P2-1 §1.1 判据属乙类。
+        """
+        self.assertIn("pre_inside_country", mr.CLASS_B_CODES)
+        self.assertIn("pre_outside_country", mr.CLASS_B_CODES)
+        self.assertNotIn("pre_inside_country", mr.BY_DESIGN_CODES)
+
+    # —— ⑦ flags_of 的两族形状（前端契约）——
+    def test_flags_carry_both_kind_and_kinds(self):
+        """`kinds` 是数组、`kind` 是单值：前端按 kinds 判，老断言按 kind 读。
+
+        只给 kind 会让 us-f1-opt 的在地条在地图上消失；只给 kinds 会打断
+        `p21_worksheets.rule_holds()` 之外的历史调用方。
+        """
+        for pid in ("us-f1-opt", "de-20-job-search"):
+            flags = mr.flags_of(self.docs[pid])["precondition"]
+            self.assertIsInstance(flags["kinds"], list, pid)
+            self.assertEqual(flags["kinds"], mr.precondition_kinds(self.docs[pid]), pid)
+            self.assertEqual(flags["kind"], flags["kinds"][0], pid)
+        # 无前置要求的项目：kinds 空数组，kind 为 None（不是空数组）
+        empty = next(
+            d for d in self.docs.values()
+            if not mr.precondition_kinds(d)
+        )
+        f = mr.flags_of(empty)["precondition"]
+        self.assertEqual(f["kinds"], [])
+        self.assertIsNone(f["kind"])
+
+    # —— ⑧ §0.2 au-462 受抚养子女按「受抚养关系」定义，不限年龄 ——
+    def test_au462_child_ban_is_dependency_not_age(self):
+        """官方原文 `not be accompanied by dependent children`——**按受抚养关系定义**。
+
+        「未成年子女」是旧记法加的限定，不是原文的边界：18 岁以上仍在校且受
+        抚养者照样在禁内（数据侧 note 已在 1b5552d 按官方原文改回）。
+
+        引擎侧不设年龄分支：画像 `children` 这一档本身就是「有受抚养子女」这个
+        与年龄无关的事实。所以本用例守两件事——① 有子女一定判禁（含「成年」
+        这个在数据里根本没有年龄粒度的情况）；② 引擎里**不许**出现按年龄切的
+        第二档（那会把原文的桶按 18 岁切两半，两半都不再是原文的桶）。
+        """
+        doc = self.docs["au-462-work-holiday"]
+        self.assertIn(mr.DEP_FORBID_CHILD, mr.requirement_types(doc))
+        # note 必须仍按受抚养关系表述，不许退回「未成年」
+        note = next(
+            r["note"] for r in doc["eligibility"]["other_requirements"]
+            if r.get("type") == mr.DEP_FORBID_CHILD
+        )
+        self.assertIn("dependent children", note)
+        self.assertIn("不设年龄上限", note)
+        # 「未成年子女」只许以「不沿用旧记法」的形式出现（引旧写法并否定它），
+        # 不许作为本条的限定语独立出现。
+        if "未成年" in note:
+            self.assertIn("不沿用旧记法", note)
+
+        # ① 有受抚养子女 → fail（成年与否不影响：画像这一档不按年龄切）
+        for sample in ("A", "B", "C"):
+            d = next(
+                x for x in self.pre("au-462-work-holiday", sample)
+                if x["code"].startswith("pre_dependents")
+            )
+            self.assertEqual((d["code"], d["kind"]), ("pre_dependents_none", "pass"), d)
+        d = next(
+            x for x in self._pre_with("au-462-work-holiday", "B", dependents="children")
+            if x["code"].startswith("pre_dependents")
+        )
+        self.assertEqual((d["code"], d["kind"]), ("pre_dependents_child_present", "fail"), d)
+
+        # ② 引擎里不许有第二档年龄切分
+        self.assertFalse(
+            hasattr(mr, "DEP_FORBID_ADULT_CHILD"),
+            "不许为「成年子女」另立一个禁令值：原文的桶是按受抚养关系定义的，"
+            "按 18 岁切两半后，两半都不再是原文那个桶",
+        )
+
+    def _pre_with(self, pid, sample, **override):
+        pr = dict(mr.SAMPLES[sample])
+        pr.update(override)
+        _, dims = mr.judge(self.docs[pid], pr)
+        return [d for d in dims if d["dim"] == "precondition"]
 
 
 class CliBehaviour(unittest.TestCase):

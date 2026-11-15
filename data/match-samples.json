@@ -953,13 +953,18 @@
      },
      {
       "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
       "kind": "silent",
-      "code": "pre_unclassified"
+      "code": "pre_inside_country"
      }
     ]
    },
    "B": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -988,13 +993,18 @@
      },
      {
       "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
       "kind": "silent",
-      "code": "pre_unclassified"
+      "code": "pre_inside_country"
      }
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -1023,8 +1033,13 @@
      },
      {
       "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
       "kind": "silent",
-      "code": "pre_unclassified"
+      "code": "pre_inside_country"
      }
     ]
    }

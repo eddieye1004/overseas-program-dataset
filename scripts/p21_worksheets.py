@@ -89,6 +89,7 @@ DETECTOR_ZH = {
     "EDU_PLACE": "学位须在指定国家/名单内院校完成",
     "EDU_BY_SPONSOR": "法规未规定学位层级、由 Sponsor 判断",
     "PRE_LOCAL_STATUS": "须先在该国持学生/居留身份并完成学业",
+    "PRE_INSIDE": "递交时人须在该国境内（P1c 新立，与 PRE_OUTSIDE 互为镜像）",
     "PRE_OUTSIDE": "递交时人须在该国境外",
     "PRE_HOME_RESIDENCE": "须常驻护照所属地区",
     "PRE_CITIZENSHIP": "该项是国籍条件（护照维已在判）",
@@ -438,6 +439,17 @@ def render_verdicts(verdicts: dict[str, dict]) -> str:
 #   aux  —— 只做修饰，**必须与另一条同现**才成立。目前只有 POINTS_THRESHOLD：
 #           引擎注释（match_readiness.py 中 POINTS_THRESHOLD 定义处）写明它只被
 #           「资格认定」分支引用，单独出现（如奥地利红白红卡 70 分）不构成缺口。
+def _kind_gate(kind: str):
+    """「引擎是否读出了这一类」——按 `precondition_kinds()` 的**全集**判，不按单值。
+
+    P1c 之前只有单值 `precondition_kind()`，一行对一个 kind 还算对得上；拆成两族
+    之后单值只返回最靠前的那一类，us-f1-opt / de-20-job-search 会同时有
+    `local_status` 与 `inside`，用单值判会让 `PRE_INSIDE` 那一行永远报「未拉起」——
+    而它其实已经兜住了。所以这里问的是「这一类在不在全集里」。
+    """
+    return lambda doc: kind in mr.precondition_kinds(doc)
+
+
 GATES = [
     ("EDU_RECENCY", mr.edu_recency_years, None, "education", "edu_recency_unknown", "gate"),
     ("EDU_YEARS_STRICT", mr.edu_years_required, None, "education", "edu_years_unknown", "gate"),
@@ -446,16 +458,18 @@ GATES = [
     ("CREDENTIAL_RECOGNITION", mr.credential_recognition_required, None, "education", "edu_credential_unknown", "gate"),
     ("POINTS_THRESHOLD", mr.points_threshold, None, "education", "edu_credential_unknown", "aux"),
     ("EMPLOYER_OFFER", mr.employer_offer_required, None, "precondition", "pre_employer_offer", "gate"),
-    ("PRE_LOCAL_STATUS", mr.precondition_kind, "local_status", "precondition", "pre_local_status", "gate"),
-    ("PRE_OUTSIDE", mr.precondition_kind, "outside", "precondition", "pre_outside_country", "gate"),
-    ("PRE_HOME_RESIDENCE", mr.precondition_kind, "home_residence", "precondition", "pre_home_residence", "gate"),
-    ("PRE_CITIZENSHIP", mr.precondition_kind, "citizenship", "precondition", "pre_citizenship_basis", "gate"),
-    ("PRE_DOCUMENT", mr.precondition_kind, "document", "precondition", "pre_document_basis", "gate"),
+    ("PRE_LOCAL_STATUS", _kind_gate("local_status"), None, "precondition", "pre_local_status", "gate"),
+    ("PRE_INSIDE", _kind_gate("inside"), None, "precondition", "pre_inside_country", "gate"),
+    ("PRE_OUTSIDE", _kind_gate("outside"), None, "precondition", "pre_outside_country", "gate"),
+    ("PRE_HOME_RESIDENCE", _kind_gate("home_residence"), None, "precondition", "pre_home_residence", "gate"),
+    ("PRE_CITIZENSHIP", _kind_gate("citizenship"), None, "precondition", "pre_citizenship_basis", "gate"),
+    ("PRE_DOCUMENT", _kind_gate("document"), None, "precondition", "pre_document_basis", "gate"),
 ]
 
 
 PRE_DETS = (
     "PRE_LOCAL_STATUS",
+    "PRE_INSIDE",
     "PRE_OUTSIDE",
     "PRE_HOME_RESIDENCE",
     "PRE_CITIZENSHIP",
@@ -467,7 +481,8 @@ def read_surface(det: str, doc: dict) -> set[str]:
     """该检测器**实际被引擎读取**的路径集合。
 
     §4 的命中语料是「全部 note + 材料名」，比闸门的读取面宽：`PRE_*` 只作用于
-    必填的 `residency_requirement`，`EDU_YEARS_STRICT` 只读 `education.note`。
+    必填的 `residency_requirement` / `location_requirement`，`EDU_YEARS_STRICT`
+    只读 `education.note`。
     不把这两个面分开，一份租约材料的 note 就会被报成「前置身份要求漏网」——
     那是把语料面差异说成判读缺陷。
     """
@@ -507,8 +522,14 @@ def read_surface(det: str, doc: dict) -> set[str]:
                 paths.add("eligibility.other_requirements[%d].note" % i)
         add_note("eligibility.education", el.get("education"))
     elif det in PRE_DETS:
+        # P1c：两族都要算作判读面。只收 residency_requirement 会把改到
+        # location_requirement 的在地条整条报成「面外」——那是把拆分类别之后
+        # 的正常结果说成漏网。
         for i, r in enumerate(el.get("other_requirements") or []):
-            if r.get("required") is True and r.get("type") == "residency_requirement":
+            if r.get("required") is True and r.get("type") in (
+                "residency_requirement",
+                "location_requirement",
+            ):
                 paths.add("eligibility.other_requirements[%d].note" % i)
     return paths
 
@@ -521,11 +542,13 @@ def rule_holds(det: str, doc: dict) -> bool:
     - `EDU_YEARS_STRICT`：引擎要求**同一段 note 里同时**出现「不满足/不达/不符合」
       （EDU_YEARS_DISQUALIFY）才认为是硬门槛，见 `edu_years_required()`。只命中
       年限、没命中不合格措辞的，是「读过 N 年」而非「不足 N 年就不行」。
-    - `PRE_*` 五个检测器共用 `precondition_kind()` 的一条**优先级链**
-      （local_status → outside → home_residence → citizenship → document）。
-      一段原文同时命中两条时只有优先级最高的那条拉起闸门，其余四条必然不拉起：
-      这是「同一段原文只判一次」，不是漏网。判据是 `precondition_kind()` 返回了
-      一个具体类别（不是 None / unclassified）——说明这条要求**已被处置**。
+    - `PRE_*` 六个检测器共用 `precondition_kinds()` 的两族分类（身份族走
+      `_classify_identity`：local_status → home_residence → citizenship → document；
+      在地族走 `_classify_location`：inside → outside → home_residence →
+      citizenship → document）。同一族里一段原文同时命中两条时只有优先级最高的
+      那条拉起闸门，其余必然不拉起：这是「同一段原文只判一次」，不是漏网。
+      判据是 `precondition_kinds()` 里出现了至少一个具体类别（不含 unclassified）
+      ——说明这条要求**已被处置**。
     """
     if det == "EDU_YEARS_STRICT":
         edu = (doc.get("eligibility") or {}).get("education") or {}
@@ -533,7 +556,7 @@ def rule_holds(det: str, doc: dict) -> bool:
             mr.EDU_YEARS_DISQUALIFY.search(edu.get("note") or "")
         )
     if det in PRE_DETS:
-        return mr.precondition_kind(doc) not in (None, "unclassified")
+        return bool(set(mr.precondition_kinds(doc)) - {"unclassified"})
     return False
 
 
@@ -626,8 +649,8 @@ def render_detectors(doc: dict, hits: dict[str, list[str]], verdicts: dict[str, 
     lines.append(
         "只有能改变结论的检测器才进这张表。四列必须对上：原文命中 → 判读面命中 → "
         "闸门函数拉起 → §3 出现对应 code。**判读面**指引擎真正读的那几处"
-        "（`PRE_*` 只读必填的 `residency_requirement`，`EDU_YEARS_STRICT` 只读 "
-        "`education.note`）；只在面外命中不算漏网。"
+        "（`PRE_*` 只读必填的 `residency_requirement` 与 `location_requirement`，"
+        "`EDU_YEARS_STRICT` 只读 `education.note`）；只在面外命中不算漏网。"
     )
     lines.append("")
     lines.append(
