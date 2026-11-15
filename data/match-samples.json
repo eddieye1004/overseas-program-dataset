@@ -1,5 +1,5 @@
 {
- "rules_version": 8,
+ "rules_version": 9,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -10,7 +10,8 @@
    "dependents": "none",
    "prior_participation": "none",
    "prior_same_category_visa": "none",
-   "enrollment_status": "enrolled"
+   "enrollment_status": "enrolled",
+   "current_location": "CN"
   },
   "B": {
    "passport": "mainland_china",
@@ -21,7 +22,8 @@
    "dependents": "none",
    "prior_participation": "none",
    "prior_same_category_visa": "none",
-   "enrollment_status": "completed"
+   "enrollment_status": "completed",
+   "current_location": "CN"
   },
   "C": {
    "passport": "taiwan_china",
@@ -32,7 +34,8 @@
    "dependents": "none",
    "prior_participation": "none",
    "prior_same_category_visa": "none",
-   "enrollment_status": "completed"
+   "enrollment_status": "completed",
+   "current_location": "TW"
   }
  },
  "verdicts": {
@@ -388,8 +391,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -399,7 +402,7 @@
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -428,8 +431,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -439,7 +442,7 @@
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -468,8 +471,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -510,8 +513,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -526,7 +529,7 @@
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -555,8 +558,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -571,7 +574,7 @@
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -600,8 +603,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -958,13 +961,13 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      }
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -998,13 +1001,13 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      }
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -1038,8 +1041,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      }
     ]
    }
@@ -3489,8 +3492,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -3500,7 +3503,7 @@
     ]
    },
    "B": {
-    "state": "unknown",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3529,8 +3532,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -3540,7 +3543,7 @@
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3569,8 +3572,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -3967,8 +3970,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -3978,7 +3981,7 @@
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -4012,8 +4015,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",
@@ -4023,7 +4026,7 @@
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -4057,8 +4060,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_inside_country"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      },
      {
       "dim": "precondition",

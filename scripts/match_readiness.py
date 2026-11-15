@@ -1044,6 +1044,23 @@ PROBES = OrderedDict(
 #                          —— 「你是否持过同类别签证」（与上一条不同：参加史 ≠ 签证史）
 #   enrollment_status      enrolled | completed
 #                          —— 「你现在是在读还是已毕业」
+#   current_location       ISO 3166-1 alpha-2 大写（CN / TW / AU …）
+#                          —— 「你现在人在哪个国家/地区」（P1d）
+#
+# current_location 为什么用国家代码而不是自由文本：
+#   判在地要求（「递交时人须在该国境内」）的唯一动作是**与项目所在国比较**，
+#   而项目侧的国别已经有一套受 schema 管着的代码体系（program.country_code，
+#   validate.py 用 `^[A-Z]{2}$` 卡）。画像这一侧用同一套代码，比较就是字符串
+#   相等——不需要地名归一表、不需要模糊匹配，也不可能出现「澳洲 / Australia /
+#   AU」三种写法互相认不出。取值缺失或不是两位大写即判 unknown（silent），
+#   绝不猜测、绝不默认 pass。
+CURRENT_LOCATION_RE = re.compile(r"^[A-Z]{2}$")
+
+# 三张画像都是 **prospective applicant**（正在挑项目、还没出去的人），不是「已经
+# 在目标国读书/工作的人」。所以现居地 = 护照所属地：A/B 大陆（CN）、C 台湾（TW）。
+# 这个取值不是随手填的——它直接决定在地要求的翻转方向（详见 P1d 回执 §3：
+# 现居=护照地时，五个「须在该国境内」的项目对三人全部判 cannot，因为三人都不在
+# 那些国家；换成任何一个已经在该国的人，同一批项目会翻成 pass）。
 SAMPLES = OrderedDict(
     [
         (
@@ -1059,6 +1076,7 @@ SAMPLES = OrderedDict(
                 "prior_participation": "none",
                 "prior_same_category_visa": "none",
                 "enrollment_status": "enrolled",
+                "current_location": "CN",
             },
         ),
         (
@@ -1074,6 +1092,7 @@ SAMPLES = OrderedDict(
                 "prior_participation": "none",
                 "prior_same_category_visa": "none",
                 "enrollment_status": "completed",
+                "current_location": "CN",
             },
         ),
         (
@@ -1088,6 +1107,7 @@ SAMPLES = OrderedDict(
                 "prior_participation": "none",
                 "prior_same_category_visa": "none",
                 "enrollment_status": "completed",
+                "current_location": "TW",
             },
         ),
     ]
@@ -1240,6 +1260,23 @@ def passport_value(pt: dict, key: str):
         return pt.get("tw_china")
     if key == "tw_china":
         return pt.get("taiwan_china")
+    return None
+
+
+def current_location_of(pr: dict) -> str | None:
+    """画像里的现居地国家代码；取不到**合法值**时返回 None（= 未知）。
+
+    「取不到」的判断必须严：ISO 3166-1 alpha-2 是两位大写字母。空串、None、
+    小写 `cn`、中文「中国」、拼错的 `CHINA` 全部返回 None，让调用方落 silent。
+
+    为什么不宽容一点（比如把小写转大写、把「中国」映射成 CN）：
+    在地要求判错方向的代价是把一个**能申的人判成不能申**（或反之），而且这种
+    错误在界面上看起来完全正常。宽容匹配一旦写错，错误会静默传播到每一条项目。
+    宁可让格式不对的值落 unknown、让人看见「无法判定」，也不替用户猜他填的是哪国。
+    """
+    v = pr.get("current_location")
+    if isinstance(v, str) and CURRENT_LOCATION_RE.match(v.strip()):
+        return v.strip()
     return None
 
 
@@ -1672,15 +1709,53 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             # 在地（batch8 立项、batch9a 裁决 1 定形）：与 outside 互为镜像，
             # 但**不并进 outside**——方向相反的两条要求共用一个 code 会让
             # 「必须人在境外」与「必须人在境内」在报告里长得一模一样。
-            # 画像不采集现居地 → silent（乙类），补一个 current_location 字段就能判。
-            dims.append(
-                {
-                    "dim": "precondition",
-                    "kind": "silent",
-                    "code": "pre_inside_country",
-                    "why": "原文要求在递交时人位于该国境内，画像不采集现居地，无法判定",
-                }
-            )
+            #
+            # P1d 接地：这一条现在是**可判的**——画像有 current_location。
+            #   与项目所在国相同 → pass（人已经在境内，这条不构成障碍）
+            #   有值但不同     → fail（人不在境内 → 整体 cannot）
+            #   缺失/非法      → silent（维持 P1c 的诚实结论，缺省绝不判 pass）
+            # 三者各占一个 code：`pre_inside_country` 仍是「画像不采集」的原码，
+            # 语义一个字节没动（P1c 的乙类登记与测试照旧按它读）。
+            loc = current_location_of(pr)
+            cc = (doc.get("program") or {}).get("country_code")
+            if loc is None or not cc:
+                # 两种「比不了」：画像没填现居地，或项目侧没有国别代码。
+                # 后者在库里暂无实例（两条全球项目 global-aiesec / global-iaeste
+                # 根本没有在地要求），但少了这一支，`loc == cc` 会把画像值与
+                # None 比较、恒不等 → 恒判 fail，等于替官方拒绝。
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "silent",
+                        "code": "pre_inside_country",
+                        "why": "原文要求在递交时人位于该国境内，画像不采集现居地，无法判定",
+                    }
+                )
+            elif loc == cc:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "pass",
+                        "code": "pre_inside_country_ok",
+                        "need": f"递交时人在 {cc} 境内",
+                        "have": f"你现在在 {loc}",
+                        "why": f"你现居 {loc}，与项目所在国一致，这条在地要求已满足",
+                    }
+                )
+            else:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "fail",
+                        "code": "pre_inside_country_no",
+                        "need": f"递交时须身在 {cc} 境内",
+                        "have": f"你现在在 {loc}",
+                        "why": (
+                            f"原文要求在递交时人位于 {cc} 境内，你填的现居地是 {loc}；"
+                            "这条要求不是补材料能满足的，须先合法进入该国"
+                        ),
+                    }
+                )
         elif pre == "outside":
             dims.append(
                 {
@@ -1813,7 +1888,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
 # --------------------------------------------------------------------------
 
-RULES_VERSION = 8
+RULES_VERSION = 9
 
 
 def flags_of(doc: dict) -> dict:
@@ -1853,6 +1928,11 @@ def flags_of(doc: dict) -> dict:
     months = stay_months(doc) if monthly else None
 
     return {
+        # 项目所在国（ISO 3166-1 alpha-2）。P1d 起前端要用它判在地要求：
+        # 画像的 current_location 与它相等 → 人已在境内。放进 flags 而不是让前端
+        # 从 index.json 另取，是为了让「判在地」所需的**全部**输入都在同一个文件里，
+        # 两侧比对时不会因为一个取自 A 文件、一个取自 B 文件而产生漂移。
+        "country_code": (doc.get("program") or {}).get("country_code"),
         "passport": passport,
         "age": {
             "min": age.get("min"),

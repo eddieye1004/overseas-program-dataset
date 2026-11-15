@@ -29,6 +29,17 @@ export interface VerdictProfile {
   prior_same_category_visa?: 'none' | 'used' | null;
   /** 在读 / 已毕业：enrolled | completed。缺省 = 未知 */
   enrollment_status?: 'enrolled' | 'completed' | null;
+  /**
+   * 现居地国家代码（ISO 3166-1 alpha-2，如 CN / TW / AU）。缺省 = 未知。
+   *
+   * 与 passport 不同：护照决定「你是谁」，现居地决定「你人在哪」。有些项目要求
+   * 递交时人必须在该国境内（`you must be in the UK when you apply`），那条要求
+   * 判的是后者——一个人拿着中国护照在英国读完书，护照条件与在地条件是两项。
+   *
+   * 取值必须与项目的 country_code 同一套代码体系，否则比较不成立（判分只会
+   * 变成「永远不相等」）。格式不对一律当未知，绝不猜测。
+   */
+  current_location?: string | null;
 }
 
 export const EMPTY_VERDICT_PROFILE: VerdictProfile = {
@@ -41,6 +52,12 @@ export const EMPTY_VERDICT_PROFILE: VerdictProfile = {
 
 /** 一条项目六个维度的状态量，由 scripts/match_readiness.py --emit 产出。 */
 export interface ProgramFlags {
+  /**
+   * 项目所在国（ISO 3166-1 alpha-2）。P1d 起 `inside` 那条在地要求要用它：
+   * 与画像的 `current_location` 相等 → 人已在境内。缺省（老产物）时按「不知道
+   * 是哪个国家」处理，落 silent，不猜。
+   */
+  country_code?: string | null;
   passport: {
     mainland_china: string;
     hong_kong_china: string;
@@ -150,8 +167,22 @@ export interface MatchFlagsFile {
   programs: Record<string, ProgramFlags>;
 }
 
+/**
+ * 现居地代码的合法化：只接受两位大写字母（ISO 3166-1 alpha-2），其余返回 null。
+ *
+ * 与 Python 的 `current_location_of()` **同一套严格度**，这不是洁癖：
+ * 在地要求判错方向的代价是把能申的人判成不能申（或反之），而这种错误在界面上
+ * 看起来完全正常。空串、小写 `cn`、`CHINA`、中文「中国」一律当未知，让用户
+ * 看到「无法判定」，而不是替他把值猜成某个国家。
+ */
+function normalizeLocation(v: string | null | undefined): string | null {
+  if (typeof v !== 'string') return null;
+  const s = v.trim();
+  return /^[A-Z]{2}$/.test(s) ? s : null;
+}
+
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 8;
+export const RULES_VERSION = 9;
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
@@ -444,7 +475,33 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
     } else if (pre === 'inside') {
       // 在地：与 outside 互为镜像，不并进 outside（方向相反的条件共用一个 code
       // 会让「必须人在境外」与「必须人在境内」在报告里长得一模一样）。
-      dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_inside_country' });
+      //
+      // P1d 接地：与 Python 的 inside 分支逐条镜像。
+      //   现居 == 项目国 → pass（人已在境内，这条不构成障碍）
+      //   有值但不同     → fail（→ cannot）
+      //   缺失/非法      → silent（缺省绝不判 pass）
+      // 三个 code 各管一件事：`pre_inside_country` 仍是「画像不采集现居地」的原码。
+      const loc = normalizeLocation(pr.current_location);
+      const cc = flags.country_code ?? null;
+      if (loc == null || cc == null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_inside_country' });
+      } else if (loc === cc) {
+        dims.push({
+          dim: 'precondition',
+          kind: 'pass',
+          code: 'pre_inside_country_ok',
+          need: `递交时人在 ${cc} 境内`,
+          have: `你现在在 ${loc}`,
+        });
+      } else {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_inside_country_no',
+          need: `递交时须身在 ${cc} 境内`,
+          have: `你现在在 ${loc}`,
+        });
+      }
     } else if (pre === 'outside') {
       dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_outside_country' });
     } else if (pre === 'home_residence') {

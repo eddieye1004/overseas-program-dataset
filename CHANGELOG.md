@@ -8,6 +8,33 @@
 
 ## [未发布]
 
+### 变更 — 接入 `current_location`：在地要求从「不可判」变「可判」（rules_version 8 → 9，2026-11-15）
+
+P1c 把「递交时人在该国」从 `PRE_LOCAL_STATUS` 末支诚实地拆成新码 `pre_inside_country`（silent），但画像没有现居地字段，这条要求只能判「不可判」。C 画像乙类因此从 11 升到 14（14/41 = 0.3415），越过 1/3 停工线。Muse 裁决取丙：P1c 本体 Pass，越线源于口径修正而非引擎倒退，阈值与夹具都不许动，**接地立下一单**（即本单）。
+
+**改法**：
+
+| 项 | 改前 | 改后 |
+|---|---|---|
+| 画像字段 | 无现居地 | `current_location`（ISO 3166-1 alpha-2 大写，与 `program.country_code` 同一套代码体系） |
+| `inside` 判定 | 一律 `silent / pre_inside_country` | 现居 == 项目国 → `pass / pre_inside_country_ok`；有值不等 → `fail / pre_inside_country_no`（→ cannot）；缺失/非法 → `silent / pre_inside_country`（原码语义不变） |
+| 接口契约 | `flags_of()` 无国别 | 加 `country_code`，让「判在地」所需的输入全在同一个文件里 |
+| 前端 | 无现居地输入 | 判定页加「你现在人在哪个国家/地区」下拉（选项从 index 实际国别生成），留空 = 不可判 |
+
+**三张样例画像的取值**（都是 prospective applicant，人还在护照所属地）：A `CN` / B `CN` / C `TW`。这个取值决定翻转方向，不是随手填的。
+
+**实测影响**（改前 `b024380` → 改后，15 行翻转，全部来自 `inside` 接地，无一行来自 `PRE_OUTSIDE`）：
+
+| 画像 | 乙类 | 全口径 |
+|---|---|---|
+| A | 4 → 4（9.8%） | 7 → 7（17.1%） |
+| B | 3 → 3（7.3%） | 6 → 5（12.2%） |
+| C | **14 → 11（26.8%）** | 16 → 13（31.7%） |
+
+C 画像移除的正是 P1c 新增的那三条（`au-485-graduate` / `au-485-vocational` / `uk-graduate-visa`）：画像不在对应国 → 在地条判 fail → cannot，不再是 unknown。**11/41 = 0.2683，回到 1/3 以内**；停工线阈值 `1 / 3` 与 `test_stop_line_binds_class_b_only` 一个字节没改。
+
+`pre_outside_country` / `pre_home_residence` 本单不接地，因此 `jp-working-holiday` / `nz-china-whv`（home_residence）仍留在乙类——那是下一单的范围。
+
 ### 变更 — 把「在地」从身份要求里拆出来：新类别 `location_requirement`（rules_version 7 → 8，2026-11-15）
 
 `residency_requirement` 一个 type 值里装着两类语义：**身份**（「须已在该国持学生签/居留并在当地完成学业」）与**在地**（「递交时人须在该国境内/境外」）。引擎过去靠 `PRE_LOCAL_STATUS` 的末支正则 `(必须|须)在…(境内|国内)` 把后者当成前者判，于是「你必须人在英国才能递交」在报告里被说成「你差一段在英国读书的经历」——**方向错**（可补的经历 vs 时点门槛），而且对目标人群（已经在该国读书的人）恰恰是错的建议。

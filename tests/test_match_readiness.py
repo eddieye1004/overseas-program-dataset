@@ -308,23 +308,24 @@ class VerdictSemantics(unittest.TestCase):
         |---|---|---|
         | P1b-2 前 | 14/41 = 0.3415 | 家属/签证史/学籍三族还没接线 |
         | P1b-2 后 | 13/41 = 0.3171 | 三画像补齐新字段显式取值，三族判出 pass/fail |
-        | **P1c 后** | **16/41 = 0.3902** | 在地条拆出独立类别，原先被误判成 gap 的 3 项转成诚实 silent |
+        | P1c 后 | 16/41 = 0.3902 | 在地条拆出独立类别，原先被误判成 gap 的 3 项转成诚实 silent |
+        | **P1d 后** | **13/41 = 0.3171** | 接入 current_location，在地条判出 fail（cannot），3 项离开 unknown |
 
-        本单上调上限是**记录事实**，不是放宽标准：那 3 项从 `gap` 变 `silent` 是
-        「把错的建议（你差一段留学经历）换成正确的不确定（你人在不在那儿我们不知道）」，
-        全口径因此上升。全口径从来不是停工闸门，闸门在
-        `test_stop_line_binds_class_b_only`，它的 1/3 一个数字没改。
+        上限从 16 回调到 13 是**记录事实**，不是放宽标准：那 3 项从 silent 变
+        cannot 是因为引擎终于能判（现居地有了），不是把它们藏起来——它们仍在
+        报告里逐条可见，只是状态从「不可判」变成「不能申」。全口径从来不是停工
+        闸门，闸门在 `test_stop_line_binds_class_b_only`，它的 1/3 一个数字没改。
         """
         rep = mr.audit()
         # 注意：unknown_ratio 是 4 位小数的舍入值，直接与分式比会因舍入假红。
         # 所以钉「项目条数」+「比率等于该条数 / 总数」，两者合起来才是断言本意。
-        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 16)
+        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 13)
         self.assertEqual(
             rep["max_unknown_ratio"],
-            round(16 / rep["total"], 4),
+            round(13 / rep["total"], 4),
             "全口径上限被突破了：这是「甲类变多也不许藏」的那把尺子",
         )
-        self.assertLessEqual(rep["max_unknown_ratio"], 16 / 41 + 1e-4)
+        self.assertLessEqual(rep["max_unknown_ratio"], 13 / 41 + 1e-4)
         for name, v in rep["samples"].items():
             self.assertAlmostEqual(
                 v["unknown_ratio"], v["unknown"] / rep["total"], places=4, msg=name
@@ -365,9 +366,9 @@ class VerdictSemantics(unittest.TestCase):
 
         改这个清单意味着「某个项目从债变成能判」或反之，那是产品结论变化，
         不该顺带发生。以下增删逐条对得上（改前 → 改后各为实测，见
-        `.legs/p1c_before_dump.out.txt` 与 `.legs/p1c_measure2.out.txt`）：
+        `.legs/p1c_before_dump.out.txt` 与 `.legs/p1d_flip_audit.py` 的输出）。
 
-        **C 画像 11 → 14 条，净 +3，全部是新增，无一条移除**：
+        **P1c 里程碑（记录，不再复算）：C 11 → 14，净 +3，全部是新增**：
 
         | 项目 | 改前 | 改后 | 原因 |
         |---|---|---|---|
@@ -378,15 +379,24 @@ class VerdictSemantics(unittest.TestCase):
         这三项改前靠 PRE_LOCAL_STATUS 末支判成 `gap / pre_local_status`
         （「你差一段在该国读书的经历」），而它们恰恰是「已经在该国读书的人」——
         那条建议对目标人群是错的。拆成独立在地类别后判 `silent /
-        pre_inside_country`，整体诚实降级为 unknown。
+        pre_inside_country`，整体诚实降级为 unknown。14/41 = 0.3415 **越线**，
+        停工报 Muse 裁决。
 
-        **de-20-job-search 的 -1 发生在 B 画像、不在 C**：B 改前 unknown
-        （`pre_unclassified`），双语复合句拆条后身份半句判出
-        `gap / pre_local_status`，B 的乙类 3 → 4（+1 是 uk-graduate-visa）。
-        C 上它改前改后都是 gap，从未进过 C 的乙类清单。
+        **P1d 清偿（本单，2026-11-15 裁决取丙的下半句）：C 14 → 11，净 -3，
+        移除的正是 P1c 新增的那三项，一项不多一项不少**：
 
-        停工线：14/41 = 0.3415 > 1/3，**已越线**。这条红是停工信号本身，
-        处置待 Muse 裁决（见 `.legs/fix-p1c.progress` §3.4 三案）。
+        | 项目 | 改前 | 改后 | 原因 |
+        |---|---|---|---|
+        | `au-485-graduate` | unknown | cannot | 画像现居 CN/TW ≠ AU → 在地条判 fail |
+        | `au-485-vocational` | unknown | cannot | 同上 |
+        | `uk-graduate-visa` | unknown | cannot | 画像现居 CN/TW ≠ GB → 在地条判 fail |
+
+        即：P1c 欠下的这笔债**恰好就是这三条**，接入 `current_location` 后精确
+        还清，没有连带洗白任何别的项目。11/41 = 0.2683 回到 1/3 以内。
+
+        剩下的 `jp-working-holiday` / `nz-china-whv` 两项属 `pre_home_residence`
+        （须常驻护照所属地区），本单按派单 §1.2 只接 `pre_inside_country`，
+        因此仍留在乙类——见回执 §6「遗留待裁」。
         """
         rep = mr.audit()
         self.assertEqual(
@@ -394,8 +404,6 @@ class VerdictSemantics(unittest.TestCase):
             [
                 "at-rwr-card-vhq",
                 "au-407-training",
-                "au-485-graduate",
-                "au-485-vocational",
                 "ca-pgwp",
                 "de-chancenkarte",
                 "dk-working-holiday",
@@ -404,7 +412,6 @@ class VerdictSemantics(unittest.TestCase):
                 "nl-orientation-year",
                 "nz-china-whv",
                 "nz-post-study-work",
-                "uk-graduate-visa",
                 "uk-hpi-visa",
             ],
         )
@@ -629,22 +636,33 @@ class Phase1Fixes(unittest.TestCase):
         旧断言钉的是 `local_status / pre_local_status / gap`，那正是 PRE_LOCAL_STATUS
         末支把在地吞成身份的产物（batch8 §1.2② 立项的那条错误）。
 
-        现在它必须是 `inside / pre_inside_country / silent`：画像不采集现居地，
-        诚实结论是「不可判」，不是「差一段留学经历」这种可补的 gap。
+        P1d 接地后这条要求**可判了**，于是它的三态取决于画像现居地：
+
+        | 画像 | 现居 | 判 | code |
+        |---|---|---|---|
+        | A / B | CN | cannot | `pre_inside_country_no` |
+        | C | TW | cannot | `pre_inside_country_no` |
+
+        三人都不在英国，所以都判 fail。这一条同时钉住两点：① 类别仍是 inside
+        （不是 local_status——方向错了会让人以为补一段经历就行）；② 判出来的是
+        「你不在英国」，而不是「你差一段留学经历」。
         """
         self.assertEqual(mr.precondition_kinds(self.docs["uk-graduate-visa"]), ["inside"])
         self.assertEqual(mr.precondition_kind(self.docs["uk-graduate-visa"]), "inside")
         pre = [d for d in mr.judge(self.docs["uk-graduate-visa"], mr.SAMPLES["B"])[1]
                if d["dim"] == "precondition" and d["code"].startswith("pre_inside")]
         self.assertEqual(len(pre), 1)
-        self.assertEqual(pre[0]["code"], "pre_inside_country", pre[0])
-        self.assertEqual(pre[0]["kind"], "silent", pre[0])
+        self.assertEqual(pre[0]["code"], "pre_inside_country_no", pre[0])
+        self.assertEqual(pre[0]["kind"], "fail", pre[0])
+        # 判 fail 的理由必须指向「人不在英国」，不是「学历/经历不够」
+        self.assertIn("GB", pre[0]["need"])
+        self.assertIn("CN", pre[0]["have"])
         # 旧口径的三件套一个都不许再出现（方向错的 gap 会让人以为补一段经历就行）
         codes = {d["code"] for d in mr.judge(self.docs["uk-graduate-visa"], mr.SAMPLES["B"])[1]}
         self.assertNotIn("pre_local_status", codes)
         self.assertNotIn("pre_unclassified", codes)
         state = mr.judge(self.docs["uk-graduate-visa"], mr.SAMPLES["B"])[0]
-        self.assertEqual(state, "unknown")
+        self.assertEqual(state, "cannot")
 
     def test_4_3_no_program_with_precondition_judges_can(self):
         """全库顺查：只要项目有 required 的**任一**前置族，三画像下都不许判「能申」。
@@ -1183,17 +1201,27 @@ class P1cPreconditionSplit(unittest.TestCase):
         改前它们靠 `PRE_LOCAL_STATUS` 末支判成 `gap / pre_local_status`，
         need 写的是「先在该国持学生/居留身份并完成学业」——对已经在该国读完书
         的申请人（正是这三个项目的目标人群）等于一句反向建议。
+
+        P1d 起这条要求接地了：三画像现居 CN/CN/TW，都不在这三国，所以三个
+        画像下都判 `fail / pre_inside_country_no`。这里钉的是**类别归属**——
+        code 必须以 `pre_inside_country` 开头（三态里的哪一种随画像，但不许
+        再借 `pre_local_status` 或掉成 `pre_unclassified`）。
         """
         for pid in ("au-485-graduate", "au-485-vocational", "uk-graduate-visa"):
             self.assertEqual(mr.precondition_kinds(self.docs[pid]), ["inside"], pid)
             for sample in ("A", "B", "C"):
                 codes = {d["code"] for d in self.pre(pid, sample)}
-                self.assertIn("pre_inside_country", codes, f"{pid}/{sample}")
+                self.assertTrue(
+                    any(c.startswith("pre_inside_country") for c in codes),
+                    f"{pid}/{sample} 没判出在地要求：{codes}",
+                )
                 self.assertNotIn("pre_local_status", codes, f"{pid}/{sample}")
                 # 也不能掉成读不懂（那是把已识别的要求说成没识别）
                 self.assertNotIn("pre_unclassified", codes, f"{pid}/{sample}")
-                d = next(x for x in self.pre(pid, sample) if x["code"] == "pre_inside_country")
-                self.assertEqual(d["kind"], "silent", d)
+                d = next(x for x in self.pre(pid, sample)
+                         if x["code"].startswith("pre_inside_country"))
+                # 三人都不在项目所在国 → fail（不是 silent：现居地已经采集到了）
+                self.assertEqual((d["code"], d["kind"]), ("pre_inside_country_no", "fail"), d)
 
     # —— ② 身份与在地同时存在时，两条都要出结论（不吞并）——
     def test_identity_and_location_both_reported(self):
@@ -1201,15 +1229,15 @@ class P1cPreconditionSplit(unittest.TestCase):
 
         裁决 2「借接的 code 不算兜住」：改前 us-f1-opt 的在地条靠身份条拉起的
         `pre_local_status` 发声，看上去「已判」，实际那条要求零读点。
+
+        P1d 起在地条自己会判（现居 ≠ US/DE → fail），身份条仍是 gap。
+        两条并存时整体 take 最差：fail > gap，所以这两个项目在 B 上都判 cannot。
         """
-        for pid, want in (
-            ("us-f1-opt", ["local_status", "inside"]),
-            ("de-20-job-search", ["local_status", "inside"]),
-        ):
-            self.assertEqual(mr.precondition_kinds(self.docs[pid]), want, pid)
+        for pid in ("us-f1-opt", "de-20-job-search"):
+            self.assertEqual(mr.precondition_kinds(self.docs[pid]), ["local_status", "inside"], pid)
             codes = {d["code"] for d in self.pre(pid, "B")}
             self.assertIn("pre_local_status", codes, pid)
-            self.assertIn("pre_inside_country", codes, pid)
+            self.assertIn("pre_inside_country_no", codes, pid)
             # 单值形状仍取第一项（身份族在前），给老调用方留的兼容口
             self.assertEqual(mr.precondition_kind(self.docs[pid]), "local_status", pid)
 
@@ -1348,6 +1376,168 @@ class P1cPreconditionSplit(unittest.TestCase):
         pr.update(override)
         _, dims = mr.judge(self.docs[pid], pr)
         return [d for d in dims if d["dim"] == "precondition"]
+
+
+class P1dLocationGrounding(unittest.TestCase):
+    """P1d：把 `current_location` 接进 judge() 的 `pre_inside_country` 分支。
+
+    守的是**方向**，不是「当前结论长什么样」。在地要求有两种读法在字面上都说得
+    通，而读反的代价是不对称的：判反了会把一个已经在该国的人挡在门外（他明明
+    符合），或把一个不在该国的人放进去（他递不上去）。所以本组四个方向各钉一条，
+    外加「缺字段必须 silent」这条地基。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs = {d["program"]["id"]: d for d in mr.load_programs()}
+
+    def pre(self, pid, **override):
+        """以 B 画像为底，按需覆盖字段后取前置维。"""
+        pr = dict(mr.SAMPLES["B"])
+        pr.update(override)
+        _, dims = mr.judge(self.docs[pid], pr)
+        return [d for d in dims if d["dim"] == "precondition"]
+
+    def pre_code(self, pid, **override):
+        return next(
+            (d["code"], d["kind"]) for d in self.pre(pid, **override)
+            if d["code"].startswith("pre_inside_country")
+        )
+
+    # —— ① 画像在要求国 → pass ——
+    def test_inside_requirement_passes_when_profile_is_in_that_country(self):
+        """au-485-graduate 要求「递交时在澳洲境内」，画像现居 AU → 这一条判 pass。
+
+        这是接地之前**永远不可能出现**的结论：旧引擎无论画像填什么都只看原文，
+        一律判 silent。判 pass 的分支若写错（比如把相等写成不等），已经在澳洲
+        读完书的人会看到「你不在澳洲」，而他恰恰是这个项目唯一的目标人群。
+        """
+        self.assertEqual(mr.precondition_kinds(self.docs["au-485-graduate"]), ["inside"])
+        self.assertEqual(
+            self.pre_code("au-485-graduate", current_location="AU"),
+            ("pre_inside_country_ok", "pass"),
+        )
+        d = next(x for x in self.pre("au-485-graduate", current_location="AU")
+                 if x["code"] == "pre_inside_country_ok")
+        # 文案里的国别必须来自数据，不是写死的：need 说要求国、have 说现居地
+        self.assertIn("AU", d["need"])
+        self.assertIn("AU", d["have"])
+
+    # —— ② 画像不在要求国 → cannot，且理由是「在地」不是别的 ——
+    def test_inside_requirement_fails_when_profile_is_elsewhere(self):
+        """画像现居 CN、项目在 AU → fail → 整体 cannot。
+
+        关键断言是 **cannot 的理由必须是这一条**：若判 fail 的 code 落到别处
+        （比如学历/资金），用户会去补一件无关的事，而真正挡他的是「人不在澳洲，
+        这条要求补材料满足不了」。
+        """
+        state, dims = mr.judge(self.docs["au-485-graduate"], dict(mr.SAMPLES["B"],
+                                                                 current_location="CN"))
+        self.assertEqual(state, "cannot")
+        failures = [d for d in dims if d["kind"] == "fail"]
+        self.assertEqual([d["code"] for d in failures], ["pre_inside_country_no"], failures)
+        d = failures[0]
+        self.assertIn("AU", d["need"], "need 必须写明要求国")
+        self.assertIn("CN", d["have"], "have 必须写明画像的现居地")
+        self.assertIn("境内", d["why"])
+
+    # —— ③ 无 location → silent（维持 P1c 的诚实结论，缺省绝不判 pass）——
+    def test_missing_location_stays_silent(self):
+        """画像没有 `current_location` 时必须判 silent，**绝不默认 pass**。
+
+        这条与「三画像填了值」是两件事，必须分开钉：夹具填值让九个项目能判出来，
+        但引擎本身的缺省行为必须仍是 silent。否则「补夹具」与「洗白」在代码上
+        看不出区别——将来有人删掉这个分支，样例画像照样全绿，而真实用户会开始
+        看到虚假的「能申」。
+
+        四种「取不到合法值」的形态各验一遍：键缺失 / 显式 None / 空串 / 小写。
+        最后一种是刻意不宽容：`cn` 只差一个大小写，但宽容匹配一旦写错，错误会
+        静默传播到每一条项目，而这种错在界面上看起来完全正常。
+        """
+        for bad in ("absent", None, "", "cn", "CHINA", "中国"):
+            pr = dict(mr.SAMPLES["B"])
+            if bad == "absent":
+                pr.pop("current_location", None)
+                self.assertNotIn("current_location", pr)
+            else:
+                pr["current_location"] = bad
+            _, dims = mr.judge(self.docs["au-485-graduate"], pr)
+            pre = [d for d in dims if d["dim"] == "precondition"
+                   and d["code"].startswith("pre_inside_country")]
+            self.assertEqual(len(pre), 1, f"current_location={bad!r} 时在地维缺失")
+            self.assertEqual(
+                (pre[0]["code"], pre[0]["kind"]),
+                ("pre_inside_country", "silent"),
+                f"current_location={bad!r} 时未落 silent：{pre[0]}",
+            )
+
+    # —— ④ 项目侧拿不到国别 → 也不许硬判 ——
+    def test_program_without_country_code_stays_silent(self):
+        """项目侧 country_code 缺失时，「境内」无所指 → silent。
+
+        这一支不常见，但少了它，`loc == cc` 会把画像值与 None 比较，结果恒不等
+        → 恒判 fail，等于替官方拒绝。
+
+        **不把 `GL` 也特判成缺省**：库里两条全球项目（global-aiesec /
+        global-iaeste）根本没有在地要求（`precondition_kinds` 为空），`GL` 在
+        它们身上永远不会被这一支读到。为它写一条没有真实用例的分支，等于给
+        将来的误读留一个「看起来处理过了」的假象；真出现「全球项目 + 在地要求」
+        这种组合时，应该停下来看数据，而不是让引擎猜。
+        """
+        doc = json.loads(json.dumps(self.docs["au-485-graduate"]))
+        self.assertEqual(doc["program"]["country_code"], "AU")
+        del doc["program"]["country_code"]
+        for loc in ("CN", "AU"):
+            pr = dict(mr.SAMPLES["B"], current_location=loc)
+            _, dims = mr.judge(doc, pr)
+            pre = next(d for d in dims if d["code"].startswith("pre_inside_country"))
+            self.assertEqual((pre["code"], pre["kind"]),
+                             ("pre_inside_country", "silent"), loc)
+
+    # —— ⑤ 同构一条：uk-graduate-visa 的方向必须与 au-485 一致 ——
+    def test_uk_graduate_visa_mirrors_the_same_direction(self):
+        """英国毕业生签证的在地要求与澳洲 485 是同一类，方向必须同构。
+
+        单点验证 au-485 不够：两条要求来自不同数据文件、不同措辞（`be in
+        Australia` / `You must be in the UK`），只测一条时，另一条可以是
+        「恰好也判对了」。这里用同一组画像取值把两条绑在一起验：
+        在要求国 → 都 pass；不在 → 都 fail。
+        """
+        for pid, cc in (("au-485-graduate", "AU"), ("uk-graduate-visa", "GB")):
+            self.assertEqual(self.pre_code(pid, current_location=cc),
+                             ("pre_inside_country_ok", "pass"), pid)
+            self.assertEqual(self.pre_code(pid, current_location="CN"),
+                             ("pre_inside_country_no", "fail"), pid)
+
+    # —— ⑥ 新码不许进甲类，旧码的乙类登记不许动 ——
+    def test_grounded_codes_are_not_classified_as_silent(self):
+        """接地后产生的是 pass/fail，不是 silent，所以不该进甲乙任何一张表。
+
+        `pre_inside_country`（silent）仍留在 `CLASS_B_CODES` 里，一个字节没动：
+        它是「画像不采集现居地」的诚实码，本单没有把它从债里摘掉——摘掉的
+        前提是画像真的采集了，而那是前端的事，引擎不能替它宣布已还清。
+        """
+        self.assertIn("pre_inside_country", mr.CLASS_B_CODES)
+        self.assertNotIn("pre_inside_country_ok", mr.CLASS_B_CODES)
+        self.assertNotIn("pre_inside_country_no", mr.CLASS_B_CODES)
+        self.assertNotIn("pre_inside_country_ok", mr.BY_DESIGN_CODES)
+        self.assertNotIn("pre_inside_country_no", mr.BY_DESIGN_CODES)
+
+    # —— ⑦ 三画像的 location 取值本身被钉住（它决定翻转方向）——
+    def test_sample_profiles_pin_current_location(self):
+        """三画像的现居地取值必须显式写在夹具里，且与 persona 一致。
+
+        这不是「随便填一个就行」的字段：它直接决定九个项目行的翻转方向。
+        A/B 是大陆、C 是台湾（都是 prospective applicant，人还在护照所属地），
+        写成 AU/GB 会让「须在该国境内」那一批全部翻成 pass——数值上更好看，
+        但那是把夹具调成结论，不是把引擎修对。
+        """
+        self.assertEqual(mr.SAMPLES["A"]["current_location"], "CN")
+        self.assertEqual(mr.SAMPLES["B"]["current_location"], "CN")
+        self.assertEqual(mr.SAMPLES["C"]["current_location"], "TW")
+        # 现居地与护照所属地在这批画像上一致（persona 是准申请人）
+        for name, cc in (("A", "CN"), ("B", "CN"), ("C", "TW")):
+            self.assertEqual(mr.current_location_of(mr.SAMPLES[name]), cc, name)
 
 
 class CliBehaviour(unittest.TestCase):

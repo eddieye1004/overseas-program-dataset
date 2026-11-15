@@ -1,8 +1,9 @@
 {
- "rules_version": 8,
+ "rules_version": 9,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
+   "country_code": "AT",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -70,6 +71,7 @@
    }
   },
   "au-407-training": {
+   "country_code": "AU",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -139,6 +141,7 @@
    }
   },
   "au-462-work-holiday": {
+   "country_code": "AU",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "not_eligible",
@@ -206,6 +209,7 @@
    }
   },
   "au-485-graduate": {
+   "country_code": "AU",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -275,6 +279,7 @@
    }
   },
   "au-485-vocational": {
+   "country_code": "AU",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -344,6 +349,7 @@
    }
   },
   "ca-iec-working-holiday": {
+   "country_code": "CA",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -411,6 +417,7 @@
    }
   },
   "ca-pgwp": {
+   "country_code": "CA",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -478,6 +485,7 @@
    }
   },
   "de-16e-internship": {
+   "country_code": "DE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -545,6 +553,7 @@
    }
   },
   "de-20-job-search": {
+   "country_code": "DE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -615,6 +624,7 @@
    }
   },
   "de-chancenkarte": {
+   "country_code": "DE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -682,6 +692,7 @@
    }
   },
   "dk-working-holiday": {
+   "country_code": "DK",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "unknown",
@@ -751,6 +762,7 @@
    }
   },
   "es-busqueda-empleo": {
+   "country_code": "ES",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -820,6 +832,7 @@
    }
   },
   "fi-look-for-work": {
+   "country_code": "FI",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -889,6 +902,7 @@
    }
   },
   "fr-recherche-emploi": {
+   "country_code": "FR",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -958,6 +972,7 @@
    }
   },
   "global-aiesec-global-talent": {
+   "country_code": "GL",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1025,6 +1040,7 @@
    }
   },
   "global-iaeste": {
+   "country_code": "GL",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1092,6 +1108,7 @@
    }
   },
   "ie-third-level-graduate": {
+   "country_code": "IE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1161,6 +1178,7 @@
    }
   },
   "ie-working-holiday-authorisation": {
+   "country_code": "IE",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -1228,6 +1246,7 @@
    }
   },
   "is-job-search-after-graduation": {
+   "country_code": "IS",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1297,6 +1316,7 @@
    }
   },
   "it-ricerca-lavoro": {
+   "country_code": "IT",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1366,6 +1386,7 @@
    }
   },
   "jp-working-holiday": {
+   "country_code": "JP",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -1435,6 +1456,7 @@
    }
   },
   "kr-h1-working-holiday": {
+   "country_code": "KR",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -1502,6 +1524,7 @@
    }
   },
   "mt-nomad-residence": {
+   "country_code": "MT",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1571,6 +1594,7 @@
    }
   },
   "nl-orientation-year": {
+   "country_code": "NL",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1638,6 +1662,7 @@
    }
   },
   "no-skilled-worker": {
+   "country_code": "NO",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1705,6 +1730,7 @@
    }
   },
   "nz-china-whv": {
+   "country_code": "NZ",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1774,6 +1800,7 @@
    }
   },
   "nz-post-study-work": {
+   "country_code": "NZ",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1841,6 +1868,7 @@
    }
   },
   "se-look-for-work": {
+   "country_code": "SE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1910,6 +1938,7 @@
    }
   },
   "sg-employment-pass": {
+   "country_code": "SG",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1977,6 +2006,7 @@
    }
   },
   "sg-s-pass": {
+   "country_code": "SG",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2044,6 +2074,7 @@
    }
   },
   "sg-work-holiday-programme": {
+   "country_code": "SG",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -2111,6 +2142,7 @@
    }
   },
   "uk-graduate-visa": {
+   "country_code": "GB",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2180,6 +2212,7 @@
    }
   },
   "uk-hpi-visa": {
+   "country_code": "GB",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2247,6 +2280,7 @@
    }
   },
   "uk-short-term-study-visa": {
+   "country_code": "GB",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2314,6 +2348,7 @@
    }
   },
   "uk-youth-mobility-scheme": {
+   "country_code": "GB",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -2381,6 +2416,7 @@
    }
   },
   "us-f1-opt": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2451,6 +2487,7 @@
    }
   },
   "us-j1-camp-counselor": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2518,6 +2555,7 @@
    }
   },
   "us-j1-intern": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2585,6 +2623,7 @@
    }
   },
   "us-j1-research-scholar": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2652,6 +2691,7 @@
    }
   },
   "us-j1-summer-work-travel": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2719,6 +2759,7 @@
    }
   },
   "us-j1-trainee": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",

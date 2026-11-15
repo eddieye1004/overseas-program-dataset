@@ -72,7 +72,7 @@ export function VerdictView({
   watchedIds: string[];
   onToggleWatch: (id: string) => void;
 }) {
-  const { t, te, lang } = useI18n();
+  const { t, td, te, lang } = useI18n();
   const [index, setIndex] = useState<ProgramIndexEntry[] | null>(null);
   const [flags, setFlags] = useState<MatchFlagsFile | null>(null);
   const [profile, setProfile] = useState<VerdictProfile>(readProfile);
@@ -107,6 +107,25 @@ export function VerdictView({
     const m = new Map<string, ProgramIndexEntry>();
     for (const p of index ?? []) m.set(p.id, p);
     return m;
+  }, [index]);
+
+  /**
+   * 现居地下拉的国家清单：从 index 里实际出现的项目国别生成，去重后按中文名排序。
+   *
+   * 不从别处引一份手写国家表：项目覆盖到哪国，选项就有哪国，永远不会出现
+   * 「下拉里有这个国家但库里没有项目」或反之。全球项目（country_code=GL）不进去选，
+   * 它不是一个人能「住在」的地方。
+   */
+  const countryOptions = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const p of index ?? []) {
+      const code = p.country_code;
+      if (!code || code === 'GL' || m.has(code)) continue;
+      m.set(code, p.country);
+    }
+    return [...m.entries()]
+      .map(([code, name]) => ({ code, name }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'zh-Hans-CN'));
   }, [index]);
 
   const rows = useMemo(() => {
@@ -256,6 +275,35 @@ export function VerdictView({
                 })
               }
             />
+          </label>
+
+          {/*
+            现居地（P1d）。与护照分开问：护照决定「你是谁」，这里决定「你人在哪」。
+            有几条项目要求递交时人必须在该国境内（英国的毕业生签证就是），
+            这条要求判的是后者——拿中国护照在英国读完书的人，护照条件与在地条件
+            是两项，只填护照会让那条要求永远「不可判」。
+
+            选项从 index 里已出现的国家生成，不另写一份国家表：项目覆盖到哪国，
+            这里就能选到哪国，多一份手写清单只会和 data/programs 漂移。
+            「不确定 / 不填」是默认项 → 引擎判 silent（不可判），绝不默认通过。
+          */}
+          <label className="pfield">
+            <span className="pfield__label">{t('verdictLocation')}</span>
+            <select
+              className="input"
+              value={profile.current_location ?? ''}
+              onChange={(e) =>
+                setProfile({ ...profile, current_location: e.target.value || null })
+              }
+            >
+              <option value="">{t('verdictLocationUnknown')}</option>
+              {countryOptions.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {td(c.name)}
+                </option>
+              ))}
+            </select>
+            <span className="pfield__hint">{t('verdictLocationHint')}</span>
           </label>
 
           <button type="submit" className="btn btn--primary">

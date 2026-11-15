@@ -273,6 +273,9 @@ export type UiKey =
   | 'verdictIeltsNone'
   | 'verdictIeltsHint'
   | 'verdictBudget'
+  | 'verdictLocation'
+  | 'verdictLocationUnknown'
+  | 'verdictLocationHint'
   | 'verdictSubmit'
   | 'verdictSubmitHint'
   | 'verdictSaved'
@@ -615,6 +618,10 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictIeltsNone: '没考过 / 不填',
     verdictIeltsHint: '没考过就选「没考过」。这与「考了但项目没登记分数线」是两件事，会影响结论。',
     verdictBudget: '可动用的资金证明（人民币）',
+    verdictLocation: '你现在人在哪个国家/地区',
+    verdictLocationUnknown: '不确定 / 不填',
+    verdictLocationHint:
+      '与护照不同：有些项目要求递交时人必须已经在该国境内。不填就按「无法判定」处理，不会当成符合。',
     verdictSubmit: '开始判定',
     verdictSubmitHint: '判定在你自己的浏览器里完成，不发服务器。',
     verdictSaved: '条件已存本机',
@@ -967,6 +974,10 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictIeltsHint:
       'Pick "Not taken" if you have no score. That is different from having a score a program does not publish a threshold for, and the verdict differs.',
     verdictBudget: 'Funds available for proof (CNY)',
+    verdictLocation: 'Where you are now',
+    verdictLocationUnknown: 'Not sure / leave blank',
+    verdictLocationHint:
+      'Separate from your passport: some programs require you to be inside that country when you apply. Leaving it blank stays "cannot decide" — never a silent pass.',
     verdictSubmit: 'Run the check',
     verdictSubmitHint: 'The check runs in your browser. Nothing is uploaded.',
     verdictSaved: 'Saved on this device',
@@ -1336,6 +1347,8 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     funds_amount_inferred: '该金额（{need}）在仓内标注为按同类口径沿用/归类推定，不是本项目的独立规定，不作达标判断',
     pre_local_status: '原文把「先在该国持学生签/居留并完成学业」写成本项目的前置身份：{need}',
     pre_inside_country: '原文要求在递交时人位于该国境内，画像不采集现居地，无法判定',
+    pre_inside_country_ok: '原文要求在递交时人位于该国境内；你填的现居地是 {have}，与此一致',
+    pre_inside_country_no: '原文要求{need}，而你填的现居地是 {have}；先合法进入该国才能递交',
     pre_outside_country: '原文要求在递交时人位于该国境外，画像不采集现居地，无法判定',
     pre_home_residence: '原文要求常驻护照所属地区，画像不采集现居地，无法判定',
     pre_citizenship_basis: '原文该项是国籍条件，已由护照维判定，不另算缺口',
@@ -1414,6 +1427,10 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'The source makes a prior status a prerequisite: you must already hold a student permit/residence there and have completed study there — {need}',
     pre_inside_country:
       'The source requires you to be inside that country when applying; your current location is not collected — cannot decide',
+    pre_inside_country_ok:
+      'The source requires you to be inside that country when applying; your current location ({have}) matches — satisfied',
+    pre_inside_country_no:
+      'The source requires {need}, but your current location is {have}; you would have to be lawfully inside that country first',
     pre_outside_country:
       'The source requires you to be outside that country when applying; your current location is not collected — cannot decide',
     pre_home_residence:
