@@ -85,16 +85,35 @@ export interface ProgramFlags {
     /** 金额被标注为「按同类口径沿用/归类推定」，不作达标判断 */
     amount_inferred: boolean;
   };
-  /** 前置身份 / 在地要求；kind 与 Python 的 precondition_kind() 一一对应 */
+  /** 前置身份 / 在地要求；kind 与 Python 的 precondition_kinds() 一一对应 */
   precondition: {
+    /**
+     * 两族里最靠前的类别（身份族优先）。保留单值是为了向后兼容；
+     * **判定必须读 `kinds`**，否则一个项目同时有身份条与在地条时只会画一条。
+     */
     kind:
       | 'local_status'
+      | 'inside'
       | 'outside'
       | 'home_residence'
       | 'citizenship'
       | 'document'
       | 'unclassified'
       | null;
+    /**
+     * P1c：全部前置类别，身份族在前、在地族在后。与 Python `precondition_kinds()`
+     * 的顺序逐一对应（smoke-test 比的是 (dim,kind,code) 整串，顺序错一位也会红）。
+     * 缺省（老产物）时退回 `kind` 单值。
+     */
+    kinds?: Array<
+      | 'local_status'
+      | 'inside'
+      | 'outside'
+      | 'home_residence'
+      | 'citizenship'
+      | 'document'
+      | 'unclassified'
+    >;
     /** 原文要求「岗位须预先落实」——材料/流程前提，与 kind 可同时成立——P2-0 */
     job_placement?: boolean;
     /** 原文要求「具体雇主的合格聘用」（雇主担保类：offer + ≥80% + 岗位对得上）——P2-0 */
@@ -132,7 +151,7 @@ export interface MatchFlagsFile {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 7;
+export const RULES_VERSION = 8;
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
@@ -403,33 +422,43 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
   // —— 前置身份 / 在地要求 ——
   // 这一段过去完全不存在：judge() 只读五处结构化字段，other_requirements 一个字
   // 没读，于是「只对已在英留学生开放」的毕业生签证被判成谁都能申（§4-3）。
-  const pre = flags.precondition?.kind ?? null;
-  if (pre === 'local_status') {
-    dims.push({
-      dim: 'precondition',
-      kind: 'gap',
-      code: 'pre_local_status',
-      need: '先在该国持学生/居留身份并完成学业',
-      have: '未采集该项经历',
-    });
-    // 同一件事在教育维已判 silent 的话，去掉教育维那条，避免两条重复缺口
-    if (flags.education.place_constrained) {
-      const i = dims.findIndex((d) => d.code === 'edu_place_unknown');
-      if (i >= 0) dims.splice(i, 1);
+  //
+  // P1c：身份族与在地族**各出各的结论**。过去两者共用一条 if/else 链，在地那条
+  // 只能靠同一链上的 local_status 出口发声（借接），而 us-f1-opt 同时有两条要求，
+  // 地图上只会画出第一条。现在按 kinds 顺序逐条判，与 Python 的 for 循环镜像。
+  const preKinds = flags.precondition?.kinds ?? (flags.precondition?.kind ? [flags.precondition.kind] : []);
+  for (const pre of preKinds) {
+    if (pre === 'local_status') {
+      dims.push({
+        dim: 'precondition',
+        kind: 'gap',
+        code: 'pre_local_status',
+        need: '先在该国持学生/居留身份并完成学业',
+        have: '未采集该项经历',
+      });
+      // 同一件事在教育维已判 silent 的话，去掉教育维那条，避免两条重复缺口
+      if (flags.education.place_constrained) {
+        const i = dims.findIndex((d) => d.code === 'edu_place_unknown');
+        if (i >= 0) dims.splice(i, 1);
+      }
+    } else if (pre === 'inside') {
+      // 在地：与 outside 互为镜像，不并进 outside（方向相反的条件共用一个 code
+      // 会让「必须人在境外」与「必须人在境内」在报告里长得一模一样）。
+      dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_inside_country' });
+    } else if (pre === 'outside') {
+      dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_outside_country' });
+    } else if (pre === 'home_residence') {
+      dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_home_residence' });
+    } else if (pre === 'citizenship') {
+      // 「须为参与国公民」是国籍条件，护照维已判同一件事，不另算缺口。
+      dims.push({ dim: 'precondition', kind: 'na', code: 'pre_citizenship_basis' });
+    } else if (pre === 'document') {
+      // 「须持有效租约」是递交时自备的材料，不是身份前置。
+      dims.push({ dim: 'precondition', kind: 'na', code: 'pre_document_basis' });
+    } else if (pre === 'unclassified') {
+      // 有必填的前置要求但原文类别没认出来 —— 不能落 pass，那是 §4-3 的错因。
+      dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_unclassified' });
     }
-  } else if (pre === 'outside') {
-    dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_outside_country' });
-  } else if (pre === 'home_residence') {
-    dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_home_residence' });
-  } else if (pre === 'citizenship') {
-    // 「须为参与国公民」是国籍条件，护照维已判同一件事，不另算缺口。
-    dims.push({ dim: 'precondition', kind: 'na', code: 'pre_citizenship_basis' });
-  } else if (pre === 'document') {
-    // 「须持有效租约」是递交时自备的材料，不是身份前置。
-    dims.push({ dim: 'precondition', kind: 'na', code: 'pre_document_basis' });
-  } else if (pre === 'unclassified') {
-    // 有必填的前置要求但原文类别没认出来 —— 不能落 pass，那是 §4-3 的错因。
-    dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_unclassified' });
   }
 
   // 岗位前置（P2-0）：与上面的身份类别**不是** if/else 关系，两者可同时成立

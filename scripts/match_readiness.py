@@ -222,35 +222,64 @@ EDU_BY_SPONSOR = re.compile(
     r"由\s*Sponsor\s*判断|由赞助方判断"
 )
 
-# 前置身份：这类项目只对「已经在该国持学生/居留身份（并在当地完成学业）」的人
-# 开放，不是一张面向所有人开放的表。§4-3 / §4-4 的全部偏差都来自这一条从未
-# 进入判定。三类分开处理，因为「能不能补」不一样：
-#   local_status   须先在该国持学生签/居留（或在当地完成学业）→ 判 gap（差这一项前提）
-#   outside        递交时人须在该国境外 → 画像不采集所在地，判 silent
-#   home_residence 须常驻护照所属地区 → 画像不采集现居地，判 silent
+# 前置身份 / 在地要求：这类项目只对「已经在该国持学生/居留身份（并在当地完成
+# 学业）」的人开放，或要求「递交时人就在该国境内」，不是一张面向所有人开放的表。
+# §4-3 / §4-4 的全部偏差都来自这一条从未进入判定。
+#
+# 2026-11-15（P1c，批次 9a 裁决 1 + P1a 待核 C）：**身份与在地拆成两个独立类别**。
+# 过去二者共用一个 `local_status` 出口，靠 `PRE_LOCAL_STATUS` 末支的
+# 「(必须|须)在…境内」兜底把在地要求吞成身份要求。那条兜底有两个错：
+#   ① 方向错：把「你必须人在英国才能递交」说成「你差一段留学经历」——前者是
+#      时点/在地门槛，后者是可补的经历，两类不同；
+#   ② 吞并错：us-f1-opt 同时有身份条与在地条，兜底让在地那条借身份条的 code
+#      发声，看起来「已判」，实际那条要求没有任何读点（batch9a 裁决 2「借接的
+#      code 不算兜住」）。
+# 现在：身份归 `residency_requirement`（type）+ 身份支；在地归
+# `location_requirement`（type）+ 在地支。两者各自独立可读、互不吞并。
+#
+# 类别与处置：
+#   local_status   须先在该国持学生签/居留（或在当地完成学业）→ gap（差这一项前提）
+#   inside         递交时人须在该国境内 → 画像不采集现居地，silent
+#   outside        递交时人须在该国境外 → 画像不采集现居地，silent
+#   home_residence 须常驻护照所属地区 → 画像不采集现居地，silent
 PRE_LOCAL_STATUS = re.compile(
-    r"须已持|须持[^。；]{0,30}(?:学习居留|学生居留|学生许可|学生签证|Stamp\s*2|F-1|居留许可)|"
+    # 锚点扩到「（须|且）持」「（须|且）已持」两式（批次 9a 裁决 1 原文）。
+    # 原锚点只有「须已持 / 须持」，读不到「…且该身份在递交当日仍未失效」这类
+    # 用「且」起头的并列写法；us-f1-opt 的身份条正是这种写法，而它恰恰是本单
+    # 拆出的两条里必须先保住的那一条。
+    r"(?:须|且)已持|"
+    r"(?:须|且)持[^。；]{0,30}(?:学习居留|学生居留|学生许可|学生签证|Stamp\s*2|F-1|居留许可)|"
     # 「人在法国——须持 carte de séjour étudiant」这类两路径写法：原文是外语
     # 证件名，中文正则抓不到，会整条落空。§4-3 要的是「读得到」，不是「读得准
     # 一处」，所以把常见的外语学生证件名也收进来。
     r"(?:必须|须)持[^。；]{0,20}(?:carte de séjour|séjour étudiant|student pass|study permit|"
     r"residence permit|居留许可|长期学习居留)|"
     r"曾持[^。；]{0,24}(?:居留|许可|签证)|"
-    r"在此身份下完成学业|并在此身份下|"
-    r"(?:必须|须)在[^。；]{0,6}(?:境内|国内)"
+    r"在此身份下完成学业|并在此身份下"
 )
+# 在地：递交时人须在该国境内。**独立类别，不是 local_status 的末支**。
+# 与 PRE_OUTSIDE 互为镜像——两个方向相反的条件必须各占一个 code，否则「境外
+# 递交」与「境内递交」在报告里长得一模一样（batch8 的立项理由）。
+PRE_INSIDE = re.compile(r"(?:必须|须)在[^。；]{0,6}(?:境内|国内)|人在[^。；]{0,6}(?:境内|国内)")
 PRE_OUTSIDE = re.compile(r"(?:必须|须)在[^。；]{0,10}境外|人在[^。；]{0,8}境外")
 PRE_HOME_RESIDENCE = re.compile(r"居住于其国籍国|须居住且常驻|常驻其护照|常驻中国|居住且常驻")
 
-# 其余两类 required: true 的 residency_requirement —— 都不构成「身份前置」：
+# 其余两类 required: true 的前置要求 —— 都不构成「身份前置」：
 #   citizenship  原文说的是「须为参与国公民」。那是护照条件，passport 维已经在判，
 #                这里再报一条就是同一个缺口说两遍。
 #   document     原文说的是「须持有效租约 / 购房合同」。这是递交时自行取得的文件，
 #                不是「你得先在该国读过书」，不构成可判的身份门槛。
 # 分开登记（而不是笼统落 None）是为了让「全库顺查」的结果里，每一条 required
-# 的 residency_requirement 都能指到处置理由，而不是一片无法区分的空白。
+# 的前置要求都能指到处置理由，而不是一片无法区分的空白。
 PRE_CITIZENSHIP = re.compile(r"参与国公民|协议国公民|须为[^。；]{0,12}国民")
 PRE_DOCUMENT = re.compile(r"租房或购房合同|租赁合同|租房合同|购房合同|租约")
+
+# 两族 type：身份族与在地族。`precondition_kind()` 对二者**显式双映射**，
+# 不再靠「凡是 required 的前置条都进同一条优先级链」——那正是把在地读成身份
+# 的结构性原因。
+REQ_TYPE_RESIDENCY = "residency_requirement"
+REQ_TYPE_LOCATION = "location_requirement"
+REQ_TYPES_PRECONDITION = (REQ_TYPE_RESIDENCY, REQ_TYPE_LOCATION)
 
 # 岗位前置：原文要求「必须先落实岗位/录取，Sponsor 才能办后续」的项目
 # （P2-0 us-j1-camp-counselor 的「须落实营地岗位」）。
@@ -482,24 +511,50 @@ def stay_months(doc: dict) -> int | None:
     return None
 
 
-def precondition_kind(doc: dict) -> str | None:
-    """从 `other_requirements` 里读出「前置身份/在地」类要求，返回处置类别。
-
-    只看 `required: true` 且 `type: residency_requirement` 的条目：这类条件在
-    原文里写得很清楚（「须在英国以学生签证完成课程」「递交时人必须在英国境内」），
-    但结构化字段里没有对应项，过去一个字节都没读（§4-3）。
-    """
+def _precondition_notes(doc: dict, req_type: str) -> list[str]:
+    """取某一族（身份 / 在地）里 required 为真条目的 note。"""
     reqs = (doc.get("eligibility") or {}).get("other_requirements") or []
-    notes = [
+    return [
         r.get("note") or ""
         for r in reqs
-        if r.get("required") is True and r.get("type") == "residency_requirement"
+        if r.get("required") is True and r.get("type") == req_type
     ]
+
+
+def _classify_identity(notes: list[str]) -> str | None:
+    """身份族 → 一个类别。优先级链照旧：「已经持过该身份」比国籍/文件更靠近门槛。
+
+    **空族返回 None（= 没有这一类要求）**，与「有要求但读不懂」的 unclassified
+    严格区分：混起来会让全库顺查把每条项目都报成「有一条没读懂的要求」。
+    """
     if not notes:
         return None
     joined = " ".join(notes)
     if PRE_LOCAL_STATUS.search(joined):
         return "local_status"
+    if PRE_HOME_RESIDENCE.search(joined):
+        return "home_residence"
+    if PRE_CITIZENSHIP.search(joined):
+        return "citizenship"
+    if PRE_DOCUMENT.search(joined):
+        return "document"
+    # 读不懂就是读不懂：返回 "unclassified" 而不是 None，这样「全库顺查」能把它
+    # 单独列出来。落 None 会让「没有前置要求」和「有要求但我们没读懂」长得一样。
+    return "unclassified"
+
+
+def _classify_location(notes: list[str]) -> str | None:
+    """在地族 → 一个类别。
+
+    三个方向互斥且必须分开：境内（inside）/ 境外（outside）/ 常驻护照国
+    （home_residence）。**这里没有 fallback 到身份支的分支**——那正是要拆掉的
+    东西。读不懂同样落 unclassified，空族落 None。
+    """
+    if not notes:
+        return None
+    joined = " ".join(notes)
+    if PRE_INSIDE.search(joined):
+        return "inside"
     if PRE_OUTSIDE.search(joined):
         return "outside"
     if PRE_HOME_RESIDENCE.search(joined):
@@ -508,18 +563,46 @@ def precondition_kind(doc: dict) -> str | None:
         return "citizenship"
     if PRE_DOCUMENT.search(joined):
         return "document"
-    # 读不懂就是读不懂：返回 "unclassified" 而不是 None，这样「全库顺查」能把它
-    # 单独列出来。落 None 会让「没有前置要求」和「有要求但我们没读懂」长得一样，
-    # 而后者正是 §4-3 那个错误的成因。
     return "unclassified"
+
+
+def precondition_kinds(doc: dict) -> list[str]:
+    """读出**全部**前置类别（身份族 + 在地族），按固定顺序返回。
+
+    过去只返回一个字符串，因为两类共用一条链；现在两族各出各的结论：
+    us-f1-opt 会同时得到 ["local_status", "inside"]，两条要求各自留痕，
+    任何一条都不再借另一条的 code 发声（batch9a 裁决 2）。
+
+    顺序：身份族在前、在地族在后——与 judge() 里前身分支的先后一致，前端
+    verdict.ts 必须逐一镜像（smoke-test 比的是 (dim,kind,code) 整串）。
+    """
+    out: list[str] = []
+    ident = _classify_identity(_precondition_notes(doc, REQ_TYPE_RESIDENCY))
+    if ident:
+        out.append(ident)
+    loc = _classify_location(_precondition_notes(doc, REQ_TYPE_LOCATION))
+    if loc:
+        out.append(loc)
+    return out
+
+
+def precondition_kind(doc: dict) -> str | None:
+    """单值版本：两族里**最靠前**的那个类别，没有前置要求时返回 None。
+
+    保留它是因为三处调用方只关心「有没有读到一条前置要求」这件事：
+    `p21_worksheets.rule_holds()`（判「这段原文已处置」）、`flags_of()` 的历史
+    形状契约、以及测试里的单点断言。需要逐族细节的地方请用
+    `precondition_kinds()`——本单新增的在地分支只在那条路径上出现。
+    """
+    kinds = precondition_kinds(doc)
+    return kinds[0] if kinds else None
 
 
 def precondition_text(doc: dict) -> str:
     """报告用：前置条件原文首句（只截取，不改写）。"""
-    reqs = (doc.get("eligibility") or {}).get("other_requirements") or []
-    for r in reqs:
-        if r.get("required") is True and r.get("type") == "residency_requirement":
-            return (r.get("note") or "").strip()[:120]
+    for t in REQ_TYPES_PRECONDITION:
+        for note in _precondition_notes(doc, t):
+            return note.strip()[:120]
     return ""
 
 
@@ -1053,6 +1136,9 @@ CLASS_B_CODES = frozenset(
         "funds_amount_inferred",  # 金额为同类口径沿用，属登记债
         "funds_term_unknown",  # 月额门槛缺停留期上限（数据债）
         "pre_outside_country",  # 画像不采集现居地（画像债）
+        # P1c：在地（递交时须在该国境内）。与 pre_outside_country 同为画像债，
+        # 补一个 current_location 字段就能判——按 P2-1 判据属乙类。
+        "pre_inside_country",
         "pre_home_residence",  # 画像不采集现居地（画像债）
         "pre_unclassified",  # 有必填前置要求但类别未识别（识别能力债）
         # —— P1b-2 新增：三个家族接进判定后暴露的不可判面 ——
@@ -1545,78 +1631,94 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 {"dim": "funds", "kind": "pass", "code": "funds_ok", "why": f"预算 ≥ 约 {int(cny):,} 元"}
             )
 
-    # 前置身份 / 在地要求（§4-3、§4-4）
+    # 前置身份 / 在地要求（§4-3、§4-4、P1c）
     #
     # 这一段过去不存在：judge() 只读五处结构化字段，`other_requirements` 一个字
     # 没读。于是「只对已在英留学生开放」的毕业生签证被判成「谁都能申」。
-    # 现在按原文类别分三档，宁可不可判，也不静默判过。
-    pre = precondition_kind(doc)
-    if pre == "local_status":
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "gap",
-                "code": "pre_local_status",
-                "need": "先在该国持学生/居留身份并完成学业",
-                "have": "未采集该项经历",
-                "why": "原文把「已在该国持学生签/居留并完成学业」写成本项目的前置身份，这是能补的一项（先走留学路径）",
-            }
-        )
-        if EDU_PLACE.search(edu_note):
-            # 同一件事在教育维已经判过 silent，两处都报会让用户看到两条重复缺口
-            dims = [d for d in dims if d["code"] != "edu_place_unknown"]
-    elif pre == "outside":
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "silent",
-                "code": "pre_outside_country",
-                "why": "原文要求在递交时人位于该国境外，画像不采集现居地，无法判定",
-            }
-        )
-    elif pre == "home_residence":
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "silent",
-                "code": "pre_home_residence",
-                "why": "原文要求常驻护照所属地区，画像不采集现居地，无法判定",
-            }
-        )
-    elif pre == "citizenship":
-        # 原文这一条是「须为参与国公民」——国籍条件，passport 维已经在判同一件事。
-        # 报 na（不构成新缺口），但必须留痕：落空不让它看起来「这条要求不存在」。
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "na",
-                "code": "pre_citizenship_basis",
-                "why": "原文该项是国籍条件，已由护照维判定，不另算缺口",
-            }
-        )
-    elif pre == "document":
-        # 「须持有效租约/购房合同」是递交时自行取得的文件，不是身份前置。
-        # 它与「你得先在该国读过书」不是一回事：前者人人可办，后者决定了这条
-        # 路对你开不开。判 na，不让它变成一条假缺口。
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "na",
-                "code": "pre_document_basis",
-                "why": "原文该项是递交时自备的材料（租约等），不是身份前置条件",
-            }
-        )
-    elif pre == "unclassified":
-        # 有 required 的前置身份要求，但原文类别没认出来。**不能落 pass**：
-        # §4-3 的错就是从这里来的。判 silent 并写明「有这条、我们没读懂」。
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "silent",
-                "code": "pre_unclassified",
-                "why": "该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定",
-            }
-        )
+    # 现在按原文类别分档，宁可不可判，也不静默判过。
+    #
+    # P1c：两族各出各的结论（见 precondition_kinds 的说明）。身份族与在地族不再
+    # 共用一条 if/elif 链——us-f1-opt 同时有两个 source，过去只有一条能发声。
+    for pre in precondition_kinds(doc):
+        if pre == "local_status":
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "gap",
+                    "code": "pre_local_status",
+                    "need": "先在该国持学生/居留身份并完成学业",
+                    "have": "未采集该项经历",
+                    "why": "原文把「已在该国持学生签/居留并完成学业」写成本项目的前置身份，这是能补的一项（先走留学路径）",
+                }
+            )
+            if EDU_PLACE.search(edu_note):
+                # 同一件事在教育维已经判过 silent，两处都报会让用户看到两条重复缺口
+                dims = [d for d in dims if d["code"] != "edu_place_unknown"]
+        elif pre == "inside":
+            # 在地（batch8 立项、batch9a 裁决 1 定形）：与 outside 互为镜像，
+            # 但**不并进 outside**——方向相反的两条要求共用一个 code 会让
+            # 「必须人在境外」与「必须人在境内」在报告里长得一模一样。
+            # 画像不采集现居地 → silent（乙类），补一个 current_location 字段就能判。
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "silent",
+                    "code": "pre_inside_country",
+                    "why": "原文要求在递交时人位于该国境内，画像不采集现居地，无法判定",
+                }
+            )
+        elif pre == "outside":
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "silent",
+                    "code": "pre_outside_country",
+                    "why": "原文要求在递交时人位于该国境外，画像不采集现居地，无法判定",
+                }
+            )
+        elif pre == "home_residence":
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "silent",
+                    "code": "pre_home_residence",
+                    "why": "原文要求常驻护照所属地区，画像不采集现居地，无法判定",
+                }
+            )
+        elif pre == "citizenship":
+            # 原文这一条是「须为参与国公民」——国籍条件，passport 维已经在判同一件事。
+            # 报 na（不构成新缺口），但必须留痕：落空不让它看起来「这条要求不存在」。
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "na",
+                    "code": "pre_citizenship_basis",
+                    "why": "原文该项是国籍条件，已由护照维判定，不另算缺口",
+                }
+            )
+        elif pre == "document":
+            # 「须持有效租约/购房合同」是递交时自行取得的文件，不是身份前置。
+            # 它与「你得先在该国读过书」不是一回事：前者人人可办，后者决定了这条
+            # 路对你开不开。判 na，不让它变成一条假缺口。
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "na",
+                    "code": "pre_document_basis",
+                    "why": "原文该项是递交时自备的材料（租约等），不是身份前置条件",
+                }
+            )
+        elif pre == "unclassified":
+            # 有 required 的前置要求，但原文类别没认出来。**不能落 pass**：
+            # §4-3 的错就是从这里来的。判 silent 并写明「有这条、我们没读懂」。
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "silent",
+                    "code": "pre_unclassified",
+                    "why": "该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定",
+                }
+            )
 
     # 岗位前置（P2-0 us-j1-camp-counselor）
     #
@@ -1697,7 +1799,7 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
 # --------------------------------------------------------------------------
 
-RULES_VERSION = 7
+RULES_VERSION = 8
 
 
 def flags_of(doc: dict) -> dict:
@@ -1800,11 +1902,18 @@ def flags_of(doc: dict) -> dict:
                 FUNDS_INFERRED.search(EXCHANGE_DISCLAIMER.sub("", amount_note + " " + funds_note))
             ),
         },
-        # 前置身份 / 在地要求（§4-3）。`kind` 取值与 Python judge() 的
-        # precondition 分支一一对应：local_status / outside / home_residence，
-        # 无要求时为 null。
+        # 前置身份 / 在地要求（§4-3、P1c）。`kinds` 取值与 Python judge() 的
+        # precondition 分支一一对应：local_status / inside / outside /
+        # home_residence / citizenship / document / unclassified，无要求时为空数组。
+        #
+        # 为什么是数组而不是单值：身份族与在地族各自独立出结论，一个项目可以同时
+        # 有两者（us-f1-opt）。单值时前端只能画一条，且第二条要么被吞掉、要么得
+        # 靠借别条的 code 发声——那正是本单拆掉的错。
+        # `kind` 保留单值形状（取第一项），因为 p21_worksheets 与历史断言仍按单值读；
+        # 前端按 `kinds` 判，不按 `kind` 判。
         "precondition": {
             "kind": precondition_kind(doc),
+            "kinds": precondition_kinds(doc),
             # 原文要求「岗位须预先落实」（P2-0）。与 kind 分开存：job_placement 是
             # 材料/流程前提，不是身份类别，两者可以同时成立（camp counselor 就是）。
             "job_placement": job_placement_required(doc),

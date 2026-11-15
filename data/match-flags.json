@@ -1,5 +1,5 @@
 {
- "rules_version": 7,
+ "rules_version": 8,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
@@ -42,6 +42,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -108,6 +109,9 @@
    },
    "precondition": {
     "kind": "outside",
+    "kinds": [
+     "outside"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -174,6 +178,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -239,7 +244,10 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status",
+    "kind": "inside",
+    "kinds": [
+     "inside"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -305,7 +313,10 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status",
+    "kind": "inside",
+    "kinds": [
+     "inside"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -372,6 +383,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -438,6 +450,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -504,6 +517,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -569,7 +583,10 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status",
+    "kind": "unclassified",
+    "kinds": [
+     "unclassified"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -636,6 +653,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -702,6 +720,9 @@
    },
    "precondition": {
     "kind": "citizenship",
+    "kinds": [
+     "citizenship"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -768,6 +789,9 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -834,6 +858,9 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -900,6 +927,9 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -966,6 +996,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1032,6 +1063,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1098,6 +1130,9 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1164,6 +1199,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1230,6 +1266,9 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1296,6 +1335,9 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1362,6 +1404,9 @@
    },
    "precondition": {
     "kind": "home_residence",
+    "kinds": [
+     "home_residence"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1428,6 +1473,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1494,6 +1540,9 @@
    },
    "precondition": {
     "kind": "document",
+    "kinds": [
+     "document"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1560,6 +1609,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1626,6 +1676,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": true,
     "p1b2": {
@@ -1692,6 +1743,9 @@
    },
    "precondition": {
     "kind": "home_residence",
+    "kinds": [
+     "home_residence"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1758,6 +1812,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1824,6 +1879,9 @@
    },
    "precondition": {
     "kind": "outside",
+    "kinds": [
+     "outside"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1890,6 +1948,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -1956,6 +2015,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2022,6 +2082,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2087,7 +2148,10 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status",
+    "kind": "inside",
+    "kinds": [
+     "inside"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2154,6 +2218,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2220,6 +2285,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2286,6 +2352,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2352,6 +2419,10 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status",
+     "inside"
+    ],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2418,6 +2489,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": true,
     "employer_offer": false,
     "p1b2": {
@@ -2484,6 +2556,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2550,6 +2623,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2616,6 +2690,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {
@@ -2682,6 +2757,7 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
     "employer_offer": false,
     "p1b2": {

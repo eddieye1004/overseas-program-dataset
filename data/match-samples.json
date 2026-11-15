@@ -1,5 +1,5 @@
 {
- "rules_version": 7,
+ "rules_version": 8,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -388,8 +388,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -412,6 +412,11 @@
       "code": "age_ok"
      },
      {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_place_unknown"
+     },
+     {
       "dim": "language",
       "kind": "gap",
       "code": "lang_missing"
@@ -423,8 +428,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -434,7 +439,7 @@
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -445,6 +450,11 @@
       "dim": "age",
       "kind": "pass",
       "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -458,8 +468,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -500,8 +510,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -545,8 +555,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -561,7 +571,7 @@
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -590,8 +600,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -943,13 +953,13 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_unclassified"
      }
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -978,13 +988,13 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_unclassified"
      }
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -1013,8 +1023,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_unclassified"
      }
     ]
    }
@@ -3464,8 +3474,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -3475,7 +3485,7 @@
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -3486,6 +3496,11 @@
       "dim": "age",
       "kind": "na",
       "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -3499,8 +3514,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -3510,7 +3525,7 @@
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "unknown",
     "dims": [
      {
       "dim": "passport",
@@ -3521,6 +3536,11 @@
       "dim": "age",
       "kind": "na",
       "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -3534,8 +3554,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
@@ -3932,6 +3952,11 @@
      },
      {
       "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_inside_country"
+     },
+     {
+      "dim": "precondition",
       "kind": "pass",
       "code": "pre_dependents_none"
      }
@@ -3972,6 +3997,11 @@
      },
      {
       "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_inside_country"
+     },
+     {
+      "dim": "precondition",
       "kind": "pass",
       "code": "pre_dependents_none"
      }
@@ -4009,6 +4039,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_inside_country"
      },
      {
       "dim": "precondition",
