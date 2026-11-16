@@ -36,7 +36,20 @@
     "education": {
       "minimum_level": "bachelor_in_progress",
       "major_restriction": [],
-      "note": "须满足其一：在境外学位或证书授予类高等教育机构全日制在读，且所学方向即实习方向；或从该类机构毕业不超过 12 个月。实习内容必须与专业相关，Sponsor 通过 DS-7002（T/IPP）逐项核对。"
+      "note": "须满足其一：在境外学位或证书授予类高等教育机构全日制在读，且所学方向即实习方向；或从该类机构毕业不超过 12 个月。实习内容必须与专业相关，Sponsor 通过 DS-7002（T/IPP）逐项核对。",
+      "paths": [
+        {
+          "level": "bachelor_in_progress",
+          "enrollment": "enrolled",
+          "note": "原文：`Who are currently enrolled in and pursuing studies at a foreign degree- or certificate-granting post-secondary academic institution outside the United States`。路径①=在读；层级取 bachelor_in_progress 是因为原文只要求「已在读 post-secondary」，没有要求读完。"
+        },
+        {
+          "level": "bachelor_in_progress",
+          "enrollment": "graduated",
+          "graduated_within_months": 12,
+          "note": "原文：`or Who have graduated from such an institution no more than 12 months prior to their exchange visitor program start date`。路径②=毕业后 12 个月内；12 个月为原文数字，非推算。"
+        }
+      ]
     },
     "language": {
       "required": true,

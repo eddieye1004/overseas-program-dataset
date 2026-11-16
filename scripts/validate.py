@@ -75,8 +75,13 @@ VALID_ELIGIBILITY_STATUS = {
 
 VALID_EDUCATION_LEVELS = {
     "high_school", "vocational", "bachelor_in_progress",
-    "bachelor_completed", "master", "any",
+    "bachelor_completed", "master", "doctorate", "any",
 }
+
+# 教育路径（P3）。词表必须与 match_readiness.EDU_PATH_KEYS / schema.paths 一致：
+# 三处任一不同步，就会出现「schema 允许、引擎不读」或反之的静默分歧。
+VALID_ENROLLMENT_STATES = {"enrolled", "graduated"}
+VALID_DURATION_UNITS = {"months", "weeks", "semesters", "academic_years"}
 
 VALID_CURRENCIES = {
     "AUD", "NZD", "JPY", "KRW", "USD", "EUR", "GBP",
@@ -575,6 +580,73 @@ def validate_program(rep, fname, doc):
             if "minimum_level" in edu:
                 check_enum(rep, p, "eligibility.education.minimum_level",
                            edu["minimum_level"], VALID_EDUCATION_LEVELS)
+            # 教育路径（P3）：并列路径必须显式、可枚举，且每条要有方向性
+            paths = edu.get("paths")
+            if paths is not None:
+                if not isinstance(paths, list) or not paths:
+                    rep.error(p, "eligibility.education.paths",
+                              "paths 必须是非空数组（要不就别写这个字段）")
+                else:
+                    for i, path in enumerate(paths):
+                        where = f"eligibility.education.paths[{i}]"
+                        if not isinstance(path, dict):
+                            rep.error(p, where, "每条路径必须是对象")
+                            continue
+                        if "level" in path:
+                            check_enum(rep, p, where + ".level", path["level"],
+                                       VALID_EDUCATION_LEVELS)
+                        if "enrollment" in path:
+                            check_enum(rep, p, where + ".enrollment",
+                                       path["enrollment"], VALID_ENROLLMENT_STATES)
+                        for key in ("min_years_experience", "min_months"):
+                            if key in path and not isinstance(path[key], (int, float)):
+                                rep.error(p, f"{where}.{key}", "必须是数字")
+                        gw = path.get("graduated_within_months")
+                        if gw is not None and (not isinstance(gw, int) or gw < 1):
+                            rep.error(p, where + ".graduated_within_months",
+                                      "必须是 ≥1 的整数（月）")
+                        er = path.get("experience_region")
+                        if er is not None and er not in ("outside", "any"):
+                            rep.error(p, where + ".experience_region",
+                                      f"非法取值 '{er}'，允许：outside / any")
+                        pd = path.get("min_duration")
+                        if pd is not None:
+                            if not isinstance(pd, dict):
+                                rep.error(p, where + ".min_duration", "必须是对象")
+                            else:
+                                if "unit" in pd:
+                                    check_enum(rep, p, where + ".min_duration.unit",
+                                               pd["unit"], VALID_DURATION_UNITS)
+                                pv = pd.get("value")
+                                if not isinstance(pv, (int, float)) or pv <= 0:
+                                    rep.error(p, where + ".min_duration.value",
+                                              "必须是正数")
+            # 单路径简写：有 paths 时不再读它们，但写了就得是合法值
+            if "enrollment_required" in edu:
+                check_enum(rep, p, "eligibility.education.enrollment_required",
+                           edu["enrollment_required"], VALID_ENROLLMENT_STATES)
+            if "duration_required" in edu and not isinstance(edu["duration_required"], bool):
+                rep.error(p, "eligibility.education.duration_required", "必须是布尔值")
+            md = edu.get("min_duration")
+            if md is not None:
+                if not isinstance(md, dict):
+                    rep.error(p, "eligibility.education.min_duration", "必须是对象")
+                else:
+                    if "unit" in md:
+                        check_enum(rep, p, "eligibility.education.min_duration.unit",
+                                   md["unit"], VALID_DURATION_UNITS)
+                    v = md.get("value")
+                    if not isinstance(v, (int, float)) or v <= 0:
+                        rep.error(p, "eligibility.education.min_duration.value",
+                                  "必须是正数")
+            # 「有要求无数字」必须显式登记，否则引擎无从区分「没有这条」与
+            # 「有这条但没查」。反过来 min_duration 在而 duration_required 没写
+            # 也可以（引擎按「有数字即有要求」处理），所以只查一个方向。
+            if edu.get("duration_required") is True and md is None:
+                rep.warn(p, "eligibility.education.min_duration",
+                         "duration_required=true 但没登记 min_duration：引擎会判 "
+                         "edu_duration_unknown（silent）。这是合法状态（如实说不知道），"
+                         "但如果官方数字查得到，应当补上")
 
         # 语言
         lang = elig.get("language", {})

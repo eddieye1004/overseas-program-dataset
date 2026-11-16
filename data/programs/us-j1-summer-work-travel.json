@@ -36,7 +36,18 @@
     "education": {
       "minimum_level": "bachelor_in_progress",
       "major_restriction": [],
-      "note": "必须是美国境外经认证的大专院校全日制在读学生，且已完成至少 1 个学期或同等时长的中学后教育。不限专业。"
+      "note": "必须是美国境外经认证的大专院校全日制在读学生，且已完成至少 1 个学期或同等时长的中学后教育。不限专业。",
+      "paths": [
+        {
+          "level": "bachelor_in_progress",
+          "enrollment": "enrolled",
+          "min_duration": {
+            "value": 1,
+            "unit": "semesters"
+          },
+          "note": "原文：`必须是美国境外经认证的大专院校全日制在读学生，且已完成至少 1 个学期或同等时长的中学后教育`。路径=在读 且 已读满 1 个学期。时长保留官方单位（1 学期），不折算成月填进数据 —— 换算是引擎的显式假设，不是官方数字。"
+        }
+      ]
     },
     "language": {
       "required": true,

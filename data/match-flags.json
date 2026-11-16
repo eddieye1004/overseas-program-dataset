@@ -1,5 +1,5 @@
 {
- "rules_version": 9,
+ "rules_version": 10,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
@@ -19,6 +19,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": 4,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": 48.0,
+    "duration_required": true,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -87,6 +99,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -157,6 +181,18 @@
     "level": "bachelor_in_progress",
     "years_completed": 2,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -225,6 +261,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -295,6 +343,18 @@
     "level": "vocational",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "vocational",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -365,6 +425,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -433,6 +505,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -501,6 +585,18 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -569,6 +665,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -640,6 +748,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": "学历或职业资格须被主管机构认定，且积分达到 6 分",
@@ -708,6 +828,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -778,6 +910,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -848,6 +992,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -918,6 +1074,18 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "master",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -988,6 +1156,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1056,6 +1236,18 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1124,6 +1316,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1194,6 +1398,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1262,6 +1478,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1332,6 +1560,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1402,6 +1642,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1472,6 +1724,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1540,6 +1804,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1610,6 +1886,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": 3,
     "category_required": false,
     "credential_required": null,
@@ -1678,6 +1966,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1746,6 +2046,18 @@
     "level": "high_school",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "high_school",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1816,6 +2128,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1884,6 +2208,18 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "master",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1954,6 +2290,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2022,6 +2370,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2090,6 +2450,18 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2158,6 +2530,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2228,6 +2612,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2296,6 +2692,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2364,6 +2772,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2432,6 +2852,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": "graduated",
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": 10.0,
+    "duration_required": true,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2503,6 +2935,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": true,
     "credential_required": null,
@@ -2571,6 +3015,26 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": "enrolled",
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     },
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": "graduated",
+      "graduated_within_months": 12,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2639,6 +3103,18 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "master",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2707,6 +3183,18 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": "enrolled",
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": 5.0
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2775,6 +3263,26 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": 1,
+      "experience_region": "outside",
+      "min_months": null
+     },
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": 5,
+      "experience_region": "outside",
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,

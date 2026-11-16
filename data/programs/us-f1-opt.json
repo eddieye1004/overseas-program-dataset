@@ -36,7 +36,19 @@
     "education": {
       "minimum_level": "bachelor_completed",
       "major_restriction": [],
-      "note": "须已完成学位课程的全部课程要求（论文除外）。本科、硕士、博士均可，每个学历层级各 12 个月，读完更高一级可再用一次。工作内容必须与专业直接相关，由 DSO 在 I-20 上背书、USCIS 审核。"
+      "note": "须已完成学位课程的全部课程要求（论文除外）。本科、硕士、博士均可，每个学历层级各 12 个月，读完更高一级可再用一次。**另有一道时长门槛：须在 SEVP 认证院校全日制就读满「一整个学年」（原文 `lawfully enrolled on a full-time basis for one full academic year`，USCIS OPT 页与 8 CFR 214.2(f)(10) 同款措辞）——这不是「已完成的学位数」，而是你在该校实际全日制在读的时长。**官方未把「一整个学年」折算成月数；min_duration 因此按原文单位记 `{value: 1, unit: academic_years}`，月数换算是引擎里的显式假设（一学年 = 2 学期 = 10 个月），不是官方数字。工作内容必须与专业直接相关，由 DSO 在 I-20 上背书、USCIS 审核。",
+      "paths": [
+        {
+          "level": "bachelor_completed",
+          "enrollment": "graduated",
+          "note": "原文：`must have completed all course requirements for your degree`（post-completion OPT）。层级取 bachelor_completed：原文列 bachelor / master / doctoral degree，三者最低为本科。"
+        }
+      ],
+      "duration_required": true,
+      "min_duration": {
+        "value": 1,
+        "unit": "academic_years"
+      }
     },
     "language": {
       "required": false,

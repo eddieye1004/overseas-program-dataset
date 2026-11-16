@@ -161,9 +161,90 @@
           "properties": {
             "minimum_level": {
               "type": "string",
-              "enum": ["high_school", "vocational", "bachelor_in_progress", "bachelor_completed", "master", "any"]
+              "enum": ["high_school", "vocational", "bachelor_in_progress", "bachelor_completed", "master", "doctorate", "any"],
+              "description": "学历层级门槛（单路径项目的简写）。有多条并列路径时改用 paths，判定以 paths 为准。底层是「层级序」的旧写法：它只能表达高低，无法表达「在读状态」与「学位或经验」二选一，故 P3 起仅作单路径简写。"
             },
             "years_completed": { "type": "integer", "minimum": 0, "description": "要求已完成的本科/大专年限" },
+            "paths": {
+              "type": "array",
+              "description": "学历资格的**并列路径**（任一成立即达标）。用于表达官方原文里的二选一：「学位 或 经验」「在读 或 毕业后 N 个月内」。缺失时按单一路径处理（minimum_level + enrollment_required + min_years_experience）。",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "level": {
+                    "type": "string",
+                    "enum": ["high_school", "vocational", "bachelor_in_progress", "bachelor_completed", "master", "doctorate", "any"],
+                    "description": "该路径要求的最低学历层级；any = 该路径不限学历（例如「无学位 + 5 年经验」那条）。"
+                  },
+                  "enrollment": {
+                    "type": "string",
+                    "enum": ["enrolled", "graduated"],
+                    "description": "该路径要求的在读状态：enrolled = 递交时须在读；graduated = 须已毕业。"
+                  },
+                  "graduated_within_months": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "毕业后多少个月内仍算符合（原文 no more than N months prior）。只对 graduated 侧生效，在读生不受此限。"
+                  },
+                  "min_years_experience": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "该路径要求的相关工作经验年限。与 level 同时出现时表示「学位 且 N 年经验」。"
+                  },
+                  "experience_region": {
+                    "type": "string",
+                    "enum": ["outside", "any"],
+                    "description": "经验须在何处取得：outside = 须在项目所在国境外（J-1 原文 outside the United States）；any = 不限。"
+                  },
+                  "min_months": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "该路径要求的就读时长下限（月，直给折算后的数字）。能保留官方单位时用 min_duration 而不是它。"
+                  },
+                  "min_duration": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "该路径的就读时长下限，保留官方单位（months / weeks / semesters），由引擎做唯一一次换算。与 min_months 同写时以它为准。",
+                    "properties": {
+                      "value": { "type": "number", "exclusiveMinimum": 0 },
+                      "unit": { "type": "string", "enum": ["months", "weeks", "semesters", "academic_years"] }
+                    },
+                    "required": ["value", "unit"]
+                  },
+                  "note": { "type": "string", "description": "该路径的官方依据摘录（仅供人读，不参与判定）。" }
+                }
+              }
+            },
+            "enrollment_required": {
+              "type": "string",
+              "enum": ["enrolled", "graduated"],
+              "description": "单路径项目的在读状态要求。有 paths 时以 paths 为准。"
+            },
+            "graduated_within_months": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "单路径项目的毕业宽限期（月）。"
+            },
+            "min_years_experience": {
+              "type": "number",
+              "minimum": 0,
+              "description": "单路径项目的相关工作经验年限要求（与 minimum_level 是「且」关系，不是「或」）。"
+            },
+            "duration_required": {
+              "type": "boolean",
+              "description": "原文是否提出了就读时长要求。为 true 而 min_duration 缺失 = 有要求没数字，引擎判 edu_duration_unknown（silent），不许默认 pass。"
+            },
+            "min_duration": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "就读时长下限。单位必须显式给（months / weeks / semesters），引擎不猜换算。",
+              "properties": {
+                "value": { "type": "number", "exclusiveMinimum": 0 },
+                "unit": { "type": "string", "enum": ["months", "weeks", "semesters", "academic_years"] }
+              },
+              "required": ["value", "unit"]
+            },
             "major_restriction": {
               "type": "array",
               "items": { "type": "string" },

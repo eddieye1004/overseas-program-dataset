@@ -1,5 +1,5 @@
 {
- "rules_version": 9,
+ "rules_version": 10,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -11,7 +11,10 @@
    "prior_participation": "none",
    "prior_same_category_visa": "none",
    "enrollment_status": "enrolled",
-   "current_location": "CN"
+   "current_location": "CN",
+   "study_months": 36,
+   "months_since_graduation": null,
+   "work_experience_years": 0
   },
   "B": {
    "passport": "mainland_china",
@@ -23,7 +26,10 @@
    "prior_participation": "none",
    "prior_same_category_visa": "none",
    "enrollment_status": "completed",
-   "current_location": "CN"
+   "current_location": "CN",
+   "months_since_graduation": 60,
+   "study_months": 48,
+   "work_experience_years": 3
   },
   "C": {
    "passport": "taiwan_china",
@@ -35,7 +41,10 @@
    "prior_participation": "none",
    "prior_same_category_visa": "none",
    "enrollment_status": "completed",
-   "current_location": "TW"
+   "current_location": "TW",
+   "months_since_graduation": 36,
+   "study_months": 48,
+   "work_experience_years": 1
   }
  },
  "verdicts": {
@@ -71,7 +80,7 @@
     ]
    },
    "B": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -85,8 +94,8 @@
      },
      {
       "dim": "education",
-      "kind": "silent",
-      "code": "edu_years_unknown"
+      "kind": "pass",
+      "code": "edu_ok"
      },
      {
       "dim": "language",
@@ -101,7 +110,7 @@
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -115,8 +124,8 @@
      },
      {
       "dim": "education",
-      "kind": "silent",
-      "code": "edu_years_unknown"
+      "kind": "pass",
+      "code": "edu_ok"
      },
      {
       "dim": "language",
@@ -4215,7 +4224,7 @@
     ]
    },
    "B": {
-    "state": "can",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -4229,8 +4238,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "fail",
+      "code": "edu_not_enrolled"
      },
      {
       "dim": "language",
@@ -4250,7 +4259,7 @@
     ]
    },
    "C": {
-    "state": "can",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -4264,8 +4273,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "fail",
+      "code": "edu_not_enrolled"
      },
      {
       "dim": "language",
@@ -4428,8 +4437,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "fail",
+      "code": "edu_not_enrolled"
      },
      {
       "dim": "language",
@@ -4463,8 +4472,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "fail",
+      "code": "edu_not_enrolled"
      },
      {
       "dim": "language",

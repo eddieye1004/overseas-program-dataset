@@ -319,13 +319,23 @@ class VerdictSemantics(unittest.TestCase):
         rep = mr.audit()
         # 注意：unknown_ratio 是 4 位小数的舍入值，直接与分式比会因舍入假红。
         # 所以钉「项目条数」+「比率等于该条数 / 总数」，两者合起来才是断言本意。
-        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 13)
+        #
+        # 版本轨迹（均为实测）：
+        #   P1b-2 前 14 → P1b-2 后 13 → P1c 后 16 → P1d 后 13
+        #   **P3 后 12**（12/41 = 0.2927）
+        #
+        # P3 的 −1 是 `at-rwr-card-vhq` 从 unknown 变 cannot：它的「四年制」时长
+        # 门槛现在有了画像读点（study_months=48），B 画像判 pass、不再不可判。
+        # 这是**表达式变强**导致的 unknown 下降，不是把项目藏起来 —— 它仍在
+        # 报告里逐条可见，只是从「不可判」变成「能判」。全口径从来不是停工闸门，
+        # 闸门在 test_stop_line_binds_class_b_only，它的 1/3 一个数字没改。
+        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 12)
         self.assertEqual(
             rep["max_unknown_ratio"],
-            round(13 / rep["total"], 4),
+            round(12 / rep["total"], 4),
             "全口径上限被突破了：这是「甲类变多也不许藏」的那把尺子",
         )
-        self.assertLessEqual(rep["max_unknown_ratio"], 13 / 41 + 1e-4)
+        self.assertLessEqual(rep["max_unknown_ratio"], 12 / 41 + 1e-4)
         for name, v in rep["samples"].items():
             self.assertAlmostEqual(
                 v["unknown_ratio"], v["unknown"] / rep["total"], places=4, msg=name
@@ -397,12 +407,22 @@ class VerdictSemantics(unittest.TestCase):
         剩下的 `jp-working-holiday` / `nz-china-whv` 两项属 `pre_home_residence`
         （须常驻护照所属地区），本单按派单 §1.2 只接 `pre_inside_country`，
         因此仍留在乙类——见回执 §6「遗留待裁」。
+
+        **P3 清偿：C 11 → 10，移除的正是 `at-rwr-card-vhq`，一项不多一项不少**：
+
+        | 项目 | 改前 | 改后 | 原因 |
+        |---|---|---|---|
+        | `at-rwr-card-vhq` | unknown / 乙 | cannot / `edu_low` | 画像 A 学历层级不足，判 fail；原先是 silent 兜住 |
+
+        这一项从乙类离开不是「洗白」而是**判出来了**：它的「四年制」时长门槛
+        与「学士/硕士/博士」层级门槛现在都能读，A 画像（本科在读）层级不够，
+        于是得到确定的 cannot。B/C 那边判 pass（48 个月 ≥ 四年制），也不再
+        挂在乙类里。
         """
         rep = mr.audit()
         self.assertEqual(
             rep["samples"]["C"]["class_b_ids"],
             [
-                "at-rwr-card-vhq",
                 "au-407-training",
                 "ca-pgwp",
                 "de-chancenkarte",
@@ -615,16 +635,35 @@ class Phase1Fixes(unittest.TestCase):
                     self.assertIn(f"{months} 个月", need, f"{pid}/{sample} 月份不对：{need}")
 
     # —— §4-2 奥地利红白红卡：四学年要求没有结构化 ——
-    def test_4_2_four_year_requirement_not_silently_passed(self):
+    def test_4_2_four_year_requirement_drives_result(self):
         """note 写「不少于四年高等教育，三年制本科不满足」，结构化只有
-        `minimum_level: bachelor_completed`。B 是本科毕业但学制未采集 ——
-        不许判 edu_ok，必须 silent（edu_years_unknown）并把整体降到不可判。
-        反过来 A（本科在读）仍应因层级不足判 fail，不能被这条吞掉。"""
+        `minimum_level: bachelor_completed`。
+
+        **P3 变更（原断言 edu_years_unknown/silent）**：这条要求已经有了字段与
+        画像读点 —— 它是一条时长门槛，不是「学制年数未知」。原断言钉的是旧引擎
+        的表达力上限（读到数字也只能判不可判），不是官方要求本身。
+
+        现在两侧都钉住：
+          · 时长够（B：48 个月 = 四年制）→ pass；
+          · 时长不够（同一个人改成 36 个月 = 三年制）→ fail / `edu_duration_short`；
+          · 层级不够（A：在读）→ 仍 fail，且理由落在层级而不是时长。
+        """
         self.assertEqual(mr.edu_years_required(self.docs["at-rwr-card-vhq"]), 4)
         d = self.dim("at-rwr-card-vhq", "B", "education")
-        self.assertEqual(d["code"], "edu_years_unknown", d)
-        self.assertEqual(d["kind"], "silent", d)
-        self.assertEqual(mr.judge(self.docs["at-rwr-card-vhq"], mr.SAMPLES["B"])[0], "unknown")
+        self.assertEqual(d["code"], "edu_ok", d)
+
+        # 三年制：同一个人、只改 study_months，结论必须翻成 fail
+        pr = dict(mr.SAMPLES["B"])
+        pr["study_months"] = 36
+        state, dims = mr.judge(self.docs["at-rwr-card-vhq"], pr)
+        edu = [x for x in dims if x["dim"] == "education"][0]
+        self.assertEqual(state, "cannot")
+        self.assertEqual(edu["code"], "edu_duration_short", edu)
+        self.assertEqual(edu["kind"], "fail", edu)
+
+        # A（本科在读）因层级不足判 fail，不被时长分支吞掉
+        a = self.dim("at-rwr-card-vhq", "A", "education")
+        self.assertEqual(a["code"], "edu_low", a)
         self.assertEqual(mr.judge(self.docs["at-rwr-card-vhq"], mr.SAMPLES["A"])[0], "cannot")
 
     # —— §4-3 英国毕业生签证：前置身份整类未参与判定 ——
@@ -728,14 +767,17 @@ class Phase1Fixes(unittest.TestCase):
 
         新增命中时这条会红 —— 每一例都要人工确认是 note 说话还是结构说话，
         不许让新的冲突随默认分支判过去。
+
+        **P3 变更**：判据从 `EDU_RANK.get(...)` 改成 `edu_paths()`——「结构化字段
+        是否真的写了一个层级」现在问的是路径里有没有非 any 的 level，而不是总序
+        里取到的值是不是 0。总序已退出判定面（见回执 §2 的 grep 读点清单），测试
+        若继续引用它，就成了「引擎不用、测试还在用」的第二份口径。
         """
         hits = {
             pid
             for pid, d in self.docs.items()
-            if mr.EDU_RANK.get(
-                ((d.get("eligibility") or {}).get("education") or {}).get("minimum_level")
-                or "any",
-                0,
+            if any(
+                (p.get("level") or "any") != "any" for p in mr.edu_paths(d)
             )
             and mr.EDU_BY_SPONSOR.search(
                 (((d.get("eligibility") or {}).get("education") or {}).get("note") or "")
@@ -920,10 +962,18 @@ class Phase2P0(unittest.TestCase):
         self.assertEqual(
             [p for p, d in self.docs.items() if mr.points_threshold(d)],
             ["at-rwr-card-vhq", "de-chancenkarte"],
-        )        # 点数探测器只是被认定分支引用；单有积分制的项目不受它影响
-        self.assertEqual(
-            self.dim("at-rwr-card-vhq", "B", "education")["code"], "edu_years_unknown"
         )
+        # 点数探测器只是被认定分支引用；单有积分制的项目不受它影响
+        #
+        # P3 变更（原断言 edu_years_unknown）：`at-rwr-card-vhq` 的原文是
+        # 「须完成**不少于四年**的高等教育课程，三年制本科不满足」——这是一条
+        # **时长门槛**，不是「学制年数未知」。旧代码用 EDU_YEARS_STRICT 读它，
+        # 读到数字后只能判 silent（因为画像不采集学制），于是这条真门槛永远
+        # 停在「不可判」。P3 给了画像 `study_months`（B=48 个月=4 年），这条
+        # 终于可以判出来了：B 判 pass，A（在读且层级不够）仍判 fail。
+        # **不是放宽**：把 B 的 study_months 调成 36（三年制）会翻成
+        # `edu_duration_short`（见 test_at_rwr_duration_predicate_drives_result）。
+        self.assertEqual(self.dim("at-rwr-card-vhq", "B", "education")["code"], "edu_ok")
 
     # —— no-skilled-worker：「具体雇主 offer」+「≥80%」+「岗位与资格对应」——
     def test_skilled_worker_employer_offer_is_not_silently_passed(self):

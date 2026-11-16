@@ -80,14 +80,88 @@ PASSPORT_ZH = {
     "taiwan_china": "台湾护照",
 }
 
-EDU_RANK = {
-    "high_school": 1,
-    "vocational": 2,
-    "bachelor_in_progress": 3,
-    "bachelor_completed": 4,
-    "master": 5,
-    "any": 0,
+# --------------------------------------------------------------------------
+# 学历：从「单一总序」改成「路径谓词」（P3，2026-11-16）
+#
+# 病灶：过去这一维只有一条比较式 —— `EDU_RANK[have] < EDU_RANK[need]` → cannot。
+# 一个单调刻度被拿来回答三个不同的问题，三个方向各错一次：
+#
+#   ① 「在读」是**状态**，不是层级。J-1 Intern / IAESTE / SWT 原文要求「现在
+#      必须在读」，而 `bachelor_completed`(4) > `bachelor_in_progress`(3)，
+#      于是**已毕业的人在判定上比在读的人更够格** —— 假 pass（batch9b §2 第 3 行）。
+#   ② 「学位 **或** 经验」是**并列路径**，不是层级。J-1 Trainee 原文路径②
+#      明文允许「无学历 + 5 年境外经验」，刻度里没有这个位子 —— 假 cannot，
+#      全扫首个「把合格者判死」样本（batch10 §2 第 4 行）。
+#   ③ 「学制 / 课程时长」是**时长**，不是层级。F-1 OPT 的「一整个学年」、
+#      PGWP 的「8 个月」、NZ 的「30 周」在刻度里连字段都没有（batch9a §2 第 6 行）。
+#
+# 现在判定由三族谓词组成（见 `edu_paths()` / `edu_path_eval()`）：
+#   在读状态 / 学位-或-经验组合 / 时长。
+# `EDU_RANK` 这个总序**不再出现在判定路径上**，只剩 `EDU_LEVEL_ORDER` 给报告做
+# 展示排序（回执附 grep 读点清单证明 judge() 不消费它）。
+#
+# 层级比较本身没有被取消 —— 它只是降级成**路径里的一个谓词**：`EDU_LEVEL_QUALIFIES`
+# 用显式集合表达「持有 have 是否满足 need」，而不是拿两个数字比大小。集合写全
+# 的好处是「vocation 不等于『比本科差』，它是另一类」这句话在代码里看得见。
+# --------------------------------------------------------------------------
+
+# 展示排序用的唯一一处（报告里把学历从低到高排）。判定不读它。
+EDU_LEVEL_ORDER = (
+    "high_school",
+    "vocational",
+    "bachelor_in_progress",
+    "bachelor_completed",
+    "master",
+    "doctorate",
+)
+
+_DOCTORATE = frozenset({"doctorate"})
+_MASTER_PLUS = frozenset({"master", "doctorate"})
+_BACHELOR_PLUS = frozenset({"bachelor_completed", "master", "doctorate"})
+_IN_PROGRESS_PLUS = frozenset(
+    {"bachelor_in_progress", "bachelor_completed", "master", "doctorate"}
+)
+_VOCATIONAL_PLUS = frozenset(
+    {"vocational", "bachelor_in_progress", "bachelor_completed", "master", "doctorate"}
+)
+_ANY_LEVEL = frozenset(EDU_LEVEL_ORDER)
+
+# 「持有 have 是否满足 need」。显式集合，不是 `have >= need`。
+EDU_LEVEL_QUALIFIES = {
+    "any": _ANY_LEVEL,
+    "high_school": _ANY_LEVEL,
+    "vocational": _VOCATIONAL_PLUS,
+    "bachelor_in_progress": _IN_PROGRESS_PLUS,
+    "bachelor_completed": _BACHELOR_PLUS,
+    "master": _MASTER_PLUS,
+    "doctorate": _DOCTORATE,
 }
+
+
+def edu_level_rank(level: str | None) -> int | None:
+    """展示用的层级序号；`any` 与未知值返回 None。
+
+    **不是判定**：判定读 `EDU_LEVEL_QUALIFIES`（显式集合）。这里只给报告排序、
+    以及「结构化字段是否真的写了一个层级」这类扫描用 —— 拿它比大小就是把本单
+    拆掉的错因装回去。
+    """
+    try:
+        return EDU_LEVEL_ORDER.index(level or "")
+    except ValueError:
+        return None
+
+
+def edu_level_ok(need: str | None, have: str | None) -> bool:
+    """层级路径：持有 `have` 是否满足 `need`。
+
+    未知取值（None / 拼错 / 老数据里的 `phd`）一律 False —— 不认识的值不构成
+    达标证据。调用方在 `need` 缺失时自己决定要不要走这条路径。
+    """
+    allowed = EDU_LEVEL_QUALIFIES.get(need or "any")
+    if allowed is None:
+        return False
+    return (have or "") in allowed
+
 
 # 数据里「官方未公布年龄」的统一写法：note 以 ⚠️ 开头（sync-data.mjs 与
 # validate.py 也认这一个判据，三处不能各写一套）。
@@ -183,6 +257,22 @@ EDU_YEARS_STRICT = re.compile(
     r"(?:不少于|至少|不低于)\s*([一二三四五六七八九十两\d]+)\s*个?\s*(?:学年|年)"
 )
 EDU_YEARS_DISQUALIFY = re.compile(r"不满足|不达|不符合")
+
+# 学历：note 里另写的**就读时长**下限（「至少一整个学年」「不少于 8 个月」
+# 「至少 30 周」「至少 1 个学期」）。与 EDU_YEARS_STRICT 分开，理由有两条：
+#
+#   ① 单位不同：EDU_YEARS_STRICT 只认「年 / 学年」，把「8 个月」「30 周」
+#      「1 个学期」整类漏掉（batch6 §2 第 4 行、batch9b §2 第 4 行记过四次）；
+#   ② 语义不同：「读了几年」是学制，判的是学历层级够不够；「读了多久」是
+#      这道项目的准入门槛，判的是你在这段学历里实际待了多长。两者可以同时
+#      存在（澳洲 485：2 学年 + 16 个月），把两件事压进一个正则就会互相覆盖。
+#
+# 与 EDU_YEARS_STRICT 共用 `EDU_YEARS_DISQUALIFY` 成对闸：并列路径里的
+# 「至少 2 年」（au-462 的路径②）不算额外门槛，只有原文另说「不足即不满足」
+# 时才算。这一条是旧代码注释里已经定下的规则，本单不放松。
+EDU_DURATION_IN_NOTE = re.compile(
+    r"(?:不少于|至少|不低于|不低于)\s*([一二三四五六七八九十两\d]+)\s*个?\s*(学年|年|个月|周|学期)"
+)
 
 # 学历：note 另写的「须在申请日/递交日之前 N 年内完成学业或取得学位」这类
 # **毕业时限**（P2-0 nl-orientation-year）。
@@ -462,14 +552,26 @@ def cn_int(text: str) -> int | None:
 
 
 def edu_years_required(doc: dict) -> int | None:
-    """note 里另写的硬性年限门槛（结构化 `years_completed` 缺失时用）。"""
+    """note 里另写的硬性年限门槛（结构化 `years_completed` 缺失时用）。
+
+    **P3 去掉了 `years >= 3` 的硬下限。** 那条下限的原始动机是防「三年制本科」
+    这类写法被误读成门槛，但防线已经有两条更准的：
+      ① 同段必须出现「不满足 / 不达 / 不符合」（`EDU_YEARS_DISQUALIFY`）；
+      ② 年限在判定里不再是独立门槛，而是**路径的时长谓词**（见 `edu_paths()`）——
+         路径成立与否由「你有没有 2 年」回答，不是由「门槛数字够不够大」回答。
+
+    下限的真实代价是 documented 的：batch9b §2 第 4 行「至少 1 个学期」（1 学期
+    < 1 年）、au-462「至少 2 年」、de-16e「2 年」全被吞成 None → 判 edu_ok 放行。
+    去掉后这些项目不再默认 pass，而是走时长谓词判 pass/fail，或数据缺失时落
+    `edu_duration_unknown`（silent）。翻档造成的乙类上升属如实暴露，不回滚。
+    """
     edu = (doc.get("eligibility") or {}).get("education") or {}
     note = edu.get("note") or ""
     m = EDU_YEARS_STRICT.search(note)
     if not m or not EDU_YEARS_DISQUALIFY.search(note):
         return None
     years = cn_int(m.group(1))
-    if years and years >= 3:
+    if years and years >= 1:
         return years
     return None
 
@@ -494,6 +596,317 @@ def edu_recency_years(doc: dict) -> int | None:
             if years and years >= 1:
                 return years
     return None
+
+
+# —— 教育路径谓词（P3 的核心）——
+#
+# 一条项目的教育要求被读成**一组并列路径**：任一路径成立 → 达标；全部不成立
+# → 不达标；某条路径缺数据判不了 → 不可判。这与旧代码的差别不是「更宽松」，
+# 是「能表达 or」：旧代码只有单刻度，`or` 一律被压成 and 的补集。
+
+# 路径规格里允许出现的键。schema 侧有同名的 `paths` 数组，两处词表须一致。
+EDU_PATH_KEYS = frozenset(
+    {
+        "level",              # 该路径要求的最低学历层级（None = 不限）
+        "min_years_experience",  # 该路径要求的相关工作经验年限（None = 不要求）
+        "experience_region",  # 经验须在何处取得：outside（境外）/ any
+        "enrollment",         # 该路径要求的在读状态：enrolled / graduated
+        "graduated_within_months",  # 毕业后多少个月内仍算符合（None = 无此限）
+        "min_months",         # 课程/就读时长下限（月，已折算好的原值）
+        "min_duration",       # 同上但保留官方单位 {value, unit}，由引擎折算
+        "experience_label",   # 报告里的可读标签（可选）
+        "note",               # 该路径的官方依据摘录（可选，仅供人读）
+    }
+)
+
+# 一学期按 5 个月计。**这是本仓的显式换算假设，不是官方数字。**
+# 依据：一学年 = 2 学期，而美国国务院/SEVP 对学年与学期未给统一月数；
+# 10 个月/学年的口径与「一学年 = 9–10 个月」的通行学制一致。
+# 之所以不在数据里写「5」，是因为官方原文说的是「1 个学期」——写 5 就等于
+# 把换算结果冒充成官方值。数据保留官方单位，换算只在这里发生一次。
+_SEMESTER_MONTHS = 5.0
+
+# 时长单位 → 月。只收 schema 允许的三种单位，避免「周」「学期」各写一套隐式换算。
+EDU_DURATION_UNITS = {"months", "weeks", "semesters", "academic_years"}
+_WEEKS_PER_MONTH = 52 / 12  # 52 周 / 12 月
+
+# —— 单位换算：本仓的**显式假设**，不是官方数字 ——
+#
+# 这两个常数是本仓唯一做单位换算的地方。之所以必须有它们：官方原文用的单位
+# 是「学年 / 学期」，而画像填的是月；不换算就永远判不了，硬填一个「9 个月」
+# 进数据又是把推算冒充官方值。折中是：**数据保留官方单位**，换算是常量 + 注释。
+#
+# 依据与边界：
+#   · 一学年 = 2 学期：美国学制的通行划分（fall + spring），也与 SEVP 对
+#     「one full academic year」的用法一致（学年由学校定义，联邦未给月数）。
+#   · 一学期 = 5 个月：由上式反推（10 / 2）。USCIS、8 CFR 214.2 与 SEVP
+#     Help Hub 均未给出「一学年 = 几个月」的统一数字，所以这里不声明官方性。
+#   · 这两个值只影响「够不够」的判定，不影响数据的官方来源链 —— 数据里存的是
+#     `{value: 1, unit: "academic_years"}`，任何读者都能看到官方原话的形态。
+_SEMESTER_MONTHS = 5.0
+_ACADEMIC_YEAR_MONTHS = _SEMESTER_MONTHS * 2  # 10.0
+
+
+def edu_duration_months(spec: dict | None) -> float | None:
+    """把 `{value, unit}` 形态的时长规约换算成月。
+
+    单位不在表内、缺 value、value 非正数 → None（调用方据此判 silent，
+    绝不猜一个数字）。不做「四舍五入到最近的常见值」——那是替官方改数字。
+    """
+    if not isinstance(spec, dict):
+        return None
+    value = spec.get("value")
+    unit = spec.get("unit")
+    if not isinstance(value, (int, float)) or value <= 0:
+        return None
+    if unit == "months":
+        return float(value)
+    if unit == "weeks":
+        return float(value) / _WEEKS_PER_MONTH
+    if unit == "semesters":
+        return float(value) * _SEMESTER_MONTHS
+    if unit == "academic_years":
+        return float(value) * _ACADEMIC_YEAR_MONTHS
+    return None
+
+
+def edu_min_duration_months(doc: dict) -> float | None:
+    """项目侧的**就读时长下限**（月）：结构化 `min_duration` 优先，note 兜底。
+
+    这是「一整个学年 / 8 个月 / 30 周」这类要求的唯一读点。返回 None 有两层
+    含义，调用方必须分开处理：
+      · 项目**没有**时长要求（`edu_duration_required()` 为 False）→ 不构成门槛；
+      · 项目**有**时长要求但拿不到数字 → `edu_duration_unknown`（silent）。
+    """
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    months = edu_duration_months(edu.get("min_duration"))
+    if months is not None:
+        return months
+    # note 兜底：只认「不少于 / 至少 / 不低于 N 个? (学年|年|个月|周|学期)」，
+    # 且要求同段出现不合格措辞 —— 与 EDU_YEARS_STRICT 同一套成对规则。
+    note = edu.get("note") or ""
+    hit = EDU_DURATION_IN_NOTE.search(note)
+    if not hit or not EDU_YEARS_DISQUALIFY.search(note):
+        return None
+    value = cn_int(hit.group(1))
+    if not value or value <= 0:
+        return None
+    unit = hit.group(2)
+    if unit in ("年", "学年"):
+        return float(value) * 12
+    if unit == "个月":
+        return float(value)
+    if unit == "周":
+        return float(value) / _WEEKS_PER_MONTH
+    if unit == "学期":
+        return float(value) * _SEMESTER_MONTHS
+    return None
+
+
+def edu_duration_required(doc: dict) -> bool:
+    """原文是否提出了就读时长要求（读得到数字，或明说有这条但没给数）。
+
+    `duration_required: true` 而 `min_duration` 缺失，是「有要求、无数字」的
+    显式登记 —— 这种情况必须判 silent（`edu_duration_unknown`），不许默认 pass。
+    """
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    if edu.get("duration_required") is True:
+        return True
+    if edu_min_duration_months(doc) is not None:
+        return True
+    return False
+
+
+def edu_paths(doc: dict) -> list[dict]:
+    """项目的教育资格路径列表。结构化 `education.paths` 优先，缺失时合成单一路径。
+
+    合成路径（老数据 / 只有 `minimum_level` 的项目）包含：
+      · level        = `minimum_level`
+      · enrollment   = `enrollment_required`（若有）
+      · min_years_experience = `min_years_experience`（若有，单路径项目用它表达
+                       「学位 + N 年」而不是「学位 or N 年」）
+    这样老项目的判定与改造前**语义等价**（层级比较 + 在读状态 + 时长），
+    行为差异只来自本单显式修的三处病灶，不会顺带改别的项目。
+    """
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    declared = edu.get("paths")
+    if isinstance(declared, list) and declared:
+        out = []
+        for raw in declared:
+            if not isinstance(raw, dict):
+                continue
+            path = {k: raw.get(k) for k in EDU_PATH_KEYS if k in raw}
+            # 路径没写 level 时按 any（= 该路径不限学历），不是继承项目级——
+            # 继承会让「②无学历要求 + 5 年经验」那条被项目级的 bachelor 污染。
+            path.setdefault("level", "any")
+            out.append(path)
+        return out
+    synth = {"level": edu.get("minimum_level") or "any"}
+    if edu.get("enrollment_required"):
+        synth["enrollment"] = edu.get("enrollment_required")
+    if isinstance(edu.get("min_years_experience"), (int, float)):
+        synth["min_years_experience"] = edu.get("min_years_experience")
+    if isinstance(edu.get("graduated_within_months"), (int, float)):
+        synth["graduated_within_months"] = edu.get("graduated_within_months")
+    return [synth]
+
+
+def edu_path_eval(path: dict, pr: dict, doc: dict) -> dict:
+    """判一条路径。返回 {verdict: pass|fail|unknown, need, have, blocked, why}。
+
+    三态而不是布尔：路径里的某个谓词缺数据时，这条路径**既不能算成立也不能算
+    不成立**，而整组路径的结论要按「有没有一条确定成立 / 是否全部确定不成立 /
+    其余情况」来合（见 `judge_education()`）。把 unknown 折成 fail 会让
+    「数据没登记」变成「你不能申」；折成 pass 就是本单要消灭的假 pass。
+
+    `blocked` 记录**是哪一类谓词缺数据**（experience / duration / enrollment /
+    level），调用方据此选 silent code：`edu_duration_unknown` 只该在时长真的
+    缺数时出现，不能因为经验年限没填就冒出来。
+    """
+    need_bits: list[str] = []
+    have_bits: list[str] = []
+    # 每条路径自带的判定结果：缺数据记 unknown，硬性不符记 fail
+    statuses: list[str] = []
+    blocked: list[str] = []
+    failed: list[str] = []
+
+    level = path.get("level") or "any"
+    has_level = level != "any"
+    if has_level:
+        need_bits.append(f"学历 {level}")
+        have_bits.append(f"你的学历 {pr.get('education')}")
+
+    enroll = path.get("enrollment")
+    if enroll == "enrolled":
+        need_bits.append("当前在读")
+    elif enroll == "graduated":
+        need_bits.append("已毕业")
+
+    min_exp = path.get("min_years_experience")
+    if isinstance(min_exp, (int, float)) and min_exp > 0:
+        region = path.get("experience_region") or "any"
+        where = "境外相关" if region == "outside" else "相关"
+        need_bits.append(f"{where}工作经验 {min_exp:g} 年")
+
+    min_months = path.get("min_months")
+    # 官方单位优先：`min_duration` 保留原文的「1 个学期」，换算在这里做一次。
+    # `min_months` 是已折算好的月数直给，两处都写时以 min_duration 为准。
+    spec_months = edu_duration_months(path.get("min_duration"))
+    if spec_months is not None:
+        min_months = spec_months
+    if isinstance(min_months, (int, float)) and min_months > 0:
+        need_bits.append(f"就读时长 ≥ {min_months:g} 个月")
+
+    # —— 谓词 ①：层级 ——
+    if has_level:
+        if not pr.get("education"):
+            statuses.append("unknown")
+            blocked.append("level")
+        elif not edu_level_ok(level, pr.get("education")):
+            statuses.append("fail")
+            failed.append("level")
+
+    # —— 谓词 ②：在读状态 ——
+    if enroll:
+        actual = pr.get("enrollment_status")
+        if actual is None:
+            statuses.append("unknown")
+            blocked.append("enrollment")
+        elif enroll == "enrolled":
+            if actual == "enrolled":
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("enrollment")
+        elif enroll == "graduated":
+            if actual == "completed":
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("enrollment")
+
+    # —— 谓词 ③：毕业宽限期（intern 的「毕业不超过 12 个月」）——
+    within = path.get("graduated_within_months")
+    if isinstance(within, (int, float)) and within > 0:
+        actual = pr.get("enrollment_status")
+        months_since = pr.get("months_since_graduation")
+        if actual == "enrolled":
+            statuses.append("pass")  # 在读走的是另一条腿，不受宽限期约束
+        elif isinstance(months_since, (int, float)):
+            if months_since <= within:
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("graduation_recency")
+            have_bits.append(f"你毕业 {months_since:g} 个月")
+        else:
+            statuses.append("unknown")
+            blocked.append("graduation_recency")
+
+    # —— 谓词 ④：经验年限 ——
+    if isinstance(min_exp, (int, float)) and min_exp > 0:
+        years = pr.get("work_experience_years")
+        if isinstance(years, (int, float)):
+            if years >= min_exp:
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("experience")
+            have_bits.append(f"你的经验 {years:g} 年")
+        else:
+            statuses.append("unknown")
+            blocked.append("experience")
+
+    # —— 谓词 ⑤：就读时长 ——
+    if isinstance(min_months, (int, float)) and min_months > 0:
+        done = pr.get("study_months")
+        if isinstance(done, (int, float)):
+            if done >= min_months:
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("duration")
+            have_bits.append(f"你已读 {done:g} 个月")
+        else:
+            statuses.append("unknown")
+            blocked.append("duration")
+
+    if "fail" in statuses:
+        verdict = "fail"
+    elif "unknown" in statuses:
+        verdict = "unknown"
+    else:
+        verdict = "pass"
+    return {
+        "verdict": verdict,
+        "need": " 且 ".join(need_bits) or "无额外条件",
+        "have": " / ".join(have_bits) or "已满足",
+        "blocked": blocked,
+        "failed": failed,
+        "path": path,
+    }
+
+
+def judge_education(paths: list[dict], pr: dict, doc: dict) -> dict:
+    """按「任一成立」合并各路径结论。
+
+    合并规则（顺序不能换）：
+      1. 有一条确定 pass  → pass（官方明文允许，且你的条件是成立的）
+      2. 没有 pass，但有 unknown → unknown（说不清，绝不判死）
+      3. 全部 fail → fail
+
+    第 2 条是本单最重要的一行：J-1 Trainee 的两条路径里，若画像既没有学位
+    也没有经验年限，两条都 unknown —— 结论必须是「不可判」，不是「不能申」。
+    旧代码在这种情况下直接判 `edu_low`（假 cannot）。
+    """
+    evals = [edu_path_eval(p, pr, doc) for p in paths] or [
+        edu_path_eval({"level": "any"}, pr, doc)
+    ]
+    if any(e["verdict"] == "pass" for e in evals):
+        return {"verdict": "pass", "evals": evals}
+    if any(e["verdict"] == "unknown" for e in evals):
+        return {"verdict": "unknown", "evals": evals}
+    return {"verdict": "fail", "evals": evals}
 
 
 def stay_months(doc: dict) -> int | None:
@@ -1046,6 +1459,16 @@ PROBES = OrderedDict(
 #                          —— 「你现在是在读还是已毕业」
 #   current_location       ISO 3166-1 alpha-2 大写（CN / TW / AU …）
 #                          —— 「你现在人在哪个国家/地区」（P1d）
+#   work_experience_years  number|null
+#                          —— 「你共有多少年与目标岗位相关的境外工作经验」（P3）
+#   months_since_graduation number|null
+#                          —— 「距你最近一次毕业过了多少个月」（P3，判毕业宽限期）
+#   study_months           number|null
+#                          —— 「你在这段最高学历里已实际就读多少个月」（P3，判时长门槛）
+#
+# P3 新加的三个字段，取值必须有 persona 依据（回执 §3 逐条列出），不许为了让
+# 数字好看反向调夹具。三者的共同点是：它们都是那个**具体的人**的既有事实，
+# 不是引擎的推断 —— 与 enrollment_status / current_location 同一性质。
 #
 # current_location 为什么用国家代码而不是自由文本：
 #   判在地要求（「递交时人须在该国境内」）的唯一动作是**与项目所在国比较**，
@@ -1077,6 +1500,20 @@ SAMPLES = OrderedDict(
                 "prior_same_category_visa": "none",
                 "enrollment_status": "enrolled",
                 "current_location": "CN",
+                # P3 教育路径属性（依据见回执 §3）：
+                #   21 岁、本科在读 —— 按 18 岁入学、四年制推算已读 3 年 = 36 个月，
+                #   正好是大三（与「在读」而非「应届」一致）。这个值不取边角：
+                #   取 36 而非 24/48，是因为 21-18=3 年是年龄本身给出的唯一读数。
+                "study_months": 36,
+                #   在读生没有「毕业多久」这件事，显式写 None 而不是省略键：
+                #   省略与 None 在引擎里等价（都判 unknown），写出来是为了让
+                #   「这个人没毕业」这件事在夹具上看得见，而不是像漏填。
+                "months_since_graduation": None,
+                #   在校生没有全职工作经历（实习不算「相关工作经验」——
+                #   J-1 Trainee 原文说的是 occupational field 的 work experience）。
+                #   取 0 而不是 None：0 是**已知的事实**，None 是「没问过」。
+                #   这个区分直接决定 trainee 判 fail 还是 unknown。
+                "work_experience_years": 0,
             },
         ),
         (
@@ -1093,6 +1530,19 @@ SAMPLES = OrderedDict(
                 "prior_same_category_visa": "none",
                 "enrollment_status": "completed",
                 "current_location": "CN",
+                # P3：28 岁本科毕业、预算 8 万、正在找路径出国的境内青年。
+                #   毕业月数取 60（毕业 5 年）——28 岁本科毕业的常见情形（22 岁毕业）；
+                #   这个值 > 12，使 intern 的「毕业不超过 12 个月」这条对 B 不成立，
+                #   正是本单要抓的假 pass（B 原先被判 can）。
+                "months_since_graduation": 60,
+                #   就读时长取 48 个月 = 四年制本科读满（中国大陆本科标准学制）。
+                "study_months": 48,
+                #   工作经验取 3 年：毕业 5 年、其中工作 3 年（含 gap 与考研），
+                #   是 28 岁境内求职者的常见读数。这个值 ≥ trainee 路径①的 1 年、
+                #   但 < 路径②的 5 年，所以 B 对 trainee 走的是「学位 + 1 年」这条，
+                #   而不是「无学位 + 5 年」那条 —— 两条路径各被一个画像覆盖，
+                #   夹具才有区分力。
+                "work_experience_years": 3,
             },
         ),
         (
@@ -1108,6 +1558,15 @@ SAMPLES = OrderedDict(
                 "prior_same_category_visa": "none",
                 "enrollment_status": "completed",
                 "current_location": "TW",
+                # P3：25 岁台湾本科毕业，刚出校门（22 岁毕业 → 毕业 36 个月）。
+                #   36 > 12，所以 intern 的宽限期对 C 也不成立（与 B 同向，
+                #   但原因不同：B 是「毕业久 + 有工作经验」，C 是「毕业较近但仍超期」）。
+                "months_since_graduation": 36,
+                "study_months": 48,  # 台湾本科标准学制四年
+                #   工作经验取 1 年：25 岁毕业 3 年、其中工作 1 年（其余为备考/服役/
+                #   待业）。取 1 而不是 2，是为了让它正好落在 trainee 路径①的
+                #   「≥1 年」边界上 —— 边界成立是 pass 的必要证据。
+                "work_experience_years": 1,
             },
         ),
     ]
@@ -1184,6 +1643,12 @@ CLASS_B_CODES = frozenset(
         "pre_prior_visa_unknown",  # 画像不采集同类签证史（画像债）
         "pre_prior_visa_required",  # 正向：须持过某类签证，画像不采集签证史（画像债）
         "pre_enrollment_unknown",  # 画像不采集在读/毕业状态（画像债）
+        # —— P3 新增：教育路径化后暴露的不可判面 ——
+        # 这几条全是「画像没采集那个人自己的事实」，按 P2-1 判据属乙类：
+        # 补一条画像字段就能判，不是「原文交给第三方判断」。
+        "edu_duration_unknown",  # 就读时长未采集 / 项目时长无数字（画像债 + 数据债）
+        "edu_enrollment_unknown",  # 在读状态或毕业距今天数未采集（画像债）
+        "edu_experience_unknown",  # 相关工作年限未采集（画像债）
     }
 )
 
@@ -1336,12 +1801,16 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     else:
         dims.append({"dim": "age", "kind": "pass", "code": "age_ok", "why": f"在 {lo}-{hi} 岁内"})
 
-    # 学历
+    # 学历（P3 路径化）
+    #
+    # 判定顺序与旧代码不同，改动理由逐条写在下面。**核心不变式**：
+    #   · 有一条路径确定成立 → pass；
+    #   · 全部路径确定不成立 → fail；
+    #   · 其余（含缺数据）→ silent，且 code 指名缺的是哪一类谓词。
+    # 旧代码的 `if need and by_sponsor → ... elif have < need → fail` 链条
+    # 把「层级不够」当成第一判决，于是在有并列路径的项目上必然判死（假 cannot）。
     edu = (doc.get("eligibility") or {}).get("education") or {}
     edu_note = edu.get("note") or ""
-    need = EDU_RANK.get(edu.get("minimum_level") or "any", 0)
-    have = EDU_RANK.get(pr["education"], 0)
-    years_need = edu_years_required(doc)
     recency_need = edu_recency_years(doc)
     credential_need = None
     if credential_recognition_required(doc):
@@ -1351,9 +1820,23 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
         credential_need = "学历或职业资格须被主管机构认定"
         if pts:
             credential_need += f"，且积分达到 {pts} 分"
-    if need and EDU_BY_SPONSOR.search(edu_note):
+
+    paths = edu_paths(doc)
+    result = judge_education(paths, pr, doc)
+    evals = result["evals"]
+    # 时长是**路径之外**的一条独立门槛：它约束的是「这段学历里你待了多久」，
+    # 与「哪条路径成立」正交（澳洲 485 的 2 学年 + 16 个月就是两条同时成立）。
+    # 所以它不折进 paths，而在路径给出 pass 之后再判一次。
+    dur_need = edu_min_duration_months(doc)
+    dur_required = edu_duration_required(doc)
+    dur_have = pr.get("study_months")
+
+    if EDU_BY_SPONSOR.search(edu_note) and any(
+        e["path"].get("level") not in (None, "any") for e in evals
+    ):
         # 结构化的 minimum_level 比 note 更严：note 明说法规没规定学位层级、
         # 由 Sponsor 判断。这时拿结构化字段判 fail 是替官方拒绝（§4-5）。
+        # 判在最前，因为它是「结构化字段不该被采信」，与路径成不成立无关。
         dims.append(
             {
                 "dim": "education",
@@ -1362,43 +1845,92 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 "why": "结构化字段记了最低学位，但原文写明「法规未规定学位层级、由 Sponsor 判断」，以原文为准",
             }
         )
-    elif have < need:
-        dims.append(
-            {
-                "dim": "education",
-                "kind": "fail",
-                "code": "edu_low",
-                "need": edu.get("minimum_level"),
-                "have": pr["education"],
-                "why": f"学历门槛 {edu.get('minimum_level')}",
-            }
-        )
-    elif years_need:
-        # note 另写「须完成不少于四年高等教育，三年制本科不满足」，而结构化
-        # 字段只有层级、没有学制年数（§4-2）。画像也不采集学制，所以只要
-        # note 写了这条硬门槛，就不能默认「层级到了 = 达标」。
-        #
-        # 判 silent 而不是 fail：三年制本科确实不满足，但画像只知道「本科毕业」，
-        # 不知道你读的是三年制还是四年制——替一个四年制的人判「不能申」同样是错。
-        dims.append(
-            {
-                "dim": "education",
-                "kind": "silent",
-                "code": "edu_years_unknown",
-                "need": f"已完成 {years_need} 年高等教育",
-                "why": f"原文另要求完成不少于 {years_need} 年高等教育（学制短于该年限不满足），你的学制年数未采集",
-            }
-        )
-    elif edu.get("years_completed") and pr["education"] == "bachelor_in_progress":
-        dims.append(
-            {
-                "dim": "education",
-                "kind": "silent",
-                "code": "edu_years_unknown",
-                "why": f"另要求已完成 {edu['years_completed']} 年本科，在读无法从他填的信息判定",
-            }
-        )
-    elif recency_need:
+    elif result["verdict"] == "fail":
+        # 全部路径都不成立 → 这是唯一该判 fail 的情形。need 把各路径条件并列
+        # 写出（用「或」），读的人才看得出「过的是哪一条」。code 按**共同失败的
+        # 谓词**选：层级不够是 edu_low，在读状态不符是 edu_not_enrolled ——
+        # 「你毕业了」与「你学历低了」是两件事，共用一个 code 会让修法无从下手。
+        first = evals[0]
+        failed = {f for e in evals for f in e["failed"]}
+        levels = [e["path"].get("level") for e in evals if e["path"].get("level") not in (None, "any")]
+        need_text = " 或 ".join(e["need"] for e in evals)
+        if "level" not in failed and failed & {"enrollment", "graduation_recency"}:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "fail",
+                    "code": "edu_not_enrolled",
+                    "need": need_text,
+                    "have": f"{pr.get('enrollment_status')}",
+                    "why": (
+                        "原文把「当前在读 / 毕业不超过 N 个月」写成本项目的第一道门槛，"
+                        "你的状态不满足（学历层级本身并不低）"
+                    ),
+                }
+            )
+        else:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "fail",
+                    "code": "edu_low",
+                    "need": need_text,
+                    "have": pr["education"],
+                    "why": (
+                        f"学历门槛 {edu.get('minimum_level')}"
+                        if len(evals) == 1 and levels
+                        else f"{len(evals)} 条官方路径全部不成立（{first['need']}）"
+                    ),
+                }
+            )
+    elif result["verdict"] == "pass" and dur_required:
+        # 路径成立，但另有就读时长门槛 —— 时长是硬条件，缺数字就不可判。
+        if dur_need is None:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_duration_unknown",
+                    "need": "就读时长（原文有要求，仓内无数字）",
+                    "why": (
+                        "原文把「就读时长」写成硬门槛（一整个学年 / 若干个月 / 若干周），"
+                        "但仓内未登记具体数字，你的就读时长也未采集，无法判定"
+                    ),
+                }
+            )
+        elif isinstance(dur_have, (int, float)) and dur_have >= dur_need:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "pass",
+                    "code": "edu_ok",
+                    "why": f"就读 {dur_have:g} 个月 ≥ 要求的 {dur_need:g} 个月",
+                }
+            )
+        elif isinstance(dur_have, (int, float)):
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "fail",
+                    "code": "edu_duration_short",
+                    "need": f"就读 ≥ {dur_need:g} 个月",
+                    "have": f"{dur_have:g} 个月",
+                    "why": f"就读时长差 {dur_need - dur_have:g} 个月",
+                }
+            )
+        else:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_duration_unknown",
+                    "need": f"就读 ≥ {dur_need:g} 个月",
+                    "why": (
+                        f"原文要求就读不少于 {dur_need:g} 个月，你的就读时长未采集，无法判定"
+                    ),
+                }
+            )
+    elif result["verdict"] == "pass" and recency_need:
         # note 另写「须在申请日之前 N 年内完成学业或研究」（P2-0）。结构化
         # education 里只有层级与学制年数，没有「毕业年份」；画像也不采集毕业
         # 时间，因此不能默认「层级到了 = 达标」。
@@ -1416,6 +1948,63 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                     f"原文另要求「申请日前 {recency_need} 年内完成学业/取得学位」，"
                     "你的毕业时间未采集，无法判定是否在时限内"
                 ),
+            }
+        )
+    elif result["verdict"] == "unknown":
+        # 判不了，但要分清缺的是哪一类谓词 —— 不同 code 指向不同补法，
+        # 合成一个 silent 会让「补哪个字段能判」这件事从报告里消失。
+        blocked = {b for e in evals if e["verdict"] == "unknown" for b in e["blocked"]}
+        if "duration" in blocked:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_duration_unknown",
+                    "need": " 或 ".join(e["need"] for e in evals),
+                    "why": "该路径要求一定的就读时长，你的就读时长未采集，无法判定",
+                }
+            )
+        elif blocked & {"enrollment", "graduation_recency"}:
+            # 在读状态 / 毕业距今天数：两者都是「你现在是什么状态」，
+            # 补一条画像字段就能判，故归乙类（pre_enrollment_unknown 同一口径）。
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_enrollment_unknown",
+                    "need": " 或 ".join(e["need"] for e in evals),
+                    "why": "该路径要求特定的在读/毕业状态，你的就读状态或毕业时间未采集，无法判定",
+                }
+            )
+        elif "experience" in blocked:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_experience_unknown",
+                    "need": " 或 ".join(e["need"] for e in evals),
+                    "why": "该路径接受「学位 + 工作经验」或纯经验替代，你的相关工作年限未采集，无法判定",
+                }
+            )
+        else:
+            # 落到这里只剩「画像没填学历」这类基础缺口，用原有的学制年数码不
+            # 合适（那说的是学时长短），改用与在读状态同族的通用码。
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_years_unknown",
+                    "need": " 或 ".join(e["need"] for e in evals),
+                    "why": "该路径的某一项条件无法用你已填的信息判定",
+                }
+            )
+    elif edu.get("years_completed") and pr["education"] == "bachelor_in_progress":
+        dims.append(
+            {
+                "dim": "education",
+                "kind": "silent",
+                "code": "edu_years_unknown",
+                "why": f"另要求已完成 {edu['years_completed']} 年本科，在读无法从他填的信息判定",
             }
         )
     elif participant_category_required(doc):
@@ -1886,9 +2475,15 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 #
 # rules_version 是这套口径的版本号。改了 judge() 的判定逻辑就要 +1，并同时
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
-# --------------------------------------------------------------------------
-
-RULES_VERSION = 9
+#
+# 版本轨迹：
+#   7  P1b-2 家属/签证史/学籍三家族接线
+#   8  P1c 在地从身份拆出（location_requirement + pre_inside_country）
+#   9  P1d current_location 接地，inside 三态可判
+#   10 P3 教育路径化：路径谓词替代 EDU_RANK 总序、去 >=3 下限、
+#      doctorate 入枚举、新增 edu_duration_unknown / edu_enrollment_unknown /
+#      edu_experience_unknown / edu_duration_short / edu_not_enrolled
+RULES_VERSION = 10
 
 
 def flags_of(doc: dict) -> dict:
@@ -1945,6 +2540,30 @@ def flags_of(doc: dict) -> dict:
             # note 另写的硬性年限门槛（§4-2）。结构化字段没有它时，靠它把
             # 「本科毕业」判成不可判，而不是直接判达标。
             "years_required": edu_years_required(doc),
+            # —— P3：路径谓词所需的项目侧输入 ——
+            #
+            # 前端 verdict.ts 拿这组数据重演 judge_education()，与 Python 逐条比对。
+            # 路径在这里**算好形态**（月数已折算）再传，不传原始 `{value, unit}`：
+            # 单位换算只该在 Python 侧发生一次，前端再算一遍就是两份口径。
+            "paths": [
+                {
+                    "level": p.get("level") or "any",
+                    "enrollment": p.get("enrollment"),
+                    "graduated_within_months": p.get("graduated_within_months"),
+                    "min_years_experience": p.get("min_years_experience"),
+                    "experience_region": p.get("experience_region"),
+                    "min_months": (
+                        edu_duration_months(p.get("min_duration"))
+                        if p.get("min_duration") is not None
+                        else p.get("min_months")
+                    ),
+                }
+                for p in edu_paths(doc)
+            ],
+            # 项目侧就读时长门槛（月，已折算）。None 且 duration_required 为真
+            # = 「有要求、无数字」→ 判 edu_duration_unknown（silent）。
+            "min_duration_months": edu_min_duration_months(doc),
+            "duration_required": edu_duration_required(doc),
             # note 另写的「须在申请日前 N 年内完成学业」毕业时限（P2-0）。
             # 与 years_required 是两件事：那条说读了几年，这条说什么时候毕业。
             "recency_required": edu_recency_years(doc),
@@ -1962,8 +2581,15 @@ def flags_of(doc: dict) -> dict:
             # 学位须在指定国家/名单内院校完成（§4-3/§4-4/§4-6）：结构化只有层级。
             "place_constrained": bool(EDU_PLACE.search(edu.get("note") or "")),
             # 结构化字段比 note 严：以 note 为准（§4-5）。
+            # P3 起不再用 EDU_RANK 判「结构化字段是否真的写了一个层级」——
+            # 判定路径不许消费总序。改为问 edu_paths()：路径里有没有任何一条
+            # 声明了非 any 的层级。这既覆盖老项目（合成路径来自 minimum_level），
+            # 也覆盖新项目（层级写在 paths[i].level 里）。
             "by_sponsor": bool(
-                EDU_RANK.get(edu.get("minimum_level") or "any", 0)
+                any(
+                    (p.get("level") or "any") != "any"
+                    for p in edu_paths(doc)
+                )
                 and EDU_BY_SPONSOR.search(edu.get("note") or "")
             ),
         },
