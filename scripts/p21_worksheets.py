@@ -530,7 +530,13 @@ def read_surface(det: str, doc: dict) -> set[str]:
     elif det == "JOB_PLACEMENT":
         paths.update(docs_surface)
         for i, r in enumerate(el.get("other_requirements") or []):
-            if r.get("required") is True and r.get("type") == "internship_contract":
+            # P4 §2：government_support_letter 的 sponsorship 型也进这一族的判读面
+            # （研究学者「须先拿到接收机构邀请与 Sponsorship」就写在这个 type 上）。
+            # 只认 internship_contract 会把已经接上的那条报成「面外」。
+            if r.get("required") is True and r.get("type") in (
+                "internship_contract",
+                "government_support_letter",
+            ):
                 paths.add("eligibility.other_requirements[%d].note" % i)
     elif det == "EMPLOYER_OFFER":
         paths.update(docs_surface)

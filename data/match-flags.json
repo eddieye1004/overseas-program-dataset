@@ -1,5 +1,5 @@
 {
- "rules_version": 11,
+ "rules_version": 12,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
@@ -57,6 +57,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -139,6 +141,8 @@
      "outside"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -219,6 +223,11 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "government_letter",
+     "required": true
+    },
     "employer_offer": false,
     "p1b2": {
      "forbid_child": true,
@@ -301,6 +310,8 @@
      "inside"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -383,6 +394,8 @@
      "inside"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -463,6 +476,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -543,6 +558,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -623,6 +640,11 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "unclassified",
+     "required": false
+    },
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -706,6 +728,8 @@
      "inside"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -786,6 +810,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -868,6 +894,8 @@
      "citizenship"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -950,6 +978,8 @@
      "local_status"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1032,6 +1062,8 @@
      "local_status"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1114,6 +1146,8 @@
      "local_status"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1194,6 +1228,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1274,6 +1310,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1356,6 +1394,8 @@
      "local_status"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1436,6 +1476,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1518,6 +1560,8 @@
      "local_status"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1600,6 +1644,11 @@
      "local_status"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "official_registration",
+     "required": true
+    },
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1682,6 +1731,8 @@
      "home_residence"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1762,6 +1813,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1844,6 +1897,8 @@
      "document"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -1924,6 +1979,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2004,6 +2061,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": true,
     "p1b2": {
      "forbid_child": false,
@@ -2086,6 +2145,8 @@
      "home_residence"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": true,
@@ -2166,6 +2227,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2248,6 +2311,8 @@
      "outside"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2328,6 +2393,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2408,6 +2475,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2488,6 +2557,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2570,6 +2641,8 @@
      "inside"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2650,6 +2723,11 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "credential_check",
+     "required": true
+    },
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2730,6 +2808,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2810,6 +2890,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": true,
@@ -2893,6 +2975,11 @@
      "inside"
     ],
     "job_placement": false,
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "institutional_recommendation",
+     "required": true
+    },
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -2973,6 +3060,8 @@
     "kind": null,
     "kinds": [],
     "job_placement": true,
+    "job_placement_flavor": "camp",
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -3060,7 +3149,9 @@
    "precondition": {
     "kind": null,
     "kinds": [],
-    "job_placement": false,
+    "job_placement": true,
+    "job_placement_flavor": "ds7002",
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -3140,7 +3231,12 @@
    "precondition": {
     "kind": null,
     "kinds": [],
-    "job_placement": false,
+    "job_placement": true,
+    "job_placement_flavor": "sponsor_ds2019",
+    "government_support_letter": {
+     "kind": "sponsorship",
+     "required": true
+    },
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -3220,7 +3316,9 @@
    "precondition": {
     "kind": null,
     "kinds": [],
-    "job_placement": false,
+    "job_placement": true,
+    "job_placement_flavor": "summer_job",
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,
@@ -3308,7 +3406,9 @@
    "precondition": {
     "kind": null,
     "kinds": [],
-    "job_placement": false,
+    "job_placement": true,
+    "job_placement_flavor": "ds7002",
+    "government_support_letter": null,
     "employer_offer": false,
     "p1b2": {
      "forbid_child": false,

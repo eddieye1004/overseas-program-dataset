@@ -395,31 +395,177 @@ REQ_TYPES_PRECONDITION = (REQ_TYPE_RESIDENCY, REQ_TYPE_LOCATION)
 # us-j1-intern / us-j1-trainee 写成 internship_contract（DS-7002）。两类都判
 # gap 而非 silent——「你还没落实岗位」是能补的一步（去报名、面试、拿 placement），
 # 与「数据里没写这一条」不同。
+#
+# P4 Sponsor 包（2026-11-17）扩围：原词表只认营地辅导员那一句英文直译
+# （`pre-arranged` / 「预先落实」），对同一件事的另外三种官方写法全 MISS，
+# 而注释早就写着「us-j1-intern / us-j1-trainee 两类都判 gap」——注释即承诺、
+# 实测零输出（batch9a §2.2①、batch10 §1.2①）。补的四族写法都是**同一条法规
+# 事实的不同表述**，不是新增语义：
+#   ① 「落实/安排/安置 + 岗位」（SWT 的「须先由 Sponsor 落实暑期岗位」、
+#      intern 的「落实实习岗位」）；
+#   ② 「全部签字 / 三方签字」（DS-7002 三方签署即 placement 已落实的证据形态）；
+#   ③ 「签署 / 出具 DS-7002」；
+#   ④ 「通过 / 参加雇主面试」（SWT 拿 Job Offer 的唯一路径）；
+#   ⑤ 「出具 / 签发 DS-2019」（Sponsor 只对已落实 placement 者签发）；
+#   ⑥ 「拿到接收机构的邀请与 Sponsorship」（研究学者的 Sponsor 入口）。
+# 只扩词表、不改判定语义：依旧是「必填材料命中即 gap」，依旧不判 silent。
 JOB_PLACEMENT = re.compile(
     r"预先落实|事先落实|pre-arranged|prearranged|"
-    r"岗位必须(?:预先)?落实|未落实(?:营地)?岗位|尚未落实"
+    r"岗位必须(?:预先)?落实|未落实(?:营地)?岗位|尚未落实|"
+    r"(?:落实|安排|安置)[^。；\n]{0,10}岗位|"
+    r"(?:全部|三方)[^。；\n]{0,4}签字|"
+    r"(?:签|出)署[^。；\n]{0,12}DS-?7002|"
+    r"(?:通过|参加|接受)[^。；\n]{0,12}雇主[^。；\n]{0,6}面试|"
+    r"(?:出具|签发)[^。；\n]{0,8}DS-?2019|"
+    r"(?:拿到|获得|取得)[^。；\n]{0,16}(?:邀请|Sponsorship)"
 )
+
+# government_support_letter 这个 type 名不表示同一种东西（P4 §2 盘点，39 条漏网
+# 行逐条核过）：五个 required=true 的成员分别是政府支持信 / 官方求职登记 /
+# 学历认证 / 院校推荐 / Sponsor 出具的 DS-2019。按 type 名一刀切接线会把四种
+# 无关语义读成同一条缺口——那正是 P1a 得出的结论（「按名字接线会判错」）。
+#
+# 所以接成**语义分型**的 typed 读点：type 只用来定位条目，判定看 note 落在
+# 哪一型。只有 sponsorship 型（Sponsor / DS-2019 / 接收机构邀请）是 P4 的
+# 「岗位前置」，其余四型各有归属（见各分支注释），本单不接线但必须读出类型、
+# 不许留在枚举里当摆设。
+REQ_TYPE_GSL = "government_support_letter"
+
+GSL_KINDS = (
+    # ① Sponsor 出具的 DS-2019：个人无法自行申请，须先被接收机构选中。
+    #    这是 J-1 体系唯一入口，缺它就是「没有入口」，判 gap（P4 本单接线）。
+    ("sponsorship", re.compile(
+        r"Sponsorship|接收机构[^。；\n]{0,10}邀请|"
+        r"Sponsor[^。；\n]{0,14}(?:出具|签发)[^。；\n]{0,8}DS-?2019"
+    )),
+    # ② 官方求职登记（it-ricerca 的 DID）：属「在地办事手续」，与 P1 在地族同源。
+    #    锚点必须带「就业中心 / DID / Centro」——裸词「登记」会把任何提到「材料登记」
+    #    的 note 误分到这一型（分型错会让审计把一条别族的要求记到本族名下）。
+    ("official_registration", re.compile(
+        r"DID|Centro per l'?Impiego|就业中心[^。；\n]{0,12}(?:登记|声明)"
+    )),
+    # ③ 学历认证（uk-hpi 的 Ecctis）：属教育族，已由 EDU_PLACE 覆盖。
+    #    裸词「认证」会把「学历须经认证翻译」这类材料要求拉进来，故只用专名。
+    ("credential_check", re.compile(r"Ecctis|anabin|学历认证|资格认定")),
+    # ④ 院校推荐（us-f1-opt 的 DSO / I-20）：属学籍族，与 enrollment 同源。
+    ("institutional_recommendation", re.compile(r"DSO\b|I-20")),
+    # ⑤ 政府支持信（au-462 的 CICETE）：属国籍/双边安排族。
+    ("government_letter", re.compile(r"CICETE|政府支持信|支持信")),
+)
+
+
+def government_support_letter_kind(doc: dict) -> tuple[str, bool] | None:
+    """读出 `government_support_letter` 条目的语义分型与是否必填。
+
+    返回 (kind, required)；没有该 type 的条目时返回 None。kind 取 GSL_KINDS
+    里第一个命中的；一个都不命中返回 "unclassified"（诚实留痕，不猜）。
+    """
+    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
+        if r.get("type") != REQ_TYPE_GSL:
+            continue
+        note = r.get("note") or ""
+        for name, rx in GSL_KINDS:
+            if rx.search(note):
+                return name, r.get("required") is True
+        return "unclassified", r.get("required") is True
+    return None
+
+
+def _gsl_flag(doc: dict) -> dict | None:
+    """`flags_of()` 用的形状：`{"kind": ..., "required": ...}` 或 None。
+
+    单列一个小函数而不是在 flags 里内联：`government_support_letter_kind()`
+    每次调用都要扫一遍 other_requirements，内联写法会调两次（条件 + 构造），
+    既慢又容易在「两次调用之间状态不同」时写出自相矛盾的产物。
+    """
+    got = government_support_letter_kind(doc)
+    if not got:
+        return None
+    kind, required = got
+    return {"kind": kind, "required": required}
+
+
+# 四种表述（P4 §3）：同一条 code `pre_job_placement`，但 need 文案必须按项目取。
+# Muse 2026-11-14 裁决 2（batch9b §4 + batch10 §4 采纳）把文案表定为四种，
+# 理由是 four 个 J-1 子类的「落实」链条根本不同：营地是「先有营地岗位才准入境」，
+# 研究学者是「先有接收机构与 DS-2019」，SWT 是「Sponsor 落实暑期岗位 + 雇主面试」，
+# intern/trainee 是「DS-7002 三方签字文件链」。用营地文案去讲研究学者，等于
+# 修了一处漏网、引入一处错文案。
+JOB_PLACEMENT_FLAVORS = (
+    ("camp", re.compile(r"营地[^。；\n]{0,10}岗位|pre-arranged camp|营地\s*placement")),
+    ("ds7002", re.compile(r"DS-?7002|三方签字|全部签字")),
+    ("summer_job", re.compile(r"暑期岗位|雇主[^。；\n]{0,6}面试|Job Offer")),
+    ("sponsor_ds2019", re.compile(
+        r"Sponsorship|接收机构[^。；\n]{0,10}邀请|"
+        r"Sponsor[^。；\n]{0,14}(?:出具|签发)[^。；\n]{0,8}DS-?2019"
+    )),
+)
+
+JOB_PLACEMENT_NEED = {
+    "camp": "预先落实的营地岗位（Sponsor 不得为未落实营地岗位者办理入境）",
+    "sponsor_ds2019": (
+        "国务院指定 Sponsor 出具的 DS-2019（须先拿到接收机构的邀请与 Sponsorship，"
+        "个人无法自行申请）"
+    ),
+    "summer_job": (
+        "Sponsor 已落实并审查过的暑期岗位 + 通过美方雇主面试拿到的 Job Offer"
+        "（美国国务院授权 Sponsor 统一办理，无法自主申请）"
+    ),
+    "ds7002": (
+        "雇主签署的 DS-7002 培训/实习安置计划（申请人、雇主、Sponsor 三方签字后，"
+        "Sponsor 才签发 DS-2019）"
+    ),
+}
+
+# 一个都没命中时的兜底：沿用营地那条（最严的一份法规原文），
+# 但 flavor 会返回 None，flags 里留痕，测试钉住「当前全库无 None」。
+JOB_PLACEMENT_NEED_FALLBACK = JOB_PLACEMENT_NEED["camp"]
+
+
+def _job_placement_texts(doc: dict) -> list[str]:
+    """岗位前置的判读面：必填 documents + 必填 internship_contract +
+    sponsorship 型的必填 government_support_letter。
+
+    `government_support_letter` 只有 sponsorship 型进这一族（P4 §2）：其余四型
+    是政府支持信 / 求职登记 / 学历认证 / 院校推荐，接进来会造出假缺口。
+    """
+    texts = []
+    for d in doc.get("documents") or []:
+        if d.get("required") is True:
+            texts.append((d.get("name") or "") + " " + (d.get("note") or ""))
+    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
+        if r.get("required") is not True:
+            continue
+        if r.get("type") == "internship_contract":
+            texts.append(r.get("note") or "")
+        elif r.get("type") == REQ_TYPE_GSL:
+            kind, required = government_support_letter_kind(doc) or (None, False)
+            if required and kind == "sponsorship":
+                texts.append(r.get("note") or "")
+    return texts
 
 
 def job_placement_required(doc: dict) -> bool:
     """原文是否把「岗位须预先落实」写成硬性前提。
 
     只看必填项：documents 里 required 为真的条目、other_requirements 里
-    required 为真的 internship_contract。可选材料里出现同样措辞不算门槛。
+    required 为真的 internship_contract，以及 sponsorship 型的
+    government_support_letter。可选材料里出现同样措辞不算门槛。
     """
-    for d in doc.get("documents") or []:
-        if d.get("required") is not True:
-            continue
-        if JOB_PLACEMENT.search((d.get("name") or "") + " " + (d.get("note") or "")):
-            return True
-    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
-        if r.get("required") is not True:
-            continue
-        if r.get("type") == "internship_contract" and JOB_PLACEMENT.search(
-            r.get("note") or ""
-        ):
-            return True
-    return False
+    return any(JOB_PLACEMENT.search(t) for t in _job_placement_texts(doc))
+
+
+def job_placement_flavor(doc: dict) -> str | None:
+    """这条岗位前置属于四种表述里的哪一种（P4 §3）；一个都不命中返回 None。
+
+    顺序即优先级：camp 最具体（营地专属词），ds7002 次之（文件链），
+    再是 summer_job（雇主面试），最后 sponsor_ds2019（研究机构的 DS-2019）。
+    """
+    texts = _job_placement_texts(doc)
+    for name, rx in JOB_PLACEMENT_FLAVORS:
+        if any(rx.search(t) for t in texts):
+            return name
+    return None
 
 
 # 参与人身份类别：原文把资格写成「须属于某几类身份之一」，而结构化 education 只有
@@ -2515,15 +2661,24 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     # pre-arranged`），于是「岗位还没落实」被当成「能申」。判 gap 而不是 silent：
     # 岗位可以补（去报名、拿 placement），不是「数据不表态」。
     # 身份类别那条落在教育维里判（见上），与岗位是两件事，各占一维不重复。
+    #
+    # P4 §3：need 文案按项目取四种表述（营地 / 研究机构 DS-2019 / 暑期岗位+雇主
+    # 面试 / DS-7002 三方文件链）。硬编码一条营地文案会让研究学者页显示
+    # 「Sponsor 不得为未落实营地岗位者办理入境」——修一处漏网、引入一处错文案
+    # （batch2 §4.2④ / batch4 §219 / batch9b §1.2② 先后记过三次）。
     if job_placement_required(doc):
+        flavor = job_placement_flavor(doc)
         dims.append(
             {
                 "dim": "precondition",
                 "kind": "gap",
                 "code": "pre_job_placement",
-                "need": "预先落实的岗位（Sponsor 不得为未落实岗位者办理入境）",
+                # flavor 落进 dim 里，前端按它取同一条 code 的对应文案；
+                # 取不到时由 py_have_flavor 测试当场红，不靠默认值兜。
+                "flavor": flavor or "camp",
+                "need": JOB_PLACEMENT_NEED.get(flavor, JOB_PLACEMENT_NEED_FALLBACK),
                 "have": "未采集岗位落实情况",
-                "why": "原文把「岗位须预先落实」写成硬性前提：没有落实的岗位，Sponsor 不能签发后续文件、也不能办入境",
+                "why": "原文把「岗位须预先落实」写成硬性前提：没有落实的岗位/没有接收机构，Sponsor 不能签发后续文件、也不能办入境",
             }
         )
 
@@ -2596,7 +2751,10 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 #   11 P1e 两码接地：pre_outside_country（au-407 / se）与 pre_home_residence
 #      （jp / nz）可判；home_residence 判据是「现居 == 护照所属地」，不是项目国，
 #      新增 PASSPORT_COUNTRY 映射表（只登记库里真有的三类护照）
-RULES_VERSION = 11
+#   12 P4 Sponsor 包：JOB_PLACEMENT 词表扩围（六族官方写法）、
+#      government_support_letter 接成语义分型的 typed 读点（只有 sponsorship
+#      型进岗位族）、pre_job_placement 的 need 文案项目化为四种表述
+RULES_VERSION = 12
 
 
 def flags_of(doc: dict) -> dict:
@@ -2750,6 +2908,14 @@ def flags_of(doc: dict) -> dict:
             # 原文要求「岗位须预先落实」（P2-0）。与 kind 分开存：job_placement 是
             # 材料/流程前提，不是身份类别，两者可以同时成立（camp counselor 就是）。
             "job_placement": job_placement_required(doc),
+            # P4 §3：四种表述之一（camp / sponsor_ds2019 / summer_job / ds7002），
+            # 前端按它取 need 文案。null 表示「有要求但四种都不像」——测试当场红。
+            "job_placement_flavor": job_placement_flavor(doc),
+            # P4 §2：government_support_letter 的语义分型（sponsorship /
+            # official_registration / credential_check / institutional_recommendation /
+            # government_letter / unclassified）+ 是否必填。type 名不表示同一种东西，
+            # 前端与审计都按 kind 读，不按 type 名猜。
+            "government_support_letter": _gsl_flag(doc),
             # 原文要求「具体雇主的合格聘用」（P2-0 no-skilled-worker）：雇主担保
             # 类项目的 offer 前置，与上一条互斥（命中集合不重叠）。
             "employer_offer": employer_offer_required(doc),

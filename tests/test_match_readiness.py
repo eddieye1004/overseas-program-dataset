@@ -21,6 +21,7 @@
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import unittest
@@ -312,6 +313,7 @@ class VerdictSemantics(unittest.TestCase):
         | P1d 后 | 13/41 = 0.3171 | 接入 current_location，在地条判出 fail（cannot），3 项离开 unknown |
         | P3 后 | 12/41 = 0.2927 | 教育路径化，`at-rwr-card-vhq` 判出 cannot |
         | **P1e 后** | **10/41 = 0.2439** | `outside` + `home_residence` 接地，2 项判成 can |
+        | **P4 后** | **9/41 = 0.2195** | Sponsor 前置接线，`us-j1-research-scholar` 的 silent 被 gap 压过 |
 
         上限从 16 回调到 13 是**记录事实**，不是放宽标准：那 3 项从 silent 变
         cannot 是因为引擎终于能判（现居地有了），不是把它们藏起来——它们仍在
@@ -330,14 +332,19 @@ class VerdictSemantics(unittest.TestCase):
         #
         # 版本轨迹（均为实测）：
         #   P1b-2 前 14 → P1b-2 后 13 → P1c 后 16 → P1d 后 13 → P3 后 12
-        #   **P1e 后 10**（10/41 = 0.2439）
-        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 10)
+        #   **P1e 后 10**（10/41 = 0.2439）→ **P4 后 9**（9/41 = 0.2195）
+        #
+        # P4 的 −1 是 `us-j1-research-scholar`：它唯一的 silent 是甲类
+        # `edu_by_sponsor`，P4 接上岗位前置后多出一条 gap，按 fail>gap>silent
+        # 整体从 unknown 变 gap。**下限只会更紧**（≤9 而不是「等于 9」仍然成立），
+        # 所以这条断言不需要改成等式——全口径是「只许不增」的尺子。
+        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 9)
         self.assertEqual(
             rep["max_unknown_ratio"],
-            round(10 / rep["total"], 4),
+            round(9 / rep["total"], 4),
             "全口径上限被突破了：这是「甲类变多也不许藏」的那把尺子",
         )
-        self.assertLessEqual(rep["max_unknown_ratio"], 10 / 41 + 1e-4)
+        self.assertLessEqual(rep["max_unknown_ratio"], 9 / 41 + 1e-4)
         for name, v in rep["samples"].items():
             self.assertAlmostEqual(
                 v["unknown_ratio"], v["unknown"] / rep["total"], places=4, msg=name
@@ -457,7 +464,6 @@ class VerdictSemantics(unittest.TestCase):
             rep["samples"]["C"]["by_design_ids"],
             [
                 "global-aiesec-global-talent",
-                "us-j1-research-scholar",
             ],
         )
 
@@ -467,10 +473,25 @@ class VerdictSemantics(unittest.TestCase):
         # （已毕业 ≠ 在读），不再是 unknown，自然也就没有甲类。这不是甲类口径
         # 改动，是这个项目**本来就该给出的结论**终于判出来了；甲类白名单本身
         # 一个 code 都没动（test_every_silent_code_is_classified 仍钉死两个）。
+        #
+        # P4 记录：甲类 2/2/2 → 1/1/1（三个画像一致），离开的是
+        # `us-j1-research-scholar`——它原先唯一的 silent 是 `edu_by_sponsor`
+        # （甲类，由 Sponsor 判断学历层级），三画像因此都判 unknown。P4 接上
+        # 岗位/Sponsor 前置后，它额外产出一条 `pre_job_placement`/**gap**，
+        # 按「fail > gap > silent」的优先级整体从 unknown 变成 gap。
+        # 教育维那条 `edu_by_sponsor`/silent **仍在**（下一行单独钉住），
+        # 甲类白名单一个 code 没动，变的只是「同一项目里 gap 压过 silent」。
         a = mr.audit()["samples"]
-        self.assertEqual(a["A"]["unknown_by_design"], 3, "A")
-        self.assertEqual(a["B"]["unknown_by_design"], 2, "B")
-        self.assertEqual(a["C"]["unknown_by_design"], 2, "C")
+        self.assertEqual(a["A"]["unknown_by_design"], 1, "A")
+        self.assertEqual(a["B"]["unknown_by_design"], 1, "B")
+        self.assertEqual(a["C"]["unknown_by_design"], 1, "C")
+        # 上面那句「教育维仍在」必须由实测支撑，否则这条注释会变成空话
+        edu = {
+            d["code"]
+            for d in mr.judge(self.docs["us-j1-research-scholar"], mr.SAMPLES["C"])[1]
+            if d["dim"] == "education"
+        }
+        self.assertEqual(edu, {"edu_by_sponsor"}, "研究学者的甲类教育维被 P4 顺手删了")
 
     def test_mixed_cause_program_counts_as_debt(self):
         """de-chancenkarte 同时有「认定」（甲因）与「CEFR 换算」（乙因），按混合项规则
@@ -821,7 +842,15 @@ class Phase1Fixes(unittest.TestCase):
     def test_4_5_structured_level_conflict_defers_to_note(self):
         """结构化 `minimum_level: master`，note 说「法规未规定学位层级，由 Sponsor
         判断」。C（本科）原先被判「不能申」——比原文更严，等于替官方拒绝。
-        冲突时必须按 note 降级，不许拿结构化字段判 fail。"""
+        冲突时必须按 note 降级，不许拿结构化字段判 fail。
+
+        **P4 变更**：整体状态从 `unknown` 变成 `gap`，因为同一项目里多出一条
+        `pre_job_placement`（Sponsor 前置）——按 fail>gap>silent 它压过教育维
+        那条 silent。**本条守的东西一个字节没改**：教育维仍是
+        `edu_by_sponsor`/silent、仍不是 fail/cannot。所以断言从「整体等于
+        unknown」改成「整体不是 cannot，且教育维仍是那条 silent」——继续钉
+        `unknown` 就成了「钉住旧结论」而不是「钉住方向（不许替官方拒绝）」。
+        """
         self.assertEqual(
             (self.docs["us-j1-research-scholar"]["eligibility"]["education"]["minimum_level"]),
             "master",
@@ -830,8 +859,8 @@ class Phase1Fixes(unittest.TestCase):
         self.assertEqual(d["code"], "edu_by_sponsor", d)
         self.assertEqual(d["kind"], "silent", d)
         state = mr.judge(self.docs["us-j1-research-scholar"], mr.SAMPLES["C"])[0]
-        self.assertEqual(state, "unknown")
         self.assertNotEqual(state, "cannot")
+        self.assertEqual(state, "gap")
 
     def test_4_5_structural_note_conflict_scan_is_registered(self):
         """全库顺查「结构化字段与 note 冲突」：登记当前命中集合。
@@ -975,21 +1004,50 @@ class Phase2P0(unittest.TestCase):
             self.assertEqual(d["kind"], "silent", d)
 
     def test_placement_and_category_detectors_are_scoped(self):
-        """两条探测器都必须只命中营地辅导员，否则会把别的项目误降级。
+        """两条探测器各自的作用域，必须精确钉住——放宽一侧就会把别的项目误降级。
 
         `au-407-training` 的「培训项目须属于三类之一」是**培训类型**不是申请人
         身份，这正是收窄锚点到「身份」二字的原因——放宽后它会假阳。
+
+        **P4 变更（命中集合 1 → 5）**：`JOB_PLACEMENT` 从「只认营地辅导员那一句
+        英文直译」扩到 J-1 四种官方写法。命中集合变成 J-1 五兄弟里除
+        `us-f1-opt`（不是 J-1）之外的四个 + 营地本体，且**每一条都能指出原句**：
+
+        | 项目 | 触发词 | 原句出处 |
+        |---|---|---|
+        | `us-j1-camp-counselor` | 预先落实 / pre-arranged | documents「预先落实的营地岗位」 |
+        | `us-j1-intern` | 三方签字 / 签署的 DS-7002 | internship_contract + documents[2] |
+        | `us-j1-trainee` | 三方签字 / 签署的 DS-7002 | internship_contract + documents[2] |
+        | `us-j1-summer-work-travel` | 通过雇主面试 | documents[6] Job Offer |
+        | `us-j1-research-scholar` | 出具 DS-2019 / Sponsorship | government_support_letter |
+
+        同时**反向钉住不许扩散**：`EMPLOYER_OFFER` 仍只命中 `no-skilled-worker`
+        （互斥断言不变），新加坡 EP / S Pass 的「雇主 offer」不许被连带拉进来
+        （它们没有「三方签字 / DS-7002 / Sponsorship」这些词，属另一条口径）。
         """
         self.assertEqual(
             [p for p, d in self.docs.items() if mr.job_placement_required(d)],
-            ["us-j1-camp-counselor"],
+            [
+                "us-j1-camp-counselor",
+                "us-j1-intern",
+                "us-j1-research-scholar",
+                "us-j1-summer-work-travel",
+                "us-j1-trainee",
+            ],
         )
         self.assertEqual(
             [p for p, d in self.docs.items() if mr.participant_category_required(d)],
             ["us-j1-camp-counselor"],
         )
-        # 兄弟项目 us-j1-intern 的 DS-7002 是实习合同，不是「预先落实岗位」，不许连带降级
-        self.assertFalse(mr.job_placement_required(self.docs["us-j1-intern"]))
+        # 互斥关系不变：两条探测器命中集合不许重叠
+        self.assertEqual(
+            {p for p, d in self.docs.items() if mr.job_placement_required(d)}
+            & {p for p, d in self.docs.items() if mr.employer_offer_required(d)},
+            set(),
+        )
+        # 反过来也不许把「另一条口径」的项目拉进来
+        for pid in ("sg-employment-pass", "sg-s-pass", "no-skilled-worker"):
+            self.assertFalse(mr.job_placement_required(self.docs[pid]), pid)
         self.assertFalse(mr.participant_category_required(self.docs["us-j1-intern"]))
 
     # —— de-chancenkarte：「资格须被主管机构认定」+「积分 ≥6」——
@@ -1093,6 +1151,414 @@ class Phase2P0(unittest.TestCase):
         # 新加坡 EP 不许被连带降级（它有自己的前置判定口径，本腿不动）
         self.assertFalse(mr.employer_offer_required(self.docs["sg-employment-pass"]))
         self.assertEqual(self.dim("sg-employment-pass", "B", "education")["code"], "edu_ok")
+
+
+class P4SponsorPrecondition(unittest.TestCase):
+    """P4 Sponsor 前置包：词表扩围 + type 归位 + need 文案四表述 + 注释门禁。
+
+    守的是三件**方向性**的事，每件都配一正一反：
+
+    ① **词表只扩围、不改语义**（§1）：四种 J-1 官方写法必须命中并判 gap；
+       同时四条**不许命中**的反例各钉一次（新加坡 offer / 挪威 offer /
+       德国实习合同 / 全库其余项目），否则「扩围」会退化成「凡有岗位二字就报」。
+    ② **type 归位必须按语义分型、不按 type 名一刀切**（§2）：
+       `government_support_letter` 六个成员里只有 sponsorship 型进岗位族；
+       其余五型若被接进来，会造出「德国（required=false）」这种假缺口。
+    ③ **need 文案项目化**（§3）：四种表述各一条，且**不许串台**——
+       研究学者的 need 里不许出现「营地」，营地的 need 里不许出现「DS-2019」。
+       这一条是 Muse 裁决 2 的核心：修一处漏网、不许引入一处错文案。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs = {d["program"]["id"]: d for d in mr.load_programs()}
+
+    def pre(self, pid, sample="B", **override):
+        pr = dict(mr.SAMPLES[sample])
+        pr.update(override)
+        _, dims = mr.judge(self.docs[pid], pr)
+        return [d for d in dims if d["dim"] == "precondition"]
+
+    def jp_dim(self, pid, sample):
+        return next((d for d in self.pre(pid, sample)
+                     if d["code"] == "pre_job_placement"), None)
+
+    # ---- ① 词表扩围：四种官方写法各命中，并判 gap ----
+    def test_four_sponsor_flavors_all_judged_gap(self):
+        """J-1 四种「岗位/Sponsor 前置」写法都必须判 `pre_job_placement`/gap。
+
+        四种写法来自四份不同的官方条文（营地 22 CFR 62.30(h)(3)、研究机构
+        DS-2019、SWT 暑期岗位+雇主面试、intern/trainee 的 DS-7002 三方签字）。
+        改前只有第一种命中，后三种全 MISS——而引擎注释逐字写着
+        「us-j1-intern / us-j1-trainee 两类都判 gap」（本类最后一条门禁用例
+        就是这个注释的机械证明）。
+        """
+        want = {
+            "us-j1-camp-counselor": "camp",
+            "us-j1-research-scholar": "sponsor_ds2019",
+            "us-j1-summer-work-travel": "summer_job",
+            "us-j1-intern": "ds7002",
+            "us-j1-trainee": "ds7002",
+        }
+        for pid, flavor in want.items():
+            self.assertTrue(mr.job_placement_required(self.docs[pid]), pid)
+            self.assertEqual(mr.job_placement_flavor(self.docs[pid]), flavor, pid)
+        # 三态：每个项目至少有一个画像从 can/unknown 变 gap（不许只出维不改结论）
+        for pid in want:
+            states = {mr.judge(self.docs[pid], mr.SAMPLES[s])[0] for s in ("A", "B", "C")}
+            self.assertNotIn("can", states, f"{pid} 仍被判能申：{states}")
+
+    def test_placement_regex_does_not_swallow_neighbour_programs(self):
+        """反例：四条「看起来像 job placement、其实不是这一族」必须保持不命中。
+
+        - `no-skilled-worker`：雇主担保的具体聘用 → 归 `EMPLOYER_OFFER`（互斥）
+        - `sg-employment-pass` / `sg-s-pass`：只要「有雇主 offer」，无文件链
+        - `de-16e-internship`：只有一份 Praktikumsvertrag，无 DS-7002 / DS-2019
+        - `global-aiesec-global-talent` / `global-iaeste`：岗位「由组织对接确认」，
+          没有「预先落实 / 三方签字 / Sponsorship」任一措辞
+
+        这几条是扩词表最容易踩坏的边界：一旦把「岗位」当裸词收进来，六项会同时
+        假阳，且方向都是把能申的人判成 gap。
+        """
+        for pid in ("no-skilled-worker", "sg-employment-pass", "sg-s-pass",
+                    "de-16e-internship", "global-aiesec-global-talent",
+                    "global-iaeste"):
+            self.assertFalse(mr.job_placement_required(self.docs[pid]), pid)
+            self.assertIsNone(mr.job_placement_flavor(self.docs[pid]), pid)
+            self.assertNotIn(
+                "pre_job_placement",
+                {d["code"] for d in self.pre(pid, "B")},
+                f"{pid} 被扩词表误伤",
+            )
+
+    # ---- ② type 归位：语义分型，不按 type 名一刀切 ----
+    def test_government_support_letter_is_typed_by_semantics(self):
+        """`government_support_letter` 的六个成员必须各归各型，只有 sponsorship
+        型进岗位族。
+
+        这条 type 名本身不表意：同样是 `government_support_letter`，包里装的是
+        政府支持信（au-462）、官方求职登记（it-ricerca）、学历认证（uk-hpi）、
+        院校推荐（us-f1-opt）、Sponsor 的 DS-2019（research-scholar），以及一条
+        `required=false` 的德国「预批」（de-16e）。**按 type 名一刀切接线，会把
+        四种无关语义读成同一条缺口**——这正是 P1a 的结论（31 条里 27 条按名字接
+        会判错）。
+        """
+        want = {
+            "au-462-work-holiday": ("government_letter", True),
+            "it-ricerca-lavoro": ("official_registration", True),
+            "uk-hpi-visa": ("credential_check", True),
+            "us-f1-opt": ("institutional_recommendation", True),
+            "us-j1-research-scholar": ("sponsorship", True),
+            "de-16e-internship": ("unclassified", False),
+        }
+        got = {pid: mr.government_support_letter_kind(doc)
+               for pid, doc in self.docs.items()
+               if mr.government_support_letter_kind(doc)}
+        self.assertEqual(got, want)
+        # 只有 sponsorship 型进判定面：其余四型一个 pre_job_placement 都不许出
+        for pid, (kind, _req) in want.items():
+            codes = {d["code"] for d in self.pre(pid, "B")}
+            if kind == "sponsorship":
+                self.assertIn("pre_job_placement", codes, pid)
+            else:
+                self.assertNotIn("pre_job_placement", codes, pid)
+        # required=false 的德国预批不许被当成硬前提（这正是「按 type 名接线」的假阳）
+        self.assertFalse(mr.job_placement_required(self.docs["de-16e-internship"]))
+
+    def test_gsl_kind_is_carried_into_flags(self):
+        """分型结果必须进前端契约（flags），否则前端只能重新读中文猜——
+        那正是 M1 要消灭的东西。"""
+        f = mr.flags_of(self.docs["us-j1-research-scholar"])["precondition"]
+        self.assertEqual(f["government_support_letter"],
+                         {"kind": "sponsorship", "required": True})
+        # 没有该 type 的项目：null，不是空 dict
+        f2 = mr.flags_of(self.docs["us-f1-opt"])["precondition"]
+        self.assertEqual(f2["government_support_letter"]["kind"],
+                         "institutional_recommendation")
+        f3 = mr.flags_of(self.docs["jp-working-holiday"])["precondition"]
+        self.assertIsNone(f3["government_support_letter"])
+
+    def test_gsl_kind_anchors_are_not_bare_words(self):
+        """分型锚点不许用裸词——这是「一条 note 装两个事实」的防误分闸。
+
+        `official_registration` 早先收裸词「登记」、`credential_check` 收「认证」、
+        `government_letter` 收「政府」：三条都会把**别族**的句子误分进来
+        （「材料须登记」「认证翻译」「政府网站」）。误分的后果不是判错（这一型
+        不进判定面），是审计表把一条别族要求记到本族名下——那正是 batch9b
+        裁决 1 反复强调的「按字段名一刀切」的错误形态。
+
+        反例就是构造出来的三条句子：它们都不该归入任何具体型。
+        """
+        from copy import deepcopy
+
+        base = self.docs["us-j1-research-scholar"]
+        for sentence in ("材料须在系统内登记后递交",
+                         "非英文材料须附认证翻译",
+                         "政府网站在线填报"):
+            doc = deepcopy(base)
+            for r in doc["eligibility"]["other_requirements"]:
+                if r.get("type") == mr.REQ_TYPE_GSL:
+                    r["note"] = sentence
+            self.assertEqual(
+                mr.government_support_letter_kind(doc),
+                ("unclassified", True),
+                f"「{sentence}」被误分到具体型",
+            )
+
+    # ---- ③ need 文案项目化：四种表述，且不许串台 ----
+    def test_job_placement_need_is_project_specific(self):
+        """四种表述各一条 need，且**不许串台**（Muse 2026-11-14 裁决 2）。
+
+        改前 need 硬编码成营地那条法规原文，研究学者/学徒页会看到一句讲营地的
+        话——「修了一处漏网、引入一处错文案」。batch2 §4.2④、batch4 §219/§316、
+        batch9b §1.2② 已就同一处文案先后记过三次，本包是第四次、也是必须一次
+        修完的一次（同时支持四种）。
+        """
+        needs = {}
+        for pid in ("us-j1-camp-counselor", "us-j1-research-scholar",
+                    "us-j1-summer-work-travel", "us-j1-intern"):
+            d = self.jp_dim(pid, "B")
+            self.assertIsNotNone(d, pid)
+            needs[pid] = d["need"]
+            self.assertTrue(d["need"].strip(), pid)
+        # 四条互不相同：任何一个共用就说明文案没项目化
+        self.assertEqual(len(set(needs.values())), 4, needs)
+        # 研究学者的 need 讲 DS-2019 与接收机构，不许出现「营地」
+        self.assertIn("DS-2019", needs["us-j1-research-scholar"])
+        self.assertIn("接收机构", needs["us-j1-research-scholar"])
+        self.assertNotIn("营地", needs["us-j1-research-scholar"])
+        # 营地的 need 反过来不许出现 DS-2019（那是研究机构那条链条）
+        self.assertIn("营地", needs["us-j1-camp-counselor"])
+        self.assertNotIn("DS-2019", needs["us-j1-camp-counselor"])
+        # SWT 的 need 必须含「雇主面试」（原文的唯一取得路径）
+        self.assertIn("雇主面试", needs["us-j1-summer-work-travel"])
+        # intern 的 need 必须含 DS-7002 与三方签字
+        self.assertIn("DS-7002", needs["us-j1-intern"])
+        self.assertIn("三方签字", needs["us-j1-intern"])
+        # trainee 与 intern 同一条文件链，文案必须一致（同族不许漂）
+        self.assertEqual(self.jp_dim("us-j1-trainee", "B")["need"], needs["us-j1-intern"])
+
+    def test_flags_carry_the_flavor(self):
+        """flavor 必须进 flags，否则前端只能自己再判一遍中文（两份口径）。"""
+        for pid, want in (("us-j1-camp-counselor", "camp"),
+                          ("us-j1-research-scholar", "sponsor_ds2019"),
+                          ("us-j1-summer-work-travel", "summer_job"),
+                          ("us-j1-trainee", "ds7002")):
+            f = mr.flags_of(self.docs[pid])["precondition"]
+            self.assertEqual(f["job_placement_flavor"], want, pid)
+        # 没有岗位前置的项目：null
+        self.assertIsNone(
+            mr.flags_of(self.docs["no-skilled-worker"])["precondition"]["job_placement_flavor"]
+        )
+
+    def test_frontend_need_table_matches_engine(self):
+        """前后端 need 文案表必须**逐字节**相同（P4 §3「不许只改一侧」）。
+
+        为什么单独钉一张表而不是让 smoke-test 比：need 是散文，按 M1 的口径不进
+        `match-flags.json`（进了就等于把中文 note 塞回索引，前端会重新长出「读中文
+        猜结论」的逻辑）。两侧各持一份同键表，靠这条测试保证不漂。
+
+        串台的后果是具体的：只改 Python 一边，网页上的研究学者仍显示营地文案；
+        只改前端一边，两边说法不同而没有任何测试会红。
+        """
+        src = io.open(
+            os.path.join(ROOT, "web", "src", "lib", "verdict.ts"), encoding="utf-8"
+        ).read()
+        m = re.search(r"export const JOB_PLACEMENT_NEED[^{]*\{(.*?)\n\};", src, re.S)
+        self.assertIsNotNone(m, "verdict.ts 里找不到 JOB_PLACEMENT_NEED")
+        body = m.group(1)
+        ts: dict[str, str] = {}
+        for km in re.finditer(r"(\w+):\s*\n?\s*'((?:[^'\\]|\\.)*)'", body):
+            ts[km.group(1)] = km.group(2).replace("\\'", "'")
+        self.assertEqual(ts, mr.JOB_PLACEMENT_NEED, "前后端 need 文案表已漂移")
+        # 版本号也必须两侧一致（改判定口径忘改版本号是最常见的一处）
+        self.assertIn(
+            "export const RULES_VERSION = %d;" % mr.RULES_VERSION, src,
+            "verdict.ts 的 RULES_VERSION 未跟上 Python",
+        )
+
+    def test_every_hit_has_a_registered_flavor(self):
+        """全库顺查：凡命中岗位前置的项目，必须落在四种表述之一。
+
+        `None` 会退回兜底文案（营地那条），那是「修一处漏网、引入一处错文案」
+        的同一个坑。这条闸保证「新增一个命中项目时，要么写进四种表述，
+        要么这里当场红」。
+        """
+        hits = {pid: mr.job_placement_flavor(d)
+                for pid, d in self.docs.items() if mr.job_placement_required(d)}
+        self.assertNotIn(None, hits.values(), hits)
+        self.assertEqual(
+            set(hits.values()),
+            {"camp", "sponsor_ds2019", "summer_job", "ds7002"},
+            "四种表述必须都有真实用例，否则表里某一行是死代码",
+        )
+
+    # ---- ④ 注释-实测一致性门禁 ----
+    def test_comment_claims_match_reality(self):
+        """**注释-实测一致性门禁**（batch9a 裁决 4 / batch10 §4）。
+
+        规则：引擎注释块里若用**规范性措辞**（应判 / 都判 / 必判）点名某个项目
+        的结论，`tests/` 必须能证明实测一致；否则这条注释就是空头承诺。
+
+        首个用例正是它要防的那一处：`match_readiness.py` 的岗位前置注释块逐字
+        写着「us-j1-intern / us-j1-trainee ... **两类都判 gap**」，而 P4 之前
+        词表窄到两者都判 `can`——注释即承诺、实测零输出，且没有任何测试会发现。
+
+        实现分两步，两步都必须能红：
+          A. 机械扫描：注释块 → (项目, 状态词) 断言清单，逐条跑 judge 验真；
+          B. 清单变化即红：新写一句「X 应判 gap」而不改这里，测试提醒登记。
+        """
+        import re
+
+        engine = io.open(SCRIPT, encoding="utf-8").read().split("\n")
+        pids = sorted(self.docs)
+        # 规范性措辞：只认「应判 / 都判 / 必判」。不认「判 A 而不是 B」——
+        # 那是设计理由（在解释为什么不做某件事），不是对实测的断言。
+        #
+        # 注意两点，都是被变异测试逼出来的：
+        #   ① 长词在前（cannot 先于 can），否则「应判 cannot」会被读成「应判 can」；
+        #   ② 匹配前把注释块的换行**去掉**再扫——注释是散文、按屏宽折行，
+        #      「两类都应判 / can」这种跨行写法是最自然的一笔，若按行匹配，
+        #      一道换行就能让门禁失效（首版正是这样被 M4 变异绕过）。
+        claim_rx = re.compile(
+            r"(?:应判|都判|必判)[^。；]{0,12}?(cannot|unknown|silent|fail|pass|gap|can|na)"
+        )
+
+        blocks, cur = [], []
+        for i, line in enumerate(engine, 1):
+            if line.strip().startswith("#"):
+                cur.append((i, re.sub(r"^\s*#\s?", "", line)))
+            else:
+                if cur:
+                    blocks.append(cur)
+                cur = []
+        if cur:
+            blocks.append(cur)
+
+        claims = {}
+        for blk in blocks:
+            text = "".join(t for _, t in blk)
+            got_pids = [p for p in pids if p in text]
+            if not got_pids:
+                continue
+            for m in claim_rx.finditer(text):
+                for pid in got_pids:
+                    claims.setdefault((pid, m.group(1)), blk[0][0])
+
+        # B. 清单钉死：当前只有这一个注释块（P4 立下的首用例）。
+        #    新增一行注释断言 → 这里红 → 必须补一条实测断言后再登记到本清单。
+        #
+        #    口径说明（为什么是三条而不是两条）：门禁按**注释块**取项目，
+        #    同一块里点了名的项目都算被断言——这是**故意过近似**。过近似的代价
+        #    是「多要求一条真断言」，漏抓的代价是「注释继续空转」，两者不对称，
+        #    所以宁可宽。营地那条本来就判 gap，多这一条不产生假阳。
+        self.assertEqual(
+            sorted(claims),
+            [("us-j1-camp-counselor", "gap"),
+             ("us-j1-intern", "gap"),
+             ("us-j1-trainee", "gap")],
+            "注释里出现了新的「项目 + 应判 X」断言：请为它补一条实测断言，"
+            "再把 (项目, X) 登记到本清单（注释-实测一致性门禁）",
+        )
+
+        # A. 逐条验真：注释说 gap，实测就必须真有 gap 维（不是只判 can）
+        for (pid, word), line_no in claims.items():
+            _, dims = mr.judge(self.docs[pid], mr.SAMPLES["B"])
+            kinds = {d["kind"] for d in dims}
+            self.assertIn(
+                word, kinds,
+                f"match_readiness.py:{line_no} 的注释说 {pid} 应判 {word}，"
+                f"实测 kinds={sorted(kinds)}（注释-实测不一致）",
+            )
+        # 首用例的两条必须真的被 pre_job_placement 驱动（不是被别的维凑出来的 gap）
+        for pid in ("us-j1-intern", "us-j1-trainee"):
+            codes = {d["code"] for d in self.pre(pid, "B")}
+            self.assertIn("pre_job_placement", codes, pid)
+
+    def test_camp_counselor_placement_still_gap_after_widening(self):
+        """扩围不许把最早那条弄坏：营地仍判 gap，且 need 仍是营地文案。
+
+        历史用例 `test_camp_counselor_job_placement_is_not_silently_passed` 钉的是
+        同一条；这里额外钉「扩围后 flavor 仍归 camp」——因为 `camp` 在优先级表里
+        排第一，若有人把它挪到 `ds7002` 之后，营地项目的文案会被 DS-7002 抢走，
+        而它的原文里根本没有 DS-7002。
+        """
+        self.assertEqual(mr.job_placement_flavor(self.docs["us-j1-camp-counselor"]), "camp")
+        for sample in ("A", "B", "C"):
+            d = self.jp_dim("us-j1-camp-counselor", sample)
+            self.assertEqual(d["kind"], "gap", sample)
+            self.assertIn("营地", d["need"], sample)
+
+    # ---- ⑤ 成对：满足 → 出 gap；不满足 → 不出（运行时注入，不落盘） ----
+    def test_pair_type_is_load_bearing(self):
+        """**成对用例**：`government_support_letter` 这个 type 是不是真读点。
+
+        正：研究学者原样 → 命中，出 `pre_job_placement`/gap（need 讲 DS-2019）。
+        反：把那条 type 改成别的（`no_prior_visa`）→ **必须不再命中**。
+
+        反例这一半是关键：只看正例，「type 归位」与「恰好别的字段也命中」
+        分不开。反例证明**判据确实落在这个 type 上**——这也是 §2 与「只把 type
+        留在枚举里」的区别：留在枚举里的 type 改不改，输出都一样。
+        """
+        import copy
+
+        doc = self.docs["us-j1-research-scholar"]
+        self.assertTrue(mr.job_placement_required(doc))
+        self.assertEqual(mr.government_support_letter_kind(doc), ("sponsorship", True))
+
+        flipped = copy.deepcopy(doc)
+        for r in flipped["eligibility"]["other_requirements"]:
+            if r.get("type") == mr.REQ_TYPE_GSL:
+                r["type"] = "no_prior_visa"
+        self.assertIsNone(mr.government_support_letter_kind(flipped))
+        self.assertFalse(mr.job_placement_required(flipped))
+        self.assertNotIn(
+            "pre_job_placement",
+            {d["code"] for d in mr.judge(flipped, mr.SAMPLES["B"])[1]},
+        )
+
+        # 第二个反例：required 改成 false → 也不算硬前提（可选材料不是门槛）
+        optional = copy.deepcopy(doc)
+        for r in optional["eligibility"]["other_requirements"]:
+            if r.get("type") == mr.REQ_TYPE_GSL:
+                r["required"] = False
+        self.assertFalse(mr.job_placement_required(optional))
+
+    def test_pair_wordlist_is_load_bearing(self):
+        """**成对用例**：词表扩围后，四种写法各能单独拉起闸门。
+
+        做法：拿一个**本来不命中**的项目（`de-16e-internship`，只有一份
+        Praktikumsvertrag），把四种写法之一注入到它的一条必填材料 note 上，
+        必须立刻出 `pre_job_placement`；把 note 清空则不出。
+
+        为什么用注入而不是只跑真实数据：真实数据的四种写法是「恰好命中」，
+        分不清「词表宽」还是「这几个项目别处也命中」。注入把变量压到只剩词表。
+        """
+        import copy
+
+        base = copy.deepcopy(self.docs["de-16e-internship"])
+        self.assertFalse(mr.job_placement_required(base))
+        samples = {
+            "camp": "须先有预先落实的营地岗位",
+            "ds7002": "须有三方签字的 DS-7002",
+            "summer_job": "须先由 Sponsor 落实暑期岗位，并通过雇主面试",
+            "sponsor_ds2019": "须先拿到接收机构的邀请与 Sponsorship",
+        }
+        for flavor, sentence in samples.items():
+            doc = copy.deepcopy(base)
+            doc["documents"][0]["note"] = sentence
+            self.assertTrue(mr.job_placement_required(doc), flavor)
+            self.assertEqual(mr.job_placement_flavor(doc), flavor)
+            codes = {d["code"] for d in mr.judge(doc, mr.SAMPLES["B"])[1]}
+            self.assertIn("pre_job_placement", codes, flavor)
+            need = next(d for d in mr.judge(doc, mr.SAMPLES["B"])[1]
+                        if d["code"] == "pre_job_placement")["need"]
+            self.assertEqual(need, mr.JOB_PLACEMENT_NEED[flavor], flavor)
+        # 反例：清空所有必填 note → 不出（证明上面那半不是「凡 de-16e 都出」）
+        blank = copy.deepcopy(base)
+        for d in blank["documents"]:
+            d["note"] = ""
+        self.assertFalse(mr.job_placement_required(blank))
 
 
 class P1b2TypedValues(unittest.TestCase):

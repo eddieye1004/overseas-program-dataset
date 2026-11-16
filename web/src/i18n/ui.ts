@@ -1364,7 +1364,10 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     pre_citizenship_basis: '原文该项是国籍条件，已由护照维判定，不另算缺口',
     pre_document_basis: '原文该项是递交时自备的材料（租约等），不是身份前置条件',
     pre_unclassified: '该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定',
-    pre_job_placement: '原文要求岗位须预先落实：{need}；这一步可以补（报名、面试、拿到 placement）',
+    // P4 §3：{need} 由引擎按项目给四种表述之一（营地 / 研究机构 DS-2019 /
+    // 暑期岗位+雇主面试 / DS-7002 三方文件链）。模板本身不再假定是哪一种，
+    // 否则「营地」那半句会跟着 {need} 一起漂到研究学者页上。
+    pre_job_placement: '原文要求先落实岗位或接收机构：{need}；这一步可以补（报名、面试、拿到岗位或接收函）',
     pre_employer_offer: '原文要求先有具体雇主的合格聘用：{need}；这一步可以补（投简历、面试、签约）',
     // —— P1b-2：家属 / 签证史 / 学籍三个家族的 typed 值 ——
     pre_dependents_unknown: '原文对家属随行有限制，画像未采集你的家属构成，无法判定',
@@ -1469,7 +1472,7 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     pre_unclassified:
       'This program has a mandatory prior-status / location requirement whose category could not be recognised in the source text — cannot decide',
     pre_job_placement:
-      'The source requires the placement to be arranged in advance: {need} — you have not recorded a placement yet, and this is a step you can still complete',
+      'The source requires a placement or a host institution to be secured first: {need} — this is a step you can still complete (apply, interview, get placed or accepted)',
     pre_employer_offer:
       'The source requires a concrete job offer from one specific employer first: {need} — this is a step you can still complete (apply, interview, sign)',
     // —— P1b-2 ——

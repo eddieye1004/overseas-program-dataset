@@ -164,6 +164,29 @@ export interface ProgramFlags {
     >;
     /** 原文要求「岗位须预先落实」——材料/流程前提，与 kind 可同时成立——P2-0 */
     job_placement?: boolean;
+    /**
+     * P4 §3：岗位前置属四种表述里的哪一种。前端按它取 need 文案，
+     * 与 Python 的 `JOB_PLACEMENT_NEED` 一一对应；缺省时退回 `camp`
+     * （最严的一份法规原文），但 smoke-test 会比对两侧 need 整串，串台立刻红。
+     */
+    job_placement_flavor?: 'camp' | 'sponsor_ds2019' | 'summer_job' | 'ds7002' | null;
+    /**
+     * P4 §2：`government_support_letter` 的语义分型 + 是否必填。
+     *
+     * type 名不表示同一种东西（政府支持信 / 官方求职登记 / 学历认证 / 院校推荐 /
+     * Sponsor 的 DS-2019），所以前端与审计都按 kind 读、不按 type 名猜。
+     * 没有该 type 的条目时为 null（不是空对象）。
+     */
+    government_support_letter?: {
+      kind:
+        | 'sponsorship'
+        | 'official_registration'
+        | 'credential_check'
+        | 'institutional_recommendation'
+        | 'government_letter'
+        | 'unclassified';
+      required: boolean;
+    } | null;
     /** 原文要求「具体雇主的合格聘用」（雇主担保类：offer + ≥80% + 岗位对得上）——P2-0 */
     employer_offer?: boolean;
     /** P1b-2：家属 / 签证史 / 学籍三个家族的 typed 值（项目侧布尔，画像侧由前端重演） */
@@ -213,7 +236,27 @@ function normalizeLocation(v: string | null | undefined): string | null {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 11;
+export const RULES_VERSION = 12;
+
+/**
+ * 岗位前置的四种表述（P4 §3）。与 Python 的 `JOB_PLACEMENT_NEED` **逐字节一致**：
+ * smoke-test 比的是 `(dim,kind,code)` 整串，need 文本不进快照，所以两侧串台
+ * 只能靠「同一张表 + 同一条键」保证。改一侧必改另一侧。
+ *
+ * 为什么必须分四种：四个 J-1 子类的「落实」链条根本不同——营地是「先有营地岗位
+ * 才准入境」，研究学者是「先有接收机构与 DS-2019」，SWT 是「Sponsor 落实暑期岗位
+ * + 雇主面试」，intern/trainee 是「DS-7002 三方签字文件链」。用营地文案去讲研究
+ * 学者，等于修一处漏网、引入一处错文案（Muse 2026-11-14 裁决 2）。
+ */
+export const JOB_PLACEMENT_NEED: Record<string, string> = {
+  camp: '预先落实的营地岗位（Sponsor 不得为未落实营地岗位者办理入境）',
+  sponsor_ds2019:
+    '国务院指定 Sponsor 出具的 DS-2019（须先拿到接收机构的邀请与 Sponsorship，个人无法自行申请）',
+  summer_job:
+    'Sponsor 已落实并审查过的暑期岗位 + 通过美方雇主面试拿到的 Job Offer（美国国务院授权 Sponsor 统一办理，无法自主申请）',
+  ds7002:
+    '雇主签署的 DS-7002 培训/实习安置计划（申请人、雇主、Sponsor 三方签字后，Sponsor 才签发 DS-2019）',
+};
 
 /**
  * 护照 → 护照所属国家/地区代码。与 Python 的 `PASSPORT_COUNTRY` 逐条一致。
@@ -874,12 +917,17 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
 
   // 岗位前置（P2-0）：与上面的身份类别**不是** if/else 关系，两者可同时成立
   // （us-j1-camp-counselor 既是四类身份之一，又必须先落实营地岗位）。
+  //
+  // P4 §3：need 文案按项目取四种表述，与 Python 的 JOB_PLACEMENT_NEED 逐字节一致。
+  // 改前这里硬编码营地那条法规原文，研究学者/学徒页会显示一句讲营地的话——
+  // 「修了一处漏网、引入一处错文案」（batch2 §4.2④ / batch4 §219 / batch9b §1.2②）。
   if (flags.precondition?.job_placement) {
+    const flavor = flags.precondition.job_placement_flavor ?? null;
     dims.push({
       dim: 'precondition',
       kind: 'gap',
       code: 'pre_job_placement',
-      need: '预先落实的岗位（Sponsor 不得为未落实岗位者办理入境）',
+      need: (flavor && JOB_PLACEMENT_NEED[flavor]) || JOB_PLACEMENT_NEED.camp,
       have: '未采集岗位落实情况',
     });
   }

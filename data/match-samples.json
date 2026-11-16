@@ -1,5 +1,5 @@
 {
- "rules_version": 11,
+ "rules_version": 12,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -4189,7 +4189,7 @@
   },
   "us-j1-intern": {
    "A": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -4218,6 +4218,11 @@
      },
      {
       "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
       "kind": "pass",
       "code": "pre_degree_ok"
      }
@@ -4253,6 +4258,11 @@
      },
      {
       "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
       "kind": "pass",
       "code": "pre_degree_ok"
      }
@@ -4285,6 +4295,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      },
      {
       "dim": "precondition",
@@ -4296,7 +4311,7 @@
   },
   "us-j1-research-scholar": {
    "A": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -4322,11 +4337,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "B": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -4352,11 +4372,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -4382,13 +4407,18 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    }
   },
   "us-j1-summer-work-travel": {
    "A": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -4414,6 +4444,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      },
      {
       "dim": "precondition",
@@ -4452,6 +4487,11 @@
      },
      {
       "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
       "kind": "fail",
       "code": "pre_not_enrolled"
      }
@@ -4484,6 +4524,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      },
      {
       "dim": "precondition",
@@ -4521,11 +4566,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -4551,11 +4601,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -4581,6 +4636,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    }
