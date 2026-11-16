@@ -213,7 +213,30 @@ function normalizeLocation(v: string | null | undefined): string | null {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 10;
+export const RULES_VERSION = 11;
+
+/**
+ * 护照 → 护照所属国家/地区代码。与 Python 的 `PASSPORT_COUNTRY` 逐条一致。
+ *
+ * **只登记库里真有的三类**（P1e）：`home_residence`（须常驻护照所属地区）判的是
+ * 「现居 == 护照所属地」，两边用同一套代码，比较就是字符串相等。表里没有的护照
+ * 返回 undefined → 判 silent，而不是猜一个国家去判 fail。
+ *
+ * 与 `normalizeLocation` 分开：那个把用户输入合法化（接受任意两位大写），
+ * 这个只查表（护照是受枚举约束的存储值，不做格式宽容）。
+ */
+const PASSPORT_COUNTRY: Record<VerdictProfile['passport'], string> = {
+  mainland_china: 'CN',
+  hong_kong_china: 'HK',
+  taiwan_china: 'TW',
+};
+
+/** 护照的中文名，用于 `home_residence` 的 need 文案（与 Python 的 `PASSPORT_ZH` 一致）。 */
+const PASSPORT_ZH_LOCAL: Record<string, string> = {
+  mainland_china: '大陆护照',
+  hong_kong_china: '香港护照',
+  taiwan_china: '台湾护照',
+};
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
@@ -782,9 +805,61 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
         });
       }
     } else if (pre === 'outside') {
-      dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_outside_country' });
+      // 在地的镜像方向（P1e 接地）：递交时人须在该国**境外**。
+      // 判法是 inside 的镜像，比的是同一个 current_location 与同一个 country_code：
+      //   现居 != 项目国 → pass（人在境外，这条不构成障碍）
+      //   现居 == 项目国 → fail（申请本身无效）
+      //   缺失/非法/项目国缺失 → silent（原码，绝不默认 pass）
+      //
+      // 为什么不能复用 inside 的 code：方向相反的两条要求共用一个 code 会让
+      // 「必须人在境外」与「必须人在境内」在报告里长得一模一样（batch8 立项理由）。
+      const loc = normalizeLocation(pr.current_location);
+      const cc = flags.country_code ?? null;
+      if (loc == null || cc == null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_outside_country' });
+      } else if (loc !== cc) {
+        dims.push({
+          dim: 'precondition',
+          kind: 'pass',
+          code: 'pre_outside_country_ok',
+          need: `递交时人须在 ${cc} 境外`,
+          have: `你现在在 ${loc}`,
+        });
+      } else {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_outside_country_no',
+          need: `递交时人须在 ${cc} 境外`,
+          have: `你现在在 ${loc}`,
+        });
+      }
     } else if (pre === 'home_residence') {
-      dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_home_residence' });
+      // 常驻护照所属地区（P1e 接地）。**判据是「现居 == 护照所属地」，
+      // 不是「现居 == 项目国」**——JP 项目在 JP，但要求的是台/港籍住在台/港。
+      // 方向搞反会把全部目标人群判错（原文从未要求申请人住在项目国）。
+      // 两条之一拿不到就 silent，不硬凑。
+      const loc = normalizeLocation(pr.current_location);
+      const home = PASSPORT_COUNTRY[pr.passport] ?? null;
+      if (loc == null || home == null) {
+        dims.push({ dim: 'precondition', kind: 'silent', code: 'pre_home_residence' });
+      } else if (loc === home) {
+        dims.push({
+          dim: 'precondition',
+          kind: 'pass',
+          code: 'pre_home_residence_ok',
+          need: `常驻护照所属地区（${PASSPORT_ZH_LOCAL[pr.passport] ?? home} → ${home}）`,
+          have: `你现在在 ${loc}`,
+        });
+      } else {
+        dims.push({
+          dim: 'precondition',
+          kind: 'fail',
+          code: 'pre_home_residence_no',
+          need: `常驻护照所属地区（${PASSPORT_ZH_LOCAL[pr.passport] ?? home} → ${home}）`,
+          have: `你现在在 ${loc}`,
+        });
+      }
     } else if (pre === 'citizenship') {
       // 「须为参与国公民」是国籍条件，护照维已判同一件事，不另算缺口。
       dims.push({ dim: 'precondition', kind: 'na', code: 'pre_citizenship_basis' });

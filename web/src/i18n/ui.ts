@@ -1354,8 +1354,13 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     pre_inside_country: '原文要求在递交时人位于该国境内，画像不采集现居地，无法判定',
     pre_inside_country_ok: '原文要求在递交时人位于该国境内；你填的现居地是 {have}，与此一致',
     pre_inside_country_no: '原文要求{need}，而你填的现居地是 {have}；先合法进入该国才能递交',
-    pre_outside_country: '原文要求在递交时人位于该国境外，画像不采集现居地，无法判定',
+    pre_outside_country:
+      '原文要求在递交时人位于该国境外，画像不采集现居地，无法判定',
+    pre_outside_country_ok: '原文要求{need}；你填的现居地是 {have}，不在该国境内，这条「境外递交」要求已满足',
+    pre_outside_country_no: '原文要求{need}，而你填的现居地是 {have}；在该国境内递交会被判无效，须先离境再递',
     pre_home_residence: '原文要求常驻护照所属地区，画像不采集现居地，无法判定',
+    pre_home_residence_ok: '原文要求{need}；你填的现居地是 {have}，与护照所属地一致，这条要求已满足',
+    pre_home_residence_no: '原文要求{need}，而你填的现居地是 {have}；这条要求补材料满足不了，须回到护照所属地区再申请',
     pre_citizenship_basis: '原文该项是国籍条件，已由护照维判定，不另算缺口',
     pre_document_basis: '原文该项是递交时自备的材料（租约等），不是身份前置条件',
     pre_unclassified: '该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定',
@@ -1447,8 +1452,16 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'The source requires {need}, but your current location is {have}; you would have to be lawfully inside that country first',
     pre_outside_country:
       'The source requires you to be outside that country when applying; your current location is not collected — cannot decide',
+    pre_outside_country_ok:
+      'The source requires {need}; your current location ({have}) is outside that country — satisfied',
+    pre_outside_country_no:
+      'The source requires {need}, but your current location is {have}; an application made inside that country is invalid, so you would have to leave first',
     pre_home_residence:
       'The source requires you to be residing in your passport region; your current location is not collected — cannot decide',
+    pre_home_residence_ok:
+      'The source requires {need}; your current location ({have}) matches your passport region — satisfied',
+    pre_home_residence_no:
+      'The source requires {need}, but your current location is {have}; no document can fix this — you would have to return to your passport region to apply',
     pre_citizenship_basis:
       'This condition is a nationality rule and is already decided by the passport dimension — not counted as a separate gap',
     pre_document_basis:

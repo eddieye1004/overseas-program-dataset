@@ -309,33 +309,35 @@ class VerdictSemantics(unittest.TestCase):
         | P1b-2 前 | 14/41 = 0.3415 | 家属/签证史/学籍三族还没接线 |
         | P1b-2 后 | 13/41 = 0.3171 | 三画像补齐新字段显式取值，三族判出 pass/fail |
         | P1c 后 | 16/41 = 0.3902 | 在地条拆出独立类别，原先被误判成 gap 的 3 项转成诚实 silent |
-        | **P1d 后** | **13/41 = 0.3171** | 接入 current_location，在地条判出 fail（cannot），3 项离开 unknown |
+        | P1d 后 | 13/41 = 0.3171 | 接入 current_location，在地条判出 fail（cannot），3 项离开 unknown |
+        | P3 后 | 12/41 = 0.2927 | 教育路径化，`at-rwr-card-vhq` 判出 cannot |
+        | **P1e 后** | **10/41 = 0.2439** | `outside` + `home_residence` 接地，2 项判成 can |
 
         上限从 16 回调到 13 是**记录事实**，不是放宽标准：那 3 项从 silent 变
         cannot 是因为引擎终于能判（现居地有了），不是把它们藏起来——它们仍在
         报告里逐条可见，只是状态从「不可判」变成「不能申」。全口径从来不是停工
         闸门，闸门在 `test_stop_line_binds_class_b_only`，它的 1/3 一个数字没改。
+
+        P1e 的 −2 同理：C 画像 12 → 10，离开 unknown 的是 `jp-working-holiday`
+        与 `nz-china-whv`（现居 TW == 台湾护照所属地 TW → 常驻要求判 pass，
+        其余维本就全 pass → can）。不是把它们藏起来，是把它们**判对了**：
+        这两个项目的目标人群正是「人在护照所属地的协议国国民」。逐条归因见
+        `test_class_b_members_are_pinned` 与回执 §4。
         """
         rep = mr.audit()
         # 注意：unknown_ratio 是 4 位小数的舍入值，直接与分式比会因舍入假红。
         # 所以钉「项目条数」+「比率等于该条数 / 总数」，两者合起来才是断言本意。
         #
         # 版本轨迹（均为实测）：
-        #   P1b-2 前 14 → P1b-2 后 13 → P1c 后 16 → P1d 后 13
-        #   **P3 后 12**（12/41 = 0.2927）
-        #
-        # P3 的 −1 是 `at-rwr-card-vhq` 从 unknown 变 cannot：它的「四年制」时长
-        # 门槛现在有了画像读点（study_months=48），B 画像判 pass、不再不可判。
-        # 这是**表达式变强**导致的 unknown 下降，不是把项目藏起来 —— 它仍在
-        # 报告里逐条可见，只是从「不可判」变成「能判」。全口径从来不是停工闸门，
-        # 闸门在 test_stop_line_binds_class_b_only，它的 1/3 一个数字没改。
-        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 12)
+        #   P1b-2 前 14 → P1b-2 后 13 → P1c 后 16 → P1d 后 13 → P3 后 12
+        #   **P1e 后 10**（10/41 = 0.2439）
+        self.assertLessEqual(max(v["unknown"] for v in rep["samples"].values()), 10)
         self.assertEqual(
             rep["max_unknown_ratio"],
-            round(12 / rep["total"], 4),
+            round(10 / rep["total"], 4),
             "全口径上限被突破了：这是「甲类变多也不许藏」的那把尺子",
         )
-        self.assertLessEqual(rep["max_unknown_ratio"], 12 / 41 + 1e-4)
+        self.assertLessEqual(rep["max_unknown_ratio"], 10 / 41 + 1e-4)
         for name, v in rep["samples"].items():
             self.assertAlmostEqual(
                 v["unknown_ratio"], v["unknown"] / rep["total"], places=4, msg=name
@@ -405,8 +407,8 @@ class VerdictSemantics(unittest.TestCase):
         还清，没有连带洗白任何别的项目。11/41 = 0.2683 回到 1/3 以内。
 
         剩下的 `jp-working-holiday` / `nz-china-whv` 两项属 `pre_home_residence`
-        （须常驻护照所属地区），本单按派单 §1.2 只接 `pre_inside_country`，
-        因此仍留在乙类——见回执 §6「遗留待裁」。
+        （须常驻护照所属地区），P1d 单按派单 §1.2 只接 `pre_inside_country`，
+        因此当时仍留在乙类——见 P1d 回执 §8「遗留待裁」。
 
         **P3 清偿：C 11 → 10，移除的正是 `at-rwr-card-vhq`，一项不多一项不少**：
 
@@ -418,6 +420,24 @@ class VerdictSemantics(unittest.TestCase):
         与「学士/硕士/博士」层级门槛现在都能读，A 画像（本科在读）层级不够，
         于是得到确定的 cannot。B/C 那边判 pass（48 个月 ≥ 四年制），也不再
         挂在乙类里。
+
+        **P1e 清偿：C 10 → 8，移除的正是 `jp-working-holiday` 与 `nz-china-whv`，
+        一项不多一项不少**（本单同时接 `pre_outside_country`，但 `au-407-training`
+        仍因语言维 `lang_no_score` 留在乙类，所以 outside 接地**没有**让任何项目
+        离开 C 的乙类清单——这一点必须写明，否则看不出两码各自的效果）：
+
+        | 项目 | 改前 | 改后 | 驱动 | 说明 |
+        |---|---|---|---|---|
+        | `jp-working-holiday` | unknown / 乙 | can | `pre_home_residence` → `_ok` | C 现居 TW == 台湾护照所属地 TW，常驻要求判 pass；其余维全 pass |
+        | `nz-china-whv` | unknown / 乙 | can | `pre_home_residence` → `_ok` | 同上（该项目 note 明写「须常驻其护照所属地区」） |
+
+        另有一条**状态不变但前置维变了**，不计入乙类增减但必须留痕：
+        `au-407-training`（A/C）与 `se-look-for-work`（A/B/C）的 `pre_outside_country`
+        从 silent 变 `pre_outside_country_ok`/pass。它们整体没动，是因为别的维
+        本来就 fail/gap/silent 挡着（`au-407` 是 `lang_no_score`，`se` 是 `edu_low`
+        + `funds_short`）——这说明单接 outside 不会凭空洗白任何项目，方向是对的。
+
+        没有一条「无因消失」：改前 10 条，改后 8 条，差集恰好是上表两项。
         """
         rep = mr.audit()
         self.assertEqual(
@@ -427,10 +447,8 @@ class VerdictSemantics(unittest.TestCase):
                 "ca-pgwp",
                 "de-chancenkarte",
                 "dk-working-holiday",
-                "jp-working-holiday",
                 "mt-nomad-residence",
                 "nl-orientation-year",
-                "nz-china-whv",
                 "nz-post-study-work",
                 "uk-hpi-visa",
             ],
@@ -704,7 +722,7 @@ class Phase1Fixes(unittest.TestCase):
         self.assertEqual(state, "cannot")
 
     def test_4_3_no_program_with_precondition_judges_can(self):
-        """全库顺查：只要项目有 required 的**任一**前置族，三画像下都不许判「能申」。
+        """全库顺查：只要项目有 required 的**任一**前置族，三画像下都不许「静默」判能申。
 
         这一条比单点断言更狠：它不依赖某个项目当前的具体结论，只守
         「有前置要求就不能说谁都能申」。落空（读不懂）也算违规 ——
@@ -715,9 +733,36 @@ class Phase1Fixes(unittest.TestCase):
         9 个项目只剩在地族、6 个只剩身份族、2 个（de-20 / us-f1-opt）两族都有。
         所以这里按「任一前置族」取，而不是给两个 type 各写一遍（那会把
         de-20 / us-f1-opt 数两遍，17 变 19）。
+
+        **P1e 变更（重要，不是放宽）**：原断言是 `state != "can"`，在接地之前
+        它等价于「前置要求永远是 silent/gap」，因为前置维根本判不出 pass。
+        P1e 把 `outside` 与 `home_residence` 接上 `current_location` 之后，
+        「合格的人真的合格」第一次可以表达出来——`nz-china-whv` / `jp-working-holiday`
+        对「现居 == 护照所属地」的画像正是官方要的那批人，判 can 是**结论**，
+        不是漏判。若继续钉 `state != "can"`，这条断言就变成「不许判对」，
+        而它原本要防的是**前置要求被静默丢掉**。
+
+        所以判据收窄到本意：**能申的项目，其前置族读出的每一类都必须有对应维结论，
+        且都是 pass/na**。三态优先级本来就保证 fail/gap/silent 不可能整体判 can，
+        所以真正需要单独守的只剩「要求整条被吞掉」——即 `precondition_kinds()`
+        读出了某一类，dims 里却没有它对应的结论。
         """
         PRE_TYPES = (mr.REQ_TYPE_RESIDENCY, mr.REQ_TYPE_LOCATION)
+        # kind → 它该在 dims 里留下的 code 前缀。写死这张表是刻意的：将来新增
+        # 一个 kind 而忘了接线时，这里会先红，而不是让「有要求却无结论」静默通过。
+        KIND_CODES = {
+            "local_status": ("pre_local_status",),
+            "inside": ("pre_inside_country", "pre_inside_country_ok", "pre_inside_country_no"),
+            "outside": ("pre_outside_country", "pre_outside_country_ok", "pre_outside_country_no"),
+            "home_residence": (
+                "pre_home_residence", "pre_home_residence_ok", "pre_home_residence_no",
+            ),
+            "citizenship": ("pre_citizenship_basis",),
+            "document": ("pre_document_basis",),
+            "unclassified": ("pre_unclassified",),
+        }
         checked = 0
+        cans = []
         for pid, doc in self.docs.items():
             reqs = [
                 r
@@ -727,13 +772,39 @@ class Phase1Fixes(unittest.TestCase):
             if not reqs:
                 continue
             checked += 1
+            kinds = mr.precondition_kinds(doc)
+            self.assertTrue(kinds, f"{pid} 有前置要求但没读出任何类别")
             self.assertTrue(
-                mr.precondition_kinds(doc), f"{pid} 有前置要求但没读出任何类别"
+                set(kinds) <= set(KIND_CODES), f"{pid} 出现未登记的类别：{kinds}"
             )
             for sample in ("A", "B", "C"):
-                state = mr.judge(doc, mr.SAMPLES[sample])[0]
-                self.assertNotEqual(state, "can", f"{pid}/{sample} 有前置要求却判了能申")
+                state, dims = mr.judge(doc, mr.SAMPLES[sample])
+                codes = {d["code"] for d in dims if d["dim"] == "precondition"}
+                # 每一类都必须留下对应结论（不许被吞）
+                for kind in kinds:
+                    self.assertTrue(
+                        codes & set(KIND_CODES[kind]),
+                        f"{pid}/{sample} 读出了 {kind} 这一类，但前置维没有对应结论：{codes}",
+                    )
+                if state != "can":
+                    continue
+                cans.append(f"{pid}/{sample}")
+                # 判 can 时，身份/在地这一族的结论必须是 pass 或 na（fail/gap/silent
+                # 由三态优先级保证不会到这里，这里显式再钉一次，防将来改优先级）
+                gate = {c for k in kinds for c in KIND_CODES[k]}
+                for d in dims:
+                    if d["dim"] == "precondition" and d["code"] in gate:
+                        self.assertIn(
+                            d["kind"], ("pass", "na"),
+                            f"{pid}/{sample} 判了能申，但前置维是 {d['kind']}（{d['code']}）",
+                        )
         self.assertEqual(checked, 17, f"带 required 前置要求的项目数变了：{checked}")
+        # 能申的那几条必须**恰是**接地后由 pass 驱动的，登记成清单防止无声扩张
+        self.assertEqual(
+            sorted(cans),
+            ["jp-working-holiday/C", "nz-china-whv/A", "nz-china-whv/C"],
+            "带前置要求却判能申的集合变了：每一条都要人工确认为「要求确实满足」",
+        )
 
     # —— §4-4 加拿大 PGWP：教育维漏判 DLI / 8 个月 ——
     def test_4_4_ca_pgwp_education_is_not_edu_ok(self):
@@ -1335,13 +1406,24 @@ class P1cPreconditionSplit(unittest.TestCase):
 
         两条要求共用一个 code 会让「必须人在境外」与「必须人在境内」在报告里
         长得一模一样（batch8 立项理由）。合在一起判等于把方向抹平。
+
+        **P1e 变更**：outside 接地后三个画像（现居 CN/CN/TW）都在 AU / SE 之外，
+        于是这一条判 `pass / pre_outside_country_ok`，不再恒为 silent。断言从
+        「必须出现原码 `pre_outside_country`」改成「必须出现**以它开头**的码，
+        且方向必须是 outside 而不是 inside」——否则本条会变成「钉住旧结论」，
+        而不是「钉住方向」。
         """
         self.assertEqual(mr.precondition_kinds(self.docs["se-look-for-work"]), ["outside"])
         self.assertEqual(mr.precondition_kinds(self.docs["au-407-training"]), ["outside"])
         for pid in ("se-look-for-work", "au-407-training"):
             codes = {d["code"] for d in self.pre(pid, "B")}
-            self.assertIn("pre_outside_country", codes, pid)
+            self.assertTrue(
+                any(c.startswith("pre_outside_country") for c in codes), f"{pid}: {codes}"
+            )
             self.assertNotIn("pre_inside_country", codes, pid)
+            self.assertFalse(
+                any(c.startswith("pre_inside_country") for c in codes), f"{pid}: {codes}"
+            )
 
     # —— ⑥ 新码必须登记乙类，且与 outside 同在 CLASS_B ——
     def test_inside_code_is_registered_as_class_b(self):
@@ -1588,6 +1670,294 @@ class P1dLocationGrounding(unittest.TestCase):
         # 现居地与护照所属地在这批画像上一致（persona 是准申请人）
         for name, cc in (("A", "CN"), ("B", "CN"), ("C", "TW")):
             self.assertEqual(mr.current_location_of(mr.SAMPLES[name]), cc, name)
+
+
+class P1eResidenceGrounding(unittest.TestCase):
+    """P1e 成对回归：`pre_outside_country` 与 `pre_home_residence` 两项接地。
+
+    方法论与 P3 一致——**成对**。每一项都同时出示正反两面，否则「把整维判死」
+    也能让用例全绿：
+
+    | 码 | 正面（满足 → pass） | 反面（不满足 → fail） |
+    |---|---|---|
+    | `pre_outside_country` | 现居 ≠ 项目国 → 可递 | 现居 == 项目国 → 申请无效 |
+    | `pre_home_residence` | 现居 == 护照所属地 → pass | 现居 ≠ 护照所属地 → fail |
+
+    外加两项各自的地基：「任一边缺失必须 silent，绝不默认 pass」。
+    **home_residence 的方向陷阱**单独钉一条：它的判据是「现居 == 护照所属地」，
+    不是「现居 == 项目国」。JP 项目在 JP，但要求的是台/港籍住在台/港——
+    两种读法在字面上都说得通，读反了会把目标人群整个判错。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs = {d["program"]["id"]: d for d in mr.load_programs()}
+
+    def pre(self, pid, **override):
+        pr = dict(mr.SAMPLES["B"])
+        pr.update(override)
+        _, dims = mr.judge(self.docs[pid], pr)
+        return [d for d in dims if d["dim"] == "precondition"]
+
+    def code(self, pid, prefix, **override):
+        return next(
+            (d["code"], d["kind"]) for d in self.pre(pid, **override)
+            if d["code"].startswith(prefix)
+        )
+
+    # ===================== pre_outside_country =====================
+
+    def test_outside_passes_when_profile_is_elsewhere(self):
+        """`se-look-for-work` 要求「递交时人须在瑞典境外」，画像现居 CN → pass。
+
+        这是接地之前**永远不可能出现**的结论。判 pass 的分支若写反（把不等写成
+        等），世上没有一个能申的人——所有人都会看到「你已在瑞典」，而事实相反。
+        """
+        self.assertEqual(mr.precondition_kinds(self.docs["se-look-for-work"]), ["outside"])
+        self.assertEqual(
+            self.code("se-look-for-work", "pre_outside_country", current_location="CN"),
+            ("pre_outside_country_ok", "pass"),
+        )
+        d = next(x for x in self.pre("se-look-for-work", current_location="CN")
+                 if x["code"] == "pre_outside_country_ok")
+        # 文案里的两个国别都必须来自数据，不是写死的
+        self.assertIn("SE", d["need"])
+        self.assertIn("CN", d["have"])
+
+    def test_outside_fails_when_profile_is_in_that_country(self):
+        """画像现居 SE、项目在 SE → fail → 整体 cannot。
+
+        官方原文附带一句「即使 ImmiAccount 允许你在境内递交，申请仍然无效」，
+        所以这条不能软化成 gap（「先离境」不是补材料，是要先改变所在地）。
+        """
+        state, dims = mr.judge(self.docs["se-look-for-work"],
+                               dict(mr.SAMPLES["C"], current_location="SE"))
+        self.assertEqual(state, "cannot")
+        d = next(x for x in dims if x["code"].startswith("pre_outside_country"))
+        self.assertEqual((d["code"], d["kind"]), ("pre_outside_country_no", "fail"))
+        self.assertIn("SE", d["need"])
+        self.assertIn("SE", d["have"])
+
+    def test_outside_mirrors_inside_on_the_same_input(self):
+        """同一组画像取值下，同一国家的 inside 与 outside 必须给出**相反**的结论。
+
+        只单独测 outside 不够：把 outside 分支写成 inside 的复制粘贴（别处最容易
+        犯的错）时，两条会同时判 pass，而单看 outside 那条仍然「对」。
+
+        库里恰好有这样一对同国反向的要求——都在 AU：
+        `au-485-graduate` 要「递交时在澳洲**境内**」，
+        `au-407-training` 要「递交时在澳洲**境外**」（2026-11-12 起的原文）。
+        于是 `current_location=AU` 时前者 pass、后者 fail，`current_location=CN`
+        时整体调转。两次都验，才说明比较的是方向而不是「两个字符串等不等」。
+        """
+        self.assertEqual(self.docs["au-485-graduate"]["program"]["country_code"], "AU")
+        self.assertEqual(self.docs["au-407-training"]["program"]["country_code"], "AU")
+        for loc, inside, outside in (
+            ("AU", ("pre_inside_country_ok", "pass"), ("pre_outside_country_no", "fail")),
+            ("CN", ("pre_inside_country_no", "fail"), ("pre_outside_country_ok", "pass")),
+        ):
+            self.assertEqual(
+                self.code("au-485-graduate", "pre_inside_country", current_location=loc),
+                inside, loc,
+            )
+            self.assertEqual(
+                self.code("au-407-training", "pre_outside_country", current_location=loc),
+                outside, loc,
+            )
+            self.assertNotEqual(
+                inside[1], outside[1],
+                "同一所在地对同国的 inside / outside 必须相反，否则两个分支被写成了同一个",
+            )
+
+    def test_outside_missing_location_stays_silent(self):
+        """没有合法现居地时必须落回原码 `pre_outside_country`（silent）。
+
+        六种「取不到合法值」的形态各验一遍，与 P1d 对 inside 的要求同严格度。
+        这一条守的是「接地」不等于「默认放行」：现居地缺失时判 pass 会让每一个
+        没填这个字段的人都看到「可以递」，而其中一部分人其实正在该国境内。
+        """
+        for bad in ("absent", None, "", "cn", "CHINA", "中国"):
+            pr = dict(mr.SAMPLES["B"])
+            if bad == "absent":
+                pr.pop("current_location", None)
+            else:
+                pr["current_location"] = bad
+            _, dims = mr.judge(self.docs["au-407-training"], pr)
+            pre = [d for d in dims if d["code"].startswith("pre_outside_country")]
+            self.assertEqual(len(pre), 1, f"current_location={bad!r} 时 outside 维缺失")
+            self.assertEqual(
+                (pre[0]["code"], pre[0]["kind"]),
+                ("pre_outside_country", "silent"),
+                f"current_location={bad!r} 时未落 silent：{pre[0]}",
+            )
+
+    def test_outside_program_without_country_code_stays_silent(self):
+        """项目侧没有国家代码时，「境外」无所指 → silent。
+
+        少了这一支，`loc != cc` 会把画像值与 None 比较、恒不等 → 恒判 pass，
+        等于替官方宣布「谁都能递」——比恒判 fail 更危险（放进来的人会被拒签）。
+        """
+        doc = json.loads(json.dumps(self.docs["se-look-for-work"]))
+        self.assertEqual(doc["program"]["country_code"], "SE")
+        del doc["program"]["country_code"]
+        for loc in ("CN", "SE"):
+            _, dims = mr.judge(doc, dict(mr.SAMPLES["B"], current_location=loc))
+            pre = next(d for d in dims if d["code"].startswith("pre_outside_country"))
+            self.assertEqual((pre["code"], pre["kind"]), ("pre_outside_country", "silent"), loc)
+
+    # ===================== pre_home_residence =====================
+
+    def test_home_residence_passes_when_living_in_passport_country(self):
+        """台湾护照 + 现居 TW → `jp-working-holiday` 的常驻要求判 pass。
+
+        项目原文是「须为协议国家/地区国民，**且**目前居住于其国籍国/地区」。
+        C 画像（台湾护照、人在台湾）正是这条要求的对象，判 pass 是**结论**，
+        不是放水——它的护照维本来就 pass（日本对台湾护照开放）。
+        """
+        self.assertEqual(
+            self.code("jp-working-holiday", "pre_home_residence",
+                      passport="taiwan_china", current_location="TW"),
+            ("pre_home_residence_ok", "pass"),
+        )
+        d = next(x for x in self.pre("jp-working-holiday", passport="taiwan_china",
+                                     current_location="TW")
+                 if x["code"] == "pre_home_residence_ok")
+        self.assertIn("TW", d["need"])
+        self.assertIn("TW", d["have"])
+
+    def test_home_residence_fails_when_living_elsewhere(self):
+        """台湾护照 + 现居 AU → `nz-china-whv` 的常驻要求判 fail。
+
+        官方 note 明写「申请人须常驻其护照所属地区」：一个台湾护照、人在澳洲的
+        申请人，既不是大陆名额的对象、也不符合「常驻其护照所属地区」，必须判
+        fail 而不是 silent——这条补材料满足不了，得先回台湾。
+        """
+        state, dims = mr.judge(self.docs["nz-china-whv"],
+                               dict(mr.SAMPLES["C"], current_location="AU"))
+        self.assertEqual(state, "cannot")
+        d = next(x for x in dims if x["code"].startswith("pre_home_residence"))
+        self.assertEqual((d["code"], d["kind"]), ("pre_home_residence_no", "fail"))
+        self.assertIn("TW", d["need"], "need 必须写明「护照所属地」是哪")
+        self.assertIn("AU", d["have"], "have 必须写明画像的现居地")
+
+    def test_home_residence_compares_to_passport_not_program_country(self):
+        """**方向陷阱**：判据是「现居 == 护照所属地」，不是「现居 == 项目国」。
+
+        反证：台湾护照、现居 JP（人就在日本）时，`jp-working-holiday` 的常驻要求
+        必须判 **fail**——因为日本要求的是「住在你的国籍国」，人在日本恰好不符合。
+        若把判据写成 `loc == country_code`，这一例会判 pass，等于把这条要求的
+        意思整个反过来（原文从未要求申请人住在日本，那反而与「打工度假」矛盾）。
+
+        同一组数据的镜像：现居 TW 时判 pass（见上一条）。两者合起来才说明比较的
+        右操作数是 `PASSPORT_COUNTRY[passport]` 而非 `doc.program.country_code`。
+        """
+        self.assertEqual(self.docs["jp-working-holiday"]["program"]["country_code"], "JP")
+        self.assertEqual(
+            self.code("jp-working-holiday", "pre_home_residence",
+                      passport="taiwan_china", current_location="JP"),
+            ("pre_home_residence_no", "fail"),
+        )
+        # 同一张护照，换成在护照所属地 → pass（成对的另一半）
+        self.assertEqual(
+            self.code("jp-working-holiday", "pre_home_residence",
+                      passport="taiwan_china", current_location="TW"),
+            ("pre_home_residence_ok", "pass"),
+        )
+
+    def test_home_residence_missing_either_side_stays_silent(self):
+        """护照侧或现居侧任一拿不到 → silent，且**不猜**另一边。
+
+        四种形态：现居缺失/非法、护照不在映射表里。最后一例尤其重要——将来若新增
+        一种护照而忘了补映射，这里会落 silent 而不是拿项目国或别的值顶上去。
+        """
+        cases = [
+            {"passport": "taiwan_china", "current_location": None},
+            {"passport": "taiwan_china", "current_location": "tw"},
+            {"passport": "taiwan_china", "current_location": "中国"},
+            # 映射表里没有的护照值：不许猜成大陆/台湾
+            {"passport": "macau_china", "current_location": "MO"},
+        ]
+        for case in cases:
+            _, dims = mr.judge(self.docs["jp-working-holiday"],
+                               dict(mr.SAMPLES["C"], **case))
+            pre = [d for d in dims if d["code"].startswith("pre_home_residence")]
+            self.assertEqual(len(pre), 1, case)
+            self.assertEqual(
+                (pre[0]["code"], pre[0]["kind"]),
+                ("pre_home_residence", "silent"),
+                f"{case} 时未落 silent：{pre[0]}",
+            )
+
+    def test_passport_country_table_covers_exactly_the_three_known_passports(self):
+        """映射表只许登记库里真有的三类护照，且值必须与现居地同一套代码体系。
+
+        多登记一类（比如凭印象写上 `macau_china: MO`）会让引擎对一种**从未被
+        审计过**的护照下结论；值写成小写或国名会让比较恒不等。两者都是静默错误。
+        """
+        self.assertEqual(set(mr.PASSPORT_COUNTRY), set(mr.PASSPORTS))
+        self.assertEqual(
+            mr.PASSPORT_COUNTRY,
+            {"mainland_china": "CN", "hong_kong_china": "HK", "taiwan_china": "TW"},
+        )
+        for k, v in mr.PASSPORT_COUNTRY.items():
+            self.assertRegex(v, mr.CURRENT_LOCATION_RE, k)
+        # 查不到的护照返回 None，不抛异常、不返回空串
+        self.assertIsNone(mr.passport_country_of({"passport": "macau_china"}))
+        self.assertIsNone(mr.passport_country_of({}))
+        self.assertEqual(mr.passport_country_of({"passport": "taiwan_china"}), "TW")
+
+    # ===================== 两码共用的边界 =====================
+
+    def test_new_grounded_codes_are_not_registered_as_silent(self):
+        """四个新码是 pass/fail，不许进甲乙任何一表；两个原码的登记一个字节不动。
+
+        `pre_outside_country` / `pre_home_residence`（silent）**仍留在**
+        `CLASS_B_CODES` 里：画像在前端是选填的，真实用户多数不填，引擎不能替
+        前端宣布「债已还清」——摘除的前提是字段必填，那是产品决定，不是本单。
+        """
+        for code in ("pre_outside_country_ok", "pre_outside_country_no",
+                     "pre_home_residence_ok", "pre_home_residence_no"):
+            self.assertNotIn(code, mr.CLASS_B_CODES, code)
+            self.assertNotIn(code, mr.BY_DESIGN_CODES, code)
+        for code in ("pre_outside_country", "pre_home_residence"):
+            self.assertIn(code, mr.CLASS_B_CODES, code)
+            self.assertNotIn(code, mr.BY_DESIGN_CODES, code)
+
+    def test_grounded_two_codes_drive_the_registered_flip_set(self):
+        """翻转集合本身被钉住：只有这 3 条 (项目 × 画像) 的三态变了。
+
+        逐条归因（改前 → 改后 → 驱动维）：
+
+        | 项目 | 画像 | 改前 | 改后 | 驱动 |
+        |---|---|---|---|---|
+        | `jp-working-holiday` | C | unknown | **can** | `pre_home_residence` silent→pass（C 现居 TW == 台湾护照所属地） |
+        | `nz-china-whv` | A | unknown | **can** | 同上（A 现居 CN == 大陆护照所属地） |
+        | `nz-china-whv` | C | unknown | **can** | 同上 |
+
+        其余 6 条只改前置维、不改三态（`au-407-training` A/B/C、
+        `se-look-for-work` A/B/C 的 outside 由 silent 变 pass，但别的维仍挡着）。
+        把翻转集合写成断言，是为了让「静默翻转」立刻显形——将来有人动了
+        `PASSPORT_COUNTRY` 或 `current_location` 的默认值，这条会红。
+        """
+        expect = {
+            ("jp-working-holiday", "C"): "can",
+            ("nz-china-whv", "A"): "can",
+            ("nz-china-whv", "C"): "can",
+        }
+        got = {}
+        for pid in ("jp-working-holiday", "nz-china-whv"):
+            for name in ("A", "B", "C"):
+                got[(pid, name)] = mr.judge(self.docs[pid], mr.SAMPLES[name])[0]
+        for key, want in expect.items():
+            self.assertEqual(got[key], want, key)
+        # 未被接地的两个 outside 项目三态不许翻（它们由别的维决定）
+        self.assertEqual(mr.judge(self.docs["au-407-training"], mr.SAMPLES["A"])[0], "unknown")
+        self.assertEqual(mr.judge(self.docs["au-407-training"], mr.SAMPLES["B"])[0], "gap")
+        self.assertEqual(mr.judge(self.docs["au-407-training"], mr.SAMPLES["C"])[0], "unknown")
+        for name in ("A", "B", "C"):
+            self.assertEqual(
+                mr.judge(self.docs["se-look-for-work"], mr.SAMPLES[name])[0], "cannot", name
+            )
 
 
 class P3EducationPaths(unittest.TestCase):

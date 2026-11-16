@@ -450,6 +450,23 @@ def _kind_gate(kind: str):
     return lambda doc: kind in mr.precondition_kinds(doc)
 
 
+def _family_codes(code: str) -> tuple[str, ...]:
+    """一个前置码的**同族前缀**：接地后可能产出的三态码都归同一族。
+
+    `pre_inside_country` / `pre_outside_country` / `pre_home_residence` 这三族在
+    P1d / P1e 接地后各会产出 `<原码>_ok`（pass）与 `<原码>_no`（fail）。原码本身
+    仍是「画像缺字段 → silent」的诚实码，**语义一个字节没动**。
+
+    对账表若只认原码，就会在每一个接地项目上把「已判 pass」写成「闸门拉起但
+    §3 无该码」——那是把**接地成功**报成**漏网**，比漏报更糟：它会训练读表的人
+    忽略这张表。所以这里按族认，且只对这三族放宽——其余码（`pre_local_status`、
+    `pre_dependents_*` 等）没有 <code>_ok/_no 形态，行为与改前完全一致。
+    """
+    if code in ("pre_inside_country", "pre_outside_country", "pre_home_residence"):
+        return (code, code + "_ok", code + "_no")
+    return (code,)
+
+
 GATES = [
     ("EDU_RECENCY", mr.edu_recency_years, None, "education", "edu_recency_unknown", "gate"),
     ("EDU_YEARS_STRICT", mr.edu_years_required, None, "education", "edu_years_unknown", "gate"),
@@ -575,6 +592,13 @@ def classify_row(det, mode, gate, kind, key, hit_all, hit_gate, doc) -> str:
         return "已兜住·差什么（§3 有 `%s`）" % key
     if gate and kind == "na":
         return "已归 na（§3 有 `%s`，不占不可判）" % key
+    if gate and kind == "pass":
+        # P1e：接地后前置维第一次可能判 pass（画像字段已采集且满足要求）。
+        # 这既不是漏网也不是缺口，是「这条要求真的满足了」——必须单列一句，
+        # 否则它会掉进下面的 fallback，被报成「闸门拉起但 §3 无该码」。
+        return "已兜住·已满足（§3 有 `%s`）" % key
+    if gate and kind == "fail":
+        return "已兜住·不满足（§3 有 `%s`）" % key
     if gate:
         return "闸门拉起但 §3 无 `%s`" % key
     if hit_all and not hit_gate:
@@ -604,8 +628,18 @@ def gate_rows(doc: dict, hits: dict[str, list[str]], verdicts: dict[str, dict]) 
         hit_all = bool(hits.get(det))
         surface = read_surface(det, doc)
         hit_gate = hit_all and bool(surface) and any(p in surface for p in hits.get(det, []))
-        key = "%s:%s" % (dim, code)
-        kind = codes.get(key)
+        # 同族任一码在场即算「§3 有这个码」：接地后原码会细分出 _ok/_no，
+        # 只认原码会把已判 pass 的项目报成漏网（见 _family_codes 的说明）。
+        family = [c for c in _family_codes(code) if "%s:%s" % (dim, c) in codes]
+        key = "%s:%s" % (dim, family[0] if family else code)
+        # 同族多个码并存时（理论上不会，原码只在 silent 时出现）取第一个可达的，
+        # 但 kind 按在场的最差取，避免「pass 掩盖 silent」。
+        order = {"fail": 3, "silent": 2, "gap": 1, "na": 0, "pass": 0}
+        kind = (
+            max((codes["%s:%s" % (dim, c)] for c in family), key=lambda k: order.get(k, 0))
+            if family
+            else None
+        )
         state = classify_row(det, mode, gate, kind, key, hit_all, hit_gate, doc)
         rows.append(
             (

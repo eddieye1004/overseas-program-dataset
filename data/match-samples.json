@@ -1,5 +1,5 @@
 {
- "rules_version": 10,
+ "rules_version": 11,
  "samples": {
   "A": {
    "passport": "mainland_china",
@@ -171,8 +171,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    },
@@ -206,8 +206,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    },
@@ -241,8 +241,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    }
@@ -2249,8 +2249,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
      },
      {
       "dim": "precondition",
@@ -2294,8 +2294,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
      },
      {
       "dim": "precondition",
@@ -2310,7 +2310,7 @@
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -2339,8 +2339,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
      },
      {
       "dim": "precondition",
@@ -2800,7 +2800,7 @@
   },
   "nz-china-whv": {
    "A": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -2829,8 +2829,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
      },
      {
       "dim": "precondition",
@@ -2879,8 +2879,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
      },
      {
       "dim": "precondition",
@@ -2900,7 +2900,7 @@
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -2929,8 +2929,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
      },
      {
       "dim": "precondition",
@@ -3088,8 +3088,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    },
@@ -3123,8 +3123,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    },
@@ -3158,8 +3158,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    }

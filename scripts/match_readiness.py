@@ -79,6 +79,16 @@ PASSPORT_ZH = {
     "hong_kong_china": "香港护照",
     "taiwan_china": "台湾护照",
 }
+# 护照 → 护照所属国家/地区代码（ISO 3166-1 alpha-2）。**只登记库里真有的三类**，
+# 缺的一律不猜（P1e）：判 `home_residence`（须常驻护照所属地区）的唯一动作是
+# 「现居 == 护照所属地」，两边都用同一套代码，比较就是字符串相等，不需要地名
+# 归一表。表里没有的护照（将来新增、或画像写了个错值）返回 None → 判 silent，
+# 而不是拿一个猜出来的国家去判 fail——那等于替官方拒绝一个可能合格的人。
+PASSPORT_COUNTRY = {
+    "mainland_china": "CN",
+    "hong_kong_china": "HK",
+    "taiwan_china": "TW",
+}
 
 # --------------------------------------------------------------------------
 # 学历：从「单一总序」改成「路径谓词」（P3，2026-11-16）
@@ -1745,6 +1755,18 @@ def current_location_of(pr: dict) -> str | None:
     return None
 
 
+def passport_country_of(pr: dict) -> str | None:
+    """画像护照所属国家/地区代码；表里没有该护照时返回 None（= 不可判）。
+
+    与 `current_location_of()` 同一套严格度，但**未知形态不同**：护照是一个受
+    枚举约束的存储值（`PASSPORTS`），所以这里不做格式宽容，只查表。查不到就是
+    「这张护照的所属地我们没登记」，落 silent——不拿 `current_location` 顶替，
+    也不从别的字段推一个出来。`home_residence` 判的是「现居 == 护照所属地」，
+    两边任一缺失都判不了，硬凑一边就是替官方下结论。
+    """
+    return PASSPORT_COUNTRY.get(pr.get("passport"))
+
+
 def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     """返回 (can|cannot|gap|unknown, 逐维结论)。
 
@@ -2346,23 +2368,111 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                     }
                 )
         elif pre == "outside":
-            dims.append(
-                {
-                    "dim": "precondition",
-                    "kind": "silent",
-                    "code": "pre_outside_country",
-                    "why": "原文要求在递交时人位于该国境外，画像不采集现居地，无法判定",
-                }
-            )
+            # 在地的镜像方向（P1e 接地）：递交时人须在该国**境外**。
+            # `au-407-training`（`you must be outside Australia when you apply …
+            # and when we grant it`）与 `se-look-for-work`（`You must currently be
+            # located outside of Sweden`）是仅有的两条。
+            #
+            # 判法就是 inside 的镜像，比的是同一个 current_location 与同一个
+            # country_code，只是方向相反：
+            #   现居 != 项目国 → pass（人在境外，这条不构成障碍）
+            #   现居 == 项目国 → fail（人在境内，申请本身无效）
+            #   缺失/非法/项目国缺失 → silent（维持原码，绝不默认 pass）
+            #
+            # 为什么不能拿 inside 的 code 复用它：方向相反的两条要求共用一个 code
+            # 会让「必须人在境外」与「必须人在境内」在报告里长得一模一样
+            # （batch8 立项理由、P1c 用例 ⑤）。所以三个 code 各占一件事，原码
+            # `pre_outside_country`（silent）的语义一个字节没动。
+            loc = current_location_of(pr)
+            cc = (doc.get("program") or {}).get("country_code")
+            if loc is None or not cc:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "silent",
+                        "code": "pre_outside_country",
+                        "why": "原文要求在递交时人位于该国境外，画像不采集现居地，无法判定",
+                    }
+                )
+            elif loc != cc:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "pass",
+                        "code": "pre_outside_country_ok",
+                        "need": f"递交时人须在 {cc} 境外",
+                        "have": f"你现在在 {loc}",
+                        "why": f"你现居 {loc}，不在项目所在国 {cc}，这条「境外递交」要求已满足",
+                    }
+                )
+            else:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "fail",
+                        "code": "pre_outside_country_no",
+                        "need": f"递交时人须在 {cc} 境外",
+                        "have": f"你现在在 {loc}",
+                        "why": (
+                            f"原文要求递交时人位于 {cc} 境外，你填的现居地正是 {cc}；"
+                            "在该国境内递交会被判无效，须先离境再递"
+                        ),
+                    }
+                )
         elif pre == "home_residence":
-            dims.append(
-                {
-                    "dim": "precondition",
-                    "kind": "silent",
-                    "code": "pre_home_residence",
-                    "why": "原文要求常驻护照所属地区，画像不采集现居地，无法判定",
-                }
-            )
+            # 常驻护照所属地区（P1e 接地）。两条：`jp-working-holiday`
+            # （须为协议国国民，且目前居住于其国籍国/地区）、`nz-china-whv`
+            # （申请时须居住且常驻中国；其 passport_types note 自己写明
+            # 「申请人须常驻其护照所属地区」）。
+            #
+            # **判据是「现居 == 护照所属地」，不是「现居 == 项目国」**——这是
+            # P1d §8 定性的接法，方向搞反会把全部目标人群判错：JP 项目在 JP，
+            # 但要求的「国籍国」是台湾/香港，不是日本。所以比的是
+            # `current_location` 与 `PASSPORT_COUNTRY[passport]`，项目国不参与。
+            #
+            # 两条之一拿不到就判 silent，不硬凑：护照不在映射表里（将来新增的
+            # 护照类型）、或现居地缺失/非法，都表示「这两边我们有一条不知道」。
+            #
+            #  citizenship 那一半（须为协议国国民）不在这里判：它由 passport 维
+            # 覆盖（`jp-working-holiday` 对大陆护照是 `passport_no`），见 PRE_CITIZENSHIP
+            # 的 na 分支说明。两处都判会让同一个缺口说两遍。
+            loc = current_location_of(pr)
+            home = passport_country_of(pr)
+            if loc is None or home is None:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "silent",
+                        "code": "pre_home_residence",
+                        "why": "原文要求常驻护照所属地区，画像不采集现居地，无法判定",
+                    }
+                )
+            elif loc == home:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "pass",
+                        "code": "pre_home_residence_ok",
+                        "need": f"常驻护照所属地区（{PASSPORT_ZH.get(pr.get('passport'), home)} → {home}）",
+                        "have": f"你现在在 {loc}",
+                        "why": f"你现居 {loc}，与护照所属地 {home} 一致，这条「常驻护照国」要求已满足",
+                    }
+                )
+            else:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "fail",
+                        "code": "pre_home_residence_no",
+                        "need": f"常驻护照所属地区（{PASSPORT_ZH.get(pr.get('passport'), home)} → {home}）",
+                        "have": f"你现在在 {loc}",
+                        "why": (
+                            f"原文要求申请人常驻其护照所属地区（{home}），"
+                            f"你填的现居地是 {loc}；这条要求补材料满足不了，"
+                            "须回到护照所属地区再申请"
+                        ),
+                    }
+                )
         elif pre == "citizenship":
             # 原文这一条是「须为参与国公民」——国籍条件，passport 维已经在判同一件事。
             # 报 na（不构成新缺口），但必须留痕：落空不让它看起来「这条要求不存在」。
@@ -2483,7 +2593,10 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 #   10 P3 教育路径化：路径谓词替代 EDU_RANK 总序、去 >=3 下限、
 #      doctorate 入枚举、新增 edu_duration_unknown / edu_enrollment_unknown /
 #      edu_experience_unknown / edu_duration_short / edu_not_enrolled
-RULES_VERSION = 10
+#   11 P1e 两码接地：pre_outside_country（au-407 / se）与 pre_home_residence
+#      （jp / nz）可判；home_residence 判据是「现居 == 护照所属地」，不是项目国，
+#      新增 PASSPORT_COUNTRY 映射表（只登记库里真有的三类护照）
+RULES_VERSION = 11
 
 
 def flags_of(doc: dict) -> dict:
