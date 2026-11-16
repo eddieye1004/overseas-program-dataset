@@ -1329,6 +1329,11 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     edu_credential_unknown: '原文另要求 {need}；结构化字段只记了学历层级，认定结果与积分总分都未采集，无法判定',
     edu_place_unknown: '原文要求学位在指定国家/名单内院校完成，院校与毕业年份未采集，无法判定',
     edu_by_sponsor: '原文写明学历层级由 Sponsor 判断，不作硬性门槛',
+    edu_duration_unknown: '原文另要求 {need}；你的就读时长未采集，无法判定',
+    edu_duration_short: '就读时长不够：要求 {need}，你是 {have}',
+    edu_enrollment_unknown: '原文要求特定的在读/毕业状态；你的就读状态或毕业时间未采集，无法判定',
+    edu_experience_unknown: '原文接受工作经验替代学历；你的相关工作年限未采集，无法判定',
+    edu_not_enrolled: '原始要求的是你在读（或毕业不超过一定期限），不是学历高低；你填的状态不满足',
     lang_ok: '语言成绩达标',
     lang_low: '语言成绩不够：要求 {need}，你是 {have}',
     lang_missing: '要求语言成绩，你没填：需要 {need}',
@@ -1404,6 +1409,15 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'The source requires the degree to come from an institution in a specified country or on an approved list; your institution and graduation year are not collected — cannot decide',
     edu_by_sponsor:
       'The source states the degree level is judged by the sponsor, not set as a hard threshold',
+    edu_duration_unknown:
+      'The source also requires {need}; the length of your studies is not collected, so this cannot be decided',
+    edu_duration_short: 'Your study duration is too short: requires {need}, you have {have}',
+    edu_enrollment_unknown:
+      'The source requires a particular enrolment or graduation status; neither is collected for you, so this cannot be decided',
+    edu_experience_unknown:
+      'The source accepts work experience in place of a degree; your years of relevant experience are not collected, so this cannot be decided',
+    edu_not_enrolled:
+      'The source asks whether you are currently enrolled (or graduated within a set window), not how high your degree is; the status you entered does not meet it',
     lang_ok: 'Language score meets the requirement',
     lang_low: 'Language score is short: requires {need}, you have {have}',
     lang_missing: 'A language score is required and you entered none: needs {need}',

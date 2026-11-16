@@ -1590,6 +1590,127 @@ class P1dLocationGrounding(unittest.TestCase):
             self.assertEqual(mr.current_location_of(mr.SAMPLES[name]), cc, name)
 
 
+class P3EducationPaths(unittest.TestCase):
+    """P3 成对回归：教育维从「单一总序」改成「路径谓词」后，三个病灶各钉一对。
+
+    这一组的方法论是**成对**：只钉「假 pass 修好了」不够——把整维判死也能让它绿。
+    每一对都必须同时出示正反两面，且 fail 的理由码要落在教育维本身，
+    不许靠别的维把整体拉黑来遮。
+
+    | 病灶 | 反面（修前错判） | 正面（修后须成立） |
+    |---|---|---|
+    | J-1 Intern 假 pass | 已毕业 → 不得 pass | 在读 → 仍 pass |
+    | J-1 Trainee 假 cannot | 无学位+5 年 → 不得 cannot | 无学位+不足 → 仍 cannot |
+    | F-1 OPT 学年 | 时长不足 → fail | 时长达标 → pass；缺数据 → silent |
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs = {d["program"]["id"]: d for d in mr.load_programs()}
+
+    def edu(self, pid, **override):
+        """以 B 画像为底，覆盖指定字段后取教育维那一格。"""
+        pr = dict(mr.SAMPLES["B"])
+        pr.update(override)
+        state, dims = mr.judge(self.docs[pid], pr)
+        d = next(x for x in dims if x["dim"] == "education")
+        return state, d
+
+    # —— 病灶①：intern 假 pass ——
+    def test_intern_graduated_is_not_pass_and_enrolled_still_passes(self):
+        """us-j1-intern 原文要求「现在必须在读」。旧总序里
+        `bachelor_completed`(4) > `bachelor_in_progress`(3)，于是**已毕业的人
+        比在读的人更够格** —— 这是全线首个假 pass（batch9b §2 第 3 行）。
+
+        反面：B/C 已毕业（enrollment_status=completed）不得再判 pass，
+        且 fail 的理由码必须是教育维的 `edu_not_enrolled`，不是靠别的维遮。
+        正面：同一个人改回 enrolled，教育维必须恢复 pass —— 否则「判死」也能
+        让反面绿，那是矫枉过正。
+        """
+        for sample in ("B", "C"):
+            # 夹具原值即「已毕业」（enrollment_status=completed），不加覆盖
+            state, dims = mr.judge(self.docs["us-j1-intern"], mr.SAMPLES[sample])
+            e = next(x for x in dims if x["dim"] == "education")
+            self.assertEqual(e["kind"], "fail", f"{sample} 已毕业仍被判 {e}")
+            self.assertEqual(e["code"], "edu_not_enrolled", e)
+            self.assertEqual(state, "cannot", f"{sample} 应 cannot")
+
+        # 正面：改回在读，教育维必须 pass
+        _, d = self.edu("us-j1-intern", education="bachelor_in_progress",
+                        enrollment_status="enrolled")
+        self.assertEqual(d["kind"], "pass", d)
+        self.assertEqual(d["code"], "edu_ok", d)
+
+    # —— 病灶②：trainee 假 cannot ——
+    def test_trainee_experience_path_rescues_no_degree(self):
+        """us-j1-trainee 官方路径②明文允许「无学历 + 境外 5 年经验」。
+        旧总序里没有这个位子，于是把合格者判死 —— 全线首个假 cannot
+        （batch10 §2 第 4 行）。
+
+        反面：无学位（high_school）+ 5 年境外经验 → 不得 cannot。
+        正面：无学位 + 经验不足（1 年）→ 仍须 cannot，理由 `edu_low`。
+        两条一起才说明「路径②通了」而不是「这维被关掉了」。
+        """
+        state, d = self.edu("us-j1-trainee", education="high_school",
+                            work_experience_years=5)
+        self.assertNotEqual(state, "cannot", f"路径②仍被判死：{d}")
+        self.assertEqual(d["kind"], "pass", d)
+        self.assertEqual(d["code"], "edu_ok", d)
+
+        # 防矫枉过正：经验不够仍 cannot
+        state2, d2 = self.edu("us-j1-trainee", education="high_school",
+                              work_experience_years=1)
+        self.assertEqual(state2, "cannot", f"经验不足却放行：{d2}")
+        self.assertEqual(d2["kind"], "fail", d2)
+        self.assertEqual(d2["code"], "edu_low", d2)
+
+    # —— 病灶③：f1-opt 学年 ——
+    def test_f1_opt_duration_predicate_drives_result(self):
+        """us-f1-opt 的「一整个学年」过去没有字段可读，学制时长无人管
+        （batch9a §2 第 6 行）。现在由时长谓词驱动。
+
+        三态各一条：
+          · 时长不足（6 个月 < 10 个月）→ fail / `edu_duration_short`
+          · 时长达标（48 个月 = 四年制）→ pass / `edu_ok`
+          · 时长缺失（None）→ silent / `edu_duration_unknown`，**不许默认 pass**
+        """
+        state, d = self.edu("us-f1-opt", study_months=6)
+        self.assertEqual(d["kind"], "fail", d)
+        self.assertEqual(d["code"], "edu_duration_short", d)
+        self.assertEqual(state, "cannot", "时长不足却仍可申")
+
+        _, ok = self.edu("us-f1-opt", study_months=48)
+        self.assertEqual(ok["kind"], "pass", ok)
+        self.assertEqual(ok["code"], "edu_ok", ok)
+
+        _, unk = self.edu("us-f1-opt", study_months=None)
+        self.assertEqual(unk["kind"], "silent", unk)
+        self.assertEqual(unk["code"], "edu_duration_unknown", unk)
+
+    # —— 登记表口径：新码必须留在停工线口径内 ——
+    def test_new_edu_silent_codes_are_classified(self):
+        """派单 §3 明文：新码分类要有测试钉住，**不许顺手把它排除在停工线
+        口径外**。`edu_duration_unknown` / `edu_enrollment_unknown` 都是
+        「画像没采集那个人自己的事实」，按 P2-1 判据属乙类（画像债），
+        补一条画像字段就能判 —— 所以必须在 CLASS_B_CODES 里，与
+        `test_every_silent_code_is_classified` 互补。"""
+        for code in ("edu_duration_unknown", "edu_enrollment_unknown"):
+            self.assertIn(code, mr.CLASS_B_CODES, f"{code} 被排除在乙类之外")
+
+    # —— doctorate 入枚举 ——
+    def test_doctorate_is_a_real_level(self):
+        """doctorate 补进学历枚举后，必须真的能表达「博士达标」：
+        博士学历满足 bachelor_completed 门槛，且不是靠 any 兜过去的。"""
+        self.assertIn("doctorate", mr.EDU_LEVEL_ORDER)
+        self.assertIn(
+            "doctorate",
+            mr.EDU_LEVEL_QUALIFIES["bachelor_completed"],
+            "博士应满足本科门槛",
+        )
+        _, d = self.edu("us-f1-opt", education="doctorate", study_months=48)
+        self.assertEqual(d["kind"], "pass", d)
+
+
 class CliBehaviour(unittest.TestCase):
     def test_emit_writes_both_artifacts(self):
         """--emit 必须同时写两个文件：只写一个的话，另一个会安静地过期。"""

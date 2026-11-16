@@ -13,11 +13,17 @@
 //
 // 纯函数、不碰 DOM、不读 localStorage：smoke-test 用 esbuild 单独打包来断言。
 
-/** 五项输入。字段名与 data/match-samples.json 的 samples 一致。 */
+/** 画像五项输入。字段名与 data/match-samples.json 的 samples 一致。 */
 export interface VerdictProfile {
   passport: 'mainland_china' | 'hong_kong_china' | 'taiwan_china';
   age: number;
-  education: 'high_school' | 'vocational' | 'bachelor_in_progress' | 'bachelor_completed' | 'master';
+  education:
+    | 'high_school'
+    | 'vocational'
+    | 'bachelor_in_progress'
+    | 'bachelor_completed'
+    | 'master'
+    | 'doctorate';
   /** 雅思总分；没考过填 null —— 这与「考了但项目没登记分数线」是两件事 */
   ielts: number | null;
   budget_cny: number;
@@ -40,6 +46,19 @@ export interface VerdictProfile {
    * 变成「永远不相等」）。格式不对一律当未知，绝不猜测。
    */
   current_location?: string | null;
+  /**
+   * 与目标岗位相关的**境外**工作经验年限（P3）。缺省 = 未知。
+   *
+   * 为什么 `0` 与 `null` 必须分开：J-1 Trainee 的两条路径分别要「学位 + 1 年」
+   * 与「无学位 + 5 年」。一个在校生填 0 是**已知事实**（→ 判 fail），
+   * 没填是「没问过」（→ 判 silent）。把 0 当成缺省值会把「不能申」说成
+   * 「不可判」，反过来把 null 当 0 就是替官方拒绝。
+   */
+  work_experience_years?: number | null;
+  /** 距最近一次毕业多少个月（P3）。缺省 = 未知 */
+  months_since_graduation?: number | null;
+  /** 在最高学历里已实际就读多少个月（P3）。缺省 = 未知 */
+  study_months?: number | null;
 }
 
 export const EMPTY_VERDICT_PROFILE: VerdictProfile = {
@@ -70,6 +89,18 @@ export interface ProgramFlags {
     years_completed: number | null;
     /** note 另写的硬性年限门槛（结构化字段没有时靠它判不可判）——§4-2 */
     years_required: number | null;
+    /**
+     * 教育资格的**并列路径**（P3）。任一成立即达标。
+     *
+     * 这是本单的核心数据结构：`level` 那个单值表达不了「学位 或 经验」与
+     * 「在读 或 毕业后 N 个月内」，把它们硬压进一个层级序就是原先那批假
+     * pass / 假 cannot 的根因。月数由 Python 侧算好再传，前端不再做单位换算。
+     */
+    paths: EducationPath[] | null;
+    /** 项目侧就读时长门槛（月，已折算）。与 duration_required 配合判 silent */
+    min_duration_months: number | null;
+    /** 原文是否提出了就读时长要求（true 而 min_duration_months 为 null = 有要求无数字） */
+    duration_required: boolean;
     /** note 另写的「须在申请日前 N 年内完成学业/取得学位」毕业时限——P2-0 */
     recency_required: number | null;
     /** 原文把资格写成「须属于某几类参与人身份之一」，学历层级表达不了——P2-0 */
@@ -182,7 +213,7 @@ function normalizeLocation(v: string | null | undefined): string | null {
 }
 
 /** 判定口径的版本。改了判定逻辑，Python 的 RULES_VERSION 必须一起 +1。 */
-export const RULES_VERSION = 9;
+export const RULES_VERSION = 10;
 
 export type VerdictState = 'can' | 'cannot' | 'gap' | 'unknown';
 export type DimKind = 'pass' | 'fail' | 'gap' | 'silent' | 'na';
@@ -205,15 +236,187 @@ export interface ProgramVerdict {
   dims: DimVerdict[];
 }
 
-/** 学历从低到高的次序。与 Python 的 EDU_RANK 必须完全一致。 */
-const EDU_RANK: Record<string, number> = {
-  high_school: 1,
-  vocational: 2,
-  bachelor_in_progress: 3,
-  bachelor_completed: 4,
-  master: 5,
-  any: 0,
+/** 一条教育资格路径（P3）。与 Python 的 `edu_paths()` 产出一一对应。 */
+export interface EducationPath {
+  /** 该路径要求的最低学历层级；`any` = 不限 */
+  level: string;
+  /** 在读状态要求：enrolled | graduated；null = 不限 */
+  enrollment: 'enrolled' | 'graduated' | null;
+  /** 毕业后多少个月内仍算符合；null = 无此限 */
+  graduated_within_months: number | null;
+  /** 相关工作经验年限；null = 不要求 */
+  min_years_experience: number | null;
+  /** 经验须在何处取得：outside | any | null */
+  experience_region: 'outside' | 'any' | null;
+  /** 就读时长下限（月，已折算）；null = 不要求 */
+  min_months: number | null;
+}
+
+/**
+ * 学历层级是否满足。**显式集合，不是数字比较**（P3）。
+ *
+ * 原先这里是一张 `EDU_RANK` 数字表 + `have < need`。那个写法有两个错：
+ *   ① 「在读」是状态不是层级：`bachelor_completed(4) > bachelor_in_progress(3)`，
+ *      于是已毕业的人在「必须现在在读」的项目上反而更够格（假 pass）；
+ *   ② 层级序回答不了「无学历 + 5 年经验也算合格」（假 cannot）。
+ * 现在层级只是路径里的**一个谓词**，用集合表达「持有 have 是否满足 need」。
+ *
+ * 与 Python 的 `EDU_LEVEL_QUALIFIES` 必须逐项一致，否则 smoke-test 会红。
+ */
+const LEVEL_QUALIFIES: Record<string, readonly string[]> = {
+  any: ['high_school', 'vocational', 'bachelor_in_progress', 'bachelor_completed', 'master', 'doctorate'],
+  high_school: ['high_school', 'vocational', 'bachelor_in_progress', 'bachelor_completed', 'master', 'doctorate'],
+  vocational: ['vocational', 'bachelor_in_progress', 'bachelor_completed', 'master', 'doctorate'],
+  bachelor_in_progress: ['bachelor_in_progress', 'bachelor_completed', 'master', 'doctorate'],
+  bachelor_completed: ['bachelor_completed', 'master', 'doctorate'],
+  master: ['master', 'doctorate'],
+  doctorate: ['doctorate'],
 };
+
+function levelOk(need: string | null | undefined, have: string | null | undefined): boolean {
+  const allowed = LEVEL_QUALIFIES[need ?? 'any'];
+  if (!allowed) return false; // 不认识的门槛值不构成达标证据
+  return have != null && allowed.includes(have);
+}
+
+/** 单条路径的三态判定结果。与 Python `edu_path_eval()` 的字段同名同义。 */
+interface PathEval {
+  verdict: 'pass' | 'fail' | 'unknown';
+  need: string;
+  have: string;
+  blocked: string[];
+  failed: string[];
+}
+
+/**
+ * 判一条教育路径。与 Python `edu_path_eval()` **逐条镜像**。
+ *
+ * 三态而不是布尔：路径里某个谓词缺数据时，这条路径既不能算成立也不能算不成立。
+ * 把 unknown 折成 fail 会让「数据没登记」变成「你不能申」；折成 pass 就是本单
+ * 要消灭的假 pass。`blocked` / `failed` 记录**是哪一类谓词**，调用方据此选 code。
+ */
+function evalPath(path: EducationPath, pr: VerdictProfile): PathEval {
+  const need: string[] = [];
+  const have: string[] = [];
+  const statuses: string[] = [];
+  const blocked: string[] = [];
+  const failed: string[] = [];
+
+  const level = path.level ?? 'any';
+  const hasLevel = level !== 'any';
+  if (hasLevel) {
+    need.push(`学历 ${level}`);
+    have.push(`你的学历 ${pr.education}`);
+  }
+
+  if (path.enrollment === 'enrolled') need.push('当前在读');
+  else if (path.enrollment === 'graduated') need.push('已毕业');
+
+  const minExp = path.min_years_experience;
+  if (minExp != null && minExp > 0) {
+    const where = path.experience_region === 'outside' ? '境外相关' : '相关';
+    need.push(`${where}工作经验 ${minExp} 年`);
+  }
+
+  const minMonths = path.min_months;
+  if (minMonths != null && minMonths > 0) need.push(`就读时长 ≥ ${minMonths} 个月`);
+
+  // ① 层级
+  if (hasLevel) {
+    if (!pr.education) {
+      statuses.push('unknown');
+      blocked.push('level');
+    } else if (!levelOk(level, pr.education)) {
+      statuses.push('fail');
+      failed.push('level');
+    }
+  }
+
+  // ② 在读状态
+  if (path.enrollment) {
+    const actual = pr.enrollment_status ?? null;
+    if (actual == null) {
+      statuses.push('unknown');
+      blocked.push('enrollment');
+    } else if (path.enrollment === 'enrolled') {
+      if (actual === 'enrolled') statuses.push('pass');
+      else {
+        statuses.push('fail');
+        failed.push('enrollment');
+      }
+    } else if (actual === 'completed') {
+      statuses.push('pass');
+    } else {
+      statuses.push('fail');
+      failed.push('enrollment');
+    }
+  }
+
+  // ③ 毕业宽限期（intern 的「毕业不超过 12 个月」）
+  const within = path.graduated_within_months;
+  if (within != null && within > 0) {
+    const actual = pr.enrollment_status ?? null;
+    const monthsSince = pr.months_since_graduation ?? null;
+    if (actual === 'enrolled') {
+      statuses.push('pass'); // 在读走的是另一条腿，不受宽限期约束
+    } else if (monthsSince != null) {
+      if (monthsSince <= within) statuses.push('pass');
+      else {
+        statuses.push('fail');
+        failed.push('graduation_recency');
+      }
+      have.push(`你毕业 ${monthsSince} 个月`);
+    } else {
+      statuses.push('unknown');
+      blocked.push('graduation_recency');
+    }
+  }
+
+  // ④ 经验年限
+  if (minExp != null && minExp > 0) {
+    const years = pr.work_experience_years ?? null;
+    if (years != null) {
+      if (years >= minExp) statuses.push('pass');
+      else {
+        statuses.push('fail');
+        failed.push('experience');
+      }
+      have.push(`你的经验 ${years} 年`);
+    } else {
+      statuses.push('unknown');
+      blocked.push('experience');
+    }
+  }
+
+  // ⑤ 就读时长
+  if (minMonths != null && minMonths > 0) {
+    const done = pr.study_months ?? null;
+    if (done != null) {
+      if (done >= minMonths) statuses.push('pass');
+      else {
+        statuses.push('fail');
+        failed.push('duration');
+      }
+      have.push(`你已读 ${done} 个月`);
+    } else {
+      statuses.push('unknown');
+      blocked.push('duration');
+    }
+  }
+
+  let verdict: PathEval['verdict'];
+  if (statuses.includes('fail')) verdict = 'fail';
+  else if (statuses.includes('unknown')) verdict = 'unknown';
+  else verdict = 'pass';
+
+  return {
+    verdict,
+    need: need.join(' 且 ') || '无额外条件',
+    have: have.join(' / ') || '已满足',
+    blocked,
+    failed,
+  };
+}
 
 /**
  * 判一条项目。
@@ -270,74 +473,150 @@ export function judgeOne(flags: ProgramFlags, pr: VerdictProfile): ProgramVerdic
     dims.push({ dim: 'age', kind: 'pass', code: 'age_ok' });
   }
 
-  // —— 学历 ——
-  const need = EDU_RANK[flags.education.level ?? 'any'] ?? 0;
-  const have = EDU_RANK[pr.education] ?? 0;
-  const yearsNeed = flags.education.years_required;
-  if (need > 0 && flags.education.by_sponsor) {
-    // 结构化 minimum_level 比原文更严：note 明说法规没规定学位层级、由 Sponsor
-    // 判断。这时按层级判 fail 是替官方拒绝（§4-5），以原文为准判不可判。
-    dims.push({ dim: 'education', kind: 'silent', code: 'edu_by_sponsor' });
-  } else if (have < need) {
+  // —— 学历（P3 路径化）——
+  //
+  // 判定顺序与 Python `judge()` 的学历块逐条镜像。与旧代码的关键差别：
+  // 旧代码第一条就是 `have < need → fail`，于是在有并列路径的项目上必然判死
+  // （J-1 Trainee「无学位 + 5 年经验」被判 edu_low 的那个假 cannot）。
+  // 现在先按路径算，最后才决定 fail / silent / pass。
+  const edu = flags.education;
+  const paths: EducationPath[] =
+    edu.paths && edu.paths.length > 0
+      ? edu.paths
+      : [
+          {
+            level: edu.level ?? 'any',
+            enrollment: null,
+            graduated_within_months: null,
+            min_years_experience: null,
+            experience_region: null,
+            min_months: null,
+          },
+        ];
+  const evals = paths.map((path) => evalPath(path, pr));
+  const anyPass = evals.some((e) => e.verdict === "pass");
+  const anyUnknown = evals.some((e) => e.verdict === "unknown");
+  const combinedNeed = evals.map((e) => e.need).join(" 或 ");
+
+  if (edu.by_sponsor && paths.some((p) => (p.level ?? "any") !== "any")) {
+    // 结构化字段比原文更严：note 明说「法规未规定学位层级、由 Sponsor 判断」。
+    // 判在最前，因为它是「结构化字段不该被采信」，与路径成不成立无关（§4-5）。
+    dims.push({ dim: "education", kind: "silent", code: "edu_by_sponsor" });
+  } else if (!anyPass && !anyUnknown) {
+    // 全部路径都不成立 → 唯一该判 fail 的情形。code 按**共同失败的谓词**选：
+    // 「你毕业了」与「你学历低了」是两件事，共用一个 code 会让修法无从下手。
+    const failed = new Set<string>();
+    for (const e of evals) for (const f of e.failed) failed.add(f);
+    const notEnrolled =
+      !failed.has("level") &&
+      (failed.has("enrollment") || failed.has("graduation_recency"));
     dims.push({
-      dim: 'education',
-      kind: 'fail',
-      code: 'edu_low',
-      need: flags.education.level ?? 'any',
-      have: pr.education,
+      dim: "education",
+      kind: "fail",
+      code: notEnrolled ? "edu_not_enrolled" : "edu_low",
+      need: combinedNeed,
+      have: notEnrolled ? (pr.enrollment_status ?? "") : pr.education,
     });
-  } else if (yearsNeed) {
-    // note 另写「不少于 N 年高等教育」且明说不足 N 年不满足（§4-2）。
-    // 画像不采集学制，所以「本科毕业」不能直接判达标，也不能替三年制判失败。
+  } else if (anyPass && edu.duration_required) {
+    // 路径成立，但另有就读时长门槛。时长是硬条件：缺数字就不可判，不许 pass。
+    const durNeed = edu.min_duration_months;
+    const durHave = pr.study_months;
+    if (durNeed == null) {
+      dims.push({
+        dim: "education",
+        kind: "silent",
+        code: "edu_duration_unknown",
+        need: "就读时长（原文有要求，仓内无数字）",
+      });
+    } else if (durHave == null || durHave === undefined) {
+      dims.push({
+        dim: "education",
+        kind: "silent",
+        code: "edu_duration_unknown",
+        need: `就读 ≥ ${durNeed} 个月`,
+      });
+    } else if (durHave >= durNeed) {
+      dims.push({ dim: "education", kind: "pass", code: "edu_ok" });
+    } else {
+      dims.push({
+        dim: "education",
+        kind: "fail",
+        code: "edu_duration_short",
+        need: `就读 ≥ ${durNeed} 个月`,
+        have: `${durHave} 个月`,
+      });
+    }
+  } else if (anyPass && edu.recency_required) {
+    // note 另写「须在申请日前 N 年内完成学业」（P2-0）。毕业时间未采集，
+    // 不能默认「层级到了 = 达标」。
     dims.push({
-      dim: 'education',
-      kind: 'silent',
-      code: 'edu_years_unknown',
-      need: `已完成 ${yearsNeed} 年高等教育`,
+      dim: "education",
+      kind: "silent",
+      code: "edu_recency_unknown",
+      need: `申请日前 ${edu.recency_required} 年内完成学业或研究`,
     });
-  } else if (flags.education.years_completed && pr.education === 'bachelor_in_progress') {
-    // 门槛只写了「本科」，但另要求已完成 N 年——在读的人他填的信息判不出来
+  } else if (anyUnknown) {
+    // 判不了，但要分清缺的是哪一类谓词 —— 不同补法对应不同 code。
+    const blocked = new Set<string>();
+    for (const e of evals) for (const b of e.blocked) blocked.add(b);
+    if (blocked.has("duration")) {
+      dims.push({
+        dim: "education",
+        kind: "silent",
+        code: "edu_duration_unknown",
+        need: combinedNeed,
+      });
+    } else if (blocked.has("enrollment") || blocked.has("graduation_recency")) {
+      dims.push({
+        dim: "education",
+        kind: "silent",
+        code: "edu_enrollment_unknown",
+        need: combinedNeed,
+      });
+    } else if (blocked.has("experience")) {
+      dims.push({
+        dim: "education",
+        kind: "silent",
+        code: "edu_experience_unknown",
+        need: combinedNeed,
+      });
+    } else {
+      dims.push({
+        dim: "education",
+        kind: "silent",
+        code: "edu_years_unknown",
+        need: combinedNeed,
+      });
+    }
+  } else if (edu.years_completed && pr.education === "bachelor_in_progress") {
     dims.push({
-      dim: 'education',
-      kind: 'silent',
-      code: 'edu_years_unknown',
-      need: `已完成 ${flags.education.years_completed} 年本科`,
+      dim: "education",
+      kind: "silent",
+      code: "edu_years_unknown",
+      need: `已完成 ${edu.years_completed} 年本科`,
     });
-  } else if (flags.education.recency_required) {
-    // note 另写「须在申请日前 N 年内完成学业或取得学位」（P2-0）。结构化 education
-    // 只有层级与学制年数，没有毕业年份；画像也不采集，所以不能默认判达标。
-    dims.push({
-      dim: 'education',
-      kind: 'silent',
-      code: 'edu_recency_unknown',
-      need: `申请日前 ${flags.education.recency_required} 年内完成学业或研究`,
-    });
-  } else if (flags.education.category_required) {
+  } else if (edu.category_required) {
     // 原文把资格写成「须属于某几类参与人身份之一，且由 Sponsor 判断是否成立」
-    // （P2-0）。结构化 minimum_level 是 any，判 edu_ok 等于说「学历层级任何值都
-    // 达标」——那句话与「你是在读学生/在职青年/教师/有专门技能吗」不是一回事。
-    // 与 §4-5 的 edu_by_sponsor 同口径：「由 Sponsor 判断」的事我们没有判据。
+    // （P2-0）。判 edu_ok 等于说「学历层级任何值都达标」，与原文不是一回事。
     dims.push({
-      dim: 'education',
-      kind: 'silent',
-      code: 'edu_category_unknown',
+      dim: "education",
+      kind: "silent",
+      code: "edu_category_unknown",
     });
-  } else if (flags.education.credential_required) {
-    // 原文把「资格须被主管机构认定 + 积分达 N 分」写成第一条硬门槛（P2-0）。
-    // 结构化字段只有层级：认定要跑一次学历认定、结论可以是「不等效」；积分项里
-    // 语言等级/经验年限/紧缺职业/在德居留史画像一个都没采集。判 pass 就是静默放行。
+  } else if (edu.credential_required) {
+    // 「资格须被主管机构认定 + 积分达 N 分」（P2-0）。认定结论与积分总分都未采集，
+    // 判 pass 就是静默放行。
     dims.push({
-      dim: 'education',
-      kind: 'silent',
-      code: 'edu_credential_unknown',
-      need: flags.education.credential_required,
+      dim: "education",
+      kind: "silent",
+      code: "edu_credential_unknown",
+      need: edu.credential_required,
     });
-  } else if (flags.education.place_constrained) {
-    // 学位须在指定国家/名单内院校完成（英国毕业生签证 / PGWP 的 DLI /
-    // HPI 的认可名单）。画像不采集院校与毕业年份，判 pass 就是静默放行。
-    dims.push({ dim: 'education', kind: 'silent', code: 'edu_place_unknown' });
+  } else if (edu.place_constrained) {
+    // 学位须在指定国家/名单内院校完成。画像不采集院校与毕业年份。
+    dims.push({ dim: "education", kind: "silent", code: "edu_place_unknown" });
   } else {
-    dims.push({ dim: 'education', kind: 'pass', code: 'edu_ok' });
+    dims.push({ dim: "education", kind: "pass", code: "edu_ok" });
   }
 
   // —— 语言 ——
