@@ -144,10 +144,13 @@ def main() -> int:
                v["unknown_ratio"], v["unknown_by_design"])
         )
     print("\nC 乙 ids：%s" % (rep["samples"]["C"]["class_b_ids"],))
-    print("停工线停不停：%s（阈值 %s，最高乙类 %.4f）" % (
-        "停" if rep["max_ratio_class_b"] > rep["stop_line_ratio"] else "不停",
-        mr.ratio_text(rep["stop_line_ratio"]), rep["max_ratio_class_b"],
+    # 停工判定按真实用户口径（2026-11-20 裁决）：夹具口径只作回归参照。
+    print("停工线停不停（真实口径）：%s（阈值 %s，最高乙类 %.4f / 画像 %s）" % (
+        "停" if rep["gate_ratio_class_b"] > rep["stop_line_ratio"] else "不停",
+        mr.ratio_text(rep["stop_line_ratio"]), rep["gate_ratio_class_b"],
+        rep["gate_worst_sample"],
     ))
+    print("对照：夹具口径最高乙类 %.4f（回归参照，不判停）" % rep["max_ratio_class_b"])
     return 0
 
 

@@ -1870,6 +1870,121 @@ CLASS_B_CODES = frozenset(
 STOP_LINE_RATIO = 1 / 3
 BY_DESIGN_ALERT_COUNT = 5
 
+# --------------------------------------------------------------------------
+# 停工线的双口径（Muse 2026-11-20 01:58 裁决，INBOX:1487）
+#
+# 裁决原文：即日起双口径并行，停工线以「真实用户画像口径」为准，夹具口径降为
+# 回归参照。理由是这条闸的用途是保护真实用户，量夹具画像等于虚假保证。
+#
+# 为什么必须分两个口径：SAMPLES 每个样例给了 13 个字段，而当时的网页表单只有
+# 6 个输入口。判定面（P1b-2 / P1c / P3）一直在扩，采集面没跟，于是普通用户
+# 拿不到那 7 个事实，项目从「能申」掉成「不可判」——而只量夹具的闸显示线内。
+# 闸量错了对象，越线就看不见。
+#
+# 真实口径 = 当时表单能采集的 6 字段原样 + 其余 7 字段置 None，跑同一个 audit()。
+# 置 None 而不是删键：引擎里「缺键」与「显式 None」等价（都判 unknown），写出来
+# 是为了让「这个人没被问过这件事」在夹具上看得见，而不是像漏填。
+#
+# **两个常量的分工（2026-11-20 02:xx 表单补齐后更新）**：
+#   LEGACY_FORM_FIELDS —— 表单补齐**之前**能采集的 6 项。永不再变。
+#     它的作用是保留「旧的真实口径」这条基线，好让「补齐字段带来了多少改善」
+#     这个数字以后还能复算。改名而不是删掉：删了那段历史就无从复算。
+#   REAL_PROFILE_NULLED_FIELDS —— 相对 LEGACY_FORM_FIELDS 置空的那 7 项。
+#
+# 补齐之后，真实口径（用当前的 FORM_FIELDS，13 项）与夹具口径**已经重合**，
+# 所以现在这条闸报的两个数会一样。这不是闸失效了——相反，它说明采集面终于
+# 追上了判定面：`collection_gap()` 为空就是这件事的机械证明。
+# 若将来有人在引擎里加字段而没加表单口，缺口会重新出现，双口径会再次分叉，
+# 而 test_profile_fields_are_all_collectable 会先红。
+#
+# LEGACY_FORM_FIELDS 与 REAL_PROFILE_NULLED_FIELDS 必须覆盖 SAMPLES 的全部字段键，
+# 两侧一起改才不漏；漏一个字段的后果是那个字段仍带夹具值，旧口径被悄悄放宽
+# （tests 里的 test_legacy_form_fields_cover_every_sample_field 咬住这条）。
+# --------------------------------------------------------------------------
+LEGACY_FORM_FIELDS = ("passport", "age", "education", "ielts", "budget_cny", "current_location")
+
+REAL_PROFILE_NULLED_FIELDS = (
+    "dependents",
+    "enrollment_status",
+    "months_since_graduation",
+    "prior_participation",
+    "prior_same_category_visa",
+    "study_months",
+    "work_experience_years",
+)
+
+# 停工线以真实口径为准（裁决第二条）。夹具口径保留输出，但只作回归参照。
+STOP_LINE_CALIBER = "real"
+
+# 在案债务上限：表单补齐**之前**，真实口径下 HEAD 的 C 画像乙类 = 15/41 = 0.3659，
+# 已越 1/3。裁决第三条把那次越线记为在案债务，不阻塞 PR、也不许靠改阈值消掉。
+#
+# **补齐字段后这个数字降下来了**（15 → 8，见 tests 的 test_debt_ceiling_tracks_actual）。
+# 裁决要求「只许降不许升、降下来必须回来把上限改小」，所以这里是 8 而不是 15：
+# 留着 15 就等于给下一次新债留了 7 条免费额度，而封顶本身不会报警。
+REAL_CLASS_B_DEBT_CEILING = 8
+
+
+def real_profile(pr: dict) -> dict:
+    """把一个夹具画像压成「网页表单真能采集到的那一份」。
+
+    判据是**当前的** FORM_FIELDS：表单能问的字段原样保留，问不到的置 None。
+    不做任何补默认值——补默认值等于替用户承认一个事实（如把 dependents
+    默认成 none），那会把「没问过」洗成「已知」，真实口径立刻偏乐观。
+
+    2026-11-20 表单补齐后 FORM_FIELDS 已是 13 项，于是这个函数返回的就是
+    原画像，两口径重合。这不是函数失效：`collection_gap()` 为空正是它的
+    **成功状态**。将来引擎加字段而表单没跟，FORM_FIELDS 不再覆盖它，
+    这里会自动重新开始置 None，双口径重新分叉——不需要改这个函数。
+    """
+    out = dict(pr)
+    for f in out:
+        if f not in FORM_FIELDS:
+            out[f] = None
+    return out
+
+
+def legacy_profile(pr: dict) -> dict:
+    """表单补齐**之前**的口径：只留 6 项，其余 7 项置 None。
+
+    存在的唯一理由是可复算：Muse 01:58 裁决那次越线（15/41）就是按这个口径
+    量出来的，留着它才能验证「补齐字段把这 7 条债务清掉了几个」。
+    它**不随后续补字段而变**（判据是固定的 LEGACY_FORM_FIELDS），
+    所以它度量的是历史，不是现状。现状用 real_profile()。
+    """
+    out = dict(pr)
+    for f in REAL_PROFILE_NULLED_FIELDS:
+        out[f] = None
+    return out
+
+
+def measure_caliber(docs: list[dict], profiles: dict) -> dict:
+    """按给定画像集合量一次乙类（停工线分子），不写任何全局状态。"""
+    per = OrderedDict()
+    for name in SAMPLES:
+        pr = profiles[name]
+        ids = []
+        design = 0
+        unknown = 0
+        for doc in docs:
+            state, dims = judge(doc, pr)
+            if state != "unknown":
+                continue
+            unknown += 1
+            cls = undecidable_class(dims, doc)
+            if cls == "avoidable":
+                ids.append(doc["program"]["id"])
+            elif cls == "design":
+                design += 1
+        per[name] = {
+            "unknown": unknown,
+            "unknown_class_b": len(ids),
+            "ratio_class_b": round(len(ids) / len(docs), 4),
+            "class_b_ids": sorted(ids),
+            "unknown_by_design": design,
+        }
+    return per
+
 # age_unknown 归甲是**有条件**的（Muse 裁决 1）：note 必须同时给出「官方无阈值 /
 # 由 Sponsor 自行规定」的证据，并且标了 ⚠️ 未核实。缺证据的 age_unknown 不是
 # 设计性不可判，而是「没去查」的数据债 —— 甲类豁免不成立，按乙类计，并要求
@@ -3245,6 +3360,10 @@ def audit() -> dict:
         if bad:
             any_gap += 1
 
+    # 真实用户口径（裁决第二条）：同一个引擎、同一份数据，只换画像定义域。
+    # 这一份是停工线的判据；上面那份（夹具）降为回归参照。
+    real_per_sample = measure_caliber(docs, {k: real_profile(v) for k, v in SAMPLES.items()})
+
     return {
         "total": len(rows),
         "rows": rows,
@@ -3254,7 +3373,7 @@ def audit() -> dict:
         "samples": per_sample,
         # 全口径（甲+乙混算）：保留输出，但**不是闸门**，只作历史可比与防洗白。
         "max_unknown_ratio": max(v["unknown_ratio"] for v in per_sample.values()),
-        # 乙类全口径：这才是停工线量的东西（阈值 STOP_LINE_RATIO = 1/3）
+        # 乙类全口径：夹具口径（回归参照，不再是闸门判据）
         "max_ratio_class_b": max(v["ratio_class_b"] for v in per_sample.values()),
         # 甲类全口径：软线，报警但不变红
         "max_by_design_count": max(v["unknown_by_design"] for v in per_sample.values()),
@@ -3263,6 +3382,19 @@ def audit() -> dict:
         "by_design_alert_count": BY_DESIGN_ALERT_COUNT,
         # 白名单里但证据不成立的豁免（应为空；非空是数据债，见 audit() 注释）
         "design_exemptions_missing": unproven_exemptions,
+        # —— 双口径（2026-11-20 裁决）——
+        # real_samples 是停工线判据；samples 是夹具回归参照。
+        "real_samples": real_per_sample,
+        "stop_line_caliber": STOP_LINE_CALIBER,
+        # 闸门口径下的最高乙类占比与对应画像（停工判定只看这两个值）
+        "gate_ratio_class_b": max(v["ratio_class_b"] for v in real_per_sample.values()),
+        "gate_worst_sample": max(real_per_sample, key=lambda k: real_per_sample[k]["ratio_class_b"]),
+        "real_class_b_debt_ceiling": REAL_CLASS_B_DEBT_CEILING,
+        "real_class_b_excess": max(
+            0, max(v["unknown_class_b"] for v in real_per_sample.values()) - REAL_CLASS_B_DEBT_CEILING
+        ),
+        "form_fields": list(FORM_FIELDS),
+        "real_nulled_fields": list(REAL_PROFILE_NULLED_FIELDS),
     }
 
 
@@ -3284,20 +3416,26 @@ def ratio_text(x: float) -> str:
     return "%.1f%%" % (x * 100)
 
 
-def metric_line(rep: dict, name: str) -> str:
+def metric_line(rep: dict, name: str, caliber: str = "fixture") -> str:
     """三口径同行打印（P2-1 R6）。
 
     必须一直是**同一行**：分成三行贴出去，读者会挑最顺眼的那行引用；写在一行
     里，「闸门 1/3 只看乙类」这层关系就没法被断章取义。全口径标「仅记录」、
     甲类标「软线 N 项」，是为了让人一眼看出哪个数字会停工、哪个只是提醒。
+
+    caliber：fixture = 夹具口径（13 字段，回归参照）；real = 真实用户口径
+    （表单 6 字段，停工线判据）。两个口径都按同一格式打印，读者才能左右对比。
     """
-    v = rep["samples"][name]
+    src = rep["real_samples"] if caliber == "real" else rep["samples"]
+    v = src[name]
+    tag = "真实口径" if caliber == "real" else "夹具口径"
     return (
-        "乙类 %.1f%%（闸门 %s）｜全口径 %.1f%%（仅记录）｜甲类 %d 项（软线 %d）"
+        "%s 乙类 %.1f%%（闸门 %s）｜全口径 %.1f%%（仅记录）｜甲类 %d 项（软线 %d）"
         % (
+            tag,
             v["ratio_class_b"] * 100,
             ratio_text(rep["stop_line_ratio"]),
-            v["unknown_ratio"] * 100,
+            v["unknown"] / rep["total"] * 100,
             v["unknown_by_design"],
             rep["by_design_alert_count"],
         )
@@ -3346,17 +3484,33 @@ def render_markdown(rep: dict) -> str:
             rep["samples"][k]["unknown_ratio"] * 100 for k in ("A", "B", "C")
         )
     )
-    worst = max(("A", "B", "C"), key=lambda k: rep["samples"][k]["ratio_class_b"])
+    worst = rep["gate_worst_sample"]
+    gate_ratio = rep["gate_ratio_class_b"]
     L.append(
-        "- **停工线只看乙类（可避免不可判），阈值 %s 一个数字未动**。实测最高为画像 %s 的"
-        " %.1f%%；**%s**。全口径与甲类数字见下表，它们不参与停工判定。"
+        "- **停工线只看乙类（可避免不可判），阈值 %s 一个数字未动**。判据口径 = **真实用户画像**"
+        "（表单 6 字段 + 其余 %d 字段置 null，见裁决 2026-11-20）。实测最高为画像 %s 的"
+        " %.1f%%（%d/%d，门槛 %d 条）；**%s**。全口径与甲类数字见下表，它们不参与停工判定。"
         % (
             ratio_text(rep["stop_line_ratio"]),
+            len(rep["real_nulled_fields"]),
             worst,
-            rep["samples"][worst]["ratio_class_b"] * 100,
-            "已越过停工线，须停工报 Muse 裁决"
-            if rep["max_ratio_class_b"] > rep["stop_line_ratio"]
+            gate_ratio * 100,
+            rep["real_samples"][worst]["unknown_class_b"],
+            rep["total"],
+            int(rep["total"] * rep["stop_line_ratio"]),
+            "已越过停工线，记为在案债务（成因 = 表单采集面未跟上判定面），须降不许升"
+            if gate_ratio > rep["stop_line_ratio"]
             else "未越过停工线，可继续",
+        )
+    )
+    L.append(
+        "- **夹具口径（13 字段）降为回归参照**：实测最高 %.1f%%（%s）。它不再决定停工，"
+        "但仍在报告里，用来分辨「引擎变差」与「画像变瘦」。"
+        % (
+            rep["max_ratio_class_b"] * 100,
+            "；".join(
+                "%s %.1f%%" % (k, v["ratio_class_b"] * 100) for k, v in rep["samples"].items()
+            ),
         )
     )
     L.append(
@@ -3416,7 +3570,37 @@ def render_markdown(rep: dict) -> str:
     L.append("三口径同行（闸门只看乙类）：")
     L.append("")
     for k in ("A", "B", "C"):
-        L.append("- 画像 %s：%s" % (k, metric_line(rep, k)))
+        L.append("- 画像 %s：%s" % (k, metric_line(rep, k, "real")))
+    L.append("")
+    L.append("### 2.1 双口径对照（真实口径 = 闸门判据｜夹具口径 = 回归参照）")
+    L.append("")
+    L.append("| 画像 | 真实口径乙类 | 真实占比 | 夹具口径乙类 | 夹具占比 | 差（真实 − 夹具） |")
+    L.append("|---|---|---|---|---|---|")
+    for k in ("A", "B", "C"):
+        r_, f_ = rep["real_samples"][k], rep["samples"][k]
+        L.append(
+            "| %s | %d | %.1f%% | %d | %.1f%% | %+d |"
+            % (
+                k,
+                r_["unknown_class_b"],
+                r_["ratio_class_b"] * 100,
+                f_["unknown_class_b"],
+                f_["ratio_class_b"] * 100,
+                r_["unknown_class_b"] - f_["unknown_class_b"],
+            )
+        )
+    L.append("")
+    L.append(
+        "> 真实口径 = 表单能采集的 %s（%d 项，含条件显示的补充字段）；"
+        "夹具多带的 %s 在表单补齐前无输入口，那一版口径见 LEGACY_FORM_FIELDS。"
+        "两列现在相同，说明采集面已追上判定面（collection_gap 为空）；"
+        "不同则差额即「用户没被问到的事实」造成的不可判，不是引擎退化。"
+        % (
+            "、".join(rep["form_fields"]),
+            len(rep["form_fields"]),
+            "、".join(rep["real_nulled_fields"]),
+        )
+    )
     L.append("")
     L.append("## 3. 逐项目缺口表")
     L.append("")
@@ -3520,22 +3704,52 @@ def main() -> int:
         rep["total"], rep["programs_with_gap"], rep["program_gap_ratio"] * 100))
     for dim, cnt in rep["dimension_counts"].items():
         print("  %-10s %s" % (dim, " ".join("%s=%d" % (k, cnt.get(k, 0)) for k in MARK)))
-    print("样例画像不可判占比（全口径）：", " ".join(
-        "%s=%.1f%%" % (k, v["unknown_ratio"] * 100) for k, v in rep["samples"].items()))
+    print("样例画像不可判占比（真实口径 = 闸门判据｜夹具口径 = 回归参照）：")
     for k in rep["samples"]:
-        print("  %s  %s" % (k, metric_line(rep, k)))
+        print(
+            "  口径对照 %s：真实 %.1f%% / 夹具 %.1f%%（乙类 %d/%d vs %d/%d）"
+            % (
+                k,
+                rep["real_samples"][k]["unknown"] / rep["total"] * 100,
+                rep["samples"][k]["unknown_ratio"] * 100,
+                rep["real_samples"][k]["unknown_class_b"],
+                rep["total"],
+                rep["samples"][k]["unknown_class_b"],
+                rep["total"],
+            )
+        )
+    for k in rep["samples"]:
+        print("  %s  %s" % (k, metric_line(rep, k, "real")))
+    for k in rep["samples"]:
+        print("  %s  %s" % (k, metric_line(rep, k, "fixture")))
     print(
-        "最高乙类占比 %.1f%%（停工线 %s，只看乙类）｜最高全口径 %.1f%%（仅记录）｜最高甲类 %d 项（软线 %d）"
+        "停工线 %s（只看乙类）：真实口径最高 %.1f%%（画像 %s），夹具口径最高 %.1f%%（回归参照，不判停）"
+        "｜最高甲类 %d 项（软线 %d）"
         % (
-            rep["max_ratio_class_b"] * 100,
             ratio_text(rep["stop_line_ratio"]),
-            rep["max_unknown_ratio"] * 100,
+            rep["gate_ratio_class_b"] * 100,
+            rep["gate_worst_sample"],
+            rep["max_ratio_class_b"] * 100,
             rep["max_by_design_count"],
             rep["by_design_alert_count"],
         )
     )
-    if rep["max_ratio_class_b"] > rep["stop_line_ratio"]:
-        print("  停工：乙类不可判率已越过停工线，须停工报 Muse 裁决")
+    if rep["gate_ratio_class_b"] > rep["stop_line_ratio"]:
+        print(
+            "  停工：真实口径乙类 %d/%d 已越过 %s（在案债务上限 %d 条），须降不许升；"
+            "新增越线须停工报 Muse 裁决"
+            % (
+                rep["real_samples"][rep["gate_worst_sample"]]["unknown_class_b"],
+                rep["total"],
+                ratio_text(rep["stop_line_ratio"]),
+                rep["real_class_b_debt_ceiling"],
+            )
+        )
+    if rep["real_class_b_excess"] > 0:
+        print(
+            "  债务上升：真实口径乙类已破在案上限 %d 条（超出 %d 条），须先解释新增哪几条"
+            % (rep["real_class_b_debt_ceiling"], rep["real_class_b_excess"])
+        )
     if rep["max_by_design_count"] >= rep["by_design_alert_count"]:
         print("  报警：甲类已达软线 %d 项，须在报告里解释甲类构成（不使 CI 变红）"
               % rep["by_design_alert_count"])

@@ -8,6 +8,45 @@
 
 ## [未发布]
 
+### 变更 — 停工线改双口径：以「真实用户画像」为准，夹具降为回归参照（2026-11-20，Muse 01:58 裁决）
+
+这条闸的用途是保护真实用户，但此前它量的是 13 字段的审计夹具（`SAMPLES`），而网页表单只有 6 个输入口（`VerdictView.tsx` 的六个 `pfield`，`EMPTY_VERDICT_PROFILE` 同样 6 项）。判定面（P1b-2 / P1c / P3）一路扩，采集面一个字段没加，于是夹具显示「线内」时真实用户仍在线外——闸量错了对象。
+
+**改法**：双口径并行，同一个 `judge()` / `audit()`，只换画像定义域。
+
+| 口径 | 定义 | 用途 |
+|---|---|---|
+| 真实用户（`real_samples`） | 表单 6 字段原样 + 其余 7 字段置 `null` | **停工线判据**（`gate_ratio_class_b` / `gate_worst_sample`） |
+| 夹具（`samples`） | `SAMPLES` 原样 13 字段 | 回归参照，用来分辨「引擎变差」与「画像变瘦」 |
+
+7 个置空字段：`dependents` / `enrollment_status` / `months_since_graduation` / `prior_participation` / `prior_same_category_visa` / `study_months` / `work_experience_years`。置 `null` 而不删键——引擎里两者等价（都判 unknown），写出来是为了让「这个人没被问过这件事」在夹具上看得见。
+
+**判读规则不变**：阈值 `STOP_LINE_RATIO = 1/3`、分母 41、只绑乙类，一个数字没动；`test_stop_line_binds_class_b_only` 也一个字节没改，只是断言对象换成 `gate_*`。另加 `REAL_CLASS_B_DEBT_CEILING = 15`（只许降不许升）与 `test_debt_ceiling_tracks_actual`（上限必须等于实测，不许留余量）。
+
+**实测（HEAD `2cef6e3`，同一份数据、同一套引擎）**：
+
+| 画像 | 真实口径乙类 | 真实占比 | 夹具口径乙类 | 夹具占比 |
+|---|---|---|---|---|
+| A | 6 | 14.6% | 3 | 7.3% |
+| B | 5 | 12.2% | 2 | 4.9% |
+| C | **15** | **36.6%（越线）** | 8 | 19.5%（线内） |
+
+差出的 7 条（C 画像，真实口径多出，逐条实测）：
+
+| 项目 | 夹具 | 真实 | 真实口径下的 silent code |
+|---|---|---|---|
+| `at-rwr-card-vhq` | can | unknown | `edu_duration_unknown` |
+| `global-iaeste` | cannot | unknown | `pre_enrollment_unknown` |
+| `jp-working-holiday` | can | unknown | `pre_dependents_unknown` + `pre_participation_unknown` |
+| `kr-h1-working-holiday` | can | unknown | `pre_dependents_unknown` + `pre_prior_visa_unknown` |
+| `nz-china-whv` | can | unknown | `pre_dependents_unknown` + `pre_prior_visa_unknown` |
+| `uk-short-term-study-visa` | can | unknown | `pre_dependents_unknown` |
+| `uk-youth-mobility-scheme` | can | unknown | `pre_dependents_unknown` + `pre_participation_unknown` |
+
+七条全部落在「家属 / 既往参加史 / 签证史 / 就读时长」这四族——正是表单没有输入口的那几个字段。**没有一条是引擎判错**：这 7 个项目在夹具上能给出 `can` / `cannot`，靠的正是网页问不到的事实。
+
+真实口径越线按裁决记为**在案债务**（成因 = 表单采集面未跟上判定面），不阻塞 PR 合并，也不许靠改阈值消掉；表单补字段属产品方向，另单处理，本单不动表单。
+
 ### 变更 — 接入 `current_location`：在地要求从「不可判」变「可判」（rules_version 8 → 9，2026-11-15）
 
 P1c 把「递交时人在该国」从 `PRE_LOCAL_STATUS` 末支诚实地拆成新码 `pre_inside_country`（silent），但画像没有现居地字段，这条要求只能判「不可判」。C 画像乙类因此从 11 升到 14（14/41 = 0.3415），越过 1/3 停工线。Muse 裁决取丙：P1c 本体 Pass，越线源于口径修正而非引擎倒退，阈值与夹具都不许动，**接地立下一单**（即本单）。
