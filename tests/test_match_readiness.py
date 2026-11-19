@@ -278,16 +278,39 @@ class VerdictSemantics(unittest.TestCase):
         甲类单列报告（软线 5 项，不红）。
 
         替换而不是并存两条硬闸：两条里只要有一条红就算停工，等于口径没改。
+
+        2026-11-20 01:58 裁决（INBOX:1487）追加：闸门改量**真实用户画像口径**，
+        夹具口径降为回归参照。原因见 match_readiness.py 的 FORM_FIELDS 注释——
+        旧闸量的是 13 字段夹具，网页表单只有 6 个输入口，于是它显示线内时
+        真实用户仍可能在外（本仓实测：夹具 8/41 线内，真实 15/41 越线）。
+        所以这里断言的对象换成 rep["gate_*"]（真实口径），几何判据不变。
         """
         rep = mr.audit()
+        # 夹具口径（回归参照）与真实口径都要自洽：条数 / 总数 = 占比
         for name, v in rep["samples"].items():
             self.assertAlmostEqual(
                 v["ratio_class_b"], v["unknown_class_b"] / rep["total"], places=4, msg=name
             )
+        for name, v in rep["real_samples"].items():
+            self.assertAlmostEqual(
+                v["ratio_class_b"], v["unknown_class_b"] / rep["total"], places=4, msg=name
+            )
+        # 闸门量的是真实口径
+        self.assertEqual(rep["stop_line_caliber"], "real")
+        self.assertAlmostEqual(
+            rep["gate_ratio_class_b"],
+            max(v["ratio_class_b"] for v in rep["real_samples"].values()),
+            places=4,
+            msg="gate_ratio_class_b 必须等于真实口径的最高乙类占比",
+        )
+        # 「只许降不许升」：真实口径乙类条数不得破在案债务上限。
+        # 下限不写成等式——降下来是好事，但降下来之后必须回来把上限改小，
+        # 否则这道闸会随债务沉淀而永久松掉（见 test_debt_ceiling_tracks_actual）。
         self.assertLessEqual(
-            rep["max_ratio_class_b"],
-            1 / 3,
-            "乙类不可判率已越过 1/3 停工线（甲类不占分子），应停工报 Muse 裁决",
+            max(v["unknown_class_b"] for v in rep["real_samples"].values()),
+            mr.REAL_CLASS_B_DEBT_CEILING,
+            "真实口径乙类已破在案债务上限（%d 条）：新增越线须先停工报 Muse 裁决"
+            % mr.REAL_CLASS_B_DEBT_CEILING,
         )
         # 加总自检：甲 + 乙必须等于不可判总数，任何一类漏登记都在这里露馅
         for name, v in rep["samples"].items():
@@ -296,6 +319,56 @@ class VerdictSemantics(unittest.TestCase):
                 v["unknown"],
                 f"画像 {name} 的甲+乙 与不可判总数对不上，说明有 unknown 项没归类",
             )
+        for name, v in rep["real_samples"].items():
+            self.assertEqual(
+                v["unknown_by_design"] + v["unknown_class_b"],
+                v["unknown"],
+                f"真实口径画像 {name} 的甲+乙 与不可判总数对不上",
+            )
+
+    def test_debt_ceiling_tracks_actual(self):
+        """在案债务上限必须与实测同时收紧，不许留松弛量。
+
+        为什么要求「相等」而不是「≤」：这道闸唯一的用处在拦截「新债悄悄进来」。
+        上限一旦高于实测，多出来的余量就是下一次新债的免费额度，而封顶本身
+        不会自己报警。所以只要真实口径降了，这条就红，逼改上限——改上限这个
+        动作必须出现在 diff 里，读者能看见债务曲线在动。
+        """
+        rep = mr.audit()
+        actual = max(v["unknown_class_b"] for v in rep["real_samples"].values())
+        self.assertEqual(
+            mr.REAL_CLASS_B_DEBT_CEILING,
+            actual,
+            "真实口径乙类实测 %d 条，在案上限 %d 条：降了请把上限改小，升了请看是哪几条"
+            % (actual, mr.REAL_CLASS_B_DEBT_CEILING),
+        )
+
+    def test_form_fields_cover_every_sample_field(self):
+        """表单字段 + 置空字段必须恰好覆盖 SAMPLES 的每一个键。
+
+        漏一个键的后果是静默的：那个字段仍带夹具值，真实口径被悄悄放宽，
+        而报告数字照常打印。所以这里做集合等式，不做「包含」判断。
+        """
+        declared = set(mr.FORM_FIELDS) | set(mr.REAL_PROFILE_NULLED_FIELDS)
+        self.assertEqual(
+            declared & set(mr.FORM_FIELDS),
+            set(mr.FORM_FIELDS),
+            "FORM_FIELDS 与 REAL_PROFILE_NULLED_FIELDS 有重叠：同一个字段不能既采集又置空",
+        )
+        for name, pr in mr.SAMPLES.items():
+            self.assertEqual(
+                declared,
+                set(pr),
+                "画像 %s 的字段集合与「表单 6 字段 + 置空 7 字段」不一致" % name,
+            )
+        # real_profile 只置空、不补默认值（补默认值 = 替用户承认事实）
+        for name, pr in mr.SAMPLES.items():
+            real = mr.real_profile(pr)
+            self.assertEqual(set(real), set(pr))
+            for f in mr.FORM_FIELDS:
+                self.assertEqual(real[f], pr[f], "%s 的表单字段 %s 被改动了" % (name, f))
+            for f in mr.REAL_PROFILE_NULLED_FIELDS:
+                self.assertIsNone(real[f], "%s 的 %s 没被置空" % (name, f))
 
     def test_full_ratio_still_reported(self):
         """混算口径不删、仍输出：它不再是闸门，但仍是「甲类变多不许藏」的那把尺子。
