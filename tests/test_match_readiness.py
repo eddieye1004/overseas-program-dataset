@@ -2569,5 +2569,234 @@ class CliBehaviour(unittest.TestCase):
         self.assertEqual(rep["total"], n_programs)
 
 
+class FormKeyFields(unittest.TestCase):
+    """采集面契约（2026-11-20 01:56 工单：表单关键字段补齐）。
+
+    这一组守的是「闸量的是谁」这件事。此前停工线只量 13 字段的审计夹具，
+    而网页表单只有 6 个输入口——闸量出的「线内」是对夹具说的，不是对用户说的。
+    真实口径下 HEAD 是 15/41 = 0.3659，早已越线。
+
+    三条断言各挡一类错误：
+      · test_profile_fields_are_all_collectable —— 引擎加字段不加表单口（本单前
+        的成因）。这条红了就是在说「你又让一个字段只有夹具能用」。
+      · test_gate_rules_match_engine_readers —— 门规则与引擎读点不等。
+        开小了用户白填，开大了表单又变长。
+      · test_gate_never_locks_out_relevant_field —— 「条件显示」变成死锁
+        （不填不显示、不显示没法填）。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs = mr.load_programs()
+
+    # —— ① 采集面 = 判定面 ——
+    def test_profile_fields_are_all_collectable(self):
+        """引擎读的每个画像字段，表单都必须有输入口。
+
+        `collection_gap()` 非空即红。这条比写报告有用：报告不会拦下一个人。
+        失败时打印缺口，另外提示去改哪个文件——错误信息要直接指路。
+        """
+        gap = mr.collection_gap()
+        self.assertEqual(
+            gap, [],
+            "引擎读了这些字段但网页表单没有输入口：%s\n"
+            "改 web/src/components/VerdictView.tsx 与 FORM_FIELDS，"
+            "两处一起改。" % gap,
+        )
+
+    def test_form_fields_exist_in_samples(self):
+        """FORM_FIELDS / PROFILE_FIELDS 里的每个键都必须是夹具真有的键。
+
+        防的是手滑写错一个键名——那种错不会红在任何别处，只会让那个字段
+        永远取不到值而不自知。
+        """
+        keys = set(mr.SAMPLES["A"])
+        for name, table in (("FORM_FIELDS", mr.FORM_FIELDS),
+                            ("PROFILE_FIELDS", mr.PROFILE_FIELDS)):
+            unknown = sorted(set(table) - keys)
+            self.assertEqual(unknown, [], "%s 里有夹具不存在的键：%s" % (name, unknown))
+        # 反向：夹具有的键必须被某一边覆盖，否则那个字段谁也问不到
+        uncov = sorted(keys - set(mr.PROFILE_FIELDS))
+        self.assertEqual(uncov, [], "夹具字段未被 PROFILE_FIELDS 覆盖：%s" % uncov)
+
+    def test_engine_reads_only_registered_fields(self):
+        """引擎实际 pr.get / pr[] 的键必须都在 PROFILE_FIELDS 里。
+
+        这条不靠人维护清单：直接从源码里扫读点。将来谁在 judge() 里加一个
+        `pr.get("new_field")` 而没登记，这条当场红——比等下一个人去发现要好。
+        """
+        src = io.open(mr.__file__, encoding="utf-8").read()
+        read = set(re.findall(r'pr\.get\("([a-z_]+)"\)', src))
+        read |= set(re.findall(r'pr\["([a-z_]+)"\]', src))
+        # SAMPLES 建立时用的键也算（它们是夹具契约的一部分）
+        self.assertTrue(read, "没能从源码里扫出任何画像读点，正则过期了？")
+        missing = sorted(read - set(mr.PROFILE_FIELDS))
+        self.assertEqual(missing, [], "引擎读了未登记的画像字段：%s" % missing)
+
+    # —— ② 条件显示的门 = 引擎读点（同源，不是同结论） ——
+    def _readers_of_field(self, field, probe):
+        """实测：把某字段从 None 换成真值，(dim,kind,code) 整串变了的项目。"""
+        out = set()
+        for d in self.docs:
+            pr = dict(mr.SAMPLES["C"])
+            pr[field] = None
+            _, before = mr.judge(d, pr)
+            pr2 = dict(pr)
+            pr2[field] = probe
+            _, after = mr.judge(d, pr2)
+            if self._sig(before) != self._sig(after):
+                out.add(d["program"]["id"])
+        return out
+
+    @staticmethod
+    def _sig(dims):
+        return "|".join("%s:%s:%s" % (x["dim"], x["kind"], x["code"]) for x in dims)
+
+    def test_gate_rules_match_engine_readers(self):
+        """`profile_readers()` 的结论必须与 judge() 的实测读点**逐项目相等**。
+
+        这一条直接调函数、**不经过产物**——产物是快照，改了函数不重生成
+        它就还是旧的，测试会拿旧快照比旧结论，两边一样绿，什么也证明不了。
+        （本单的变异测试正是这样抓到初版：改坏 profile_readers，8 条断言
+        全部照绿，因为它验的是它自己生成的那份 JSON。）
+
+        产物与函数的一致性由 `--check` 那条闸管（产物过期即红），
+        所以这里不必再比一次文件。
+
+        两个方向各自打印差异，因为修法完全不同：
+          只有实测读（门开小）→ 用户填了也翻不动，白问一次；
+          只有函数说读（门开大）→ 表单又变长，违背「不许拉长」。
+        """
+        probe = dict(mr.PROFILE_FIELD_PROBES)
+        for field, val in probe.items():
+            measured = self._readers_of_field(field, val)
+            by_func = {d["program"]["id"] for d in self.docs
+                       if mr.profile_readers(d)[field]}
+            self.assertEqual(
+                measured, by_func,
+                "字段 %s：profile_readers() 与 judge() 实测读点不等。\n"
+                "  只有实测读（门开小、用户白填）：%s\n"
+                "  只有函数说读（门开大、表单变长）：%s"
+                % (field, sorted(measured - by_func), sorted(by_func - measured)),
+            )
+
+    def test_gate_reads_in_artifacts_is_fresh(self):
+        """产物里的 reads 必须与函数现值一致（防手改产物 / 忘重生成）。
+
+        与上一条分工：上一条验函数对不对，这一条验发出去的那份数据是不是
+        函数当前的结果。--check 比的是整个文件的字节，这里只挑 reads 比，
+        好处是红了能直接指出是哪个项目的哪个字段不对。
+        """
+        with io.open(mr.FLAGS, encoding="utf-8") as fh:
+            flags = json.load(fh)["programs"]
+        stale = []
+        for d in self.docs:
+            pid = d["program"]["id"]
+            want = mr.profile_readers(d)
+            got = (flags[pid].get("precondition") or {}).get("p1b2", {}).get("reads")
+            if got != want:
+                stale.append((pid, want, got))
+        self.assertEqual(
+            stale[:3], [],
+            "产物里的 reads 与函数现值不一致（%d 条）。运行 "
+            "python scripts/match_readiness.py --emit" % len(stale),
+        )
+
+    def test_gate_reads_covers_every_extra_field(self):
+        """profile_readers() 必须把七个补充字段**全部**列出，值为布尔。
+
+        漏一个键的后果：前端 readersOf() 读到 undefined → 当成 false →
+        门静默关掉，而且没有任何报错。字段名写错也一样。
+        """
+        want = set(mr.PROFILE_FIELD_PROBES)
+        for d in self.docs:
+            reads = mr.profile_readers(d)
+            pid = d["program"]["id"]
+            self.assertEqual(
+                set(reads), want,
+                "%s 的 reads 键集合不对：缺 %s / 多 %s"
+                % (pid, sorted(want - set(reads)), sorted(set(reads) - want)),
+            )
+            for k, v in reads.items():
+                self.assertIsInstance(v, bool, "%s.reads.%s 不是布尔：%r" % (pid, k, v))
+
+    def test_every_extra_field_is_read_by_someone(self):
+        """七个补充字段里，每个都必须至少有一条项目读它。
+
+        全库无人读的字段就不该放进表单——问一条没有任何项目用到的信息，
+        是在浪费用户注意力，也会让人以为它很重要。
+        """
+        for field in mr.PROFILE_FIELD_PROBES:
+            n = sum(1 for d in self.docs if mr.profile_readers(d)[field])
+            self.assertGreater(
+                n, 0,
+                "字段 %s 没有任何项目读它 —— 不该进表单" % field,
+            )
+
+    # —— ③ 条件显示不许变成死锁 ——
+    def test_gate_never_locks_out_relevant_field(self):
+        """门只依赖六项必填字段，不依赖补充字段本身（防死锁）。
+
+        「不填不显示、不显示没法填」是条件显示最典型的坏法：用户永远看不到
+        那个字段，也就永远拿不到那条结论。判据：门的输入（GateInput）只用
+        profile 的六项 + 项目事实——一个**未填**任何补充字段的画像，
+        与填满补充字段的画像，开出的字段集合必须相同。
+        """
+        with io.open(
+            os.path.join(ROOT, "web", "src", "lib", "profileFields.ts"), encoding="utf-8"
+        ) as fh:
+            src = fh.read()
+        # 门函数体内不许引用 profile 上的补充字段名
+        extra = ("dependents", "enrollment_status", "months_since_graduation",
+                 "prior_participation", "prior_same_category_visa", "study_months",
+                 "work_experience_years")
+        gate_body = src.split("export function shouldAsk", 1)[1].split("\n}", 1)[0]
+        used = [f for f in extra if re.search(r"\b%s\b" % f, gate_body)]
+        self.assertEqual(
+            used, [],
+            "门判据读了补充字段 %s —— 那会死锁（不填不显示、不显示没法填）。"
+            "门只能看六项必填 + 项目事实。" % used,
+        )
+
+    # —— ④ 真实口径读数（本单要报的那个数） ——
+    def test_real_profile_reading_is_recorded(self):
+        """真实口径（表单能采集的部分）在补完关键字段后必须回到线内。
+
+        本单的目的不是让数字好看，是让闸量对对象。补完 6 个关键字段后，
+        真实口径的乙类读数应当与夹具口径**完全一致**——不一致就说明还有字段
+        只在夹具里存在，闸仍有两个读数。
+        """
+        # 表单口径：只保留 FORM_FIELDS，其余置 None
+        real = {}
+        for name, pr in mr.SAMPLES.items():
+            r = dict(pr)
+            for k in r:
+                if k not in mr.FORM_FIELDS:
+                    r[k] = None
+            real[name] = r
+
+        saved = mr.SAMPLES
+        try:
+            mr.SAMPLES = type(saved)((n, real[n]) for n in saved)
+            real_rep = mr.audit()
+        finally:
+            mr.SAMPLES = saved
+        fixture_rep = mr.audit()
+
+        for s in "ABC":
+            self.assertEqual(
+                real_rep["samples"][s]["unknown_class_b"],
+                fixture_rep["samples"][s]["unknown_class_b"],
+                "画像 %s：真实口径乙类 %d ≠ 夹具口径 %d —— 说明还有字段只在夹具里"
+                % (s, real_rep["samples"][s]["unknown_class_b"],
+                   fixture_rep["samples"][s]["unknown_class_b"]),
+            )
+        self.assertLessEqual(
+            real_rep["max_ratio_class_b"], mr.STOP_LINE_RATIO,
+            "真实口径乙类 %.4f 仍越停工线 %s" % (
+                real_rep["max_ratio_class_b"], mr.ratio_text(mr.STOP_LINE_RATIO)),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

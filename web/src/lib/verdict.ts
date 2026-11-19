@@ -204,6 +204,20 @@ export interface ProgramFlags {
       degree_completed: boolean;
       either: boolean;
       scoring_input: boolean;
+      /**
+       * 这条项目**读哪些画像字段**（2026-11-20 表单关键字段补齐）。
+       *
+       * 与上方布尔量的分工：上方是「为什么读」（语义，给人看），
+       * 这一项是「读不读」（事实，给门用）。门只读这一项，不按上方自己推——
+       * 同一条规则写两遍必然漂，而「门悄悄关掉」在界面上看起来完全正常。
+       *
+       * 由引擎实测得出（profile_readers()），不是手写的清单：
+       * 把字段从 None 换成真值，看 (dim,kind,code) 整串变不变。
+       *
+       * 可选：老产物没有这一项，readersOf() 会退化成「全不读」= 门全关，
+       * 属于安全方向（宁可不问，也不凭猜出来的规则去问）。
+       */
+      reads?: Record<string, boolean>;
     };
   };
   window: {

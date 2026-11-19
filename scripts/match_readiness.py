@@ -1730,6 +1730,64 @@ SAMPLES = OrderedDict(
 
 
 # --------------------------------------------------------------------------
+# 采集面契约（2026-11-20 01:56 工单）
+#
+# 这个模块量的是「引擎能从画像里读什么」，而网页表单只问用户其中一部分。
+# 两者不一致时，审计用 13 字段夹具量出线内，真实用户拿 6 字段却越线——
+# 闸量错了对象。下面两个常量把「差异」变成可断言的数字，而不是靠人记。
+#
+# FORM_FIELDS = 网页表单真的问了的字段
+#   （web/src/components/VerdictView.tsx 的 pfield；EMPTY_VERDICT_PROFILE 同）
+# PROFILE_FIELDS = 引擎真的读了的字段（judge() 里 pr.get / pr[]）
+#
+# 两者之差 = 采集缺口。tests 里 test_profile_fields_are_all_collectable
+# 咬住「缺口为空」：将来谁在引擎里加一个画像字段而没加表单口，那条测试当场红。
+# 这比「再写一篇报告说明缺口」有用——报告不会拦下一个人。
+#
+# 注意：这里登记的是**字段是否被问过**，不是「必须填」。用户不填仍是未知，
+# 引擎老老实实判 silent；本契约只要求「有这么个输入口可以填」。
+# --------------------------------------------------------------------------
+
+FORM_FIELDS = (
+    "passport",
+    "age",
+    "education",
+    "ielts",
+    "budget_cny",
+    "current_location",
+    # —— 本单补齐的 7 项（条件显示，见 web/src/lib/profileFields.ts）——
+    "dependents",
+    "enrollment_status",
+    "months_since_graduation",
+    "prior_participation",
+    "prior_same_category_visa",
+    "study_months",
+    "work_experience_years",
+)
+
+PROFILE_FIELDS = (
+    "passport",
+    "age",
+    "education",
+    "ielts",
+    "budget_cny",
+    "current_location",
+    "dependents",
+    "enrollment_status",
+    "months_since_graduation",
+    "prior_participation",
+    "prior_same_category_visa",
+    "study_months",
+    "work_experience_years",
+)
+
+
+def collection_gap() -> list[str]:
+    """引擎读了、但表单没有输入口的字段。空表示采集面跟上了判定面。"""
+    return sorted(set(PROFILE_FIELDS) - set(FORM_FIELDS))
+
+
+# --------------------------------------------------------------------------
 # 不可判的两分法（P2-1，2026-11-14 Muse 裁决）
 #
 # 「不可判」不是同一种东西，混在一个分子里量出来的比率会同时惩罚两件事：
@@ -2757,6 +2815,62 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 RULES_VERSION = 12
 
 
+def profile_readers(doc: dict) -> dict:
+    """这条项目**读哪些画像字段**——由引擎自己算，不靠前端另抄一份。
+
+    （2026-11-20 01:56 工单：表单关键字段补齐）
+
+    为什么要在引擎里算而不是让前端按 p1b2 的布尔量自己推：
+      推法写两遍就一定会漂。本单第一版让前端按 flags 的布尔量复推，
+      两侧各有一份「dependents 读 forbid_child|forbid_other|cannot_work」，
+      改引擎的一个分支时前端不知道。变异测试当场抓到了这个洞：
+      把前端规则改错，Python 侧测试仍全绿——它验的是它自己的副本。
+
+    所以口径只留这一份：这里给出布尔量，前端只读不推。
+
+    判据是**实测**而不是读代码：把该字段从 None 换成一个可能的真值，
+    看 (dim,kind,code) 整串会不会变。变 = 这条项目读它。
+    这比按分支名匹配可靠——`edu_ok` 这种 pass code 在很多项目上都会出现，
+    按名字查会把一大堆项目误算成「读 study_months」。
+
+    代价是这个文件要跑 41 项目 × 7 字段 × 2 次 judge()。实测约 0.1 秒，
+    可接受；换了更重的判据时再看要不要缓存。
+    """
+    out = {}
+    for field, probe in PROFILE_FIELD_PROBES.items():
+        positive = False
+        for variant in (probe,):
+            pr = dict(SAMPLES["C"])
+            pr[field] = None
+            _, before = judge(doc, pr)
+            pr2 = dict(pr)
+            pr2[field] = variant
+            _, after = judge(doc, pr2)
+            if _dim_signature(before) != _dim_signature(after):
+                positive = True
+        out[field] = positive
+    return out
+
+
+def _dim_signature(dims: list[dict]) -> str:
+    return "|".join("%s:%s:%s" % (d["dim"], d["kind"], d["code"]) for d in dims)
+
+
+# 实测每个字段「在场 vs 缺席」用的代表真值。
+# 取的是夹具 C 的取值（每个字段在夹具里都有定义），所以这不是编的数字。
+# 换一个真值可能翻出别的项目（例如 dependents 填 children 会多触发 fail 分支），
+# 但那不影响「读不读」这个布尔——布尔只需要证明「换了会变」。
+PROFILE_FIELD_PROBES = {
+    "dependents": "none",
+    "enrollment_status": "enrolled",
+    "months_since_graduation": 6,
+    "prior_participation": "none",
+    "prior_same_category_visa": "none",
+    "study_months": 48,
+    "work_experience_years": 1,
+}
+
+
 def flags_of(doc: dict) -> dict:
     """把一条项目的六个维度压成前端够用的**状态量**。
 
@@ -2967,6 +3081,12 @@ def p1b2_project_flags(doc: dict) -> dict:
         "degree_completed": ENROLL_DEGREE in need,
         "either": ENROLL_EITHER in need,
         "scoring_input": SCORING_INPUT in anyv,
+        # —— 本单：这条项目读哪些画像字段（用于表单的条件显示）——
+        #
+        # 上方那些布尔量是**为什么**读（语义），这一项是**读不读**（事实）。
+        # 前端只读这一项，不按上方布尔自己推：同一条规则写两遍必然漂，
+        # 而「门悄悄关掉」在界面上看起来完全正常。
+        "reads": profile_readers(doc),
     }
 
 

@@ -400,6 +400,41 @@ html[data-onboarding] .page__intro:not(.page__intro--list) {
   accent-color: var(--brand);
 }
 
+/* —— 条件显示的补充字段（2026-11-20 表单关键字段补齐）——
+   用 fieldset 而不是 div：这一组有「可选补充」的语义，屏幕阅读器需要
+   把它读成一个具名分组，否则十来个输入框会连成一片。
+   左侧细线是唯一的视觉提示——它要足够轻，不能让可选区看着像必填。 */
+.pgate {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 2px 0 0;
+  padding: 10px 0 0 12px;
+  border: 0;
+  border-left: 2px solid var(--line);
+}
+.pgate__title {
+  padding: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.pgate__desc {
+  margin: -6px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+.pgate__hint {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+.pgate__more {
+  align-self: flex-start;
+}
+
 .match__results {
   min-width: 0;
 }

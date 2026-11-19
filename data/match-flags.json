@@ -73,7 +73,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": true,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -157,7 +166,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -242,7 +260,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": true,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -326,7 +353,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -410,7 +446,16 @@
      "enrollment": false,
      "degree_completed": true,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -492,7 +537,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -574,7 +628,16 @@
      "enrollment": false,
      "degree_completed": true,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -659,7 +722,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -744,7 +816,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -826,7 +907,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -910,7 +1000,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -994,7 +1093,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1078,7 +1186,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1162,7 +1279,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1244,7 +1370,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1326,7 +1461,16 @@
      "enrollment": true,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": true,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1410,7 +1554,16 @@
      "enrollment": false,
      "degree_completed": true,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1492,7 +1645,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1576,7 +1738,16 @@
      "enrollment": false,
      "degree_completed": true,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1663,7 +1834,16 @@
      "enrollment": false,
      "degree_completed": true,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1747,7 +1927,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1829,7 +2018,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": true,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1913,7 +2111,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -1995,7 +2202,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2077,7 +2293,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2161,7 +2386,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": true,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2243,7 +2477,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2327,7 +2570,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2409,7 +2661,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": true
+     "scoring_input": true,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2491,7 +2752,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": true
+     "scoring_input": true,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2573,7 +2843,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2657,7 +2936,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2742,7 +3030,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": true,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2824,7 +3121,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2906,7 +3212,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -2994,7 +3309,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": true,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": true,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -3076,7 +3400,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -3166,7 +3499,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": true,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": true,
+      "months_since_graduation": true,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -3251,7 +3593,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -3333,7 +3684,16 @@
      "enrollment": true,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": true,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
     }
    },
    "window": {
@@ -3423,7 +3783,16 @@
      "enrollment": false,
      "degree_completed": false,
      "either": false,
-     "scoring_input": false
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": true
+     }
     }
    },
    "window": {
