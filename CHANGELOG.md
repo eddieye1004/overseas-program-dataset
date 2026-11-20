@@ -8,6 +8,126 @@
 
 ## [未发布]
 
+### 变更 — 停工线改双口径：以「真实用户画像」为准，夹具降为回归参照（2026-11-20，Muse 01:58 裁决）
+
+这条闸的用途是保护真实用户，但此前它量的是 13 字段的审计夹具（`SAMPLES`），而网页表单只有 6 个输入口（`VerdictView.tsx` 的六个 `pfield`，`EMPTY_VERDICT_PROFILE` 同样 6 项）。判定面（P1b-2 / P1c / P3）一路扩，采集面一个字段没加，于是夹具显示「线内」时真实用户仍在线外——闸量错了对象。
+
+**改法**：双口径并行，同一个 `judge()` / `audit()`，只换画像定义域。
+
+| 口径 | 定义 | 用途 |
+|---|---|---|
+| 真实用户（`real_samples`） | 表单 6 字段原样 + 其余 7 字段置 `null` | **停工线判据**（`gate_ratio_class_b` / `gate_worst_sample`） |
+| 夹具（`samples`） | `SAMPLES` 原样 13 字段 | 回归参照，用来分辨「引擎变差」与「画像变瘦」 |
+
+7 个置空字段：`dependents` / `enrollment_status` / `months_since_graduation` / `prior_participation` / `prior_same_category_visa` / `study_months` / `work_experience_years`。置 `null` 而不删键——引擎里两者等价（都判 unknown），写出来是为了让「这个人没被问过这件事」在夹具上看得见。
+
+**判读规则不变**：阈值 `STOP_LINE_RATIO = 1/3`、分母 41、只绑乙类，一个数字没动；`test_stop_line_binds_class_b_only` 也一个字节没改，只是断言对象换成 `gate_*`。另加 `REAL_CLASS_B_DEBT_CEILING = 15`（只许降不许升）与 `test_debt_ceiling_tracks_actual`（上限必须等于实测，不许留余量）。
+
+**实测（HEAD `2cef6e3`，同一份数据、同一套引擎）**：
+
+| 画像 | 真实口径乙类 | 真实占比 | 夹具口径乙类 | 夹具占比 |
+|---|---|---|---|---|
+| A | 6 | 14.6% | 3 | 7.3% |
+| B | 5 | 12.2% | 2 | 4.9% |
+| C | **15** | **36.6%（越线）** | 8 | 19.5%（线内） |
+
+差出的 7 条（C 画像，真实口径多出，逐条实测）：
+
+| 项目 | 夹具 | 真实 | 真实口径下的 silent code |
+|---|---|---|---|
+| `at-rwr-card-vhq` | can | unknown | `edu_duration_unknown` |
+| `global-iaeste` | cannot | unknown | `pre_enrollment_unknown` |
+| `jp-working-holiday` | can | unknown | `pre_dependents_unknown` + `pre_participation_unknown` |
+| `kr-h1-working-holiday` | can | unknown | `pre_dependents_unknown` + `pre_prior_visa_unknown` |
+| `nz-china-whv` | can | unknown | `pre_dependents_unknown` + `pre_prior_visa_unknown` |
+| `uk-short-term-study-visa` | can | unknown | `pre_dependents_unknown` |
+| `uk-youth-mobility-scheme` | can | unknown | `pre_dependents_unknown` + `pre_participation_unknown` |
+
+七条全部落在「家属 / 既往参加史 / 签证史 / 就读时长」这四族——正是表单没有输入口的那几个字段。**没有一条是引擎判错**：这 7 个项目在夹具上能给出 `can` / `cannot`，靠的正是网页问不到的事实。
+
+真实口径越线按裁决记为**在案债务**（成因 = 表单采集面未跟上判定面），不阻塞 PR 合并，也不许靠改阈值消掉；表单补字段属产品方向，另单处理，本单不动表单。
+
+### 变更 — 接入 `current_location`：在地要求从「不可判」变「可判」（rules_version 8 → 9，2026-11-15）
+
+P1c 把「递交时人在该国」从 `PRE_LOCAL_STATUS` 末支诚实地拆成新码 `pre_inside_country`（silent），但画像没有现居地字段，这条要求只能判「不可判」。C 画像乙类因此从 11 升到 14（14/41 = 0.3415），越过 1/3 停工线。Muse 裁决取丙：P1c 本体 Pass，越线源于口径修正而非引擎倒退，阈值与夹具都不许动，**接地立下一单**（即本单）。
+
+**改法**：
+
+| 项 | 改前 | 改后 |
+|---|---|---|
+| 画像字段 | 无现居地 | `current_location`（ISO 3166-1 alpha-2 大写，与 `program.country_code` 同一套代码体系） |
+| `inside` 判定 | 一律 `silent / pre_inside_country` | 现居 == 项目国 → `pass / pre_inside_country_ok`；有值不等 → `fail / pre_inside_country_no`（→ cannot）；缺失/非法 → `silent / pre_inside_country`（原码语义不变） |
+| 接口契约 | `flags_of()` 无国别 | 加 `country_code`，让「判在地」所需的输入全在同一个文件里 |
+| 前端 | 无现居地输入 | 判定页加「你现在人在哪个国家/地区」下拉（选项从 index 实际国别生成），留空 = 不可判 |
+
+**三张样例画像的取值**（都是 prospective applicant，人还在护照所属地）：A `CN` / B `CN` / C `TW`。这个取值决定翻转方向，不是随手填的。
+
+**实测影响**（改前 `b024380` → 改后，15 行翻转，全部来自 `inside` 接地，无一行来自 `PRE_OUTSIDE`）：
+
+| 画像 | 乙类 | 全口径 |
+|---|---|---|
+| A | 4 → 4（9.8%） | 7 → 7（17.1%） |
+| B | 3 → 3（7.3%） | 6 → 5（12.2%） |
+| C | **14 → 11（26.8%）** | 16 → 13（31.7%） |
+
+C 画像移除的正是 P1c 新增的那三条（`au-485-graduate` / `au-485-vocational` / `uk-graduate-visa`）：画像不在对应国 → 在地条判 fail → cannot，不再是 unknown。**11/41 = 0.2683，回到 1/3 以内**；停工线阈值 `1 / 3` 与 `test_stop_line_binds_class_b_only` 一个字节没改。
+
+`pre_outside_country` / `pre_home_residence` 本单不接地，因此 `jp-working-holiday` / `nz-china-whv`（home_residence）仍留在乙类——那是下一单的范围。
+
+### 变更 — 把「在地」从身份要求里拆出来：新类别 `location_requirement`（rules_version 7 → 8，2026-11-15）
+
+`residency_requirement` 一个 type 值里装着两类语义：**身份**（「须已在该国持学生签/居留并在当地完成学业」）与**在地**（「递交时人须在该国境内/境外」）。引擎过去靠 `PRE_LOCAL_STATUS` 的末支正则 `(必须|须)在…(境内|国内)` 把后者当成前者判，于是「你必须人在英国才能递交」在报告里被说成「你差一段在英国读书的经历」——**方向错**（可补的经历 vs 时点门槛），而且对目标人群（已经在该国读书的人）恰恰是错的建议。
+
+**改法**（批次 9a 裁决 1 + P1a 待核 C 的合并规格）：
+
+| 项 | 改前 | 改后 |
+|---|---|---|
+| 在地要求归类 | 被 `PRE_LOCAL_STATUS` 末支吞成身份 | 独立类别 `inside` / `outside` / `home_residence` |
+| type 值 | 两类共用 `residency_requirement` | 拆出 `location_requirement`（schema / validate / i18n 三处同步） |
+| 身份支锚点 | 「须持」「须已持」 | 放宽到「（须\|且）持」「（须\|且）已持」——不扩会让「…且该身份在递交当日仍未失效」这类「且」起头的并列句掉成 unclassified |
+| us-f1-opt | 在地条借身份条的 code 发声，那条要求本身零读点 | `precondition_kinds()` 返回 `['local_status','inside']`，两条要求各自留痕 |
+| 引擎函数 | `precondition_kind()` 单值 | `precondition_kinds()` 全量 + `precondition_kind()` 保留单值形状（取第一项） |
+
+**新码 `pre_inside_country`**（silent，已登记 `CLASS_B_CODES`）：与 `pre_outside_country` 互为镜像，**不并进 outside**——方向相反的两条要求共用一个 code 会让「必须人在境外」与「必须人在境内」在报告里长得一样。
+
+**数据侧**（9 条改在地，逐条引官方原文）：`au-407-training`（outside）｜`au-485-graduate` / `au-485-vocational` / `uk-graduate-visa` / `de-20-job-search` / `us-f1-opt`（inside）｜`se-look-for-work`（outside）｜`jp-working-holiday` / `nz-china-whv`（home_residence）。`de-20-job-search` 原句是双语复合句，按 us-f1-opt 先例拆成身份条 + 在地条。
+
+**实测影响**（改前 970d7cb → 改后）：
+
+| 画像 | 乙类 | 全口径 |
+|---|---|---|
+| A | 4 → 4（9.8%） | 7 → 7 |
+| B | 3 → 4（9.8%） | 5 → 6 |
+| C | **11 → 14（34.2%）** | 13 → 16（39.0%） |
+
+**C 画像乙类已越 1/3 停工线**（14/41 = 0.3415）。新增的 3 条是 `au-485-graduate` / `au-485-vocational` / `uk-graduate-visa`：它们从 `gap / pre_local_status`（错的可补建议）诚实降级为 `silent / pre_inside_country`（画像不采集现居地）。这 3 条按 P2-1 判据必须记乙类，不许塞甲类洗白。是否补 `current_location` 字段让它们可判，待 Muse 裁决——接地会改 `PRE_OUTSIDE` 行为并翻转 13 行 verdict，超出本单边界。
+
+**顺带**：`p21_worksheets.py` 的闸门表由单值 `precondition_kind()` 改为按 `precondition_kinds()` 全集判，判读面加收 `location_requirement`；不同步会让 `PRE_INSIDE` 那一行永远报「未拉起」，把已兜住的要求说成漏网。
+
+### 变更 — 把 P1b-1 迁好的 typed 值接进判定引擎（rules_version 6 → 7，2026-11-15）
+
+P1b-1 把三个「一个 type 名装十种语义」的值拆成了 13 个具体值，但引擎一个字节都没读：`other_requirements` 里除 `residency_requirement` 之外全部进不了判定面。于是「本项目不许带家属」「一生只能参加一次」「须已毕业」这些**原文写明的硬条件**在画像页上完全看不见，所有项目看起来都比实际宽松。
+
+本单接线三个家族共 13 个值：
+
+| 家族 | 接进判定的值 | 判定方向 |
+|---|---|---|
+| 家属 | `no_child_dependents` / `no_other_dependents` / `dependents_cannot_work` | 禁令：有该事实状态即 fail |
+| 家属（非闸门） | `dependents_allowed` / `dependents_separate_application` / `declaration_document` | 判 na 留痕，不挡人 |
+| 签证史 | `program_once_in_lifetime` / `program_once_per_project` / `prior_same_category_visa` / `program_participation_cap` | 参加过/持过即 fail |
+| 签证史（正向） | `prior_specific_visa_required` | **须持过**（与上一条方向相反），判 silent |
+| 学籍 | `enrollment_proof`（保留原值，仅 IAESTE / J-1 SWT 两条真在读） | 须在读，已毕业 fail |
+| 学历 | `degree_completed_proof` / `enrollment_or_degree_proof` | 须已毕业 / 二者其一 |
+| 打分 | `credential_scoring_input` | 不是资格闸，判 na |
+
+**关键方向修正**：`au-485-graduate` 原先挂在 `no_prior_visa`（未持过任何签证）下，而原文是 `have held a Student visa in the last 6 months`——**须持过**，方向完全相反。照 type 名接线会把两类人都判反，现已改接 `prior_specific_visa_required`。
+
+**画像扩充**：三张样例画像补齐 4 个字段的显式取值（`dependents` / `prior_participation` / `prior_same_category_visa` / `enrollment_status`）。这与「引擎缺省即未知」是两件事：字段取不到时仍一律判 silent，有 `test_missing_profile_fields_stay_silent` 钉住。
+
+**实测**（接线前 → 后）：乙类不可判率 A 9.8% → 9.8%｜B 7.3% → 7.3%｜C 26.8% → 26.8%，最高仍 0.2683，未越 1/3 停工线；全口径 C 34.2% → 31.7%。
+
+**未接线**：冷却期 4 段（`au-485-graduate` 6 个月、`us-j1-research-scholar` 24/12 个月与 212(e)）按派单移交 P2，本次确认未动。
+
 ### 新增 — 补两条毕业后通道：爱尔兰 Stamp 1G 与澳洲 485 职业教育类别（39 → 41，2026-11-11）
 
 D1 的第一批。挑的是两个真实缺口，不是凑数：

@@ -54,7 +54,7 @@
         "note": "必须有新加坡雇主的工作 offer，且由雇主代为准证申请（`Have a job offer in Singapore`）。个人不能自行申请 S Pass。"
       },
       {
-        "type": "enrollment_proof",
+        "type": "credential_scoring_input",
         "required": false,
         "note": "学历/资质证明是申请的支撑材料（评估学历、技能与工作经验），但不是「在读证明」这类学籍要求；已毕业者提交学位证与成绩单即可。"
       }

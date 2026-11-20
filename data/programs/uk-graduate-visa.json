@@ -48,12 +48,12 @@
     },
     "other_requirements": [
       {
-        "type": "residency_requirement",
+        "type": "location_requirement",
         "required": true,
         "note": "递交申请时人必须在英国境内（官方原文 `you're in the UK`、`You must be in the UK when you apply.`）。"
       },
       {
-        "type": "no_dependents",
+        "type": "dependents_allowed",
         "required": false,
         "note": "伴侣与子女如符合条件可一同申请居留，不是一律禁止；但与部分短期签证不同，本签证允许家属随行。"
       }

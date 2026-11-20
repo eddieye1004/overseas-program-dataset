@@ -86,11 +86,20 @@ function toIndexEntry(p, today) {
   //   unknown             官方未公布，无法判断（AIESEC）
   // 后两档必须分开：把 unknown 并进 none，会让「官方没说要学籍」变成「在职也能申」，
   // 而实际上 AIESEC 的资格由各国分会与岗位自行决定。
-  const enroll = (el.other_requirements ?? []).find((o) => o.type === 'enrollment_proof');
+  // P1b-1：原来只认 `enrollment_proof` 一个值。数据侧把「须已毕业」「双轨」「打分输入」
+  // 拆成独立 type 后，若这里仍只认旧值，au-485-vocational / ca-pgwp /
+  // ie-third-level-graduate / is-job-search-after-graduation / it-ricerca-lavoro
+  // 五条的学籍门槛会静默掉成 none（在职者被判「可申」）。故按语义族取：
+  //   enrollment_proof            真·在读
+  //   enrollment_or_degree_proof  在读或毕业（双轨）
+  //   degree_completed_proof      须已毕业
+  //   credential_scoring_input    学历仅作打分输入 —— **不计入**本维（它不是资格闸）
+  const ENROLMENT_FAMILY = ['enrollment_proof', 'enrollment_or_degree_proof', 'degree_completed_proof'];
+  const enroll = (el.other_requirements ?? []).find((o) => ENROLMENT_FAMILY.includes(o.type));
   const eduNote = el.education?.note ?? '';
   const enrollNote = enroll?.note ?? '';
   // 「在读，或毕业 N 年内」要先判：J-1 Intern 这类项目同样要求提交学籍/学历证明
-  // （enrollment_proof.required = true），但官方口径是「在读或毕业 12 个月内」，
+  // （enrollment_or_degree_proof.required = true），但官方口径是「在读或毕业 12 个月内」，
   // 归到 required（全程保持学籍）会把应届生误判成不合格。
   const isRecentGrad = /(在读|就读|在校)/.test(eduNote) && /(\d+\s*年内|已取得|毕业)/.test(eduNote);
   // 第二类「不是保持学籍，而是证明读完了」：PGWP、485、PSWV 这类毕业后工签要求

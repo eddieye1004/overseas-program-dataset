@@ -36,7 +36,21 @@
     "education": {
       "minimum_level": "bachelor_completed",
       "major_restriction": [],
-      "note": "两条路满足其一即可：①持境外高等教育机构颁发的学位或专业证书，且在境外该领域有至少 1 年相关工作经验；②在境外该领域有至少 5 年工作经验（无学历要求）。培训内容不得重复申请人已有的工作经历。"
+      "note": "两条路满足其一即可：①持境外高等教育机构颁发的学位或专业证书，且在境外该领域有至少 1 年相关工作经验；②在境外该领域有至少 5 年工作经验（无学历要求）。培训内容不得重复申请人已有的工作经历。",
+      "paths": [
+        {
+          "level": "bachelor_completed",
+          "min_years_experience": 1,
+          "experience_region": "outside",
+          "note": "原文：`Has a degree or professional certificate from a foreign post-secondary academic institution and at least one year of prior related work experience in his or her occupational field outside the United States`。路径①=学位 且 境外 1 年相关经验。"
+        },
+        {
+          "level": "any",
+          "min_years_experience": 5,
+          "experience_region": "outside",
+          "note": "原文：`or Has five years of work experience outside the United States in the occupational field in which they are seeking training`。路径②=境外 5 年相关经验，**无学历要求**（level=any 即原文 no degree required）。这一条是旧 EDU_RANK 刻度安放不下的那一半。"
+        }
+      ]
     },
     "language": {
       "required": true,

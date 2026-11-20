@@ -1,8 +1,9 @@
 {
- "rules_version": 6,
+ "rules_version": 12,
  "total": 41,
  "programs": {
   "at-rwr-card-vhq": {
+   "country_code": "AT",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -18,6 +19,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": 4,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": 48.0,
+    "duration_required": true,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -42,8 +55,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": true,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -54,6 +94,7 @@
    }
   },
   "au-407-training": {
+   "country_code": "AU",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -69,6 +110,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -93,8 +146,37 @@
    },
    "precondition": {
     "kind": "outside",
+    "kinds": [
+     "outside"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -105,6 +187,7 @@
    }
   },
   "au-462-work-holiday": {
+   "country_code": "AU",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "not_eligible",
@@ -120,6 +203,18 @@
     "level": "bachelor_in_progress",
     "years_completed": 2,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -144,8 +239,38 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "government_letter",
+     "required": true
+    },
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": true,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": true,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": true,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -156,6 +281,7 @@
    }
   },
   "au-485-graduate": {
+   "country_code": "AU",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -171,6 +297,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -194,9 +332,38 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status",
+    "kind": "inside",
+    "kinds": [
+     "inside"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": true,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -207,6 +374,7 @@
    }
   },
   "au-485-vocational": {
+   "country_code": "AU",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -222,6 +390,18 @@
     "level": "vocational",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "vocational",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -245,9 +425,38 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status",
+    "kind": "inside",
+    "kinds": [
+     "inside"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": true,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -258,6 +467,7 @@
    }
   },
   "ca-iec-working-holiday": {
+   "country_code": "CA",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -273,6 +483,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -297,8 +519,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -309,6 +558,7 @@
    }
   },
   "ca-pgwp": {
+   "country_code": "CA",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -324,6 +574,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -348,8 +610,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -360,6 +649,7 @@
    }
   },
   "de-16e-internship": {
+   "country_code": "DE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -375,6 +665,18 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -399,8 +701,38 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "unclassified",
+     "required": false
+    },
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -411,6 +743,7 @@
    }
   },
   "de-20-job-search": {
+   "country_code": "DE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -426,6 +759,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -450,8 +795,38 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status",
+     "inside"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -462,6 +837,7 @@
    }
   },
   "de-chancenkarte": {
+   "country_code": "DE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -477,6 +853,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": "学历或职业资格须被主管机构认定，且积分达到 6 分",
@@ -501,8 +889,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -513,6 +928,7 @@
    }
   },
   "dk-working-holiday": {
+   "country_code": "DK",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "unknown",
@@ -528,6 +944,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -552,8 +980,37 @@
    },
    "precondition": {
     "kind": "citizenship",
+    "kinds": [
+     "citizenship"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "no_window",
@@ -564,6 +1021,7 @@
    }
   },
   "es-busqueda-empleo": {
+   "country_code": "ES",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -579,6 +1037,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -603,8 +1073,37 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -615,6 +1114,7 @@
    }
   },
   "fi-look-for-work": {
+   "country_code": "FI",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -630,6 +1130,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -654,8 +1166,37 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -666,6 +1207,7 @@
    }
   },
   "fr-recherche-emploi": {
+   "country_code": "FR",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -681,6 +1223,18 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "master",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -705,8 +1259,37 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": true,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -717,6 +1300,7 @@
    }
   },
   "global-aiesec-global-talent": {
+   "country_code": "GL",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -732,6 +1316,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -756,8 +1352,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -768,6 +1391,7 @@
    }
   },
   "global-iaeste": {
+   "country_code": "GL",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -783,6 +1407,18 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -807,8 +1443,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": true,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": true,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -819,6 +1482,7 @@
    }
   },
   "ie-third-level-graduate": {
+   "country_code": "IE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -834,6 +1498,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -858,8 +1534,37 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -870,6 +1575,7 @@
    }
   },
   "ie-working-holiday-authorisation": {
+   "country_code": "IE",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -885,6 +1591,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -909,8 +1627,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -921,6 +1666,7 @@
    }
   },
   "is-job-search-after-graduation": {
+   "country_code": "IS",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -936,6 +1682,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -960,8 +1718,37 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -972,6 +1759,7 @@
    }
   },
   "it-ricerca-lavoro": {
+   "country_code": "IT",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -987,6 +1775,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1011,8 +1811,40 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "official_registration",
+     "required": true
+    },
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": true,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1023,6 +1855,7 @@
    }
   },
   "jp-working-holiday": {
+   "country_code": "JP",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -1038,6 +1871,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1062,8 +1907,37 @@
    },
    "precondition": {
     "kind": "home_residence",
+    "kinds": [
+     "home_residence"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": true,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "annual_cycle",
@@ -1074,6 +1948,7 @@
    }
   },
   "kr-h1-working-holiday": {
+   "country_code": "KR",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -1089,6 +1964,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1113,8 +2000,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": true,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": true,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": true,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -1125,6 +2039,7 @@
    }
   },
   "mt-nomad-residence": {
+   "country_code": "MT",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1140,6 +2055,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1164,8 +2091,37 @@
    },
    "precondition": {
     "kind": "document",
+    "kinds": [
+     "document"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1176,6 +2132,7 @@
    }
   },
   "nl-orientation-year": {
+   "country_code": "NL",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1191,6 +2148,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": 3,
     "category_required": false,
     "credential_required": null,
@@ -1215,8 +2184,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1227,6 +2223,7 @@
    }
   },
   "no-skilled-worker": {
+   "country_code": "NO",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1242,6 +2239,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1266,8 +2275,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": true
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": true,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1278,6 +2314,7 @@
    }
   },
   "nz-china-whv": {
+   "country_code": "NZ",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1293,6 +2330,18 @@
     "level": "high_school",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "high_school",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1317,8 +2366,37 @@
    },
    "precondition": {
     "kind": "home_residence",
+    "kinds": [
+     "home_residence"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": true,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": true,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": true,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": true,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "annual_cycle",
@@ -1329,6 +2407,7 @@
    }
   },
   "nz-post-study-work": {
+   "country_code": "NZ",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1344,6 +2423,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1368,8 +2459,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1380,6 +2498,7 @@
    }
   },
   "se-look-for-work": {
+   "country_code": "SE",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1395,6 +2514,18 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "master",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1419,8 +2550,37 @@
    },
    "precondition": {
     "kind": "outside",
+    "kinds": [
+     "outside"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1431,6 +2591,7 @@
    }
   },
   "sg-employment-pass": {
+   "country_code": "SG",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1446,6 +2607,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1470,8 +2643,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": true,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1482,6 +2682,7 @@
    }
   },
   "sg-s-pass": {
+   "country_code": "SG",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1497,6 +2698,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1521,8 +2734,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": true,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1533,6 +2773,7 @@
    }
   },
   "sg-work-holiday-programme": {
+   "country_code": "SG",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -1548,6 +2789,18 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1572,8 +2825,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -1584,6 +2864,7 @@
    }
   },
   "uk-graduate-visa": {
+   "country_code": "GB",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1599,6 +2880,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1622,9 +2915,38 @@
     "amount_inferred": false
    },
    "precondition": {
-    "kind": "local_status",
+    "kind": "inside",
+    "kinds": [
+     "inside"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": true,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1635,6 +2957,7 @@
    }
   },
   "uk-hpi-visa": {
+   "country_code": "GB",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1650,6 +2973,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1674,8 +3009,38 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "credential_check",
+     "required": true
+    },
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": true,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": true,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1686,6 +3051,7 @@
    }
   },
   "uk-short-term-study-visa": {
+   "country_code": "GB",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1701,6 +3067,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1725,8 +3103,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": true,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1737,6 +3142,7 @@
    }
   },
   "uk-youth-mobility-scheme": {
+   "country_code": "GB",
    "passport": {
     "mainland_china": "not_eligible",
     "hong_kong_china": "eligible",
@@ -1752,6 +3158,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1776,8 +3194,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": true,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": true,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": true,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "fixed_dates",
@@ -1788,6 +3233,7 @@
    }
   },
   "us-f1-opt": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1803,6 +3249,18 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": "graduated",
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": 10.0,
+    "duration_required": true,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1827,8 +3285,41 @@
    },
    "precondition": {
     "kind": "local_status",
+    "kinds": [
+     "local_status",
+     "inside"
+    ],
     "job_placement": false,
-    "employer_offer": false
+    "job_placement_flavor": null,
+    "government_support_letter": {
+     "kind": "institutional_recommendation",
+     "required": true
+    },
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": true,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": true,
+      "enrollment_status": true,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": true,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1839,6 +3330,7 @@
    }
   },
   "us-j1-camp-counselor": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1854,6 +3346,18 @@
     "level": "any",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": true,
     "credential_required": null,
@@ -1878,8 +3382,35 @@
    },
    "precondition": {
     "kind": null,
+    "kinds": [],
     "job_placement": true,
-    "employer_offer": false
+    "job_placement_flavor": "camp",
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1890,6 +3421,7 @@
    }
   },
   "us-j1-intern": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1905,6 +3437,26 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": "enrolled",
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     },
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": "graduated",
+      "graduated_within_months": 12,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1929,8 +3481,35 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false,
-    "employer_offer": false
+    "kinds": [],
+    "job_placement": true,
+    "job_placement_flavor": "ds7002",
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": true,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": true,
+      "months_since_graduation": true,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1941,6 +3520,7 @@
    }
   },
   "us-j1-research-scholar": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -1956,6 +3536,18 @@
     "level": "master",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "master",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -1980,8 +3572,38 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false,
-    "employer_offer": false
+    "kinds": [],
+    "job_placement": true,
+    "job_placement_flavor": "sponsor_ds2019",
+    "government_support_letter": {
+     "kind": "sponsorship",
+     "required": true
+    },
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -1992,6 +3614,7 @@
    }
   },
   "us-j1-summer-work-travel": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2007,6 +3630,18 @@
     "level": "bachelor_in_progress",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_in_progress",
+      "enrollment": "enrolled",
+      "graduated_within_months": null,
+      "min_years_experience": null,
+      "experience_region": null,
+      "min_months": 5.0
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2031,8 +3666,35 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false,
-    "employer_offer": false
+    "kinds": [],
+    "job_placement": true,
+    "job_placement_flavor": "summer_job",
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": true,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": true,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": false
+     }
+    }
    },
    "window": {
     "type": "rolling",
@@ -2043,6 +3705,7 @@
    }
   },
   "us-j1-trainee": {
+   "country_code": "US",
    "passport": {
     "mainland_china": "eligible",
     "hong_kong_china": "eligible",
@@ -2058,6 +3721,26 @@
     "level": "bachelor_completed",
     "years_completed": null,
     "years_required": null,
+    "paths": [
+     {
+      "level": "bachelor_completed",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": 1,
+      "experience_region": "outside",
+      "min_months": null
+     },
+     {
+      "level": "any",
+      "enrollment": null,
+      "graduated_within_months": null,
+      "min_years_experience": 5,
+      "experience_region": "outside",
+      "min_months": null
+     }
+    ],
+    "min_duration_months": null,
+    "duration_required": false,
     "recency_required": null,
     "category_required": false,
     "credential_required": null,
@@ -2082,8 +3765,35 @@
    },
    "precondition": {
     "kind": null,
-    "job_placement": false,
-    "employer_offer": false
+    "kinds": [],
+    "job_placement": true,
+    "job_placement_flavor": "ds7002",
+    "government_support_letter": null,
+    "employer_offer": false,
+    "p1b2": {
+     "forbid_child": false,
+     "forbid_other": false,
+     "cannot_work": false,
+     "separate": false,
+     "allowed": false,
+     "declaration": false,
+     "participation": false,
+     "same_category_visa": false,
+     "specific_visa_required": false,
+     "enrollment": false,
+     "degree_completed": false,
+     "either": false,
+     "scoring_input": false,
+     "reads": {
+      "dependents": false,
+      "enrollment_status": false,
+      "months_since_graduation": false,
+      "prior_participation": false,
+      "prior_same_category_visa": false,
+      "study_months": false,
+      "work_experience_years": true
+     }
+    }
    },
    "window": {
     "type": "rolling",

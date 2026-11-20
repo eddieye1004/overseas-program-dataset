@@ -273,6 +273,41 @@ export type UiKey =
   | 'verdictIeltsNone'
   | 'verdictIeltsHint'
   | 'verdictBudget'
+  | 'verdictLocation'
+  | 'verdictLocationUnknown'
+  | 'verdictLocationHint'
+  // —— 条件显示的补充字段（本单）——
+  | 'verdictExtraTitle'
+  | 'verdictExtraDesc'
+  | 'verdictExtraMore'
+  | 'verdictExtraLess'
+  | 'verdictExtraHint'
+  | 'verdictEnrollment'
+  | 'verdictEnrollmentUnknown'
+  | 'verdictParticipation'
+  | 'verdictParticipationUnknown'
+  | 'verdictPriorVisa'
+  | 'verdictPriorVisaUnknown'
+  | 'verdictDependents'
+  | 'verdictDependentsUnknown'
+  | 'verdictStudyMonths'
+  | 'verdictStudyMonthsUnknown'
+  | 'verdictGradMonths'
+  | 'verdictGradMonthsUnknown'
+  | 'verdictWorkYears'
+  | 'verdictWorkYearsUnknown'
+  // 补充字段的选项（不与 ENUM_LABELS 混用：那套是数据枚举的展示名，
+  // 这里是画像选项的人话，两者语义不同，混用会让改一处影响另一处）
+  | 'optEnrolled'
+  | 'optCompleted'
+  | 'optPartYes'
+  | 'optPartNo'
+  | 'optVisaYes'
+  | 'optVisaNo'
+  | 'optDepNone'
+  | 'optDepChildren'
+  | 'optDepPartner'
+  | 'optDepOther'
   | 'verdictSubmit'
   | 'verdictSubmitHint'
   | 'verdictSaved'
@@ -615,6 +650,41 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictIeltsNone: '没考过 / 不填',
     verdictIeltsHint: '没考过就选「没考过」。这与「考了但项目没登记分数线」是两件事，会影响结论。',
     verdictBudget: '可动用的资金证明（人民币）',
+    verdictLocation: '你现在人在哪个国家/地区',
+    verdictLocationUnknown: '不确定 / 不填',
+    verdictLocationHint:
+      '与护照不同：有些项目要求递交时人必须已经在该国境内。不填就按「无法判定」处理，不会当成符合。',
+    // —— 补充条件（只在与已填信息相关时出现）——
+    verdictExtraTitle: '再补几条（可选）',
+    verdictExtraDesc:
+      '下面几条只影响一部分项目。不填也行，那几条会显示「不可判」；填了就能给出确切结论。',
+    verdictExtraMore: '继续细化',
+    verdictExtraLess: '收起',
+    verdictExtraHint: '只问对上面这些条件真的能改变结论的项，不相关的不问。',
+    verdictEnrollment: '你现在是在读还是已毕业',
+    verdictEnrollmentUnknown: '不确定 / 不填',
+    verdictParticipation: '以前参加过这个项目或同类项目吗',
+    verdictParticipationUnknown: '不确定 / 不填',
+    verdictPriorVisa: '以前拿过同类签证吗',
+    verdictPriorVisaUnknown: '不确定 / 不填',
+    verdictDependents: '有家属一起过去吗',
+    verdictDependentsUnknown: '不确定 / 不填',
+    verdictStudyMonths: '这段学历你实际读了多少个月',
+    verdictStudyMonthsUnknown: '不确定 / 不填',
+    verdictGradMonths: '你毕业多久了（月）',
+    verdictGradMonthsUnknown: '不确定 / 不填',
+    verdictWorkYears: '与目标岗位相关的工作经验（年）',
+    verdictWorkYearsUnknown: '不确定 / 不填',
+    optEnrolled: '在读',
+    optCompleted: '已毕业',
+    optPartYes: '参加过',
+    optPartNo: '没参加过',
+    optVisaYes: '拿过',
+    optVisaNo: '没拿过',
+    optDepNone: '没有家属同行',
+    optDepChildren: '有受抚养子女同行',
+    optDepPartner: '只有配偶同行',
+    optDepOther: '有其他亲属同行',
     verdictSubmit: '开始判定',
     verdictSubmitHint: '判定在你自己的浏览器里完成，不发服务器。',
     verdictSaved: '条件已存本机',
@@ -967,6 +1037,42 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictIeltsHint:
       'Pick "Not taken" if you have no score. That is different from having a score a program does not publish a threshold for, and the verdict differs.',
     verdictBudget: 'Funds available for proof (CNY)',
+    verdictLocation: 'Where you are now',
+    verdictLocationUnknown: 'Not sure / leave blank',
+    verdictLocationHint:
+      'Separate from your passport: some programs require you to be inside that country when you apply. Leaving it blank stays "cannot decide" — never a silent pass.',
+    // —— Extra conditions (asked only when they can change a verdict) ——
+    verdictExtraTitle: 'A few more (optional)',
+    verdictExtraDesc:
+      'These only affect some programs. Leave them blank and those stay "undecidable"; fill them in and you get a definite answer.',
+    verdictExtraMore: 'Refine further',
+    verdictExtraLess: 'Hide',
+    verdictExtraHint:
+      'Only what can actually change a verdict given the details above — nothing else is asked.',
+    verdictEnrollment: 'Are you studying now, or have you finished?',
+    verdictEnrollmentUnknown: 'Not sure / leave blank',
+    verdictParticipation: 'Have you taken part in this or a similar program before?',
+    verdictParticipationUnknown: 'Not sure / leave blank',
+    verdictPriorVisa: 'Have you held this kind of visa before?',
+    verdictPriorVisaUnknown: 'Not sure / leave blank',
+    verdictDependents: 'Is anyone coming with you?',
+    verdictDependentsUnknown: 'Not sure / leave blank',
+    verdictStudyMonths: 'How many months have you actually studied in that qualification?',
+    verdictStudyMonthsUnknown: 'Not sure / leave blank',
+    verdictGradMonths: 'How many months since you graduated?',
+    verdictGradMonthsUnknown: 'Not sure / leave blank',
+    verdictWorkYears: 'Years of work experience relevant to the role (years)',
+    verdictWorkYearsUnknown: 'Not sure / leave blank',
+    optEnrolled: 'Currently studying',
+    optCompleted: 'Finished',
+    optPartYes: 'Yes, I have',
+    optPartNo: 'No',
+    optVisaYes: 'Yes, I have',
+    optVisaNo: 'No',
+    optDepNone: 'No one is coming with me',
+    optDepChildren: 'A dependent child is coming',
+    optDepPartner: 'Only a partner is coming',
+    optDepOther: 'Another relative is coming',
     verdictSubmit: 'Run the check',
     verdictSubmitHint: 'The check runs in your browser. Nothing is uploaded.',
     verdictSaved: 'Saved on this device',
@@ -1102,14 +1208,29 @@ export const ENUM_LABELS: Record<Lang, Record<string, string>> = {  zh: {
     residency_required: '有居住要求',
     blocked_account: '需冻结账户',
     criminal_record: '需无犯罪记录',
-    enrollment_proof: '需在读证明',
+    enrollment_proof: '需在读学籍（在读期间保持注册）',
     government_support_letter: '需政府推荐信',
     health_check: '需体检',
     internship_contract: '需实习合同',
     no_dependents: '不可带家属',
+    no_child_dependents: '不可带子女',
+    no_other_dependents: '不可带家属',
+    dependents_cannot_work: '家属不得工作',
+    dependents_allowed: '允许携带家属',
+    dependents_separate_application: '家属须各自申请',
     no_prior_visa: '此前未持过该签证',
+    program_once_in_lifetime: '一生只能参加一次',
+    program_once_per_project: '同一项目只能参加一次',
+    prior_same_category_visa: '须未持过同类别签证',
+    program_participation_cap: '参加次数有上限',
+    prior_specific_visa_required: '须持过指定类别签证',
+    degree_completed_proof: '需已毕业的学历证明',
+    enrollment_or_degree_proof: '需在读证明或毕业证明',
+    credential_scoring_input: '学历证明（打分/评估用）',
+    declaration_document: '需提交指定声明文件',
     return_ticket: '需返程机票',
-    residency_requirement: '需居住在当地',
+    residency_requirement: '需持当地身份',
+    location_requirement: '需人已在该国境内',
     insurance: '需医疗保险',
     IELTS: 'IELTS',
     TOEFL_iBT: 'TOEFL iBT',
@@ -1179,14 +1300,29 @@ export const ENUM_LABELS: Record<Lang, Record<string, string>> = {  zh: {
     residency_required: 'Residency required',
     blocked_account: 'Blocked account required',
     criminal_record: 'Police certificate required',
-    enrollment_proof: 'Proof of enrolment',
+    enrollment_proof: 'Enrolment proof (must stay enrolled)',
     government_support_letter: 'Government support letter',
     health_check: 'Medical check',
     internship_contract: 'Internship contract',
     no_dependents: 'No dependants',
+    no_child_dependents: 'No dependent children',
+    no_other_dependents: 'No dependants',
+    dependents_cannot_work: 'Dependants cannot work',
+    dependents_allowed: 'Dependants allowed',
+    dependents_separate_application: 'Dependants apply separately',
     no_prior_visa: 'No prior visa held',
+    program_once_in_lifetime: 'Once-in-a-lifetime',
+    program_once_per_project: 'Once per project',
+    prior_same_category_visa: 'No prior same-category visa',
+    program_participation_cap: 'Participation count capped',
+    prior_specific_visa_required: 'Must hold a specific visa',
+    degree_completed_proof: 'Proof of completed degree',
+    enrollment_or_degree_proof: 'Enrolment or degree proof',
+    credential_scoring_input: 'Credential (scoring only)',
+    declaration_document: 'Signed declaration required',
     return_ticket: 'Return ticket',
     residency_requirement: 'Local residency',
+    location_requirement: 'Must already be in the country',
     insurance: 'Health insurance',
     IELTS: 'IELTS',
     TOEFL_iBT: 'TOEFL iBT',
@@ -1288,6 +1424,11 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     edu_credential_unknown: '原文另要求 {need}；结构化字段只记了学历层级，认定结果与积分总分都未采集，无法判定',
     edu_place_unknown: '原文要求学位在指定国家/名单内院校完成，院校与毕业年份未采集，无法判定',
     edu_by_sponsor: '原文写明学历层级由 Sponsor 判断，不作硬性门槛',
+    edu_duration_unknown: '原文另要求 {need}；你的就读时长未采集，无法判定',
+    edu_duration_short: '就读时长不够：要求 {need}，你是 {have}',
+    edu_enrollment_unknown: '原文要求特定的在读/毕业状态；你的就读状态或毕业时间未采集，无法判定',
+    edu_experience_unknown: '原文接受工作经验替代学历；你的相关工作年限未采集，无法判定',
+    edu_not_enrolled: '原始要求的是你在读（或毕业不超过一定期限），不是学历高低；你填的状态不满足',
     lang_ok: '语言成绩达标',
     lang_low: '语言成绩不够：要求 {need}，你是 {have}',
     lang_missing: '要求语言成绩，你没填：需要 {need}',
@@ -1305,13 +1446,46 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     funds_term_unknown: '该门槛是每月金额（{need}），须乘停留月数才是总额；仓内未登记停留期上限，无法折算',
     funds_amount_inferred: '该金额（{need}）在仓内标注为按同类口径沿用/归类推定，不是本项目的独立规定，不作达标判断',
     pre_local_status: '原文把「先在该国持学生签/居留并完成学业」写成本项目的前置身份：{need}',
-    pre_outside_country: '原文要求在递交时人位于该国境外，画像不采集现居地，无法判定',
+    pre_inside_country: '原文要求在递交时人位于该国境内，画像不采集现居地，无法判定',
+    pre_inside_country_ok: '原文要求在递交时人位于该国境内；你填的现居地是 {have}，与此一致',
+    pre_inside_country_no: '原文要求{need}，而你填的现居地是 {have}；先合法进入该国才能递交',
+    pre_outside_country:
+      '原文要求在递交时人位于该国境外，画像不采集现居地，无法判定',
+    pre_outside_country_ok: '原文要求{need}；你填的现居地是 {have}，不在该国境内，这条「境外递交」要求已满足',
+    pre_outside_country_no: '原文要求{need}，而你填的现居地是 {have}；在该国境内递交会被判无效，须先离境再递',
     pre_home_residence: '原文要求常驻护照所属地区，画像不采集现居地，无法判定',
+    pre_home_residence_ok: '原文要求{need}；你填的现居地是 {have}，与护照所属地一致，这条要求已满足',
+    pre_home_residence_no: '原文要求{need}，而你填的现居地是 {have}；这条要求补材料满足不了，须回到护照所属地区再申请',
     pre_citizenship_basis: '原文该项是国籍条件，已由护照维判定，不另算缺口',
     pre_document_basis: '原文该项是递交时自备的材料（租约等），不是身份前置条件',
     pre_unclassified: '该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定',
-    pre_job_placement: '原文要求岗位须预先落实：{need}；这一步可以补（报名、面试、拿到 placement）',
+    // P4 §3：{need} 由引擎按项目给四种表述之一（营地 / 研究机构 DS-2019 /
+    // 暑期岗位+雇主面试 / DS-7002 三方文件链）。模板本身不再假定是哪一种，
+    // 否则「营地」那半句会跟着 {need} 一起漂到研究学者页上。
+    pre_job_placement: '原文要求先落实岗位或接收机构：{need}；这一步可以补（报名、面试、拿到岗位或接收函）',
     pre_employer_offer: '原文要求先有具体雇主的合格聘用：{need}；这一步可以补（投简历、面试、签约）',
+    // —— P1b-2：家属 / 签证史 / 学籍三个家族的 typed 值 ——
+    pre_dependents_unknown: '原文对家属随行有限制，画像未采集你的家属构成，无法判定',
+    pre_dependents_none: '原文的家属限制：你填了无家属随行，此项不适用',
+    pre_dependents_child_present: '原文禁止携带受抚养子女，你填了有受抚养子女',
+    pre_dependents_other_present: '原文禁止携带家属（含配偶与子女），你填了有家属随行',
+    pre_dependents_work_unknown: '原文允许家属随行但不得就业；你是否打算让家属工作未采集，无法判定',
+    pre_dependents_separate: '原文要求家属同行须各自单独递交申请；这是办理程序，不构成资格门槛',
+    pre_dependents_allowed: '原文明确允许家属随行（仅作说明，不构成资格门槛）',
+    pre_declaration_only: '原文材料清单里有一份声明文件；这是递交材料，不构成资格门槛',
+    pre_participation_unknown: '原文限制既往参加过本项目/同类项目者，画像未采集既往参加史，无法判定',
+    pre_participation_none: '原文限制既往参加过者，你填了未参加过',
+    pre_participation_used: '原文限制已参加过本项目/同类项目者再次申请，你填了参加过',
+    pre_prior_visa_unknown: '原文限制曾持同类签证者，画像未采集同类签证史，无法判定',
+    pre_prior_visa_none: '原文限制曾持同类签证者，你填了未持过',
+    pre_prior_visa_used: '原文限制曾持同类签证者再次申请，你填了持过',
+    pre_prior_visa_required: '原文要求**须持过**指定类别签证（不是「未持过」）；画像未采集签证史，无法判定',
+    pre_enrollment_unknown: '原文要求当前在册/全程保持学籍，画像未采集在读状态，无法判定',
+    pre_enrolled_ok: '原文要求当前在册，你填了在读',
+    pre_not_enrolled: '原文要求当前在册（在读期间保持注册），你填了已毕业',
+    pre_degree_ok: '原文要求已取得学位/文凭，你的学历状态满足',
+    pre_degree_missing: '原文要求已取得学位/文凭（须已毕业），你填了本科在读',
+    pre_scoring_input_only: '原文该项是学历/资质作为打分或材料审核的输入，不是资格门槛',
   },
   en: {
     passport_ok: 'Passport recorded as eligible',
@@ -1338,6 +1512,15 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'The source requires the degree to come from an institution in a specified country or on an approved list; your institution and graduation year are not collected — cannot decide',
     edu_by_sponsor:
       'The source states the degree level is judged by the sponsor, not set as a hard threshold',
+    edu_duration_unknown:
+      'The source also requires {need}; the length of your studies is not collected, so this cannot be decided',
+    edu_duration_short: 'Your study duration is too short: requires {need}, you have {have}',
+    edu_enrollment_unknown:
+      'The source requires a particular enrolment or graduation status; neither is collected for you, so this cannot be decided',
+    edu_experience_unknown:
+      'The source accepts work experience in place of a degree; your years of relevant experience are not collected, so this cannot be decided',
+    edu_not_enrolled:
+      'The source asks whether you are currently enrolled (or graduated within a set window), not how high your degree is; the status you entered does not meet it',
     lang_ok: 'Language score meets the requirement',
     lang_low: 'Language score is short: requires {need}, you have {have}',
     lang_missing: 'A language score is required and you entered none: needs {need}',
@@ -1359,10 +1542,24 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
       'This amount ({need}) is marked in the dataset as borrowed from a comparable category / an inferred figure, not a rule of this permit — no pass/fail judgement',
     pre_local_status:
       'The source makes a prior status a prerequisite: you must already hold a student permit/residence there and have completed study there — {need}',
+    pre_inside_country:
+      'The source requires you to be inside that country when applying; your current location is not collected — cannot decide',
+    pre_inside_country_ok:
+      'The source requires you to be inside that country when applying; your current location ({have}) matches — satisfied',
+    pre_inside_country_no:
+      'The source requires {need}, but your current location is {have}; you would have to be lawfully inside that country first',
     pre_outside_country:
       'The source requires you to be outside that country when applying; your current location is not collected — cannot decide',
+    pre_outside_country_ok:
+      'The source requires {need}; your current location ({have}) is outside that country — satisfied',
+    pre_outside_country_no:
+      'The source requires {need}, but your current location is {have}; an application made inside that country is invalid, so you would have to leave first',
     pre_home_residence:
       'The source requires you to be residing in your passport region; your current location is not collected — cannot decide',
+    pre_home_residence_ok:
+      'The source requires {need}; your current location ({have}) matches your passport region — satisfied',
+    pre_home_residence_no:
+      'The source requires {need}, but your current location is {have}; no document can fix this — you would have to return to your passport region to apply',
     pre_citizenship_basis:
       'This condition is a nationality rule and is already decided by the passport dimension — not counted as a separate gap',
     pre_document_basis:
@@ -1370,9 +1567,50 @@ export const VERDICT_TEXT: Record<Lang, Record<string, string>> = {
     pre_unclassified:
       'This program has a mandatory prior-status / location requirement whose category could not be recognised in the source text — cannot decide',
     pre_job_placement:
-      'The source requires the placement to be arranged in advance: {need} — you have not recorded a placement yet, and this is a step you can still complete',
+      'The source requires a placement or a host institution to be secured first: {need} — this is a step you can still complete (apply, interview, get placed or accepted)',
     pre_employer_offer:
       'The source requires a concrete job offer from one specific employer first: {need} — this is a step you can still complete (apply, interview, sign)',
+    // —— P1b-2 ——
+    pre_dependents_unknown:
+      'The source restricts dependants, and your dependant situation is not collected — cannot decide',
+    pre_dependents_none:
+      'The source restricts dependants; you entered that no dependants will accompany you, so this does not apply',
+    pre_dependents_child_present:
+      'The source does not allow dependent children to accompany you; you entered that you have dependent children',
+    pre_dependents_other_present:
+      'The source does not allow dependants (spouse and children included); you entered that dependants will accompany you',
+    pre_dependents_work_unknown:
+      'Dependants may accompany you but may not work; whether your dependants intend to work is not collected — cannot decide',
+    pre_dependents_separate:
+      'The source requires accompanying dependants to apply separately; this is a procedural step, not an eligibility threshold',
+    pre_dependents_allowed:
+      'The source explicitly allows dependants to accompany you (shown for information; not an eligibility threshold)',
+    pre_declaration_only:
+      'The document list includes a signed declaration; this is a submission item, not an eligibility threshold',
+    pre_participation_unknown:
+      'The source restricts those who have previously taken part in this or a comparable programme; your participation history is not collected — cannot decide',
+    pre_participation_none:
+      'The source restricts previous participants; you entered that you have not taken part',
+    pre_participation_used:
+      'The source bars those who have already taken part in this or a comparable programme; you entered that you have taken part',
+    pre_prior_visa_unknown:
+      'The source restricts those who have previously held a visa of the same category; your visa history is not collected — cannot decide',
+    pre_prior_visa_none:
+      'The source restricts previous holders of a same-category visa; you entered that you have not held one',
+    pre_prior_visa_used:
+      'The source bars those who have already held a same-category visa; you entered that you have held one',
+    pre_prior_visa_required:
+      'The source requires you to **have held** a specified category of visa (not the reverse); your visa history is not collected — cannot decide',
+    pre_enrollment_unknown:
+      'The source requires you to be currently enrolled / to keep your enrolment; your enrolment status is not collected — cannot decide',
+    pre_enrolled_ok: 'The source requires current enrolment; you entered that you are enrolled',
+    pre_not_enrolled:
+      'The source requires current enrolment (registration kept during study); you entered that you have graduated',
+    pre_degree_ok: 'The source requires a completed degree/diploma, and your education status meets it',
+    pre_degree_missing:
+      'The source requires a completed degree/diploma (you must have graduated); you entered that you are still an undergraduate',
+    pre_scoring_input_only:
+      'The source treats your credential as input to scoring or document review, not as an eligibility threshold',
   },
 };
 

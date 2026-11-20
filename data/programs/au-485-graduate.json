@@ -49,12 +49,12 @@
     },
     "other_requirements": [
       {
-        "type": "residency_requirement",
+        "type": "location_requirement",
         "required": true,
         "note": "递交时人必须在澳洲境内（官方原文 `be in Australia when you apply for this visa`），且不能在出入境查验区（`You can be in Australia (but not in immigration clearance) when you apply`）。获批时可在境内或境外。"
       },
       {
-        "type": "no_prior_visa",
+        "type": "prior_specific_visa_required",
         "required": true,
         "note": "过去 6 个月内须持有过学生签证（官方原文 `have held a Student visa in the last 6 months`），且须持有合格签证（`hold an eligible visa`）。此外本签证一生只能作为主申请人拿一次，且递交后不能更换分支（`it is not possible to change streams after you apply`）。"
       },

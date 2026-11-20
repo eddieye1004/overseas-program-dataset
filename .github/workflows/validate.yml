@@ -116,7 +116,7 @@ jobs:
         #
         # 只在定时任务上跑：push/PR 时数据该复核与否不是本次改动的责任，
         # 往 PR 里塞 issue 更新会吵到评审。
-        if: always() && github.event_name == 'schedule'
+        if: always() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/sync_issue.py

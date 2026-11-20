@@ -74,7 +74,7 @@
         "note": "官方资格清单未单列返程机票；但须是「真实临时入境者」，即只打算临时停留、只做签证允许的事、并在此前实质性遵守过所持签证的条件。"
       },
       {
-        "type": "residency_requirement",
+        "type": "location_requirement",
         "required": true,
         "note": "2026-11-12 起：递交签证申请时、以及获批时，人都必须在澳大利亚境外（`From 12 November 2026, you must be outside Australia when you apply for the visa and when we grant it. Your application will be invalid if you apply while in Australia.`）。官方特别提醒：即使 ImmiAccount 允许你在境内递交，申请仍然无效。"
       }

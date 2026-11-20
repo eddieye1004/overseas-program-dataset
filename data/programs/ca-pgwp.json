@@ -48,7 +48,7 @@
     },
     "other_requirements": [
       {
-        "type": "no_prior_visa",
+        "type": "program_once_in_lifetime",
         "required": true,
         "note": "已经拿过一次 PGWP 的人不能再申请（官方原文 `You can't get a PGWP if you already had one after completing an earlier program of study.`）。每人每个学历层级只有一次机会。"
       },
@@ -58,7 +58,7 @@
         "note": "境内境外都能申请（官方原文 `You can apply for a post-graduation work permit (PGWP) from within Canada or from another country, as long as you're eligible.`）。但递交时学签须在这 180 天内的某个时点仍有效。"
       },
       {
-        "type": "enrollment_proof",
+        "type": "degree_completed_proof",
         "required": true,
         "note": "须证明完成学业（学位/文凭/证书、学校正式信函、或官方成绩单三选一），并证明课程期间为全日制注册（官方成绩单）。"
       }

@@ -79,15 +79,99 @@ PASSPORT_ZH = {
     "hong_kong_china": "香港护照",
     "taiwan_china": "台湾护照",
 }
-
-EDU_RANK = {
-    "high_school": 1,
-    "vocational": 2,
-    "bachelor_in_progress": 3,
-    "bachelor_completed": 4,
-    "master": 5,
-    "any": 0,
+# 护照 → 护照所属国家/地区代码（ISO 3166-1 alpha-2）。**只登记库里真有的三类**，
+# 缺的一律不猜（P1e）：判 `home_residence`（须常驻护照所属地区）的唯一动作是
+# 「现居 == 护照所属地」，两边都用同一套代码，比较就是字符串相等，不需要地名
+# 归一表。表里没有的护照（将来新增、或画像写了个错值）返回 None → 判 silent，
+# 而不是拿一个猜出来的国家去判 fail——那等于替官方拒绝一个可能合格的人。
+PASSPORT_COUNTRY = {
+    "mainland_china": "CN",
+    "hong_kong_china": "HK",
+    "taiwan_china": "TW",
 }
+
+# --------------------------------------------------------------------------
+# 学历：从「单一总序」改成「路径谓词」（P3，2026-11-16）
+#
+# 病灶：过去这一维只有一条比较式 —— `EDU_RANK[have] < EDU_RANK[need]` → cannot。
+# 一个单调刻度被拿来回答三个不同的问题，三个方向各错一次：
+#
+#   ① 「在读」是**状态**，不是层级。J-1 Intern / IAESTE / SWT 原文要求「现在
+#      必须在读」，而 `bachelor_completed`(4) > `bachelor_in_progress`(3)，
+#      于是**已毕业的人在判定上比在读的人更够格** —— 假 pass（batch9b §2 第 3 行）。
+#   ② 「学位 **或** 经验」是**并列路径**，不是层级。J-1 Trainee 原文路径②
+#      明文允许「无学历 + 5 年境外经验」，刻度里没有这个位子 —— 假 cannot，
+#      全扫首个「把合格者判死」样本（batch10 §2 第 4 行）。
+#   ③ 「学制 / 课程时长」是**时长**，不是层级。F-1 OPT 的「一整个学年」、
+#      PGWP 的「8 个月」、NZ 的「30 周」在刻度里连字段都没有（batch9a §2 第 6 行）。
+#
+# 现在判定由三族谓词组成（见 `edu_paths()` / `edu_path_eval()`）：
+#   在读状态 / 学位-或-经验组合 / 时长。
+# `EDU_RANK` 这个总序**不再出现在判定路径上**，只剩 `EDU_LEVEL_ORDER` 给报告做
+# 展示排序（回执附 grep 读点清单证明 judge() 不消费它）。
+#
+# 层级比较本身没有被取消 —— 它只是降级成**路径里的一个谓词**：`EDU_LEVEL_QUALIFIES`
+# 用显式集合表达「持有 have 是否满足 need」，而不是拿两个数字比大小。集合写全
+# 的好处是「vocation 不等于『比本科差』，它是另一类」这句话在代码里看得见。
+# --------------------------------------------------------------------------
+
+# 展示排序用的唯一一处（报告里把学历从低到高排）。判定不读它。
+EDU_LEVEL_ORDER = (
+    "high_school",
+    "vocational",
+    "bachelor_in_progress",
+    "bachelor_completed",
+    "master",
+    "doctorate",
+)
+
+_DOCTORATE = frozenset({"doctorate"})
+_MASTER_PLUS = frozenset({"master", "doctorate"})
+_BACHELOR_PLUS = frozenset({"bachelor_completed", "master", "doctorate"})
+_IN_PROGRESS_PLUS = frozenset(
+    {"bachelor_in_progress", "bachelor_completed", "master", "doctorate"}
+)
+_VOCATIONAL_PLUS = frozenset(
+    {"vocational", "bachelor_in_progress", "bachelor_completed", "master", "doctorate"}
+)
+_ANY_LEVEL = frozenset(EDU_LEVEL_ORDER)
+
+# 「持有 have 是否满足 need」。显式集合，不是 `have >= need`。
+EDU_LEVEL_QUALIFIES = {
+    "any": _ANY_LEVEL,
+    "high_school": _ANY_LEVEL,
+    "vocational": _VOCATIONAL_PLUS,
+    "bachelor_in_progress": _IN_PROGRESS_PLUS,
+    "bachelor_completed": _BACHELOR_PLUS,
+    "master": _MASTER_PLUS,
+    "doctorate": _DOCTORATE,
+}
+
+
+def edu_level_rank(level: str | None) -> int | None:
+    """展示用的层级序号；`any` 与未知值返回 None。
+
+    **不是判定**：判定读 `EDU_LEVEL_QUALIFIES`（显式集合）。这里只给报告排序、
+    以及「结构化字段是否真的写了一个层级」这类扫描用 —— 拿它比大小就是把本单
+    拆掉的错因装回去。
+    """
+    try:
+        return EDU_LEVEL_ORDER.index(level or "")
+    except ValueError:
+        return None
+
+
+def edu_level_ok(need: str | None, have: str | None) -> bool:
+    """层级路径：持有 `have` 是否满足 `need`。
+
+    未知取值（None / 拼错 / 老数据里的 `phd`）一律 False —— 不认识的值不构成
+    达标证据。调用方在 `need` 缺失时自己决定要不要走这条路径。
+    """
+    allowed = EDU_LEVEL_QUALIFIES.get(need or "any")
+    if allowed is None:
+        return False
+    return (have or "") in allowed
+
 
 # 数据里「官方未公布年龄」的统一写法：note 以 ⚠️ 开头（sync-data.mjs 与
 # validate.py 也认这一个判据，三处不能各写一套）。
@@ -184,6 +268,22 @@ EDU_YEARS_STRICT = re.compile(
 )
 EDU_YEARS_DISQUALIFY = re.compile(r"不满足|不达|不符合")
 
+# 学历：note 里另写的**就读时长**下限（「至少一整个学年」「不少于 8 个月」
+# 「至少 30 周」「至少 1 个学期」）。与 EDU_YEARS_STRICT 分开，理由有两条：
+#
+#   ① 单位不同：EDU_YEARS_STRICT 只认「年 / 学年」，把「8 个月」「30 周」
+#      「1 个学期」整类漏掉（batch6 §2 第 4 行、batch9b §2 第 4 行记过四次）；
+#   ② 语义不同：「读了几年」是学制，判的是学历层级够不够；「读了多久」是
+#      这道项目的准入门槛，判的是你在这段学历里实际待了多长。两者可以同时
+#      存在（澳洲 485：2 学年 + 16 个月），把两件事压进一个正则就会互相覆盖。
+#
+# 与 EDU_YEARS_STRICT 共用 `EDU_YEARS_DISQUALIFY` 成对闸：并列路径里的
+# 「至少 2 年」（au-462 的路径②）不算额外门槛，只有原文另说「不足即不满足」
+# 时才算。这一条是旧代码注释里已经定下的规则，本单不放松。
+EDU_DURATION_IN_NOTE = re.compile(
+    r"(?:不少于|至少|不低于|不低于)\s*([一二三四五六七八九十两\d]+)\s*个?\s*(学年|年|个月|周|学期)"
+)
+
 # 学历：note 另写的「须在申请日/递交日之前 N 年内完成学业或取得学位」这类
 # **毕业时限**（P2-0 nl-orientation-year）。
 #
@@ -222,35 +322,64 @@ EDU_BY_SPONSOR = re.compile(
     r"由\s*Sponsor\s*判断|由赞助方判断"
 )
 
-# 前置身份：这类项目只对「已经在该国持学生/居留身份（并在当地完成学业）」的人
-# 开放，不是一张面向所有人开放的表。§4-3 / §4-4 的全部偏差都来自这一条从未
-# 进入判定。三类分开处理，因为「能不能补」不一样：
-#   local_status   须先在该国持学生签/居留（或在当地完成学业）→ 判 gap（差这一项前提）
-#   outside        递交时人须在该国境外 → 画像不采集所在地，判 silent
-#   home_residence 须常驻护照所属地区 → 画像不采集现居地，判 silent
+# 前置身份 / 在地要求：这类项目只对「已经在该国持学生/居留身份（并在当地完成
+# 学业）」的人开放，或要求「递交时人就在该国境内」，不是一张面向所有人开放的表。
+# §4-3 / §4-4 的全部偏差都来自这一条从未进入判定。
+#
+# 2026-11-15（P1c，批次 9a 裁决 1 + P1a 待核 C）：**身份与在地拆成两个独立类别**。
+# 过去二者共用一个 `local_status` 出口，靠 `PRE_LOCAL_STATUS` 末支的
+# 「(必须|须)在…境内」兜底把在地要求吞成身份要求。那条兜底有两个错：
+#   ① 方向错：把「你必须人在英国才能递交」说成「你差一段留学经历」——前者是
+#      时点/在地门槛，后者是可补的经历，两类不同；
+#   ② 吞并错：us-f1-opt 同时有身份条与在地条，兜底让在地那条借身份条的 code
+#      发声，看起来「已判」，实际那条要求没有任何读点（batch9a 裁决 2「借接的
+#      code 不算兜住」）。
+# 现在：身份归 `residency_requirement`（type）+ 身份支；在地归
+# `location_requirement`（type）+ 在地支。两者各自独立可读、互不吞并。
+#
+# 类别与处置：
+#   local_status   须先在该国持学生签/居留（或在当地完成学业）→ gap（差这一项前提）
+#   inside         递交时人须在该国境内 → 画像不采集现居地，silent
+#   outside        递交时人须在该国境外 → 画像不采集现居地，silent
+#   home_residence 须常驻护照所属地区 → 画像不采集现居地，silent
 PRE_LOCAL_STATUS = re.compile(
-    r"须已持|须持[^。；]{0,30}(?:学习居留|学生居留|学生许可|学生签证|Stamp\s*2|F-1|居留许可)|"
+    # 锚点扩到「（须|且）持」「（须|且）已持」两式（批次 9a 裁决 1 原文）。
+    # 原锚点只有「须已持 / 须持」，读不到「…且该身份在递交当日仍未失效」这类
+    # 用「且」起头的并列写法；us-f1-opt 的身份条正是这种写法，而它恰恰是本单
+    # 拆出的两条里必须先保住的那一条。
+    r"(?:须|且)已持|"
+    r"(?:须|且)持[^。；]{0,30}(?:学习居留|学生居留|学生许可|学生签证|Stamp\s*2|F-1|居留许可)|"
     # 「人在法国——须持 carte de séjour étudiant」这类两路径写法：原文是外语
     # 证件名，中文正则抓不到，会整条落空。§4-3 要的是「读得到」，不是「读得准
     # 一处」，所以把常见的外语学生证件名也收进来。
     r"(?:必须|须)持[^。；]{0,20}(?:carte de séjour|séjour étudiant|student pass|study permit|"
     r"residence permit|居留许可|长期学习居留)|"
     r"曾持[^。；]{0,24}(?:居留|许可|签证)|"
-    r"在此身份下完成学业|并在此身份下|"
-    r"(?:必须|须)在[^。；]{0,6}(?:境内|国内)"
+    r"在此身份下完成学业|并在此身份下"
 )
+# 在地：递交时人须在该国境内。**独立类别，不是 local_status 的末支**。
+# 与 PRE_OUTSIDE 互为镜像——两个方向相反的条件必须各占一个 code，否则「境外
+# 递交」与「境内递交」在报告里长得一模一样（batch8 的立项理由）。
+PRE_INSIDE = re.compile(r"(?:必须|须)在[^。；]{0,6}(?:境内|国内)|人在[^。；]{0,6}(?:境内|国内)")
 PRE_OUTSIDE = re.compile(r"(?:必须|须)在[^。；]{0,10}境外|人在[^。；]{0,8}境外")
 PRE_HOME_RESIDENCE = re.compile(r"居住于其国籍国|须居住且常驻|常驻其护照|常驻中国|居住且常驻")
 
-# 其余两类 required: true 的 residency_requirement —— 都不构成「身份前置」：
+# 其余两类 required: true 的前置要求 —— 都不构成「身份前置」：
 #   citizenship  原文说的是「须为参与国公民」。那是护照条件，passport 维已经在判，
 #                这里再报一条就是同一个缺口说两遍。
 #   document     原文说的是「须持有效租约 / 购房合同」。这是递交时自行取得的文件，
 #                不是「你得先在该国读过书」，不构成可判的身份门槛。
 # 分开登记（而不是笼统落 None）是为了让「全库顺查」的结果里，每一条 required
-# 的 residency_requirement 都能指到处置理由，而不是一片无法区分的空白。
+# 的前置要求都能指到处置理由，而不是一片无法区分的空白。
 PRE_CITIZENSHIP = re.compile(r"参与国公民|协议国公民|须为[^。；]{0,12}国民")
 PRE_DOCUMENT = re.compile(r"租房或购房合同|租赁合同|租房合同|购房合同|租约")
+
+# 两族 type：身份族与在地族。`precondition_kind()` 对二者**显式双映射**，
+# 不再靠「凡是 required 的前置条都进同一条优先级链」——那正是把在地读成身份
+# 的结构性原因。
+REQ_TYPE_RESIDENCY = "residency_requirement"
+REQ_TYPE_LOCATION = "location_requirement"
+REQ_TYPES_PRECONDITION = (REQ_TYPE_RESIDENCY, REQ_TYPE_LOCATION)
 
 # 岗位前置：原文要求「必须先落实岗位/录取，Sponsor 才能办后续」的项目
 # （P2-0 us-j1-camp-counselor 的「须落实营地岗位」）。
@@ -266,31 +395,177 @@ PRE_DOCUMENT = re.compile(r"租房或购房合同|租赁合同|租房合同|购�
 # us-j1-intern / us-j1-trainee 写成 internship_contract（DS-7002）。两类都判
 # gap 而非 silent——「你还没落实岗位」是能补的一步（去报名、面试、拿 placement），
 # 与「数据里没写这一条」不同。
+#
+# P4 Sponsor 包（2026-11-17）扩围：原词表只认营地辅导员那一句英文直译
+# （`pre-arranged` / 「预先落实」），对同一件事的另外三种官方写法全 MISS，
+# 而注释早就写着「us-j1-intern / us-j1-trainee 两类都判 gap」——注释即承诺、
+# 实测零输出（batch9a §2.2①、batch10 §1.2①）。补的四族写法都是**同一条法规
+# 事实的不同表述**，不是新增语义：
+#   ① 「落实/安排/安置 + 岗位」（SWT 的「须先由 Sponsor 落实暑期岗位」、
+#      intern 的「落实实习岗位」）；
+#   ② 「全部签字 / 三方签字」（DS-7002 三方签署即 placement 已落实的证据形态）；
+#   ③ 「签署 / 出具 DS-7002」；
+#   ④ 「通过 / 参加雇主面试」（SWT 拿 Job Offer 的唯一路径）；
+#   ⑤ 「出具 / 签发 DS-2019」（Sponsor 只对已落实 placement 者签发）；
+#   ⑥ 「拿到接收机构的邀请与 Sponsorship」（研究学者的 Sponsor 入口）。
+# 只扩词表、不改判定语义：依旧是「必填材料命中即 gap」，依旧不判 silent。
 JOB_PLACEMENT = re.compile(
     r"预先落实|事先落实|pre-arranged|prearranged|"
-    r"岗位必须(?:预先)?落实|未落实(?:营地)?岗位|尚未落实"
+    r"岗位必须(?:预先)?落实|未落实(?:营地)?岗位|尚未落实|"
+    r"(?:落实|安排|安置)[^。；\n]{0,10}岗位|"
+    r"(?:全部|三方)[^。；\n]{0,4}签字|"
+    r"(?:签|出)署[^。；\n]{0,12}DS-?7002|"
+    r"(?:通过|参加|接受)[^。；\n]{0,12}雇主[^。；\n]{0,6}面试|"
+    r"(?:出具|签发)[^。；\n]{0,8}DS-?2019|"
+    r"(?:拿到|获得|取得)[^。；\n]{0,16}(?:邀请|Sponsorship)"
 )
+
+# government_support_letter 这个 type 名不表示同一种东西（P4 §2 盘点，39 条漏网
+# 行逐条核过）：五个 required=true 的成员分别是政府支持信 / 官方求职登记 /
+# 学历认证 / 院校推荐 / Sponsor 出具的 DS-2019。按 type 名一刀切接线会把四种
+# 无关语义读成同一条缺口——那正是 P1a 得出的结论（「按名字接线会判错」）。
+#
+# 所以接成**语义分型**的 typed 读点：type 只用来定位条目，判定看 note 落在
+# 哪一型。只有 sponsorship 型（Sponsor / DS-2019 / 接收机构邀请）是 P4 的
+# 「岗位前置」，其余四型各有归属（见各分支注释），本单不接线但必须读出类型、
+# 不许留在枚举里当摆设。
+REQ_TYPE_GSL = "government_support_letter"
+
+GSL_KINDS = (
+    # ① Sponsor 出具的 DS-2019：个人无法自行申请，须先被接收机构选中。
+    #    这是 J-1 体系唯一入口，缺它就是「没有入口」，判 gap（P4 本单接线）。
+    ("sponsorship", re.compile(
+        r"Sponsorship|接收机构[^。；\n]{0,10}邀请|"
+        r"Sponsor[^。；\n]{0,14}(?:出具|签发)[^。；\n]{0,8}DS-?2019"
+    )),
+    # ② 官方求职登记（it-ricerca 的 DID）：属「在地办事手续」，与 P1 在地族同源。
+    #    锚点必须带「就业中心 / DID / Centro」——裸词「登记」会把任何提到「材料登记」
+    #    的 note 误分到这一型（分型错会让审计把一条别族的要求记到本族名下）。
+    ("official_registration", re.compile(
+        r"DID|Centro per l'?Impiego|就业中心[^。；\n]{0,12}(?:登记|声明)"
+    )),
+    # ③ 学历认证（uk-hpi 的 Ecctis）：属教育族，已由 EDU_PLACE 覆盖。
+    #    裸词「认证」会把「学历须经认证翻译」这类材料要求拉进来，故只用专名。
+    ("credential_check", re.compile(r"Ecctis|anabin|学历认证|资格认定")),
+    # ④ 院校推荐（us-f1-opt 的 DSO / I-20）：属学籍族，与 enrollment 同源。
+    ("institutional_recommendation", re.compile(r"DSO\b|I-20")),
+    # ⑤ 政府支持信（au-462 的 CICETE）：属国籍/双边安排族。
+    ("government_letter", re.compile(r"CICETE|政府支持信|支持信")),
+)
+
+
+def government_support_letter_kind(doc: dict) -> tuple[str, bool] | None:
+    """读出 `government_support_letter` 条目的语义分型与是否必填。
+
+    返回 (kind, required)；没有该 type 的条目时返回 None。kind 取 GSL_KINDS
+    里第一个命中的；一个都不命中返回 "unclassified"（诚实留痕，不猜）。
+    """
+    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
+        if r.get("type") != REQ_TYPE_GSL:
+            continue
+        note = r.get("note") or ""
+        for name, rx in GSL_KINDS:
+            if rx.search(note):
+                return name, r.get("required") is True
+        return "unclassified", r.get("required") is True
+    return None
+
+
+def _gsl_flag(doc: dict) -> dict | None:
+    """`flags_of()` 用的形状：`{"kind": ..., "required": ...}` 或 None。
+
+    单列一个小函数而不是在 flags 里内联：`government_support_letter_kind()`
+    每次调用都要扫一遍 other_requirements，内联写法会调两次（条件 + 构造），
+    既慢又容易在「两次调用之间状态不同」时写出自相矛盾的产物。
+    """
+    got = government_support_letter_kind(doc)
+    if not got:
+        return None
+    kind, required = got
+    return {"kind": kind, "required": required}
+
+
+# 四种表述（P4 §3）：同一条 code `pre_job_placement`，但 need 文案必须按项目取。
+# Muse 2026-11-14 裁决 2（batch9b §4 + batch10 §4 采纳）把文案表定为四种，
+# 理由是 four 个 J-1 子类的「落实」链条根本不同：营地是「先有营地岗位才准入境」，
+# 研究学者是「先有接收机构与 DS-2019」，SWT 是「Sponsor 落实暑期岗位 + 雇主面试」，
+# intern/trainee 是「DS-7002 三方签字文件链」。用营地文案去讲研究学者，等于
+# 修了一处漏网、引入一处错文案。
+JOB_PLACEMENT_FLAVORS = (
+    ("camp", re.compile(r"营地[^。；\n]{0,10}岗位|pre-arranged camp|营地\s*placement")),
+    ("ds7002", re.compile(r"DS-?7002|三方签字|全部签字")),
+    ("summer_job", re.compile(r"暑期岗位|雇主[^。；\n]{0,6}面试|Job Offer")),
+    ("sponsor_ds2019", re.compile(
+        r"Sponsorship|接收机构[^。；\n]{0,10}邀请|"
+        r"Sponsor[^。；\n]{0,14}(?:出具|签发)[^。；\n]{0,8}DS-?2019"
+    )),
+)
+
+JOB_PLACEMENT_NEED = {
+    "camp": "预先落实的营地岗位（Sponsor 不得为未落实营地岗位者办理入境）",
+    "sponsor_ds2019": (
+        "国务院指定 Sponsor 出具的 DS-2019（须先拿到接收机构的邀请与 Sponsorship，"
+        "个人无法自行申请）"
+    ),
+    "summer_job": (
+        "Sponsor 已落实并审查过的暑期岗位 + 通过美方雇主面试拿到的 Job Offer"
+        "（美国国务院授权 Sponsor 统一办理，无法自主申请）"
+    ),
+    "ds7002": (
+        "雇主签署的 DS-7002 培训/实习安置计划（申请人、雇主、Sponsor 三方签字后，"
+        "Sponsor 才签发 DS-2019）"
+    ),
+}
+
+# 一个都没命中时的兜底：沿用营地那条（最严的一份法规原文），
+# 但 flavor 会返回 None，flags 里留痕，测试钉住「当前全库无 None」。
+JOB_PLACEMENT_NEED_FALLBACK = JOB_PLACEMENT_NEED["camp"]
+
+
+def _job_placement_texts(doc: dict) -> list[str]:
+    """岗位前置的判读面：必填 documents + 必填 internship_contract +
+    sponsorship 型的必填 government_support_letter。
+
+    `government_support_letter` 只有 sponsorship 型进这一族（P4 §2）：其余四型
+    是政府支持信 / 求职登记 / 学历认证 / 院校推荐，接进来会造出假缺口。
+    """
+    texts = []
+    for d in doc.get("documents") or []:
+        if d.get("required") is True:
+            texts.append((d.get("name") or "") + " " + (d.get("note") or ""))
+    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
+        if r.get("required") is not True:
+            continue
+        if r.get("type") == "internship_contract":
+            texts.append(r.get("note") or "")
+        elif r.get("type") == REQ_TYPE_GSL:
+            kind, required = government_support_letter_kind(doc) or (None, False)
+            if required and kind == "sponsorship":
+                texts.append(r.get("note") or "")
+    return texts
 
 
 def job_placement_required(doc: dict) -> bool:
     """原文是否把「岗位须预先落实」写成硬性前提。
 
     只看必填项：documents 里 required 为真的条目、other_requirements 里
-    required 为真的 internship_contract。可选材料里出现同样措辞不算门槛。
+    required 为真的 internship_contract，以及 sponsorship 型的
+    government_support_letter。可选材料里出现同样措辞不算门槛。
     """
-    for d in doc.get("documents") or []:
-        if d.get("required") is not True:
-            continue
-        if JOB_PLACEMENT.search((d.get("name") or "") + " " + (d.get("note") or "")):
-            return True
-    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
-        if r.get("required") is not True:
-            continue
-        if r.get("type") == "internship_contract" and JOB_PLACEMENT.search(
-            r.get("note") or ""
-        ):
-            return True
-    return False
+    return any(JOB_PLACEMENT.search(t) for t in _job_placement_texts(doc))
+
+
+def job_placement_flavor(doc: dict) -> str | None:
+    """这条岗位前置属于四种表述里的哪一种（P4 §3）；一个都不命中返回 None。
+
+    顺序即优先级：camp 最具体（营地专属词），ds7002 次之（文件链），
+    再是 summer_job（雇主面试），最后 sponsor_ds2019（研究机构的 DS-2019）。
+    """
+    texts = _job_placement_texts(doc)
+    for name, rx in JOB_PLACEMENT_FLAVORS:
+        if any(rx.search(t) for t in texts):
+            return name
+    return None
 
 
 # 参与人身份类别：原文把资格写成「须属于某几类身份之一」，而结构化 education 只有
@@ -433,14 +708,26 @@ def cn_int(text: str) -> int | None:
 
 
 def edu_years_required(doc: dict) -> int | None:
-    """note 里另写的硬性年限门槛（结构化 `years_completed` 缺失时用）。"""
+    """note 里另写的硬性年限门槛（结构化 `years_completed` 缺失时用）。
+
+    **P3 去掉了 `years >= 3` 的硬下限。** 那条下限的原始动机是防「三年制本科」
+    这类写法被误读成门槛，但防线已经有两条更准的：
+      ① 同段必须出现「不满足 / 不达 / 不符合」（`EDU_YEARS_DISQUALIFY`）；
+      ② 年限在判定里不再是独立门槛，而是**路径的时长谓词**（见 `edu_paths()`）——
+         路径成立与否由「你有没有 2 年」回答，不是由「门槛数字够不够大」回答。
+
+    下限的真实代价是 documented 的：batch9b §2 第 4 行「至少 1 个学期」（1 学期
+    < 1 年）、au-462「至少 2 年」、de-16e「2 年」全被吞成 None → 判 edu_ok 放行。
+    去掉后这些项目不再默认 pass，而是走时长谓词判 pass/fail，或数据缺失时落
+    `edu_duration_unknown`（silent）。翻档造成的乙类上升属如实暴露，不回滚。
+    """
     edu = (doc.get("eligibility") or {}).get("education") or {}
     note = edu.get("note") or ""
     m = EDU_YEARS_STRICT.search(note)
     if not m or not EDU_YEARS_DISQUALIFY.search(note):
         return None
     years = cn_int(m.group(1))
-    if years and years >= 3:
+    if years and years >= 1:
         return years
     return None
 
@@ -467,6 +754,317 @@ def edu_recency_years(doc: dict) -> int | None:
     return None
 
 
+# —— 教育路径谓词（P3 的核心）——
+#
+# 一条项目的教育要求被读成**一组并列路径**：任一路径成立 → 达标；全部不成立
+# → 不达标；某条路径缺数据判不了 → 不可判。这与旧代码的差别不是「更宽松」，
+# 是「能表达 or」：旧代码只有单刻度，`or` 一律被压成 and 的补集。
+
+# 路径规格里允许出现的键。schema 侧有同名的 `paths` 数组，两处词表须一致。
+EDU_PATH_KEYS = frozenset(
+    {
+        "level",              # 该路径要求的最低学历层级（None = 不限）
+        "min_years_experience",  # 该路径要求的相关工作经验年限（None = 不要求）
+        "experience_region",  # 经验须在何处取得：outside（境外）/ any
+        "enrollment",         # 该路径要求的在读状态：enrolled / graduated
+        "graduated_within_months",  # 毕业后多少个月内仍算符合（None = 无此限）
+        "min_months",         # 课程/就读时长下限（月，已折算好的原值）
+        "min_duration",       # 同上但保留官方单位 {value, unit}，由引擎折算
+        "experience_label",   # 报告里的可读标签（可选）
+        "note",               # 该路径的官方依据摘录（可选，仅供人读）
+    }
+)
+
+# 一学期按 5 个月计。**这是本仓的显式换算假设，不是官方数字。**
+# 依据：一学年 = 2 学期，而美国国务院/SEVP 对学年与学期未给统一月数；
+# 10 个月/学年的口径与「一学年 = 9–10 个月」的通行学制一致。
+# 之所以不在数据里写「5」，是因为官方原文说的是「1 个学期」——写 5 就等于
+# 把换算结果冒充成官方值。数据保留官方单位，换算只在这里发生一次。
+_SEMESTER_MONTHS = 5.0
+
+# 时长单位 → 月。只收 schema 允许的三种单位，避免「周」「学期」各写一套隐式换算。
+EDU_DURATION_UNITS = {"months", "weeks", "semesters", "academic_years"}
+_WEEKS_PER_MONTH = 52 / 12  # 52 周 / 12 月
+
+# —— 单位换算：本仓的**显式假设**，不是官方数字 ——
+#
+# 这两个常数是本仓唯一做单位换算的地方。之所以必须有它们：官方原文用的单位
+# 是「学年 / 学期」，而画像填的是月；不换算就永远判不了，硬填一个「9 个月」
+# 进数据又是把推算冒充官方值。折中是：**数据保留官方单位**，换算是常量 + 注释。
+#
+# 依据与边界：
+#   · 一学年 = 2 学期：美国学制的通行划分（fall + spring），也与 SEVP 对
+#     「one full academic year」的用法一致（学年由学校定义，联邦未给月数）。
+#   · 一学期 = 5 个月：由上式反推（10 / 2）。USCIS、8 CFR 214.2 与 SEVP
+#     Help Hub 均未给出「一学年 = 几个月」的统一数字，所以这里不声明官方性。
+#   · 这两个值只影响「够不够」的判定，不影响数据的官方来源链 —— 数据里存的是
+#     `{value: 1, unit: "academic_years"}`，任何读者都能看到官方原话的形态。
+_SEMESTER_MONTHS = 5.0
+_ACADEMIC_YEAR_MONTHS = _SEMESTER_MONTHS * 2  # 10.0
+
+
+def edu_duration_months(spec: dict | None) -> float | None:
+    """把 `{value, unit}` 形态的时长规约换算成月。
+
+    单位不在表内、缺 value、value 非正数 → None（调用方据此判 silent，
+    绝不猜一个数字）。不做「四舍五入到最近的常见值」——那是替官方改数字。
+    """
+    if not isinstance(spec, dict):
+        return None
+    value = spec.get("value")
+    unit = spec.get("unit")
+    if not isinstance(value, (int, float)) or value <= 0:
+        return None
+    if unit == "months":
+        return float(value)
+    if unit == "weeks":
+        return float(value) / _WEEKS_PER_MONTH
+    if unit == "semesters":
+        return float(value) * _SEMESTER_MONTHS
+    if unit == "academic_years":
+        return float(value) * _ACADEMIC_YEAR_MONTHS
+    return None
+
+
+def edu_min_duration_months(doc: dict) -> float | None:
+    """项目侧的**就读时长下限**（月）：结构化 `min_duration` 优先，note 兜底。
+
+    这是「一整个学年 / 8 个月 / 30 周」这类要求的唯一读点。返回 None 有两层
+    含义，调用方必须分开处理：
+      · 项目**没有**时长要求（`edu_duration_required()` 为 False）→ 不构成门槛；
+      · 项目**有**时长要求但拿不到数字 → `edu_duration_unknown`（silent）。
+    """
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    months = edu_duration_months(edu.get("min_duration"))
+    if months is not None:
+        return months
+    # note 兜底：只认「不少于 / 至少 / 不低于 N 个? (学年|年|个月|周|学期)」，
+    # 且要求同段出现不合格措辞 —— 与 EDU_YEARS_STRICT 同一套成对规则。
+    note = edu.get("note") or ""
+    hit = EDU_DURATION_IN_NOTE.search(note)
+    if not hit or not EDU_YEARS_DISQUALIFY.search(note):
+        return None
+    value = cn_int(hit.group(1))
+    if not value or value <= 0:
+        return None
+    unit = hit.group(2)
+    if unit in ("年", "学年"):
+        return float(value) * 12
+    if unit == "个月":
+        return float(value)
+    if unit == "周":
+        return float(value) / _WEEKS_PER_MONTH
+    if unit == "学期":
+        return float(value) * _SEMESTER_MONTHS
+    return None
+
+
+def edu_duration_required(doc: dict) -> bool:
+    """原文是否提出了就读时长要求（读得到数字，或明说有这条但没给数）。
+
+    `duration_required: true` 而 `min_duration` 缺失，是「有要求、无数字」的
+    显式登记 —— 这种情况必须判 silent（`edu_duration_unknown`），不许默认 pass。
+    """
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    if edu.get("duration_required") is True:
+        return True
+    if edu_min_duration_months(doc) is not None:
+        return True
+    return False
+
+
+def edu_paths(doc: dict) -> list[dict]:
+    """项目的教育资格路径列表。结构化 `education.paths` 优先，缺失时合成单一路径。
+
+    合成路径（老数据 / 只有 `minimum_level` 的项目）包含：
+      · level        = `minimum_level`
+      · enrollment   = `enrollment_required`（若有）
+      · min_years_experience = `min_years_experience`（若有，单路径项目用它表达
+                       「学位 + N 年」而不是「学位 or N 年」）
+    这样老项目的判定与改造前**语义等价**（层级比较 + 在读状态 + 时长），
+    行为差异只来自本单显式修的三处病灶，不会顺带改别的项目。
+    """
+    edu = (doc.get("eligibility") or {}).get("education") or {}
+    declared = edu.get("paths")
+    if isinstance(declared, list) and declared:
+        out = []
+        for raw in declared:
+            if not isinstance(raw, dict):
+                continue
+            path = {k: raw.get(k) for k in EDU_PATH_KEYS if k in raw}
+            # 路径没写 level 时按 any（= 该路径不限学历），不是继承项目级——
+            # 继承会让「②无学历要求 + 5 年经验」那条被项目级的 bachelor 污染。
+            path.setdefault("level", "any")
+            out.append(path)
+        return out
+    synth = {"level": edu.get("minimum_level") or "any"}
+    if edu.get("enrollment_required"):
+        synth["enrollment"] = edu.get("enrollment_required")
+    if isinstance(edu.get("min_years_experience"), (int, float)):
+        synth["min_years_experience"] = edu.get("min_years_experience")
+    if isinstance(edu.get("graduated_within_months"), (int, float)):
+        synth["graduated_within_months"] = edu.get("graduated_within_months")
+    return [synth]
+
+
+def edu_path_eval(path: dict, pr: dict, doc: dict) -> dict:
+    """判一条路径。返回 {verdict: pass|fail|unknown, need, have, blocked, why}。
+
+    三态而不是布尔：路径里的某个谓词缺数据时，这条路径**既不能算成立也不能算
+    不成立**，而整组路径的结论要按「有没有一条确定成立 / 是否全部确定不成立 /
+    其余情况」来合（见 `judge_education()`）。把 unknown 折成 fail 会让
+    「数据没登记」变成「你不能申」；折成 pass 就是本单要消灭的假 pass。
+
+    `blocked` 记录**是哪一类谓词缺数据**（experience / duration / enrollment /
+    level），调用方据此选 silent code：`edu_duration_unknown` 只该在时长真的
+    缺数时出现，不能因为经验年限没填就冒出来。
+    """
+    need_bits: list[str] = []
+    have_bits: list[str] = []
+    # 每条路径自带的判定结果：缺数据记 unknown，硬性不符记 fail
+    statuses: list[str] = []
+    blocked: list[str] = []
+    failed: list[str] = []
+
+    level = path.get("level") or "any"
+    has_level = level != "any"
+    if has_level:
+        need_bits.append(f"学历 {level}")
+        have_bits.append(f"你的学历 {pr.get('education')}")
+
+    enroll = path.get("enrollment")
+    if enroll == "enrolled":
+        need_bits.append("当前在读")
+    elif enroll == "graduated":
+        need_bits.append("已毕业")
+
+    min_exp = path.get("min_years_experience")
+    if isinstance(min_exp, (int, float)) and min_exp > 0:
+        region = path.get("experience_region") or "any"
+        where = "境外相关" if region == "outside" else "相关"
+        need_bits.append(f"{where}工作经验 {min_exp:g} 年")
+
+    min_months = path.get("min_months")
+    # 官方单位优先：`min_duration` 保留原文的「1 个学期」，换算在这里做一次。
+    # `min_months` 是已折算好的月数直给，两处都写时以 min_duration 为准。
+    spec_months = edu_duration_months(path.get("min_duration"))
+    if spec_months is not None:
+        min_months = spec_months
+    if isinstance(min_months, (int, float)) and min_months > 0:
+        need_bits.append(f"就读时长 ≥ {min_months:g} 个月")
+
+    # —— 谓词 ①：层级 ——
+    if has_level:
+        if not pr.get("education"):
+            statuses.append("unknown")
+            blocked.append("level")
+        elif not edu_level_ok(level, pr.get("education")):
+            statuses.append("fail")
+            failed.append("level")
+
+    # —— 谓词 ②：在读状态 ——
+    if enroll:
+        actual = pr.get("enrollment_status")
+        if actual is None:
+            statuses.append("unknown")
+            blocked.append("enrollment")
+        elif enroll == "enrolled":
+            if actual == "enrolled":
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("enrollment")
+        elif enroll == "graduated":
+            if actual == "completed":
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("enrollment")
+
+    # —— 谓词 ③：毕业宽限期（intern 的「毕业不超过 12 个月」）——
+    within = path.get("graduated_within_months")
+    if isinstance(within, (int, float)) and within > 0:
+        actual = pr.get("enrollment_status")
+        months_since = pr.get("months_since_graduation")
+        if actual == "enrolled":
+            statuses.append("pass")  # 在读走的是另一条腿，不受宽限期约束
+        elif isinstance(months_since, (int, float)):
+            if months_since <= within:
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("graduation_recency")
+            have_bits.append(f"你毕业 {months_since:g} 个月")
+        else:
+            statuses.append("unknown")
+            blocked.append("graduation_recency")
+
+    # —— 谓词 ④：经验年限 ——
+    if isinstance(min_exp, (int, float)) and min_exp > 0:
+        years = pr.get("work_experience_years")
+        if isinstance(years, (int, float)):
+            if years >= min_exp:
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("experience")
+            have_bits.append(f"你的经验 {years:g} 年")
+        else:
+            statuses.append("unknown")
+            blocked.append("experience")
+
+    # —— 谓词 ⑤：就读时长 ——
+    if isinstance(min_months, (int, float)) and min_months > 0:
+        done = pr.get("study_months")
+        if isinstance(done, (int, float)):
+            if done >= min_months:
+                statuses.append("pass")
+            else:
+                statuses.append("fail")
+                failed.append("duration")
+            have_bits.append(f"你已读 {done:g} 个月")
+        else:
+            statuses.append("unknown")
+            blocked.append("duration")
+
+    if "fail" in statuses:
+        verdict = "fail"
+    elif "unknown" in statuses:
+        verdict = "unknown"
+    else:
+        verdict = "pass"
+    return {
+        "verdict": verdict,
+        "need": " 且 ".join(need_bits) or "无额外条件",
+        "have": " / ".join(have_bits) or "已满足",
+        "blocked": blocked,
+        "failed": failed,
+        "path": path,
+    }
+
+
+def judge_education(paths: list[dict], pr: dict, doc: dict) -> dict:
+    """按「任一成立」合并各路径结论。
+
+    合并规则（顺序不能换）：
+      1. 有一条确定 pass  → pass（官方明文允许，且你的条件是成立的）
+      2. 没有 pass，但有 unknown → unknown（说不清，绝不判死）
+      3. 全部 fail → fail
+
+    第 2 条是本单最重要的一行：J-1 Trainee 的两条路径里，若画像既没有学位
+    也没有经验年限，两条都 unknown —— 结论必须是「不可判」，不是「不能申」。
+    旧代码在这种情况下直接判 `edu_low`（假 cannot）。
+    """
+    evals = [edu_path_eval(p, pr, doc) for p in paths] or [
+        edu_path_eval({"level": "any"}, pr, doc)
+    ]
+    if any(e["verdict"] == "pass" for e in evals):
+        return {"verdict": "pass", "evals": evals}
+    if any(e["verdict"] == "unknown" for e in evals):
+        return {"verdict": "unknown", "evals": evals}
+    return {"verdict": "fail", "evals": evals}
+
+
 def stay_months(doc: dict) -> int | None:
     """许可/停留期的月数上限：优先结构化 `work_conditions.max_stay_months`，
     退化时读 `timeline.quota_note` 的「最长 N 个月」。都没有则返回 None。"""
@@ -482,24 +1080,50 @@ def stay_months(doc: dict) -> int | None:
     return None
 
 
-def precondition_kind(doc: dict) -> str | None:
-    """从 `other_requirements` 里读出「前置身份/在地」类要求，返回处置类别。
-
-    只看 `required: true` 且 `type: residency_requirement` 的条目：这类条件在
-    原文里写得很清楚（「须在英国以学生签证完成课程」「递交时人必须在英国境内」），
-    但结构化字段里没有对应项，过去一个字节都没读（§4-3）。
-    """
+def _precondition_notes(doc: dict, req_type: str) -> list[str]:
+    """取某一族（身份 / 在地）里 required 为真条目的 note。"""
     reqs = (doc.get("eligibility") or {}).get("other_requirements") or []
-    notes = [
+    return [
         r.get("note") or ""
         for r in reqs
-        if r.get("required") is True and r.get("type") == "residency_requirement"
+        if r.get("required") is True and r.get("type") == req_type
     ]
+
+
+def _classify_identity(notes: list[str]) -> str | None:
+    """身份族 → 一个类别。优先级链照旧：「已经持过该身份」比国籍/文件更靠近门槛。
+
+    **空族返回 None（= 没有这一类要求）**，与「有要求但读不懂」的 unclassified
+    严格区分：混起来会让全库顺查把每条项目都报成「有一条没读懂的要求」。
+    """
     if not notes:
         return None
     joined = " ".join(notes)
     if PRE_LOCAL_STATUS.search(joined):
         return "local_status"
+    if PRE_HOME_RESIDENCE.search(joined):
+        return "home_residence"
+    if PRE_CITIZENSHIP.search(joined):
+        return "citizenship"
+    if PRE_DOCUMENT.search(joined):
+        return "document"
+    # 读不懂就是读不懂：返回 "unclassified" 而不是 None，这样「全库顺查」能把它
+    # 单独列出来。落 None 会让「没有前置要求」和「有要求但我们没读懂」长得一样。
+    return "unclassified"
+
+
+def _classify_location(notes: list[str]) -> str | None:
+    """在地族 → 一个类别。
+
+    三个方向互斥且必须分开：境内（inside）/ 境外（outside）/ 常驻护照国
+    （home_residence）。**这里没有 fallback 到身份支的分支**——那正是要拆掉的
+    东西。读不懂同样落 unclassified，空族落 None。
+    """
+    if not notes:
+        return None
+    joined = " ".join(notes)
+    if PRE_INSIDE.search(joined):
+        return "inside"
     if PRE_OUTSIDE.search(joined):
         return "outside"
     if PRE_HOME_RESIDENCE.search(joined):
@@ -508,22 +1132,297 @@ def precondition_kind(doc: dict) -> str | None:
         return "citizenship"
     if PRE_DOCUMENT.search(joined):
         return "document"
-    # 读不懂就是读不懂：返回 "unclassified" 而不是 None，这样「全库顺查」能把它
-    # 单独列出来。落 None 会让「没有前置要求」和「有要求但我们没读懂」长得一样，
-    # 而后者正是 §4-3 那个错误的成因。
     return "unclassified"
+
+
+def precondition_kinds(doc: dict) -> list[str]:
+    """读出**全部**前置类别（身份族 + 在地族），按固定顺序返回。
+
+    过去只返回一个字符串，因为两类共用一条链；现在两族各出各的结论：
+    us-f1-opt 会同时得到 ["local_status", "inside"]，两条要求各自留痕，
+    任何一条都不再借另一条的 code 发声（batch9a 裁决 2）。
+
+    顺序：身份族在前、在地族在后——与 judge() 里前身分支的先后一致，前端
+    verdict.ts 必须逐一镜像（smoke-test 比的是 (dim,kind,code) 整串）。
+    """
+    out: list[str] = []
+    ident = _classify_identity(_precondition_notes(doc, REQ_TYPE_RESIDENCY))
+    if ident:
+        out.append(ident)
+    loc = _classify_location(_precondition_notes(doc, REQ_TYPE_LOCATION))
+    if loc:
+        out.append(loc)
+    return out
+
+
+def precondition_kind(doc: dict) -> str | None:
+    """单值版本：两族里**最靠前**的那个类别，没有前置要求时返回 None。
+
+    保留它是因为三处调用方只关心「有没有读到一条前置要求」这件事：
+    `p21_worksheets.rule_holds()`（判「这段原文已处置」）、`flags_of()` 的历史
+    形状契约、以及测试里的单点断言。需要逐族细节的地方请用
+    `precondition_kinds()`——本单新增的在地分支只在那条路径上出现。
+    """
+    kinds = precondition_kinds(doc)
+    return kinds[0] if kinds else None
 
 
 def precondition_text(doc: dict) -> str:
     """报告用：前置条件原文首句（只截取，不改写）。"""
-    reqs = (doc.get("eligibility") or {}).get("other_requirements") or []
-    for r in reqs:
-        if r.get("required") is True and r.get("type") == "residency_requirement":
-            return (r.get("note") or "").strip()[:120]
+    for t in REQ_TYPES_PRECONDITION:
+        for note in _precondition_notes(doc, t):
+            return note.strip()[:120]
     return ""
 
 
+# --------------------------------------------------------------------------
+# P1b-2：把 P1b-1 迁好的 typed 值接进判定（三个家族）
+#
+# P1b-1 把原来「一个 type 名装十种语义」的三个值拆成了 13 个具体值，但引擎
+# 一个字节都没读——`other_requirements` 里除了 residency_requirement，其余
+# 全都进不了判定面。于是「这个项目不许带家属」「一生只能参加一次」这类**原文
+# 写得很清楚的硬条件**，在画像页上完全看不见。
+#
+# 本节的接线原则（照设计稿 §1.13 / §2.13 / §3.3 的判定表逐值实现）：
+#
+#   ① 引擎按 `type` 接线，不读 note 散文（batch8 裁决 4）。所以这里的每个分支
+#      只比较 type 集合，不对中文做正则。
+#   ② 画像缺对应信息 → 判 silent（不可判），**绝不默认 pass**。这是本单最容易
+#      出错的地方：一句「默认满足」就能让所有存量用户看到虚假的「能申」。
+#   ③ 方向必须与原文一致。三个家族里各有一条方向相反的（须持过签证 / 须已毕业 /
+#      家属被允许），照 type 名字猜方向会判反——见 tests 的方向回归组。
+#
+# 值的语义归属（设计稿逐条判定表的结论，不是按名字推的）：
+#   禁令类（做不到就不满足）：no_child_dependents / no_other_dependents /
+#     dependents_cannot_work / program_once_in_lifetime / program_once_per_project /
+#     prior_same_category_visa / program_participation_cap /
+#     prior_specific_visa_required / enrollment_proof / degree_completed_proof /
+#     enrollment_or_degree_proof
+#   非闸门类（只作材料呈现，判 na 留痕）：dependents_allowed /
+#     dependents_separate_application / declaration_document / credential_scoring_input
+# --------------------------------------------------------------------------
+
+# 家属禁令：两个值的边界不同，不能合成一个布尔。
+#   no_child_dependents  只禁「受抚养子女」（au-462 / nz-china-whv /
+#                        uk-youth-mobility-scheme 三条）
+#   no_other_dependents  禁「其他家属」统称，含配偶与子女（kr-h1 / uk-short-term-study-visa）
+#
+# 「受抚养子女」**不设年龄上限**（P1c §0.2，Muse 待裁②裁决）。
+# 官方原文是 `not be accompanied by dependent children`——按**受抚养关系**定义，
+# 不按年龄定义。18 岁以上仍在校且受抚养者，照样在禁内。P1b-1 之前 au-462 的
+# note 把这条收窄成「未成年子女」，是记法造成的偏差，不是原文的边界（该 note
+# 已在 1b5552d 按官方原文改回）。
+#
+# 引擎侧怎么落地这条：画像的 `dependents` 只有 none / children / partner / other
+# 四档，**没有年龄粒度**，而 `children` 这一档本身就是「有受抚养子女」这个
+# 与年龄无关的事实——所以「成年受抚养子女」在这里不另设分支，它落的就是
+# `children`，判定结果是禁（fail）。**不要**为了「看起来支持成年子女」再加一档
+# `adult_children`：那会把一个以受抚养关系定义的桶按年龄切两半，切出来的两半
+# 都不再是原文的那个桶。若将来画像真要加年龄粒度，判断依据必须是「是否受抚养」
+# 而不是「是否满 18 岁」。
+DEP_FORBID_CHILD = "no_child_dependents"
+DEP_FORBID_OTHER = "no_other_dependents"
+DEP_CANNOT_WORK = "dependents_cannot_work"
+DEP_SEPARATE = "dependents_separate_application"
+DEP_ALLOWED = "dependents_allowed"
+DECLARATION_ONLY = "declaration_document"
+
+# 既往参加史：按「计账单位」分成三个值，判定方向一致（参加过 = 不满足）。
+# 计数单位（按人/按项目段/按次数）写在 type 名里，本单不做账本运算——那是 P2。
+HIST_ONCE_LIFETIME = "program_once_in_lifetime"
+HIST_ONCE_PER_PROJECT = "program_once_per_project"
+HIST_PARTICIPATION_CAP = "program_participation_cap"
+HIST_SAME_CATEGORY_VISA = "prior_same_category_visa"
+# 正向：须**持过**某类签证（au-485-graduate）。与上面几条方向相反。
+HIST_SPECIFIC_VISA_REQUIRED = "prior_specific_visa_required"
+
+# 学籍/学历证明：三个值的方向各不相同，这是 §3 的核心陷阱。
+ENROLL_ENROLLED = "enrollment_proof"  # 须当前在册（只有 IAESTE / J-1 SWT 两条）
+ENROLL_DEGREE = "degree_completed_proof"  # 须已毕业（5 条）
+ENROLL_EITHER = "enrollment_or_degree_proof"  # 在读或毕业，二者其一（J-1 intern）
+SCORING_INPUT = "credential_scoring_input"  # 只是打分/材料输入，不是资格闸
+
+
+def requirement_types(doc: dict, required_only: bool = True) -> set[str]:
+    """读出 `other_requirements` 里的 type 集合。
+
+    `required_only=True` 时只取 required 为真的条目——可选材料不构成门槛。
+    非闸门类（dependents_allowed 等）在数据里是 required: false，需要显式放宽。
+    """
+    out = set()
+    for r in (doc.get("eligibility") or {}).get("other_requirements") or []:
+        if required_only and r.get("required") is not True:
+            continue
+        t = r.get("type")
+        if t:
+            out.add(t)
+    return out
+
+
+def _dependents_of(pr: dict):
+    """画像里的家属构成；取不到返回 None（= 未知，不是「没有」）。"""
+    return pr.get("dependents")
+
+
+def p1b2_precondition_dims(doc: dict, pr: dict) -> list[dict]:
+    """按 typed 值产出前置条件维的新条目（P1b-2）。
+
+    顺序即输出顺序，前端 verdict.ts 必须逐一镜像——两侧比对是逐条 (dim,kind,code)
+    的字符串相等，顺序也要一致。
+    """
+    need = requirement_types(doc, required_only=True)
+    anyv = requirement_types(doc, required_only=False)
+    dep = _dependents_of(pr)
+    part = pr.get("prior_participation")
+    visa = pr.get("prior_same_category_visa")
+    enroll = pr.get("enrollment_status")
+    edu = pr.get("education")
+    out: list[dict] = []
+
+    def add(code: str, kind: str, why: str, **extra):
+        d = {"dim": "precondition", "kind": kind, "code": code, "why": why}
+        d.update(extra)
+        out.append(d)
+
+    # —— 家属禁令 ——
+    # 判 fail 而不是 gap：家属构成是申请人自己的事实，不是「差一步能补的手续」。
+    if DEP_FORBID_CHILD in need:
+        if dep is None:
+            add("pre_dependents_unknown", "silent", "原文禁止携带受抚养子女，画像未采集家属构成，无法判定")
+        elif dep == "children":
+            add("pre_dependents_child_present", "fail", "原文禁止携带受抚养子女，你填了有受抚养子女",
+                need="无受抚养子女随行", have="有受抚养子女")
+        elif dep == "other":
+            # 「其他」可能包含子女，也明确不含子女，画像这一档切不出来。
+            add("pre_dependents_unknown", "silent",
+                "原文禁止携带受抚养子女；你填的家属类型未区分是否含子女，无法判定")
+        else:
+            add("pre_dependents_none", "pass", "原文禁止携带受抚养子女，你填了无受抚养子女")
+    if DEP_FORBID_OTHER in need:
+        if dep is None:
+            add("pre_dependents_unknown", "silent", "原文禁止携带家属，画像未采集家属构成，无法判定")
+        elif dep == "none":
+            add("pre_dependents_none", "pass", "原文禁止携带家属，你填了无家属随行")
+        else:
+            add("pre_dependents_other_present", "fail",
+                "原文禁止携带家属（统称，含配偶与子女），你填了有家属随行",
+                need="无家属随行", have="有家属随行")
+
+    # —— 家属不得工作（us-f1-opt）：禁的是「就业」，不是「同行」 ——
+    # 家属可以跟着去，但不能凭这个身份工作。所以有家属时不能判 fail——
+    # 那是把「同行」当成「就业」；也不能判 pass——那等于替家属保证不工作。
+    if DEP_CANNOT_WORK in need:
+        if dep is None:
+            add("pre_dependents_unknown", "silent", "原文规定家属不得就业，画像未采集家属构成，无法判定")
+        elif dep == "none":
+            add("pre_dependents_none", "pass", "原文规定家属不得就业；你填了无家属随行，此项不适用")
+        else:
+            add("pre_dependents_work_unknown", "silent",
+                "原文允许家属随行但不得就业；你是否打算让家属工作未采集，无法判定")
+
+    # —— 家属须各自单独申请（nz-china-whv）：程序约束，不是资格闸 ——
+    if DEP_SEPARATE in need:
+        add("pre_dependents_separate", "na",
+            "原文要求家属同行须各自单独递交申请；这是办理程序，不构成资格门槛")
+
+    # —— 明确允许家属（au-485-vocational / uk-graduate-visa）——
+    # 设计稿 §1.13 配套决定 1：这两个值在数据里是 required: false，若照旧跳过，
+    # 用户看不到「本项目允许带家属」这个**正向信息**（它正是这几个项目与其他短期
+    # 签证的区别点）。所以按「只作展示、不进判定」处理：判 na 并留一条痕。
+    if DEP_ALLOWED in anyv:
+        add("pre_dependents_allowed", "na", "原文明确允许家属随行（本条只作材料呈现，不构成资格闸）")
+
+    # —— 声明文件（fr-recherche-emploi 的非一夫多妻声明）：同样是材料呈现 ——
+    if DECLARATION_ONLY in anyv:
+        add("pre_declaration_only", "na",
+            "原文材料清单里有一份声明文件；这是递交材料，不构成资格门槛")
+
+    # —— 既往参加史（按人 / 按项目段 / 按次数）——
+    # 三者判定方向一致：参加过就不满足。计账单位的差别（一生一次 vs 换项目重置
+    # vs 有次数上限）落在 note 里，本单不做账本运算（P2 账本维）。
+    if need & {HIST_ONCE_LIFETIME, HIST_ONCE_PER_PROJECT, HIST_PARTICIPATION_CAP}:
+        if part is None:
+            add("pre_participation_unknown", "silent",
+                "原文对既往参加过本项目/同类项目设有限制，画像未采集既往参加史，无法判定")
+        elif part == "used":
+            add("pre_participation_used", "fail",
+                "原文限制已参加过本项目/同类项目者再次申请，你填了参加过",
+                need="未曾参加过本项目/同类项目", have="已参加过")
+        else:
+            add("pre_participation_none", "pass",
+                "原文限制既往参加过者，你填了未参加过")
+
+    # —— 同类别签证史（au-462 / kr-h1 / nz-china-whv / uk-hpi-visa）——
+    # 与「参加史」是两个维度：持过 WHV 签证 ≠ 参加过该项目，所以单独一个画像字段。
+    if HIST_SAME_CATEGORY_VISA in need:
+        if visa is None:
+            add("pre_prior_visa_unknown", "silent",
+                "原文限制曾持同类签证者，画像未采集同类签证史，无法判定")
+        elif visa == "used":
+            add("pre_prior_visa_used", "fail",
+                "原文限制曾持同类签证者再次申请，你填了持过",
+                need="未曾持过同类签证", have="曾持过")
+        else:
+            add("pre_prior_visa_none", "pass", "原文限制曾持同类签证者，你填了未持过")
+
+    # —— 正向：须持过某类签证（au-485-graduate）——
+    #
+    # **这是本单最重要的一条方向回归。** 该条在 P1b-1 之前挂的是 `no_prior_visa`
+    # （未持过任何签证），语义与原文完全相反：原文是 `have held a Student visa in
+    # the last 6 months`——**须持过**。若照 type 名接线，会把「持过学签」的正常
+    # 申请人判成不满足，把「没持过」的人判成满足，两类人都判反。
+    #
+    # 判 silent：画像不采集签证史，补一条就能判（P2 的时效维会连 6 个月窗口一起做）。
+    if HIST_SPECIFIC_VISA_REQUIRED in need:
+        add("pre_prior_visa_required", "silent",
+            "原文要求**须持过**指定类别签证（正向要求，不是「未持过」）；画像未采集签证史，无法判定")
+
+    # —— 学籍 / 学历证明（§3 的同名异义陷阱）——
+    #
+    # 原值 enrollment_proof 的中文标签是「需在读证明」，但 11 条里只有 2 条真是
+    # 在读。三个新值各按自己的方向判，绝不共用一个分支。
+    if ENROLL_ENROLLED in need:
+        if enroll is None:
+            add("pre_enrollment_unknown", "silent",
+                "原文要求当前在册/全程保持学籍，画像未采集在读状态，无法判定")
+        elif enroll == "enrolled":
+            add("pre_enrolled_ok", "pass", "原文要求当前在册，你填了在读")
+        else:
+            add("pre_not_enrolled", "fail",
+                "原文要求当前在册（在读期间保持注册），你填了已毕业",
+                need="当前在读", have="已毕业")
+
+    if ENROLL_DEGREE in need:
+        # 只判「是否已完成某段学业」，**不判层级**：层级由 education 维负责。
+        # 两条一起判会让 au-485-vocational 这类「文凭即可」的项目重复扣一次。
+        if edu == "bachelor_in_progress":
+            add("pre_degree_missing", "fail",
+                "原文要求已取得学位/文凭（须已毕业），你填了本科在读",
+                need="已毕业（取得学位/文凭）", have="本科在读")
+        else:
+            add("pre_degree_ok", "pass", "原文要求已取得学位/文凭，你填了已完成学历")
+
+    if ENROLL_EITHER in need:
+        if edu == "bachelor_in_progress" or enroll == "enrolled":
+            add("pre_degree_ok", "pass", "原文接受在读证明或毕业证明，你填了在读")
+        elif enroll == "completed" or edu in ("bachelor_completed", "master", "vocational", "high_school"):
+            add("pre_degree_ok", "pass", "原文接受在读证明或毕业证明，你填了已完成学历")
+        else:
+            add("pre_enrollment_unknown", "silent",
+                "原文接受在读证明或毕业证明，画像未采集在读状态，无法判定")
+
+    # —— 学历只作打分/评估输入（sg-employment-pass / sg-s-pass）——
+    # 原文明确「不是在读要求」「是支撑材料」，不构成资格闸。判 na 留痕，
+    # 不判 silent——否则一个本来能申的项目会因为「我们把材料当成了门槛」变不可判。
+    if SCORING_INPUT in anyv:
+        add("pre_scoring_input_only", "na",
+            "原文该项是学历/资质作为打分或材料审核的输入，不是资格门槛")
+
+    return out
+
+
 def load_programs() -> list[dict]:
+
     out = []
     for path in sorted(glob.glob(os.path.join(PROGRAMS, "*.json"))):
         with io.open(path, encoding="utf-8") as fh:
@@ -691,6 +1590,56 @@ PROBES = OrderedDict(
 # tests 双向钉住：同三个样例画像必须给出同一组条数）
 # --------------------------------------------------------------------------
 
+# 画像里新增的三组字段（P1b-2）。它们与 passport / age / education 同级：都是
+# 「这个人是谁」的一部分，不是「引擎猜出来的结论」。
+#
+# 为什么必须补在夹具上而不是留在引擎里判 silent：
+#   三张样例画像本来就是一个**具体的人**（A=21 岁在读生、B=28 岁本科毕业、
+#   C=25 岁本科毕业）。家属构成、既往参加史、在读/毕业状态，与年龄学历同属这个
+#   人设本身。留着不填，等于夹具欠定义，却把由此产生的 silent 记成引擎的债 ——
+#   那是度量错位（债在夹具，不在引擎）。
+#
+# 而「缺省即未知」的语义**没有被取消**：下面每个字段在 judge() 里取不到时仍然
+# 一律判 silent，绝不默认 pass。tests 里有专门的用例
+# （test_missing_profile_fields_stay_silent）把这条钉住，防止将来有人拿
+# 「夹具填了值」去冒充「引擎能判」。
+#
+# 字段取值（缺省键 = 未知，与显式写 None 等价）：
+#   dependents             none | children | partner | other
+#                          —— 「你是否有受抚养/随行家属」
+#   prior_participation    none | used
+#                          —— 「你是否参加过该项目/该类项目」
+#   prior_same_category_visa  none | used
+#                          —— 「你是否持过同类别签证」（与上一条不同：参加史 ≠ 签证史）
+#   enrollment_status      enrolled | completed
+#                          —— 「你现在是在读还是已毕业」
+#   current_location       ISO 3166-1 alpha-2 大写（CN / TW / AU …）
+#                          —— 「你现在人在哪个国家/地区」（P1d）
+#   work_experience_years  number|null
+#                          —— 「你共有多少年与目标岗位相关的境外工作经验」（P3）
+#   months_since_graduation number|null
+#                          —— 「距你最近一次毕业过了多少个月」（P3，判毕业宽限期）
+#   study_months           number|null
+#                          —— 「你在这段最高学历里已实际就读多少个月」（P3，判时长门槛）
+#
+# P3 新加的三个字段，取值必须有 persona 依据（回执 §3 逐条列出），不许为了让
+# 数字好看反向调夹具。三者的共同点是：它们都是那个**具体的人**的既有事实，
+# 不是引擎的推断 —— 与 enrollment_status / current_location 同一性质。
+#
+# current_location 为什么用国家代码而不是自由文本：
+#   判在地要求（「递交时人须在该国境内」）的唯一动作是**与项目所在国比较**，
+#   而项目侧的国别已经有一套受 schema 管着的代码体系（program.country_code，
+#   validate.py 用 `^[A-Z]{2}$` 卡）。画像这一侧用同一套代码，比较就是字符串
+#   相等——不需要地名归一表、不需要模糊匹配，也不可能出现「澳洲 / Australia /
+#   AU」三种写法互相认不出。取值缺失或不是两位大写即判 unknown（silent），
+#   绝不猜测、绝不默认 pass。
+CURRENT_LOCATION_RE = re.compile(r"^[A-Z]{2}$")
+
+# 三张画像都是 **prospective applicant**（正在挑项目、还没出去的人），不是「已经
+# 在目标国读书/工作的人」。所以现居地 = 护照所属地：A/B 大陆（CN）、C 台湾（TW）。
+# 这个取值不是随手填的——它直接决定在地要求的翻转方向（详见 P1d 回执 §3：
+# 现居=护照地时，五个「须在该国境内」的项目对三人全部判 cannot，因为三人都不在
+# 那些国家；换成任何一个已经在该国的人，同一批项目会翻成 pass）。
 SAMPLES = OrderedDict(
     [
         (
@@ -701,6 +1650,26 @@ SAMPLES = OrderedDict(
                 "education": "bachelor_in_progress",
                 "ielts": 6.0,
                 "budget_cny": 30000,
+                # 21 岁在读本科生：无家属、无既往参加史、无同类签证史、在读
+                "dependents": "none",
+                "prior_participation": "none",
+                "prior_same_category_visa": "none",
+                "enrollment_status": "enrolled",
+                "current_location": "CN",
+                # P3 教育路径属性（依据见回执 §3）：
+                #   21 岁、本科在读 —— 按 18 岁入学、四年制推算已读 3 年 = 36 个月，
+                #   正好是大三（与「在读」而非「应届」一致）。这个值不取边角：
+                #   取 36 而非 24/48，是因为 21-18=3 年是年龄本身给出的唯一读数。
+                "study_months": 36,
+                #   在读生没有「毕业多久」这件事，显式写 None 而不是省略键：
+                #   省略与 None 在引擎里等价（都判 unknown），写出来是为了让
+                #   「这个人没毕业」这件事在夹具上看得见，而不是像漏填。
+                "months_since_graduation": None,
+                #   在校生没有全职工作经历（实习不算「相关工作经验」——
+                #   J-1 Trainee 原文说的是 occupational field 的 work experience）。
+                #   取 0 而不是 None：0 是**已知的事实**，None 是「没问过」。
+                #   这个区分直接决定 trainee 判 fail 还是 unknown。
+                "work_experience_years": 0,
             },
         ),
         (
@@ -711,6 +1680,25 @@ SAMPLES = OrderedDict(
                 "education": "bachelor_completed",
                 "ielts": None,
                 "budget_cny": 80000,
+                # 28 岁已毕业：同样无家属、无既往史，但已不在读
+                "dependents": "none",
+                "prior_participation": "none",
+                "prior_same_category_visa": "none",
+                "enrollment_status": "completed",
+                "current_location": "CN",
+                # P3：28 岁本科毕业、预算 8 万、正在找路径出国的境内青年。
+                #   毕业月数取 60（毕业 5 年）——28 岁本科毕业的常见情形（22 岁毕业）；
+                #   这个值 > 12，使 intern 的「毕业不超过 12 个月」这条对 B 不成立，
+                #   正是本单要抓的假 pass（B 原先被判 can）。
+                "months_since_graduation": 60,
+                #   就读时长取 48 个月 = 四年制本科读满（中国大陆本科标准学制）。
+                "study_months": 48,
+                #   工作经验取 3 年：毕业 5 年、其中工作 3 年（含 gap 与考研），
+                #   是 28 岁境内求职者的常见读数。这个值 ≥ trainee 路径①的 1 年、
+                #   但 < 路径②的 5 年，所以 B 对 trainee 走的是「学位 + 1 年」这条，
+                #   而不是「无学位 + 5 年」那条 —— 两条路径各被一个画像覆盖，
+                #   夹具才有区分力。
+                "work_experience_years": 3,
             },
         ),
         (
@@ -721,10 +1709,82 @@ SAMPLES = OrderedDict(
                 "education": "bachelor_completed",
                 "ielts": 6.5,
                 "budget_cny": 50000,
+                "dependents": "none",
+                "prior_participation": "none",
+                "prior_same_category_visa": "none",
+                "enrollment_status": "completed",
+                "current_location": "TW",
+                # P3：25 岁台湾本科毕业，刚出校门（22 岁毕业 → 毕业 36 个月）。
+                #   36 > 12，所以 intern 的宽限期对 C 也不成立（与 B 同向，
+                #   但原因不同：B 是「毕业久 + 有工作经验」，C 是「毕业较近但仍超期」）。
+                "months_since_graduation": 36,
+                "study_months": 48,  # 台湾本科标准学制四年
+                #   工作经验取 1 年：25 岁毕业 3 年、其中工作 1 年（其余为备考/服役/
+                #   待业）。取 1 而不是 2，是为了让它正好落在 trainee 路径①的
+                #   「≥1 年」边界上 —— 边界成立是 pass 的必要证据。
+                "work_experience_years": 1,
             },
         ),
     ]
 )
+
+
+# --------------------------------------------------------------------------
+# 采集面契约（2026-11-20 01:56 工单）
+#
+# 这个模块量的是「引擎能从画像里读什么」，而网页表单只问用户其中一部分。
+# 两者不一致时，审计用 13 字段夹具量出线内，真实用户拿 6 字段却越线——
+# 闸量错了对象。下面两个常量把「差异」变成可断言的数字，而不是靠人记。
+#
+# FORM_FIELDS = 网页表单真的问了的字段
+#   （web/src/components/VerdictView.tsx 的 pfield；EMPTY_VERDICT_PROFILE 同）
+# PROFILE_FIELDS = 引擎真的读了的字段（judge() 里 pr.get / pr[]）
+#
+# 两者之差 = 采集缺口。tests 里 test_profile_fields_are_all_collectable
+# 咬住「缺口为空」：将来谁在引擎里加一个画像字段而没加表单口，那条测试当场红。
+# 这比「再写一篇报告说明缺口」有用——报告不会拦下一个人。
+#
+# 注意：这里登记的是**字段是否被问过**，不是「必须填」。用户不填仍是未知，
+# 引擎老老实实判 silent；本契约只要求「有这么个输入口可以填」。
+# --------------------------------------------------------------------------
+
+FORM_FIELDS = (
+    "passport",
+    "age",
+    "education",
+    "ielts",
+    "budget_cny",
+    "current_location",
+    # —— 本单补齐的 7 项（条件显示，见 web/src/lib/profileFields.ts）——
+    "dependents",
+    "enrollment_status",
+    "months_since_graduation",
+    "prior_participation",
+    "prior_same_category_visa",
+    "study_months",
+    "work_experience_years",
+)
+
+PROFILE_FIELDS = (
+    "passport",
+    "age",
+    "education",
+    "ielts",
+    "budget_cny",
+    "current_location",
+    "dependents",
+    "enrollment_status",
+    "months_since_graduation",
+    "prior_participation",
+    "prior_same_category_visa",
+    "study_months",
+    "work_experience_years",
+)
+
+
+def collection_gap() -> list[str]:
+    """引擎读了、但表单没有输入口的字段。空表示采集面跟上了判定面。"""
+    return sorted(set(PROFILE_FIELDS) - set(FORM_FIELDS))
 
 
 # --------------------------------------------------------------------------
@@ -783,14 +1843,147 @@ CLASS_B_CODES = frozenset(
         "funds_amount_inferred",  # 金额为同类口径沿用，属登记债
         "funds_term_unknown",  # 月额门槛缺停留期上限（数据债）
         "pre_outside_country",  # 画像不采集现居地（画像债）
+        # P1c：在地（递交时须在该国境内）。与 pre_outside_country 同为画像债，
+        # 补一个 current_location 字段就能判——按 P2-1 判据属乙类。
+        "pre_inside_country",
         "pre_home_residence",  # 画像不采集现居地（画像债）
         "pre_unclassified",  # 有必填前置要求但类别未识别（识别能力债）
+        # —— P1b-2 新增：三个家族接进判定后暴露的不可判面 ——
+        # 这几条全是「画像没采集那个人自己的事实」，按 P2-1 判据属乙类：
+        # 补一条画像字段就能判，不是「原文交给第三方判断」。
+        "pre_dependents_unknown",  # 画像不采集家属构成（画像债）
+        "pre_dependents_work_unknown",  # 家属可随行但不得就业：不知你是否打算让家属工作（画像债）
+        "pre_participation_unknown",  # 画像不采集既往参加史（画像债）
+        "pre_prior_visa_unknown",  # 画像不采集同类签证史（画像债）
+        "pre_prior_visa_required",  # 正向：须持过某类签证，画像不采集签证史（画像债）
+        "pre_enrollment_unknown",  # 画像不采集在读/毕业状态（画像债）
+        # —— P3 新增：教育路径化后暴露的不可判面 ——
+        # 这几条全是「画像没采集那个人自己的事实」，按 P2-1 判据属乙类：
+        # 补一条画像字段就能判，不是「原文交给第三方判断」。
+        "edu_duration_unknown",  # 就读时长未采集 / 项目时长无数字（画像债 + 数据债）
+        "edu_enrollment_unknown",  # 在读状态或毕业距今天数未采集（画像债）
+        "edu_experience_unknown",  # 相关工作年限未采集（画像债）
     }
 )
 
 # 两条线的数值：停工线（硬，只看乙类）与甲类软线（只报警、不红）。
 STOP_LINE_RATIO = 1 / 3
 BY_DESIGN_ALERT_COUNT = 5
+
+# --------------------------------------------------------------------------
+# 停工线的双口径（Muse 2026-11-20 01:58 裁决，INBOX:1487）
+#
+# 裁决原文：即日起双口径并行，停工线以「真实用户画像口径」为准，夹具口径降为
+# 回归参照。理由是这条闸的用途是保护真实用户，量夹具画像等于虚假保证。
+#
+# 为什么必须分两个口径：SAMPLES 每个样例给了 13 个字段，而当时的网页表单只有
+# 6 个输入口。判定面（P1b-2 / P1c / P3）一直在扩，采集面没跟，于是普通用户
+# 拿不到那 7 个事实，项目从「能申」掉成「不可判」——而只量夹具的闸显示线内。
+# 闸量错了对象，越线就看不见。
+#
+# 真实口径 = 当时表单能采集的 6 字段原样 + 其余 7 字段置 None，跑同一个 audit()。
+# 置 None 而不是删键：引擎里「缺键」与「显式 None」等价（都判 unknown），写出来
+# 是为了让「这个人没被问过这件事」在夹具上看得见，而不是像漏填。
+#
+# **两个常量的分工（2026-11-20 02:xx 表单补齐后更新）**：
+#   LEGACY_FORM_FIELDS —— 表单补齐**之前**能采集的 6 项。永不再变。
+#     它的作用是保留「旧的真实口径」这条基线，好让「补齐字段带来了多少改善」
+#     这个数字以后还能复算。改名而不是删掉：删了那段历史就无从复算。
+#   REAL_PROFILE_NULLED_FIELDS —— 相对 LEGACY_FORM_FIELDS 置空的那 7 项。
+#
+# 补齐之后，真实口径（用当前的 FORM_FIELDS，13 项）与夹具口径**已经重合**，
+# 所以现在这条闸报的两个数会一样。这不是闸失效了——相反，它说明采集面终于
+# 追上了判定面：`collection_gap()` 为空就是这件事的机械证明。
+# 若将来有人在引擎里加字段而没加表单口，缺口会重新出现，双口径会再次分叉，
+# 而 test_profile_fields_are_all_collectable 会先红。
+#
+# LEGACY_FORM_FIELDS 与 REAL_PROFILE_NULLED_FIELDS 必须覆盖 SAMPLES 的全部字段键，
+# 两侧一起改才不漏；漏一个字段的后果是那个字段仍带夹具值，旧口径被悄悄放宽
+# （tests 里的 test_legacy_form_fields_cover_every_sample_field 咬住这条）。
+# --------------------------------------------------------------------------
+LEGACY_FORM_FIELDS = ("passport", "age", "education", "ielts", "budget_cny", "current_location")
+
+REAL_PROFILE_NULLED_FIELDS = (
+    "dependents",
+    "enrollment_status",
+    "months_since_graduation",
+    "prior_participation",
+    "prior_same_category_visa",
+    "study_months",
+    "work_experience_years",
+)
+
+# 停工线以真实口径为准（裁决第二条）。夹具口径保留输出，但只作回归参照。
+STOP_LINE_CALIBER = "real"
+
+# 在案债务上限：表单补齐**之前**，真实口径下 HEAD 的 C 画像乙类 = 15/41 = 0.3659，
+# 已越 1/3。裁决第三条把那次越线记为在案债务，不阻塞 PR、也不许靠改阈值消掉。
+#
+# **补齐字段后这个数字降下来了**（15 → 8，见 tests 的 test_debt_ceiling_tracks_actual）。
+# 裁决要求「只许降不许升、降下来必须回来把上限改小」，所以这里是 8 而不是 15：
+# 留着 15 就等于给下一次新债留了 7 条免费额度，而封顶本身不会报警。
+REAL_CLASS_B_DEBT_CEILING = 8
+
+
+def real_profile(pr: dict) -> dict:
+    """把一个夹具画像压成「网页表单真能采集到的那一份」。
+
+    判据是**当前的** FORM_FIELDS：表单能问的字段原样保留，问不到的置 None。
+    不做任何补默认值——补默认值等于替用户承认一个事实（如把 dependents
+    默认成 none），那会把「没问过」洗成「已知」，真实口径立刻偏乐观。
+
+    2026-11-20 表单补齐后 FORM_FIELDS 已是 13 项，于是这个函数返回的就是
+    原画像，两口径重合。这不是函数失效：`collection_gap()` 为空正是它的
+    **成功状态**。将来引擎加字段而表单没跟，FORM_FIELDS 不再覆盖它，
+    这里会自动重新开始置 None，双口径重新分叉——不需要改这个函数。
+    """
+    out = dict(pr)
+    for f in out:
+        if f not in FORM_FIELDS:
+            out[f] = None
+    return out
+
+
+def legacy_profile(pr: dict) -> dict:
+    """表单补齐**之前**的口径：只留 6 项，其余 7 项置 None。
+
+    存在的唯一理由是可复算：Muse 01:58 裁决那次越线（15/41）就是按这个口径
+    量出来的，留着它才能验证「补齐字段把这 7 条债务清掉了几个」。
+    它**不随后续补字段而变**（判据是固定的 LEGACY_FORM_FIELDS），
+    所以它度量的是历史，不是现状。现状用 real_profile()。
+    """
+    out = dict(pr)
+    for f in REAL_PROFILE_NULLED_FIELDS:
+        out[f] = None
+    return out
+
+
+def measure_caliber(docs: list[dict], profiles: dict) -> dict:
+    """按给定画像集合量一次乙类（停工线分子），不写任何全局状态。"""
+    per = OrderedDict()
+    for name in SAMPLES:
+        pr = profiles[name]
+        ids = []
+        design = 0
+        unknown = 0
+        for doc in docs:
+            state, dims = judge(doc, pr)
+            if state != "unknown":
+                continue
+            unknown += 1
+            cls = undecidable_class(dims, doc)
+            if cls == "avoidable":
+                ids.append(doc["program"]["id"])
+            elif cls == "design":
+                design += 1
+        per[name] = {
+            "unknown": unknown,
+            "unknown_class_b": len(ids),
+            "ratio_class_b": round(len(ids) / len(docs), 4),
+            "class_b_ids": sorted(ids),
+            "unknown_by_design": design,
+        }
+    return per
 
 # age_unknown 归甲是**有条件**的（Muse 裁决 1）：note 必须同时给出「官方无阈值 /
 # 由 Sponsor 自行规定」的证据，并且标了 ⚠️ 未核实。缺证据的 age_unknown 不是
@@ -864,6 +2057,35 @@ def passport_value(pt: dict, key: str):
     return None
 
 
+def current_location_of(pr: dict) -> str | None:
+    """画像里的现居地国家代码；取不到**合法值**时返回 None（= 未知）。
+
+    「取不到」的判断必须严：ISO 3166-1 alpha-2 是两位大写字母。空串、None、
+    小写 `cn`、中文「中国」、拼错的 `CHINA` 全部返回 None，让调用方落 silent。
+
+    为什么不宽容一点（比如把小写转大写、把「中国」映射成 CN）：
+    在地要求判错方向的代价是把一个**能申的人判成不能申**（或反之），而且这种
+    错误在界面上看起来完全正常。宽容匹配一旦写错，错误会静默传播到每一条项目。
+    宁可让格式不对的值落 unknown、让人看见「无法判定」，也不替用户猜他填的是哪国。
+    """
+    v = pr.get("current_location")
+    if isinstance(v, str) and CURRENT_LOCATION_RE.match(v.strip()):
+        return v.strip()
+    return None
+
+
+def passport_country_of(pr: dict) -> str | None:
+    """画像护照所属国家/地区代码；表里没有该护照时返回 None（= 不可判）。
+
+    与 `current_location_of()` 同一套严格度，但**未知形态不同**：护照是一个受
+    枚举约束的存储值（`PASSPORTS`），所以这里不做格式宽容，只查表。查不到就是
+    「这张护照的所属地我们没登记」，落 silent——不拿 `current_location` 顶替，
+    也不从别的字段推一个出来。`home_residence` 判的是「现居 == 护照所属地」，
+    两边任一缺失都判不了，硬凑一边就是替官方下结论。
+    """
+    return PASSPORT_COUNTRY.get(pr.get("passport"))
+
+
 def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     """返回 (can|cannot|gap|unknown, 逐维结论)。
 
@@ -920,12 +2142,16 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     else:
         dims.append({"dim": "age", "kind": "pass", "code": "age_ok", "why": f"在 {lo}-{hi} 岁内"})
 
-    # 学历
+    # 学历（P3 路径化）
+    #
+    # 判定顺序与旧代码不同，改动理由逐条写在下面。**核心不变式**：
+    #   · 有一条路径确定成立 → pass；
+    #   · 全部路径确定不成立 → fail；
+    #   · 其余（含缺数据）→ silent，且 code 指名缺的是哪一类谓词。
+    # 旧代码的 `if need and by_sponsor → ... elif have < need → fail` 链条
+    # 把「层级不够」当成第一判决，于是在有并列路径的项目上必然判死（假 cannot）。
     edu = (doc.get("eligibility") or {}).get("education") or {}
     edu_note = edu.get("note") or ""
-    need = EDU_RANK.get(edu.get("minimum_level") or "any", 0)
-    have = EDU_RANK.get(pr["education"], 0)
-    years_need = edu_years_required(doc)
     recency_need = edu_recency_years(doc)
     credential_need = None
     if credential_recognition_required(doc):
@@ -935,9 +2161,23 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
         credential_need = "学历或职业资格须被主管机构认定"
         if pts:
             credential_need += f"，且积分达到 {pts} 分"
-    if need and EDU_BY_SPONSOR.search(edu_note):
+
+    paths = edu_paths(doc)
+    result = judge_education(paths, pr, doc)
+    evals = result["evals"]
+    # 时长是**路径之外**的一条独立门槛：它约束的是「这段学历里你待了多久」，
+    # 与「哪条路径成立」正交（澳洲 485 的 2 学年 + 16 个月就是两条同时成立）。
+    # 所以它不折进 paths，而在路径给出 pass 之后再判一次。
+    dur_need = edu_min_duration_months(doc)
+    dur_required = edu_duration_required(doc)
+    dur_have = pr.get("study_months")
+
+    if EDU_BY_SPONSOR.search(edu_note) and any(
+        e["path"].get("level") not in (None, "any") for e in evals
+    ):
         # 结构化的 minimum_level 比 note 更严：note 明说法规没规定学位层级、
         # 由 Sponsor 判断。这时拿结构化字段判 fail 是替官方拒绝（§4-5）。
+        # 判在最前，因为它是「结构化字段不该被采信」，与路径成不成立无关。
         dims.append(
             {
                 "dim": "education",
@@ -946,43 +2186,92 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 "why": "结构化字段记了最低学位，但原文写明「法规未规定学位层级、由 Sponsor 判断」，以原文为准",
             }
         )
-    elif have < need:
-        dims.append(
-            {
-                "dim": "education",
-                "kind": "fail",
-                "code": "edu_low",
-                "need": edu.get("minimum_level"),
-                "have": pr["education"],
-                "why": f"学历门槛 {edu.get('minimum_level')}",
-            }
-        )
-    elif years_need:
-        # note 另写「须完成不少于四年高等教育，三年制本科不满足」，而结构化
-        # 字段只有层级、没有学制年数（§4-2）。画像也不采集学制，所以只要
-        # note 写了这条硬门槛，就不能默认「层级到了 = 达标」。
-        #
-        # 判 silent 而不是 fail：三年制本科确实不满足，但画像只知道「本科毕业」，
-        # 不知道你读的是三年制还是四年制——替一个四年制的人判「不能申」同样是错。
-        dims.append(
-            {
-                "dim": "education",
-                "kind": "silent",
-                "code": "edu_years_unknown",
-                "need": f"已完成 {years_need} 年高等教育",
-                "why": f"原文另要求完成不少于 {years_need} 年高等教育（学制短于该年限不满足），你的学制年数未采集",
-            }
-        )
-    elif edu.get("years_completed") and pr["education"] == "bachelor_in_progress":
-        dims.append(
-            {
-                "dim": "education",
-                "kind": "silent",
-                "code": "edu_years_unknown",
-                "why": f"另要求已完成 {edu['years_completed']} 年本科，在读无法从他填的信息判定",
-            }
-        )
-    elif recency_need:
+    elif result["verdict"] == "fail":
+        # 全部路径都不成立 → 这是唯一该判 fail 的情形。need 把各路径条件并列
+        # 写出（用「或」），读的人才看得出「过的是哪一条」。code 按**共同失败的
+        # 谓词**选：层级不够是 edu_low，在读状态不符是 edu_not_enrolled ——
+        # 「你毕业了」与「你学历低了」是两件事，共用一个 code 会让修法无从下手。
+        first = evals[0]
+        failed = {f for e in evals for f in e["failed"]}
+        levels = [e["path"].get("level") for e in evals if e["path"].get("level") not in (None, "any")]
+        need_text = " 或 ".join(e["need"] for e in evals)
+        if "level" not in failed and failed & {"enrollment", "graduation_recency"}:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "fail",
+                    "code": "edu_not_enrolled",
+                    "need": need_text,
+                    "have": f"{pr.get('enrollment_status')}",
+                    "why": (
+                        "原文把「当前在读 / 毕业不超过 N 个月」写成本项目的第一道门槛，"
+                        "你的状态不满足（学历层级本身并不低）"
+                    ),
+                }
+            )
+        else:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "fail",
+                    "code": "edu_low",
+                    "need": need_text,
+                    "have": pr["education"],
+                    "why": (
+                        f"学历门槛 {edu.get('minimum_level')}"
+                        if len(evals) == 1 and levels
+                        else f"{len(evals)} 条官方路径全部不成立（{first['need']}）"
+                    ),
+                }
+            )
+    elif result["verdict"] == "pass" and dur_required:
+        # 路径成立，但另有就读时长门槛 —— 时长是硬条件，缺数字就不可判。
+        if dur_need is None:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_duration_unknown",
+                    "need": "就读时长（原文有要求，仓内无数字）",
+                    "why": (
+                        "原文把「就读时长」写成硬门槛（一整个学年 / 若干个月 / 若干周），"
+                        "但仓内未登记具体数字，你的就读时长也未采集，无法判定"
+                    ),
+                }
+            )
+        elif isinstance(dur_have, (int, float)) and dur_have >= dur_need:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "pass",
+                    "code": "edu_ok",
+                    "why": f"就读 {dur_have:g} 个月 ≥ 要求的 {dur_need:g} 个月",
+                }
+            )
+        elif isinstance(dur_have, (int, float)):
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "fail",
+                    "code": "edu_duration_short",
+                    "need": f"就读 ≥ {dur_need:g} 个月",
+                    "have": f"{dur_have:g} 个月",
+                    "why": f"就读时长差 {dur_need - dur_have:g} 个月",
+                }
+            )
+        else:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_duration_unknown",
+                    "need": f"就读 ≥ {dur_need:g} 个月",
+                    "why": (
+                        f"原文要求就读不少于 {dur_need:g} 个月，你的就读时长未采集，无法判定"
+                    ),
+                }
+            )
+    elif result["verdict"] == "pass" and recency_need:
         # note 另写「须在申请日之前 N 年内完成学业或研究」（P2-0）。结构化
         # education 里只有层级与学制年数，没有「毕业年份」；画像也不采集毕业
         # 时间，因此不能默认「层级到了 = 达标」。
@@ -1000,6 +2289,63 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                     f"原文另要求「申请日前 {recency_need} 年内完成学业/取得学位」，"
                     "你的毕业时间未采集，无法判定是否在时限内"
                 ),
+            }
+        )
+    elif result["verdict"] == "unknown":
+        # 判不了，但要分清缺的是哪一类谓词 —— 不同 code 指向不同补法，
+        # 合成一个 silent 会让「补哪个字段能判」这件事从报告里消失。
+        blocked = {b for e in evals if e["verdict"] == "unknown" for b in e["blocked"]}
+        if "duration" in blocked:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_duration_unknown",
+                    "need": " 或 ".join(e["need"] for e in evals),
+                    "why": "该路径要求一定的就读时长，你的就读时长未采集，无法判定",
+                }
+            )
+        elif blocked & {"enrollment", "graduation_recency"}:
+            # 在读状态 / 毕业距今天数：两者都是「你现在是什么状态」，
+            # 补一条画像字段就能判，故归乙类（pre_enrollment_unknown 同一口径）。
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_enrollment_unknown",
+                    "need": " 或 ".join(e["need"] for e in evals),
+                    "why": "该路径要求特定的在读/毕业状态，你的就读状态或毕业时间未采集，无法判定",
+                }
+            )
+        elif "experience" in blocked:
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_experience_unknown",
+                    "need": " 或 ".join(e["need"] for e in evals),
+                    "why": "该路径接受「学位 + 工作经验」或纯经验替代，你的相关工作年限未采集，无法判定",
+                }
+            )
+        else:
+            # 落到这里只剩「画像没填学历」这类基础缺口，用原有的学制年数码不
+            # 合适（那说的是学时长短），改用与在读状态同族的通用码。
+            dims.append(
+                {
+                    "dim": "education",
+                    "kind": "silent",
+                    "code": "edu_years_unknown",
+                    "need": " 或 ".join(e["need"] for e in evals),
+                    "why": "该路径的某一项条件无法用你已填的信息判定",
+                }
+            )
+    elif edu.get("years_completed") and pr["education"] == "bachelor_in_progress":
+        dims.append(
+            {
+                "dim": "education",
+                "kind": "silent",
+                "code": "edu_years_unknown",
+                "why": f"另要求已完成 {edu['years_completed']} 年本科，在读无法从他填的信息判定",
             }
         )
     elif participant_category_required(doc):
@@ -1266,78 +2612,220 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
                 {"dim": "funds", "kind": "pass", "code": "funds_ok", "why": f"预算 ≥ 约 {int(cny):,} 元"}
             )
 
-    # 前置身份 / 在地要求（§4-3、§4-4）
+    # 前置身份 / 在地要求（§4-3、§4-4、P1c）
     #
     # 这一段过去不存在：judge() 只读五处结构化字段，`other_requirements` 一个字
     # 没读。于是「只对已在英留学生开放」的毕业生签证被判成「谁都能申」。
-    # 现在按原文类别分三档，宁可不可判，也不静默判过。
-    pre = precondition_kind(doc)
-    if pre == "local_status":
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "gap",
-                "code": "pre_local_status",
-                "need": "先在该国持学生/居留身份并完成学业",
-                "have": "未采集该项经历",
-                "why": "原文把「已在该国持学生签/居留并完成学业」写成本项目的前置身份，这是能补的一项（先走留学路径）",
-            }
-        )
-        if EDU_PLACE.search(edu_note):
-            # 同一件事在教育维已经判过 silent，两处都报会让用户看到两条重复缺口
-            dims = [d for d in dims if d["code"] != "edu_place_unknown"]
-    elif pre == "outside":
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "silent",
-                "code": "pre_outside_country",
-                "why": "原文要求在递交时人位于该国境外，画像不采集现居地，无法判定",
-            }
-        )
-    elif pre == "home_residence":
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "silent",
-                "code": "pre_home_residence",
-                "why": "原文要求常驻护照所属地区，画像不采集现居地，无法判定",
-            }
-        )
-    elif pre == "citizenship":
-        # 原文这一条是「须为参与国公民」——国籍条件，passport 维已经在判同一件事。
-        # 报 na（不构成新缺口），但必须留痕：落空不让它看起来「这条要求不存在」。
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "na",
-                "code": "pre_citizenship_basis",
-                "why": "原文该项是国籍条件，已由护照维判定，不另算缺口",
-            }
-        )
-    elif pre == "document":
-        # 「须持有效租约/购房合同」是递交时自行取得的文件，不是身份前置。
-        # 它与「你得先在该国读过书」不是一回事：前者人人可办，后者决定了这条
-        # 路对你开不开。判 na，不让它变成一条假缺口。
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "na",
-                "code": "pre_document_basis",
-                "why": "原文该项是递交时自备的材料（租约等），不是身份前置条件",
-            }
-        )
-    elif pre == "unclassified":
-        # 有 required 的前置身份要求，但原文类别没认出来。**不能落 pass**：
-        # §4-3 的错就是从这里来的。判 silent 并写明「有这条、我们没读懂」。
-        dims.append(
-            {
-                "dim": "precondition",
-                "kind": "silent",
-                "code": "pre_unclassified",
-                "why": "该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定",
-            }
-        )
+    # 现在按原文类别分档，宁可不可判，也不静默判过。
+    #
+    # P1c：两族各出各的结论（见 precondition_kinds 的说明）。身份族与在地族不再
+    # 共用一条 if/elif 链——us-f1-opt 同时有两个 source，过去只有一条能发声。
+    for pre in precondition_kinds(doc):
+        if pre == "local_status":
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "gap",
+                    "code": "pre_local_status",
+                    "need": "先在该国持学生/居留身份并完成学业",
+                    "have": "未采集该项经历",
+                    "why": "原文把「已在该国持学生签/居留并完成学业」写成本项目的前置身份，这是能补的一项（先走留学路径）",
+                }
+            )
+            if EDU_PLACE.search(edu_note):
+                # 同一件事在教育维已经判过 silent，两处都报会让用户看到两条重复缺口
+                dims = [d for d in dims if d["code"] != "edu_place_unknown"]
+        elif pre == "inside":
+            # 在地（batch8 立项、batch9a 裁决 1 定形）：与 outside 互为镜像，
+            # 但**不并进 outside**——方向相反的两条要求共用一个 code 会让
+            # 「必须人在境外」与「必须人在境内」在报告里长得一模一样。
+            #
+            # P1d 接地：这一条现在是**可判的**——画像有 current_location。
+            #   与项目所在国相同 → pass（人已经在境内，这条不构成障碍）
+            #   有值但不同     → fail（人不在境内 → 整体 cannot）
+            #   缺失/非法      → silent（维持 P1c 的诚实结论，缺省绝不判 pass）
+            # 三者各占一个 code：`pre_inside_country` 仍是「画像不采集」的原码，
+            # 语义一个字节没动（P1c 的乙类登记与测试照旧按它读）。
+            loc = current_location_of(pr)
+            cc = (doc.get("program") or {}).get("country_code")
+            if loc is None or not cc:
+                # 两种「比不了」：画像没填现居地，或项目侧没有国别代码。
+                # 后者在库里暂无实例（两条全球项目 global-aiesec / global-iaeste
+                # 根本没有在地要求），但少了这一支，`loc == cc` 会把画像值与
+                # None 比较、恒不等 → 恒判 fail，等于替官方拒绝。
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "silent",
+                        "code": "pre_inside_country",
+                        "why": "原文要求在递交时人位于该国境内，画像不采集现居地，无法判定",
+                    }
+                )
+            elif loc == cc:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "pass",
+                        "code": "pre_inside_country_ok",
+                        "need": f"递交时人在 {cc} 境内",
+                        "have": f"你现在在 {loc}",
+                        "why": f"你现居 {loc}，与项目所在国一致，这条在地要求已满足",
+                    }
+                )
+            else:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "fail",
+                        "code": "pre_inside_country_no",
+                        "need": f"递交时须身在 {cc} 境内",
+                        "have": f"你现在在 {loc}",
+                        "why": (
+                            f"原文要求在递交时人位于 {cc} 境内，你填的现居地是 {loc}；"
+                            "这条要求不是补材料能满足的，须先合法进入该国"
+                        ),
+                    }
+                )
+        elif pre == "outside":
+            # 在地的镜像方向（P1e 接地）：递交时人须在该国**境外**。
+            # `au-407-training`（`you must be outside Australia when you apply …
+            # and when we grant it`）与 `se-look-for-work`（`You must currently be
+            # located outside of Sweden`）是仅有的两条。
+            #
+            # 判法就是 inside 的镜像，比的是同一个 current_location 与同一个
+            # country_code，只是方向相反：
+            #   现居 != 项目国 → pass（人在境外，这条不构成障碍）
+            #   现居 == 项目国 → fail（人在境内，申请本身无效）
+            #   缺失/非法/项目国缺失 → silent（维持原码，绝不默认 pass）
+            #
+            # 为什么不能拿 inside 的 code 复用它：方向相反的两条要求共用一个 code
+            # 会让「必须人在境外」与「必须人在境内」在报告里长得一模一样
+            # （batch8 立项理由、P1c 用例 ⑤）。所以三个 code 各占一件事，原码
+            # `pre_outside_country`（silent）的语义一个字节没动。
+            loc = current_location_of(pr)
+            cc = (doc.get("program") or {}).get("country_code")
+            if loc is None or not cc:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "silent",
+                        "code": "pre_outside_country",
+                        "why": "原文要求在递交时人位于该国境外，画像不采集现居地，无法判定",
+                    }
+                )
+            elif loc != cc:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "pass",
+                        "code": "pre_outside_country_ok",
+                        "need": f"递交时人须在 {cc} 境外",
+                        "have": f"你现在在 {loc}",
+                        "why": f"你现居 {loc}，不在项目所在国 {cc}，这条「境外递交」要求已满足",
+                    }
+                )
+            else:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "fail",
+                        "code": "pre_outside_country_no",
+                        "need": f"递交时人须在 {cc} 境外",
+                        "have": f"你现在在 {loc}",
+                        "why": (
+                            f"原文要求递交时人位于 {cc} 境外，你填的现居地正是 {cc}；"
+                            "在该国境内递交会被判无效，须先离境再递"
+                        ),
+                    }
+                )
+        elif pre == "home_residence":
+            # 常驻护照所属地区（P1e 接地）。两条：`jp-working-holiday`
+            # （须为协议国国民，且目前居住于其国籍国/地区）、`nz-china-whv`
+            # （申请时须居住且常驻中国；其 passport_types note 自己写明
+            # 「申请人须常驻其护照所属地区」）。
+            #
+            # **判据是「现居 == 护照所属地」，不是「现居 == 项目国」**——这是
+            # P1d §8 定性的接法，方向搞反会把全部目标人群判错：JP 项目在 JP，
+            # 但要求的「国籍国」是台湾/香港，不是日本。所以比的是
+            # `current_location` 与 `PASSPORT_COUNTRY[passport]`，项目国不参与。
+            #
+            # 两条之一拿不到就判 silent，不硬凑：护照不在映射表里（将来新增的
+            # 护照类型）、或现居地缺失/非法，都表示「这两边我们有一条不知道」。
+            #
+            #  citizenship 那一半（须为协议国国民）不在这里判：它由 passport 维
+            # 覆盖（`jp-working-holiday` 对大陆护照是 `passport_no`），见 PRE_CITIZENSHIP
+            # 的 na 分支说明。两处都判会让同一个缺口说两遍。
+            loc = current_location_of(pr)
+            home = passport_country_of(pr)
+            if loc is None or home is None:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "silent",
+                        "code": "pre_home_residence",
+                        "why": "原文要求常驻护照所属地区，画像不采集现居地，无法判定",
+                    }
+                )
+            elif loc == home:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "pass",
+                        "code": "pre_home_residence_ok",
+                        "need": f"常驻护照所属地区（{PASSPORT_ZH.get(pr.get('passport'), home)} → {home}）",
+                        "have": f"你现在在 {loc}",
+                        "why": f"你现居 {loc}，与护照所属地 {home} 一致，这条「常驻护照国」要求已满足",
+                    }
+                )
+            else:
+                dims.append(
+                    {
+                        "dim": "precondition",
+                        "kind": "fail",
+                        "code": "pre_home_residence_no",
+                        "need": f"常驻护照所属地区（{PASSPORT_ZH.get(pr.get('passport'), home)} → {home}）",
+                        "have": f"你现在在 {loc}",
+                        "why": (
+                            f"原文要求申请人常驻其护照所属地区（{home}），"
+                            f"你填的现居地是 {loc}；这条要求补材料满足不了，"
+                            "须回到护照所属地区再申请"
+                        ),
+                    }
+                )
+        elif pre == "citizenship":
+            # 原文这一条是「须为参与国公民」——国籍条件，passport 维已经在判同一件事。
+            # 报 na（不构成新缺口），但必须留痕：落空不让它看起来「这条要求不存在」。
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "na",
+                    "code": "pre_citizenship_basis",
+                    "why": "原文该项是国籍条件，已由护照维判定，不另算缺口",
+                }
+            )
+        elif pre == "document":
+            # 「须持有效租约/购房合同」是递交时自行取得的文件，不是身份前置。
+            # 它与「你得先在该国读过书」不是一回事：前者人人可办，后者决定了这条
+            # 路对你开不开。判 na，不让它变成一条假缺口。
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "na",
+                    "code": "pre_document_basis",
+                    "why": "原文该项是递交时自备的材料（租约等），不是身份前置条件",
+                }
+            )
+        elif pre == "unclassified":
+            # 有 required 的前置要求，但原文类别没认出来。**不能落 pass**：
+            # §4-3 的错就是从这里来的。判 silent 并写明「有这条、我们没读懂」。
+            dims.append(
+                {
+                    "dim": "precondition",
+                    "kind": "silent",
+                    "code": "pre_unclassified",
+                    "why": "该项目有一条必填的前置身份/在地要求，原文类别未能识别，无法判定",
+                }
+            )
 
     # 岗位前置（P2-0 us-j1-camp-counselor）
     #
@@ -1346,15 +2834,24 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
     # pre-arranged`），于是「岗位还没落实」被当成「能申」。判 gap 而不是 silent：
     # 岗位可以补（去报名、拿 placement），不是「数据不表态」。
     # 身份类别那条落在教育维里判（见上），与岗位是两件事，各占一维不重复。
+    #
+    # P4 §3：need 文案按项目取四种表述（营地 / 研究机构 DS-2019 / 暑期岗位+雇主
+    # 面试 / DS-7002 三方文件链）。硬编码一条营地文案会让研究学者页显示
+    # 「Sponsor 不得为未落实营地岗位者办理入境」——修一处漏网、引入一处错文案
+    # （batch2 §4.2④ / batch4 §219 / batch9b §1.2② 先后记过三次）。
     if job_placement_required(doc):
+        flavor = job_placement_flavor(doc)
         dims.append(
             {
                 "dim": "precondition",
                 "kind": "gap",
                 "code": "pre_job_placement",
-                "need": "预先落实的岗位（Sponsor 不得为未落实岗位者办理入境）",
+                # flavor 落进 dim 里，前端按它取同一条 code 的对应文案；
+                # 取不到时由 py_have_flavor 测试当场红，不靠默认值兜。
+                "flavor": flavor or "camp",
+                "need": JOB_PLACEMENT_NEED.get(flavor, JOB_PLACEMENT_NEED_FALLBACK),
                 "have": "未采集岗位落实情况",
-                "why": "原文把「岗位须预先落实」写成硬性前提：没有落实的岗位，Sponsor 不能签发后续文件、也不能办入境",
+                "why": "原文把「岗位须预先落实」写成硬性前提：没有落实的岗位/没有接收机构，Sponsor 不能签发后续文件、也不能办入境",
             }
         )
 
@@ -1382,6 +2879,16 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
             }
         )
 
+    # P1b-2：把 P1b-1 迁好的 typed 值接进判定（家属 / 签证史 / 学籍三个家族）。
+    #
+    # 这一段过去不存在：`other_requirements` 只有 residency_requirement 进过判定面，
+    # 其余 type 全都没读。于是「本项目不许带家属」「一生只能参加一次」「须已毕业」
+    # 这些**原文写明的硬条件**在画像页上完全看不见，所有项目看起来都比实际宽松。
+    #
+    # 放在 employer_offer 之后：新增维度只追加，不改既有六维的相对顺序，前端
+    # verdict.ts 的镜像顺序也必须与这里一致（smoke-test 逐条比对 dims 串）。
+    dims.extend(p1b2_precondition_dims(doc, pr))
+
     kinds = {d["kind"] for d in dims}
     if "fail" in kinds:
         return "cannot", dims
@@ -1406,9 +2913,77 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 #
 # rules_version 是这套口径的版本号。改了 judge() 的判定逻辑就要 +1，并同时
 # 更新前端 verdict.ts —— smoke-test 会比对两边的版本号，防止一边改一边忘。
-# --------------------------------------------------------------------------
+#
+# 版本轨迹：
+#   7  P1b-2 家属/签证史/学籍三家族接线
+#   8  P1c 在地从身份拆出（location_requirement + pre_inside_country）
+#   9  P1d current_location 接地，inside 三态可判
+#   10 P3 教育路径化：路径谓词替代 EDU_RANK 总序、去 >=3 下限、
+#      doctorate 入枚举、新增 edu_duration_unknown / edu_enrollment_unknown /
+#      edu_experience_unknown / edu_duration_short / edu_not_enrolled
+#   11 P1e 两码接地：pre_outside_country（au-407 / se）与 pre_home_residence
+#      （jp / nz）可判；home_residence 判据是「现居 == 护照所属地」，不是项目国，
+#      新增 PASSPORT_COUNTRY 映射表（只登记库里真有的三类护照）
+#   12 P4 Sponsor 包：JOB_PLACEMENT 词表扩围（六族官方写法）、
+#      government_support_letter 接成语义分型的 typed 读点（只有 sponsorship
+#      型进岗位族）、pre_job_placement 的 need 文案项目化为四种表述
+RULES_VERSION = 12
 
-RULES_VERSION = 6
+
+def profile_readers(doc: dict) -> dict:
+    """这条项目**读哪些画像字段**——由引擎自己算，不靠前端另抄一份。
+
+    （2026-11-20 01:56 工单：表单关键字段补齐）
+
+    为什么要在引擎里算而不是让前端按 p1b2 的布尔量自己推：
+      推法写两遍就一定会漂。本单第一版让前端按 flags 的布尔量复推，
+      两侧各有一份「dependents 读 forbid_child|forbid_other|cannot_work」，
+      改引擎的一个分支时前端不知道。变异测试当场抓到了这个洞：
+      把前端规则改错，Python 侧测试仍全绿——它验的是它自己的副本。
+
+    所以口径只留这一份：这里给出布尔量，前端只读不推。
+
+    判据是**实测**而不是读代码：把该字段从 None 换成一个可能的真值，
+    看 (dim,kind,code) 整串会不会变。变 = 这条项目读它。
+    这比按分支名匹配可靠——`edu_ok` 这种 pass code 在很多项目上都会出现，
+    按名字查会把一大堆项目误算成「读 study_months」。
+
+    代价是这个文件要跑 41 项目 × 7 字段 × 2 次 judge()。实测约 0.1 秒，
+    可接受；换了更重的判据时再看要不要缓存。
+    """
+    out = {}
+    for field, probe in PROFILE_FIELD_PROBES.items():
+        positive = False
+        for variant in (probe,):
+            pr = dict(SAMPLES["C"])
+            pr[field] = None
+            _, before = judge(doc, pr)
+            pr2 = dict(pr)
+            pr2[field] = variant
+            _, after = judge(doc, pr2)
+            if _dim_signature(before) != _dim_signature(after):
+                positive = True
+        out[field] = positive
+    return out
+
+
+def _dim_signature(dims: list[dict]) -> str:
+    return "|".join("%s:%s:%s" % (d["dim"], d["kind"], d["code"]) for d in dims)
+
+
+# 实测每个字段「在场 vs 缺席」用的代表真值。
+# 取的是夹具 C 的取值（每个字段在夹具里都有定义），所以这不是编的数字。
+# 换一个真值可能翻出别的项目（例如 dependents 填 children 会多触发 fail 分支），
+# 但那不影响「读不读」这个布尔——布尔只需要证明「换了会变」。
+PROFILE_FIELD_PROBES = {
+    "dependents": "none",
+    "enrollment_status": "enrolled",
+    "months_since_graduation": 6,
+    "prior_participation": "none",
+    "prior_same_category_visa": "none",
+    "study_months": 48,
+    "work_experience_years": 1,
+}
 
 
 def flags_of(doc: dict) -> dict:
@@ -1448,6 +3023,11 @@ def flags_of(doc: dict) -> dict:
     months = stay_months(doc) if monthly else None
 
     return {
+        # 项目所在国（ISO 3166-1 alpha-2）。P1d 起前端要用它判在地要求：
+        # 画像的 current_location 与它相等 → 人已在境内。放进 flags 而不是让前端
+        # 从 index.json 另取，是为了让「判在地」所需的**全部**输入都在同一个文件里，
+        # 两侧比对时不会因为一个取自 A 文件、一个取自 B 文件而产生漂移。
+        "country_code": (doc.get("program") or {}).get("country_code"),
         "passport": passport,
         "age": {
             "min": age.get("min"),
@@ -1460,6 +3040,30 @@ def flags_of(doc: dict) -> dict:
             # note 另写的硬性年限门槛（§4-2）。结构化字段没有它时，靠它把
             # 「本科毕业」判成不可判，而不是直接判达标。
             "years_required": edu_years_required(doc),
+            # —— P3：路径谓词所需的项目侧输入 ——
+            #
+            # 前端 verdict.ts 拿这组数据重演 judge_education()，与 Python 逐条比对。
+            # 路径在这里**算好形态**（月数已折算）再传，不传原始 `{value, unit}`：
+            # 单位换算只该在 Python 侧发生一次，前端再算一遍就是两份口径。
+            "paths": [
+                {
+                    "level": p.get("level") or "any",
+                    "enrollment": p.get("enrollment"),
+                    "graduated_within_months": p.get("graduated_within_months"),
+                    "min_years_experience": p.get("min_years_experience"),
+                    "experience_region": p.get("experience_region"),
+                    "min_months": (
+                        edu_duration_months(p.get("min_duration"))
+                        if p.get("min_duration") is not None
+                        else p.get("min_months")
+                    ),
+                }
+                for p in edu_paths(doc)
+            ],
+            # 项目侧就读时长门槛（月，已折算）。None 且 duration_required 为真
+            # = 「有要求、无数字」→ 判 edu_duration_unknown（silent）。
+            "min_duration_months": edu_min_duration_months(doc),
+            "duration_required": edu_duration_required(doc),
             # note 另写的「须在申请日前 N 年内完成学业」毕业时限（P2-0）。
             # 与 years_required 是两件事：那条说读了几年，这条说什么时候毕业。
             "recency_required": edu_recency_years(doc),
@@ -1477,8 +3081,15 @@ def flags_of(doc: dict) -> dict:
             # 学位须在指定国家/名单内院校完成（§4-3/§4-4/§4-6）：结构化只有层级。
             "place_constrained": bool(EDU_PLACE.search(edu.get("note") or "")),
             # 结构化字段比 note 严：以 note 为准（§4-5）。
+            # P3 起不再用 EDU_RANK 判「结构化字段是否真的写了一个层级」——
+            # 判定路径不许消费总序。改为问 edu_paths()：路径里有没有任何一条
+            # 声明了非 any 的层级。这既覆盖老项目（合成路径来自 minimum_level），
+            # 也覆盖新项目（层级写在 paths[i].level 里）。
             "by_sponsor": bool(
-                EDU_RANK.get(edu.get("minimum_level") or "any", 0)
+                any(
+                    (p.get("level") or "any") != "any"
+                    for p in edu_paths(doc)
+                )
                 and EDU_BY_SPONSOR.search(edu.get("note") or "")
             ),
         },
@@ -1511,17 +3122,42 @@ def flags_of(doc: dict) -> dict:
                 FUNDS_INFERRED.search(EXCHANGE_DISCLAIMER.sub("", amount_note + " " + funds_note))
             ),
         },
-        # 前置身份 / 在地要求（§4-3）。`kind` 取值与 Python judge() 的
-        # precondition 分支一一对应：local_status / outside / home_residence，
-        # 无要求时为 null。
+        # 前置身份 / 在地要求（§4-3、P1c）。`kinds` 取值与 Python judge() 的
+        # precondition 分支一一对应：local_status / inside / outside /
+        # home_residence / citizenship / document / unclassified，无要求时为空数组。
+        #
+        # 为什么是数组而不是单值：身份族与在地族各自独立出结论，一个项目可以同时
+        # 有两者（us-f1-opt）。单值时前端只能画一条，且第二条要么被吞掉、要么得
+        # 靠借别条的 code 发声——那正是本单拆掉的错。
+        # `kind` 保留单值形状（取第一项），因为 p21_worksheets 与历史断言仍按单值读；
+        # 前端按 `kinds` 判，不按 `kind` 判。
         "precondition": {
             "kind": precondition_kind(doc),
+            "kinds": precondition_kinds(doc),
             # 原文要求「岗位须预先落实」（P2-0）。与 kind 分开存：job_placement 是
             # 材料/流程前提，不是身份类别，两者可以同时成立（camp counselor 就是）。
             "job_placement": job_placement_required(doc),
+            # P4 §3：四种表述之一（camp / sponsor_ds2019 / summer_job / ds7002），
+            # 前端按它取 need 文案。null 表示「有要求但四种都不像」——测试当场红。
+            "job_placement_flavor": job_placement_flavor(doc),
+            # P4 §2：government_support_letter 的语义分型（sponsorship /
+            # official_registration / credential_check / institutional_recommendation /
+            # government_letter / unclassified）+ 是否必填。type 名不表示同一种东西，
+            # 前端与审计都按 kind 读，不按 type 名猜。
+            "government_support_letter": _gsl_flag(doc),
             # 原文要求「具体雇主的合格聘用」（P2-0 no-skilled-worker）：雇主担保
             # 类项目的 offer 前置，与上一条互斥（命中集合不重叠）。
             "employer_offer": employer_offer_required(doc),
+            # P1b-2：家属 / 签证史 / 学籍三个家族的 typed 值。
+            #
+            # 这里只放**项目侧的布尔量**（原文有没有要求）。画像侧的取值
+            # （dependents / prior_participation / ...）由前端从它自己持有的
+            # 画像对象里读，不写进 flags——flags 是「项目数据」，样本画像是
+            # 「用户输入」，两者混在一个文件里会让每一份用户画像都要重生成产物。
+            #
+            # 前端 verdict.ts 的 p1b2 块按这些布尔 + 自己的画像逐条重演，两条
+            # 路径的 (dim,kind,code) 由 smoke-test 逐条比对。
+            "p1b2": p1b2_project_flags(doc),
         },
         "window": {
             "type": sch.get("type"),
@@ -1530,6 +3166,42 @@ def flags_of(doc: dict) -> dict:
             "open": sch.get("open_date"),
             "close": sch.get("close_date"),
         },
+    }
+
+
+def p1b2_project_flags(doc: dict) -> dict:
+    """项目侧的 P1b-2 布尔量：原文对每个家族有没有提出要求。
+
+    只回答「这个项目有没有这一条」，不回答「这个人满不满足」——后者要画像，
+    由前端拿它自己的画像在这组布尔上重演（见 verdict.ts 的 p1b2 块）。
+    """
+    need = requirement_types(doc, required_only=True)
+    anyv = requirement_types(doc, required_only=False)
+    return {
+        # 家属
+        "forbid_child": DEP_FORBID_CHILD in need,
+        "forbid_other": DEP_FORBID_OTHER in need,
+        "cannot_work": DEP_CANNOT_WORK in need,
+        "separate": DEP_SEPARATE in need,
+        "allowed": DEP_ALLOWED in anyv,
+        "declaration": DECLARATION_ONLY in anyv,
+        # 签证史 / 参加史
+        "participation": bool(
+            need & {HIST_ONCE_LIFETIME, HIST_ONCE_PER_PROJECT, HIST_PARTICIPATION_CAP}
+        ),
+        "same_category_visa": HIST_SAME_CATEGORY_VISA in need,
+        "specific_visa_required": HIST_SPECIFIC_VISA_REQUIRED in need,
+        # 学籍 / 学历
+        "enrollment": ENROLL_ENROLLED in need,
+        "degree_completed": ENROLL_DEGREE in need,
+        "either": ENROLL_EITHER in need,
+        "scoring_input": SCORING_INPUT in anyv,
+        # —— 本单：这条项目读哪些画像字段（用于表单的条件显示）——
+        #
+        # 上方那些布尔量是**为什么**读（语义），这一项是**读不读**（事实）。
+        # 前端只读这一项，不按上方布尔自己推：同一条规则写两遍必然漂，
+        # 而「门悄悄关掉」在界面上看起来完全正常。
+        "reads": profile_readers(doc),
     }
 
 
@@ -1688,6 +3360,10 @@ def audit() -> dict:
         if bad:
             any_gap += 1
 
+    # 真实用户口径（裁决第二条）：同一个引擎、同一份数据，只换画像定义域。
+    # 这一份是停工线的判据；上面那份（夹具）降为回归参照。
+    real_per_sample = measure_caliber(docs, {k: real_profile(v) for k, v in SAMPLES.items()})
+
     return {
         "total": len(rows),
         "rows": rows,
@@ -1697,7 +3373,7 @@ def audit() -> dict:
         "samples": per_sample,
         # 全口径（甲+乙混算）：保留输出，但**不是闸门**，只作历史可比与防洗白。
         "max_unknown_ratio": max(v["unknown_ratio"] for v in per_sample.values()),
-        # 乙类全口径：这才是停工线量的东西（阈值 STOP_LINE_RATIO = 1/3）
+        # 乙类全口径：夹具口径（回归参照，不再是闸门判据）
         "max_ratio_class_b": max(v["ratio_class_b"] for v in per_sample.values()),
         # 甲类全口径：软线，报警但不变红
         "max_by_design_count": max(v["unknown_by_design"] for v in per_sample.values()),
@@ -1706,6 +3382,19 @@ def audit() -> dict:
         "by_design_alert_count": BY_DESIGN_ALERT_COUNT,
         # 白名单里但证据不成立的豁免（应为空；非空是数据债，见 audit() 注释）
         "design_exemptions_missing": unproven_exemptions,
+        # —— 双口径（2026-11-20 裁决）——
+        # real_samples 是停工线判据；samples 是夹具回归参照。
+        "real_samples": real_per_sample,
+        "stop_line_caliber": STOP_LINE_CALIBER,
+        # 闸门口径下的最高乙类占比与对应画像（停工判定只看这两个值）
+        "gate_ratio_class_b": max(v["ratio_class_b"] for v in real_per_sample.values()),
+        "gate_worst_sample": max(real_per_sample, key=lambda k: real_per_sample[k]["ratio_class_b"]),
+        "real_class_b_debt_ceiling": REAL_CLASS_B_DEBT_CEILING,
+        "real_class_b_excess": max(
+            0, max(v["unknown_class_b"] for v in real_per_sample.values()) - REAL_CLASS_B_DEBT_CEILING
+        ),
+        "form_fields": list(FORM_FIELDS),
+        "real_nulled_fields": list(REAL_PROFILE_NULLED_FIELDS),
     }
 
 
@@ -1727,20 +3416,26 @@ def ratio_text(x: float) -> str:
     return "%.1f%%" % (x * 100)
 
 
-def metric_line(rep: dict, name: str) -> str:
+def metric_line(rep: dict, name: str, caliber: str = "fixture") -> str:
     """三口径同行打印（P2-1 R6）。
 
     必须一直是**同一行**：分成三行贴出去，读者会挑最顺眼的那行引用；写在一行
     里，「闸门 1/3 只看乙类」这层关系就没法被断章取义。全口径标「仅记录」、
     甲类标「软线 N 项」，是为了让人一眼看出哪个数字会停工、哪个只是提醒。
+
+    caliber：fixture = 夹具口径（13 字段，回归参照）；real = 真实用户口径
+    （表单 6 字段，停工线判据）。两个口径都按同一格式打印，读者才能左右对比。
     """
-    v = rep["samples"][name]
+    src = rep["real_samples"] if caliber == "real" else rep["samples"]
+    v = src[name]
+    tag = "真实口径" if caliber == "real" else "夹具口径"
     return (
-        "乙类 %.1f%%（闸门 %s）｜全口径 %.1f%%（仅记录）｜甲类 %d 项（软线 %d）"
+        "%s 乙类 %.1f%%（闸门 %s）｜全口径 %.1f%%（仅记录）｜甲类 %d 项（软线 %d）"
         % (
+            tag,
             v["ratio_class_b"] * 100,
             ratio_text(rep["stop_line_ratio"]),
-            v["unknown_ratio"] * 100,
+            v["unknown"] / rep["total"] * 100,
             v["unknown_by_design"],
             rep["by_design_alert_count"],
         )
@@ -1789,17 +3484,33 @@ def render_markdown(rep: dict) -> str:
             rep["samples"][k]["unknown_ratio"] * 100 for k in ("A", "B", "C")
         )
     )
-    worst = max(("A", "B", "C"), key=lambda k: rep["samples"][k]["ratio_class_b"])
+    worst = rep["gate_worst_sample"]
+    gate_ratio = rep["gate_ratio_class_b"]
     L.append(
-        "- **停工线只看乙类（可避免不可判），阈值 %s 一个数字未动**。实测最高为画像 %s 的"
-        " %.1f%%；**%s**。全口径与甲类数字见下表，它们不参与停工判定。"
+        "- **停工线只看乙类（可避免不可判），阈值 %s 一个数字未动**。判据口径 = **真实用户画像**"
+        "（表单 6 字段 + 其余 %d 字段置 null，见裁决 2026-11-20）。实测最高为画像 %s 的"
+        " %.1f%%（%d/%d，门槛 %d 条）；**%s**。全口径与甲类数字见下表，它们不参与停工判定。"
         % (
             ratio_text(rep["stop_line_ratio"]),
+            len(rep["real_nulled_fields"]),
             worst,
-            rep["samples"][worst]["ratio_class_b"] * 100,
-            "已越过停工线，须停工报 Muse 裁决"
-            if rep["max_ratio_class_b"] > rep["stop_line_ratio"]
+            gate_ratio * 100,
+            rep["real_samples"][worst]["unknown_class_b"],
+            rep["total"],
+            int(rep["total"] * rep["stop_line_ratio"]),
+            "已越过停工线，记为在案债务（成因 = 表单采集面未跟上判定面），须降不许升"
+            if gate_ratio > rep["stop_line_ratio"]
             else "未越过停工线，可继续",
+        )
+    )
+    L.append(
+        "- **夹具口径（13 字段）降为回归参照**：实测最高 %.1f%%（%s）。它不再决定停工，"
+        "但仍在报告里，用来分辨「引擎变差」与「画像变瘦」。"
+        % (
+            rep["max_ratio_class_b"] * 100,
+            "；".join(
+                "%s %.1f%%" % (k, v["ratio_class_b"] * 100) for k, v in rep["samples"].items()
+            ),
         )
     )
     L.append(
@@ -1859,7 +3570,37 @@ def render_markdown(rep: dict) -> str:
     L.append("三口径同行（闸门只看乙类）：")
     L.append("")
     for k in ("A", "B", "C"):
-        L.append("- 画像 %s：%s" % (k, metric_line(rep, k)))
+        L.append("- 画像 %s：%s" % (k, metric_line(rep, k, "real")))
+    L.append("")
+    L.append("### 2.1 双口径对照（真实口径 = 闸门判据｜夹具口径 = 回归参照）")
+    L.append("")
+    L.append("| 画像 | 真实口径乙类 | 真实占比 | 夹具口径乙类 | 夹具占比 | 差（真实 − 夹具） |")
+    L.append("|---|---|---|---|---|---|")
+    for k in ("A", "B", "C"):
+        r_, f_ = rep["real_samples"][k], rep["samples"][k]
+        L.append(
+            "| %s | %d | %.1f%% | %d | %.1f%% | %+d |"
+            % (
+                k,
+                r_["unknown_class_b"],
+                r_["ratio_class_b"] * 100,
+                f_["unknown_class_b"],
+                f_["ratio_class_b"] * 100,
+                r_["unknown_class_b"] - f_["unknown_class_b"],
+            )
+        )
+    L.append("")
+    L.append(
+        "> 真实口径 = 表单能采集的 %s（%d 项，含条件显示的补充字段）；"
+        "夹具多带的 %s 在表单补齐前无输入口，那一版口径见 LEGACY_FORM_FIELDS。"
+        "两列现在相同，说明采集面已追上判定面（collection_gap 为空）；"
+        "不同则差额即「用户没被问到的事实」造成的不可判，不是引擎退化。"
+        % (
+            "、".join(rep["form_fields"]),
+            len(rep["form_fields"]),
+            "、".join(rep["real_nulled_fields"]),
+        )
+    )
     L.append("")
     L.append("## 3. 逐项目缺口表")
     L.append("")
@@ -1963,22 +3704,52 @@ def main() -> int:
         rep["total"], rep["programs_with_gap"], rep["program_gap_ratio"] * 100))
     for dim, cnt in rep["dimension_counts"].items():
         print("  %-10s %s" % (dim, " ".join("%s=%d" % (k, cnt.get(k, 0)) for k in MARK)))
-    print("样例画像不可判占比（全口径）：", " ".join(
-        "%s=%.1f%%" % (k, v["unknown_ratio"] * 100) for k, v in rep["samples"].items()))
+    print("样例画像不可判占比（真实口径 = 闸门判据｜夹具口径 = 回归参照）：")
     for k in rep["samples"]:
-        print("  %s  %s" % (k, metric_line(rep, k)))
+        print(
+            "  口径对照 %s：真实 %.1f%% / 夹具 %.1f%%（乙类 %d/%d vs %d/%d）"
+            % (
+                k,
+                rep["real_samples"][k]["unknown"] / rep["total"] * 100,
+                rep["samples"][k]["unknown_ratio"] * 100,
+                rep["real_samples"][k]["unknown_class_b"],
+                rep["total"],
+                rep["samples"][k]["unknown_class_b"],
+                rep["total"],
+            )
+        )
+    for k in rep["samples"]:
+        print("  %s  %s" % (k, metric_line(rep, k, "real")))
+    for k in rep["samples"]:
+        print("  %s  %s" % (k, metric_line(rep, k, "fixture")))
     print(
-        "最高乙类占比 %.1f%%（停工线 %s，只看乙类）｜最高全口径 %.1f%%（仅记录）｜最高甲类 %d 项（软线 %d）"
+        "停工线 %s（只看乙类）：真实口径最高 %.1f%%（画像 %s），夹具口径最高 %.1f%%（回归参照，不判停）"
+        "｜最高甲类 %d 项（软线 %d）"
         % (
-            rep["max_ratio_class_b"] * 100,
             ratio_text(rep["stop_line_ratio"]),
-            rep["max_unknown_ratio"] * 100,
+            rep["gate_ratio_class_b"] * 100,
+            rep["gate_worst_sample"],
+            rep["max_ratio_class_b"] * 100,
             rep["max_by_design_count"],
             rep["by_design_alert_count"],
         )
     )
-    if rep["max_ratio_class_b"] > rep["stop_line_ratio"]:
-        print("  停工：乙类不可判率已越过停工线，须停工报 Muse 裁决")
+    if rep["gate_ratio_class_b"] > rep["stop_line_ratio"]:
+        print(
+            "  停工：真实口径乙类 %d/%d 已越过 %s（在案债务上限 %d 条），须降不许升；"
+            "新增越线须停工报 Muse 裁决"
+            % (
+                rep["real_samples"][rep["gate_worst_sample"]]["unknown_class_b"],
+                rep["total"],
+                ratio_text(rep["stop_line_ratio"]),
+                rep["real_class_b_debt_ceiling"],
+            )
+        )
+    if rep["real_class_b_excess"] > 0:
+        print(
+            "  债务上升：真实口径乙类已破在案上限 %d 条（超出 %d 条），须先解释新增哪几条"
+            % (rep["real_class_b_debt_ceiling"], rep["real_class_b_excess"])
+        )
     if rep["max_by_design_count"] >= rep["by_design_alert_count"]:
         print("  报警：甲类已达软线 %d 项，须在报告里解释甲类构成（不使 CI 变红）"
               % rep["by_design_alert_count"])

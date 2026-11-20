@@ -1,26 +1,50 @@
 {
- "rules_version": 6,
+ "rules_version": 12,
  "samples": {
   "A": {
    "passport": "mainland_china",
    "age": 21,
    "education": "bachelor_in_progress",
    "ielts": 6.0,
-   "budget_cny": 30000
+   "budget_cny": 30000,
+   "dependents": "none",
+   "prior_participation": "none",
+   "prior_same_category_visa": "none",
+   "enrollment_status": "enrolled",
+   "current_location": "CN",
+   "study_months": 36,
+   "months_since_graduation": null,
+   "work_experience_years": 0
   },
   "B": {
    "passport": "mainland_china",
    "age": 28,
    "education": "bachelor_completed",
    "ielts": null,
-   "budget_cny": 80000
+   "budget_cny": 80000,
+   "dependents": "none",
+   "prior_participation": "none",
+   "prior_same_category_visa": "none",
+   "enrollment_status": "completed",
+   "current_location": "CN",
+   "months_since_graduation": 60,
+   "study_months": 48,
+   "work_experience_years": 3
   },
   "C": {
    "passport": "taiwan_china",
    "age": 25,
    "education": "bachelor_completed",
    "ielts": 6.5,
-   "budget_cny": 50000
+   "budget_cny": 50000,
+   "dependents": "none",
+   "prior_participation": "none",
+   "prior_same_category_visa": "none",
+   "enrollment_status": "completed",
+   "current_location": "TW",
+   "months_since_graduation": 36,
+   "study_months": 48,
+   "work_experience_years": 1
   }
  },
  "verdicts": {
@@ -56,7 +80,7 @@
     ]
    },
    "B": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -70,8 +94,8 @@
      },
      {
       "dim": "education",
-      "kind": "silent",
-      "code": "edu_years_unknown"
+      "kind": "pass",
+      "code": "edu_ok"
      },
      {
       "dim": "language",
@@ -86,7 +110,7 @@
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -100,8 +124,8 @@
      },
      {
       "dim": "education",
-      "kind": "silent",
-      "code": "edu_years_unknown"
+      "kind": "pass",
+      "code": "edu_ok"
      },
      {
       "dim": "language",
@@ -147,8 +171,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    },
@@ -182,8 +206,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    },
@@ -217,8 +241,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    }
@@ -251,6 +275,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    },
@@ -281,6 +315,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    },
@@ -311,6 +355,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    }
@@ -346,13 +400,18 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_prior_visa_required"
      }
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -363,6 +422,11 @@
       "dim": "age",
       "kind": "pass",
       "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -376,13 +440,18 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_prior_visa_required"
      }
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -393,6 +462,11 @@
       "dim": "age",
       "kind": "pass",
       "code": "age_ok"
+     },
+     {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -406,15 +480,20 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "silent",
+      "code": "pre_prior_visa_required"
      }
     ]
    }
   },
   "au-485-vocational": {
    "A": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -443,13 +522,23 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_allowed"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_degree_missing"
      }
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -478,13 +567,23 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_allowed"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -513,8 +612,18 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_allowed"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    }
@@ -639,6 +748,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_degree_missing"
      }
     ]
    },
@@ -669,6 +788,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    },
@@ -699,6 +828,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    }
@@ -828,11 +967,16 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      }
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -863,11 +1007,16 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      }
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -898,6 +1047,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_inside_country_no"
      }
     ]
    }
@@ -1338,6 +1492,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_declaration_only"
      }
     ]
    },
@@ -1373,6 +1532,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_declaration_only"
      }
     ]
    },
@@ -1408,6 +1572,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_declaration_only"
      }
     ]
    }
@@ -1532,11 +1701,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_enrolled_ok"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -1562,11 +1736,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_not_enrolled"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -1592,6 +1771,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_not_enrolled"
      }
     ]
    }
@@ -1629,6 +1813,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_degree_missing"
      }
     ]
    },
@@ -1659,6 +1848,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    },
@@ -1689,6 +1883,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    }
@@ -1818,6 +2017,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_degree_missing"
      }
     ]
    },
@@ -1853,6 +2057,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    },
@@ -1888,6 +2097,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    }
@@ -1925,6 +2139,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_degree_missing"
      }
     ]
    },
@@ -1955,6 +2174,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    },
@@ -1985,6 +2209,11 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    }
@@ -2020,8 +2249,18 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    },
@@ -2055,13 +2294,23 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -2090,8 +2339,18 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    }
@@ -2124,6 +2383,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    },
@@ -2154,6 +2423,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    },
@@ -2184,6 +2463,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    }
@@ -2323,6 +2612,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    },
@@ -2353,6 +2647,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    },
@@ -2383,6 +2682,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    }
@@ -2496,7 +2800,7 @@
   },
   "nz-china-whv": {
    "A": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -2525,8 +2829,23 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_separate"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    },
@@ -2560,13 +2879,28 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_separate"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "can",
     "dims": [
      {
       "dim": "passport",
@@ -2595,8 +2929,23 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_home_residence"
+      "kind": "pass",
+      "code": "pre_home_residence_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_separate"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    }
@@ -2629,6 +2978,11 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    },
@@ -2659,6 +3013,11 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    },
@@ -2689,6 +3048,11 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    }
@@ -2724,8 +3088,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    },
@@ -2759,8 +3123,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    },
@@ -2794,8 +3158,8 @@
      },
      {
       "dim": "precondition",
-      "kind": "silent",
-      "code": "pre_outside_country"
+      "kind": "pass",
+      "code": "pre_outside_country_ok"
      }
     ]
    }
@@ -2828,6 +3192,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_scoring_input_only"
      }
     ]
    },
@@ -2858,6 +3227,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_scoring_input_only"
      }
     ]
    },
@@ -2888,6 +3262,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_scoring_input_only"
      }
     ]
    }
@@ -2920,6 +3299,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_scoring_input_only"
      }
     ]
    },
@@ -2950,6 +3334,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_scoring_input_only"
      }
     ]
    },
@@ -2980,6 +3369,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_scoring_input_only"
      }
     ]
    }
@@ -3107,13 +3501,18 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_allowed"
      }
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3124,6 +3523,11 @@
       "dim": "age",
       "kind": "na",
       "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -3137,13 +3541,18 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_allowed"
      }
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3154,6 +3563,11 @@
       "dim": "age",
       "kind": "na",
       "code": "age_none"
+     },
+     {
+      "dim": "education",
+      "kind": "silent",
+      "code": "edu_place_unknown"
      },
      {
       "dim": "language",
@@ -3167,8 +3581,13 @@
      },
      {
       "dim": "precondition",
-      "kind": "gap",
-      "code": "pre_local_status"
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "na",
+      "code": "pre_dependents_allowed"
      }
     ]
    }
@@ -3201,6 +3620,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    },
@@ -3231,6 +3660,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    },
@@ -3261,6 +3700,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_prior_visa_none"
      }
     ]
    }
@@ -3293,6 +3742,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
      }
     ]
    },
@@ -3323,6 +3777,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
      }
     ]
    },
@@ -3353,6 +3812,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
      }
     ]
    }
@@ -3385,6 +3849,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    },
@@ -3415,6 +3889,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    },
@@ -3445,6 +3929,16 @@
       "dim": "funds",
       "kind": "pass",
       "code": "funds_ok"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_participation_none"
      }
     ]
    }
@@ -3482,11 +3976,21 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
      }
     ]
    },
    "B": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3517,11 +4021,21 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
      }
     ]
    },
    "C": {
-    "state": "gap",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3552,6 +4066,16 @@
       "dim": "precondition",
       "kind": "gap",
       "code": "pre_local_status"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_inside_country_no"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_dependents_none"
      }
     ]
    }
@@ -3665,7 +4189,7 @@
   },
   "us-j1-intern": {
    "A": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3691,11 +4215,21 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3709,8 +4243,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "fail",
+      "code": "edu_not_enrolled"
      },
      {
       "dim": "language",
@@ -3721,11 +4255,21 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3739,8 +4283,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "fail",
+      "code": "edu_not_enrolled"
      },
      {
       "dim": "language",
@@ -3751,13 +4295,23 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_degree_ok"
      }
     ]
    }
   },
   "us-j1-research-scholar": {
    "A": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3783,11 +4337,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "B": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3813,11 +4372,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3843,13 +4407,18 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_by_design"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    }
   },
   "us-j1-summer-work-travel": {
    "A": {
-    "state": "unknown",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3875,11 +4444,21 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
+      "kind": "pass",
+      "code": "pre_enrolled_ok"
      }
     ]
    },
    "B": {
-    "state": "unknown",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3893,8 +4472,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "fail",
+      "code": "edu_not_enrolled"
      },
      {
       "dim": "language",
@@ -3905,11 +4484,21 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_not_enrolled"
      }
     ]
    },
    "C": {
-    "state": "unknown",
+    "state": "cannot",
     "dims": [
      {
       "dim": "passport",
@@ -3923,8 +4512,8 @@
      },
      {
       "dim": "education",
-      "kind": "pass",
-      "code": "edu_ok"
+      "kind": "fail",
+      "code": "edu_not_enrolled"
      },
      {
       "dim": "language",
@@ -3935,6 +4524,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
+     },
+     {
+      "dim": "precondition",
+      "kind": "fail",
+      "code": "pre_not_enrolled"
      }
     ]
    }
@@ -3967,11 +4566,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "B": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -3997,11 +4601,16 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    },
    "C": {
-    "state": "can",
+    "state": "gap",
     "dims": [
      {
       "dim": "passport",
@@ -4027,6 +4636,11 @@
       "dim": "funds",
       "kind": "na",
       "code": "funds_none"
+     },
+     {
+      "dim": "precondition",
+      "kind": "gap",
+      "code": "pre_job_placement"
      }
     ]
    }
