@@ -276,6 +276,38 @@ export type UiKey =
   | 'verdictLocation'
   | 'verdictLocationUnknown'
   | 'verdictLocationHint'
+  // —— 条件显示的补充字段（本单）——
+  | 'verdictExtraTitle'
+  | 'verdictExtraDesc'
+  | 'verdictExtraMore'
+  | 'verdictExtraLess'
+  | 'verdictExtraHint'
+  | 'verdictEnrollment'
+  | 'verdictEnrollmentUnknown'
+  | 'verdictParticipation'
+  | 'verdictParticipationUnknown'
+  | 'verdictPriorVisa'
+  | 'verdictPriorVisaUnknown'
+  | 'verdictDependents'
+  | 'verdictDependentsUnknown'
+  | 'verdictStudyMonths'
+  | 'verdictStudyMonthsUnknown'
+  | 'verdictGradMonths'
+  | 'verdictGradMonthsUnknown'
+  | 'verdictWorkYears'
+  | 'verdictWorkYearsUnknown'
+  // 补充字段的选项（不与 ENUM_LABELS 混用：那套是数据枚举的展示名，
+  // 这里是画像选项的人话，两者语义不同，混用会让改一处影响另一处）
+  | 'optEnrolled'
+  | 'optCompleted'
+  | 'optPartYes'
+  | 'optPartNo'
+  | 'optVisaYes'
+  | 'optVisaNo'
+  | 'optDepNone'
+  | 'optDepChildren'
+  | 'optDepPartner'
+  | 'optDepOther'
   | 'verdictSubmit'
   | 'verdictSubmitHint'
   | 'verdictSaved'
@@ -622,6 +654,37 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictLocationUnknown: '不确定 / 不填',
     verdictLocationHint:
       '与护照不同：有些项目要求递交时人必须已经在该国境内。不填就按「无法判定」处理，不会当成符合。',
+    // —— 补充条件（只在与已填信息相关时出现）——
+    verdictExtraTitle: '再补几条（可选）',
+    verdictExtraDesc:
+      '下面几条只影响一部分项目。不填也行，那几条会显示「不可判」；填了就能给出确切结论。',
+    verdictExtraMore: '继续细化',
+    verdictExtraLess: '收起',
+    verdictExtraHint: '只问对上面这些条件真的能改变结论的项，不相关的不问。',
+    verdictEnrollment: '你现在是在读还是已毕业',
+    verdictEnrollmentUnknown: '不确定 / 不填',
+    verdictParticipation: '以前参加过这个项目或同类项目吗',
+    verdictParticipationUnknown: '不确定 / 不填',
+    verdictPriorVisa: '以前拿过同类签证吗',
+    verdictPriorVisaUnknown: '不确定 / 不填',
+    verdictDependents: '有家属一起过去吗',
+    verdictDependentsUnknown: '不确定 / 不填',
+    verdictStudyMonths: '这段学历你实际读了多少个月',
+    verdictStudyMonthsUnknown: '不确定 / 不填',
+    verdictGradMonths: '你毕业多久了（月）',
+    verdictGradMonthsUnknown: '不确定 / 不填',
+    verdictWorkYears: '与目标岗位相关的工作经验（年）',
+    verdictWorkYearsUnknown: '不确定 / 不填',
+    optEnrolled: '在读',
+    optCompleted: '已毕业',
+    optPartYes: '参加过',
+    optPartNo: '没参加过',
+    optVisaYes: '拿过',
+    optVisaNo: '没拿过',
+    optDepNone: '没有家属同行',
+    optDepChildren: '有受抚养子女同行',
+    optDepPartner: '只有配偶同行',
+    optDepOther: '有其他亲属同行',
     verdictSubmit: '开始判定',
     verdictSubmitHint: '判定在你自己的浏览器里完成，不发服务器。',
     verdictSaved: '条件已存本机',
@@ -978,6 +1041,38 @@ export const UI: Record<Lang, Record<UiKey, string>> = {
     verdictLocationUnknown: 'Not sure / leave blank',
     verdictLocationHint:
       'Separate from your passport: some programs require you to be inside that country when you apply. Leaving it blank stays "cannot decide" — never a silent pass.',
+    // —— Extra conditions (asked only when they can change a verdict) ——
+    verdictExtraTitle: 'A few more (optional)',
+    verdictExtraDesc:
+      'These only affect some programs. Leave them blank and those stay "undecidable"; fill them in and you get a definite answer.',
+    verdictExtraMore: 'Refine further',
+    verdictExtraLess: 'Hide',
+    verdictExtraHint:
+      'Only what can actually change a verdict given the details above — nothing else is asked.',
+    verdictEnrollment: 'Are you studying now, or have you finished?',
+    verdictEnrollmentUnknown: 'Not sure / leave blank',
+    verdictParticipation: 'Have you taken part in this or a similar program before?',
+    verdictParticipationUnknown: 'Not sure / leave blank',
+    verdictPriorVisa: 'Have you held this kind of visa before?',
+    verdictPriorVisaUnknown: 'Not sure / leave blank',
+    verdictDependents: 'Is anyone coming with you?',
+    verdictDependentsUnknown: 'Not sure / leave blank',
+    verdictStudyMonths: 'How many months have you actually studied in that qualification?',
+    verdictStudyMonthsUnknown: 'Not sure / leave blank',
+    verdictGradMonths: 'How many months since you graduated?',
+    verdictGradMonthsUnknown: 'Not sure / leave blank',
+    verdictWorkYears: 'Years of work experience relevant to the role (years)',
+    verdictWorkYearsUnknown: 'Not sure / leave blank',
+    optEnrolled: 'Currently studying',
+    optCompleted: 'Finished',
+    optPartYes: 'Yes, I have',
+    optPartNo: 'No',
+    optVisaYes: 'Yes, I have',
+    optVisaNo: 'No',
+    optDepNone: 'No one is coming with me',
+    optDepChildren: 'A dependent child is coming',
+    optDepPartner: 'Only a partner is coming',
+    optDepOther: 'Another relative is coming',
     verdictSubmit: 'Run the check',
     verdictSubmitHint: 'The check runs in your browser. Nothing is uploaded.',
     verdictSaved: 'Saved on this device',

@@ -25,6 +25,17 @@ import {
   type VerdictProfile,
   type VerdictState,
 } from '../lib/verdict';
+import {
+  EXTRA_FIELDS,
+  MAX_VISIBLE_EXTRA,
+  primaryExtraFields,
+  readersOf,
+  secondaryExtraFields,
+  visibleExtraFields,
+  type ExtraField,
+  type GateInput,
+  type GateProgram,
+} from '../lib/profileFields';
 import type { ProgramIndexEntry } from '../types';
 
 const KEY_PROFILE = 'opd.verdict';
@@ -78,6 +89,8 @@ export function VerdictView({
   const [profile, setProfile] = useState<VerdictProfile>(readProfile);
   /** 只有点过「开始判定」才出结果：边打字边刷新四十条结果会晃得没法读 */
   const [submitted, setSubmitted] = useState(false);
+  /** 「继续细化」是否展开（默认收起，见 profileFields.ts 的 MAX_VISIBLE_EXTRA） */
+  const [extraOpen, setExtraOpen] = useState(false);
 
   useDocumentTitle([t('verdictTitle'), t('pageTitleSuffix')]);
 
@@ -143,6 +156,192 @@ export function VerdictView({
   }, [flags, index, profile, submitted]);
 
   const counts = useMemo(() => (rows ? countByState(Object.values(rows).flat()) : null), [rows]);
+
+  /**
+   * 门的输入：每条项目「读哪些补充字段」+「**在补充字段全空时**它是否判不出结论」。
+   *
+   * 为什么用「全空」的基线而不是当前填好的画像：
+   * 否则门会自己咬自己——用户答了「无家属」，那条项目立刻能判，门就关掉这个
+   * 字段，值被清空，项目又变回不可判，字段再打开……每次渲染翻一次。
+   * 拿基线算，门只取决于六项主字段，答完一项不会让问过的项消失。
+   *
+   * 这也正好符合工单的说法：「无条件显示」问的是「这些信息能不能改变你的
+   * 结论」，那是基线性质，不是「现在还差什么」。
+   *
+   * 判定用与结果区同一个 judgeAll，不另写一套：否则会出现「门说这条项目
+   * 需要家属信息，结果区却说它已经能申」这种自相矛盾。
+   */
+  const gatePrograms = useMemo<GateProgram[]>(() => {
+    if (!flags || !index) return [];
+    // 基线画像：主字段照用，七个补充字段一律 null
+    const baseline: VerdictProfile = { ...profile };
+    for (const f of EXTRA_FIELDS) {
+      (baseline as unknown as Record<string, unknown>)[f] = null;
+    }
+    const verdicts = judgeAll(flags, index.map((p) => p.id), baseline);
+    const undecided = new Set(
+      verdicts.filter((v) => v.verdict.state === 'unknown').map((v) => v.id),
+    );
+    return Object.entries(flags.programs).map(([id, f]) => ({
+      id,
+      reads: readersOf(f),
+      undecided: undecided.has(id),
+    }));
+  }, [flags, index, profile]);
+
+  const gateInput = useMemo<GateInput>(
+    () => ({ profile, programs: gatePrograms }),
+    [profile, gatePrograms],
+  );
+
+  /** 门开着的字段。为空时整块「再补几条」都不渲染——这才是「不许拉长」。 */
+  const extraVisible = useMemo(
+    () => (gatePrograms.length ? visibleExtraFields(gateInput) : []),
+    [gateInput, gatePrograms.length],
+  );
+  const extraPrimary = useMemo(
+    () => (extraVisible.length ? primaryExtraFields(gateInput) : []),
+    [gateInput, extraVisible.length],
+  );
+  const extraSecondary = useMemo(
+    () => (extraOpen ? secondaryExtraFields(gateInput) : []),
+    [gateInput, extraOpen],
+  );
+
+  /**
+   * 一个补充字段的控件。
+   *
+   * 每条都用「不填」作为默认项并显式写出「不确定」——这与六项主字段同一口径：
+   * 缺省是未知，不是「没有」。把 dependents 默认成「没有家属」会替用户承认
+   * 一个他没说过的事实，判定立刻偏乐观。
+   */
+  const renderExtraField = (field: ExtraField) => {
+    const set = (patch: Partial<VerdictProfile>) => setProfile({ ...profile, ...patch });
+
+    if (field === 'enrollment_status') {
+      return (
+        <label className="pfield" key={field}>
+          <span className="pfield__label">{t('verdictEnrollment')}</span>
+          <select
+            className="input"
+            value={profile.enrollment_status ?? ''}
+            onChange={(e) =>
+              set({
+                enrollment_status:
+                  (e.target.value || null) as VerdictProfile['enrollment_status'],
+              })
+            }
+          >
+            <option value="">{t('verdictEnrollmentUnknown')}</option>
+            <option value="enrolled">{t('optEnrolled')}</option>
+            <option value="completed">{t('optCompleted')}</option>
+          </select>
+        </label>
+      );
+    }
+
+    if (field === 'prior_participation') {
+      return (
+        <label className="pfield" key={field}>
+          <span className="pfield__label">{t('verdictParticipation')}</span>
+          <select
+            className="input"
+            value={profile.prior_participation ?? ''}
+            onChange={(e) =>
+              set({
+                prior_participation:
+                  (e.target.value || null) as VerdictProfile['prior_participation'],
+              })
+            }
+          >
+            <option value="">{t('verdictParticipationUnknown')}</option>
+            <option value="none">{t('optPartNo')}</option>
+            <option value="used">{t('optPartYes')}</option>
+          </select>
+        </label>
+      );
+    }
+
+    if (field === 'prior_same_category_visa') {
+      return (
+        <label className="pfield" key={field}>
+          <span className="pfield__label">{t('verdictPriorVisa')}</span>
+          <select
+            className="input"
+            value={profile.prior_same_category_visa ?? ''}
+            onChange={(e) =>
+              set({
+                prior_same_category_visa:
+                  (e.target.value || null) as VerdictProfile['prior_same_category_visa'],
+              })
+            }
+          >
+            <option value="">{t('verdictPriorVisaUnknown')}</option>
+            <option value="none">{t('optVisaNo')}</option>
+            <option value="used">{t('optVisaYes')}</option>
+          </select>
+        </label>
+      );
+    }
+
+    if (field === 'dependents') {
+      return (
+        <label className="pfield" key={field}>
+          <span className="pfield__label">{t('verdictDependents')}</span>
+          <select
+            className="input"
+            value={profile.dependents ?? ''}
+            onChange={(e) =>
+              set({ dependents: (e.target.value || null) as VerdictProfile['dependents'] })
+            }
+          >
+            <option value="">{t('verdictDependentsUnknown')}</option>
+            <option value="none">{t('optDepNone')}</option>
+            <option value="children">{t('optDepChildren')}</option>
+            <option value="partner">{t('optDepPartner')}</option>
+            <option value="other">{t('optDepOther')}</option>
+          </select>
+        </label>
+      );
+    }
+
+    // 三个数字字段：空串即「未知」，不写 0。
+    // 0 与「没填」在这里是两件不同的事实（J-1 Trainee 的经验年限就是靠这个
+    // 区分判 fail 还是判 silent），所以绝不用 0 当占位。
+    const numField = (
+      label: Parameters<typeof t>[0],
+      hint: Parameters<typeof t>[0],
+      value: number | null | undefined,
+      min: number,
+      step: number,
+      apply: (v: number | null) => Partial<VerdictProfile>,
+    ) => (
+      <label className="pfield" key={field}>
+        <span className="pfield__label">{t(label)}</span>
+        <input
+          className="input"
+          type="number"
+          min={min}
+          step={step}
+          inputMode="numeric"
+          placeholder={t(hint)}
+          value={value ?? ''}
+          onChange={(e) => set(apply(e.target.value === '' ? null : Number(e.target.value)))}
+        />
+      </label>
+    );
+
+    if (field === 'study_months') {
+      return numField('verdictStudyMonths', 'verdictStudyMonthsUnknown', profile.study_months, 0, 1,
+        (v) => ({ study_months: v }));
+    }
+    if (field === 'months_since_graduation') {
+      return numField('verdictGradMonths', 'verdictGradMonthsUnknown',
+        profile.months_since_graduation, 0, 1, (v) => ({ months_since_graduation: v }));
+    }
+    return numField('verdictWorkYears', 'verdictWorkYearsUnknown',
+      profile.work_experience_years, 0, 1, (v) => ({ work_experience_years: v }));
+  };
 
   /** 把一条维结论翻成当前语言的句子：模板里 {need}/{have} 用实际值填 */
   const dimText = (d: DimVerdict): string => {
@@ -306,6 +505,33 @@ export function VerdictView({
             <span className="pfield__hint">{t('verdictLocationHint')}</span>
           </label>
 
+          {/*
+            补充条件（本单）。只在「有项目会因为它而不可判」时出现，
+            默认最多露 MAX_VISIBLE_EXTRA 项，其余收在「继续细化」里。
+
+            整块为空时**什么都不渲染**——没有一条项目读这些字段的人
+            （理论上不会有，但数据变化时可能）不该看到一个空标题。
+          */}
+          {extraPrimary.length > 0 && (
+            <fieldset className="pgate">
+              <legend className="pgate__title">{t('verdictExtraTitle')}</legend>
+              <p className="pgate__desc">{t('verdictExtraDesc')}</p>
+              {extraPrimary.map(renderExtraField)}
+              {extraSecondary.map(renderExtraField)}
+              {extraVisible.length > MAX_VISIBLE_EXTRA && (
+                <button
+                  type="button"
+                  className="btn btn--ghost btn--sm pgate__more"
+                  aria-expanded={extraOpen}
+                  onClick={() => setExtraOpen(!extraOpen)}
+                >
+                  {extraOpen ? t('verdictExtraLess') : t('verdictExtraMore')}
+                </button>
+              )}
+              <p className="pgate__hint">{t('verdictExtraHint')}</p>
+            </fieldset>
+          )}
+
           <button type="submit" className="btn btn--primary">
             {t('verdictSubmit')}
           </button>
@@ -315,6 +541,7 @@ export function VerdictView({
             onClick={() => {
               setProfile(EMPTY_VERDICT_PROFILE);
               setSubmitted(false);
+              setExtraOpen(false);
             }}
           >
             {t('verdictReset')}

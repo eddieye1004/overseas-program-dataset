@@ -796,6 +796,159 @@ console.log('\n[15] 资格判定：Python 与 TypeScript 同一口径');
   ok('VERDICT_TEXT.en 无中文', Object.values(VERDICT_TEXT.en).every((v) => !HAS_CJK.test(v)));
 }
 
+console.log('\n[15b] 条件显示的补充字段（门）');
+{
+  // 门的判据读 match-flags.json 的布尔量，不写 id 白名单——所以这里能
+  // 用同一份数据复算「谁会开」。与 Python 侧 readersOf 的比对由
+  // tests/test_match_readiness.py 的 test_gate_rules_match_engine_readers 负责；
+  // 这里守的是门本身的三个性质。
+  const outGate = join(WEB, '.tmp-gate.mjs');
+  await build({
+    entryPoints: [join(WEB, 'src/lib/profileFields.ts')],
+    bundle: true,
+    format: 'esm',
+    outfile: outGate,
+    platform: 'neutral',
+  });
+  const {
+    EXTRA_FIELDS,
+    MAX_VISIBLE_EXTRA,
+    readersOf,
+    shouldAsk,
+    visibleExtraFields,
+    primaryExtraFields,
+    secondaryExtraFields,
+    pruneHidden,
+  } = await import(`file://${outGate.replace(/\\/g, '/')}`);
+
+  // 门要的是「这条项目在该用户基线（补充字段全空）下判不出结论」。
+  // smoke-test 跑在 node 里、没有 React，但它有 judgeAll——同一份判定，
+  // 所以这里能用真实结论构出门输入，与组件里的算法一致。
+  const baselinePrograms = (pr) => {
+    const base = { ...EMPTY_VERDICT_PROFILE, ...pr };
+    for (const f of EXTRA_FIELDS) base[f] = null;
+    const ids = index.map((p) => p.id);
+    const undecided = new Set(
+      judgeAll(flags, ids, base)
+        .filter((v) => v.verdict.state === 'unknown')
+        .map((v) => v.id),
+    );
+    return Object.entries(flags.programs).map(([id, f]) => ({
+      id,
+      reads: readersOf(f),
+      undecided: undecided.has(id),
+    }));
+  };
+
+  ok('七个补充字段都在 EXTRA_FIELDS 里', EXTRA_FIELDS.length === 7, EXTRA_FIELDS.join(','));
+
+  // 0) reads 缺失时必须退化成「全关」——这是安全方向。
+  //    门在没有任何依据时开着的后果，是凭一个猜出来的规则去问用户。
+  const noReads = { precondition: { p1b2: {} } };
+  ok(
+    'reads 缺失时 readersOf 全返回 false（门全关）',
+    Object.values(readersOf(noReads)).every((v) => v === false),
+    JSON.stringify(readersOf(noReads)),
+  );
+  ok(
+    'p1b2 整体缺失时也不抛异常',
+    Object.values(readersOf({})).every((v) => v === false),
+  );
+
+  // 1) 每个字段都必须至少被一条项目读（否则不该进表单）
+  {
+    const allReads = Object.entries(flags.programs).map(([id, f]) => ({
+      id,
+      reads: readersOf(f),
+    }));
+    for (const f of EXTRA_FIELDS) {
+      const n = allReads.filter((p) => p.reads[f]).length;
+      ok(`${f} 至少有一条项目读它`, n > 0, `读到 ${n} 条`);
+    }
+  }
+
+  // 2) 一次露出的字段数不超过上限——这就是「不许拉长」。
+  //    同时验「门随用户变」：不同画像开出的字段集合不该完全相同，
+  //    否则条件显示就退化成「永远全开」。
+  const asProfile = (over) => ({ ...EMPTY_VERDICT_PROFILE, ...over });
+  const cases = [
+    ['默认画像', asProfile({})],
+    ['A 在读 21 岁', asProfile({ education: 'bachelor_in_progress', age: 21, ielts: 6 })],
+    ['B 已毕业 28 岁', asProfile({ education: 'bachelor_completed', age: 28 })],
+    ['C 台湾 25 岁', asProfile({ passport: 'taiwan_china', education: 'bachelor_completed', age: 25 })],
+    ['高年龄 45 岁', asProfile({ education: 'master', age: 45 })],
+    ['未成年 16 岁', asProfile({ education: 'high_school', age: 16 })],
+  ];
+  const openedSets = [];
+  for (const [name, pr] of cases) {
+    const input = { profile: pr, programs: baselinePrograms(pr) };
+    const prim = primaryExtraFields(input);
+    const sec = secondaryExtraFields(input);
+    const vis = visibleExtraFields(input);
+    openedSets.push(vis.join(','));
+    ok(
+      `${name}：默认露出 ≤ ${MAX_VISIBLE_EXTRA} 项`,
+      prim.length <= MAX_VISIBLE_EXTRA,
+      `primary=${prim.length} / visible=${vis.length}`,
+    );
+    ok(
+      `${name}：primary + secondary 恰好等于 visible（不漏不重）`,
+      prim.length + sec.length === vis.length &&
+        vis.every((f) => prim.includes(f) || sec.includes(f)),
+      `primary=${prim.join(',')} secondary=${sec.join(',')} visible=${vis.join(',')}`,
+    );
+  }
+  ok(
+    '不同画像开出的字段集合不完全相同（门真的随人变）',
+    new Set(openedSets).size > 1,
+    openedSets.join(' | '),
+  );
+
+  // 3) 门关着的字段必须被清空——不能留一个自相矛盾的历史值
+  const stale = asProfile({
+    education: 'bachelor_in_progress',
+    dependents: 'children',
+    months_since_graduation: 36,
+  });
+  const staleGate = baselinePrograms(stale);
+  const pruned = pruneHidden({ profile: stale, programs: staleGate }, stale);
+  const stillVisible = new Set(
+    visibleExtraFields({ profile: stale, programs: staleGate }),
+  );
+  ok(
+    '门关着的字段被清成 null（不留自相矛盾的值）',
+    EXTRA_FIELDS.every((f) => stillVisible.has(f) || pruned[f] == null),
+    EXTRA_FIELDS.filter((f) => !stillVisible.has(f) && pruned[f] != null).join(','),
+  );
+  ok(
+    '六项主字段永不被清（它们永远该问）',
+    ['passport', 'age', 'education', 'ielts', 'budget_cny'].every(
+      (k) => pruned[k] === stale[k],
+    ),
+  );
+
+  // 4) 门只认「当前不可判的项目读不读它」，不认「全库有没有人读」。
+  //    这条把本单初版的错误钉死：初版按全库开门，七项对所有人永远全开。
+  {
+    const pr = asProfile({ age: 45, education: 'bachelor_completed' });
+    const gate = baselinePrograms(pr);
+    const decidableOnly = gate.map((p) => ({ ...p, undecided: false }));
+    ok(
+      '没有项目不可判时门全关（不是「全库有人读就开」）',
+      visibleExtraFields({ profile: pr, programs: decidableOnly }).length === 0,
+      visibleExtraFields({ profile: pr, programs: decidableOnly }).join(','),
+    );
+    ok(
+      '同一画像下门开着的每一项都至少有一条不可判项目读它',
+      visibleExtraFields({ profile: pr, programs: gate }).every((f) =>
+        gate.some((p) => p.undecided && p.reads[f]),
+      ),
+    );
+  }
+
+  await (await import('node:fs/promises')).rm(outGate, { force: true });
+}
+
 console.log('\n[16] 界面词条双语对齐');
 const zhKeys = Object.keys(UI.zh).sort();
 const enKeys = Object.keys(UI.en).sort();

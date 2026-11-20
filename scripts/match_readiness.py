@@ -1730,6 +1730,64 @@ SAMPLES = OrderedDict(
 
 
 # --------------------------------------------------------------------------
+# 采集面契约（2026-11-20 01:56 工单）
+#
+# 这个模块量的是「引擎能从画像里读什么」，而网页表单只问用户其中一部分。
+# 两者不一致时，审计用 13 字段夹具量出线内，真实用户拿 6 字段却越线——
+# 闸量错了对象。下面两个常量把「差异」变成可断言的数字，而不是靠人记。
+#
+# FORM_FIELDS = 网页表单真的问了的字段
+#   （web/src/components/VerdictView.tsx 的 pfield；EMPTY_VERDICT_PROFILE 同）
+# PROFILE_FIELDS = 引擎真的读了的字段（judge() 里 pr.get / pr[]）
+#
+# 两者之差 = 采集缺口。tests 里 test_profile_fields_are_all_collectable
+# 咬住「缺口为空」：将来谁在引擎里加一个画像字段而没加表单口，那条测试当场红。
+# 这比「再写一篇报告说明缺口」有用——报告不会拦下一个人。
+#
+# 注意：这里登记的是**字段是否被问过**，不是「必须填」。用户不填仍是未知，
+# 引擎老老实实判 silent；本契约只要求「有这么个输入口可以填」。
+# --------------------------------------------------------------------------
+
+FORM_FIELDS = (
+    "passport",
+    "age",
+    "education",
+    "ielts",
+    "budget_cny",
+    "current_location",
+    # —— 本单补齐的 7 项（条件显示，见 web/src/lib/profileFields.ts）——
+    "dependents",
+    "enrollment_status",
+    "months_since_graduation",
+    "prior_participation",
+    "prior_same_category_visa",
+    "study_months",
+    "work_experience_years",
+)
+
+PROFILE_FIELDS = (
+    "passport",
+    "age",
+    "education",
+    "ielts",
+    "budget_cny",
+    "current_location",
+    "dependents",
+    "enrollment_status",
+    "months_since_graduation",
+    "prior_participation",
+    "prior_same_category_visa",
+    "study_months",
+    "work_experience_years",
+)
+
+
+def collection_gap() -> list[str]:
+    """引擎读了、但表单没有输入口的字段。空表示采集面跟上了判定面。"""
+    return sorted(set(PROFILE_FIELDS) - set(FORM_FIELDS))
+
+
+# --------------------------------------------------------------------------
 # 不可判的两分法（P2-1，2026-11-14 Muse 裁决）
 #
 # 「不可判」不是同一种东西，混在一个分子里量出来的比率会同时惩罚两件事：
@@ -1818,21 +1876,32 @@ BY_DESIGN_ALERT_COUNT = 5
 # 裁决原文：即日起双口径并行，停工线以「真实用户画像口径」为准，夹具口径降为
 # 回归参照。理由是这条闸的用途是保护真实用户，量夹具画像等于虚假保证。
 #
-# 为什么必须分两个口径：SAMPLES 每个样例给了 13 个字段，而网页表单只有 6 个
-# 输入口（web/src/components/VerdictView.tsx 的六个 pfield，EMPTY_VERDICT_PROFILE
-# 同样只有 6 项）。判定面（P1b-2 / P1c / P3）一直在扩，采集面没跟，于是普通用户
+# 为什么必须分两个口径：SAMPLES 每个样例给了 13 个字段，而当时的网页表单只有
+# 6 个输入口。判定面（P1b-2 / P1c / P3）一直在扩，采集面没跟，于是普通用户
 # 拿不到那 7 个事实，项目从「能申」掉成「不可判」——而只量夹具的闸显示线内。
 # 闸量错了对象，越线就看不见。
 #
-# 真实口径 = 表单能采集的 6 字段原样 + 其余 7 字段置 None，跑同一个 audit()。
+# 真实口径 = 当时表单能采集的 6 字段原样 + 其余 7 字段置 None，跑同一个 audit()。
 # 置 None 而不是删键：引擎里「缺键」与「显式 None」等价（都判 unknown），写出来
 # 是为了让「这个人没被问过这件事」在夹具上看得见，而不是像漏填。
 #
-# FORM_FIELDS 与 REAL_PROFILE_NULLED_FIELDS 必须覆盖 SAMPLES 的全部字段键，
-# 两侧一起改才不漏；漏一个字段的后果是那个字段仍带夹具值，真实口径被悄悄放宽
-# （tests 里的 test_form_fields_cover_every_sample_field 咬住这条）。
+# **两个常量的分工（2026-11-20 02:xx 表单补齐后更新）**：
+#   LEGACY_FORM_FIELDS —— 表单补齐**之前**能采集的 6 项。永不再变。
+#     它的作用是保留「旧的真实口径」这条基线，好让「补齐字段带来了多少改善」
+#     这个数字以后还能复算。改名而不是删掉：删了那段历史就无从复算。
+#   REAL_PROFILE_NULLED_FIELDS —— 相对 LEGACY_FORM_FIELDS 置空的那 7 项。
+#
+# 补齐之后，真实口径（用当前的 FORM_FIELDS，13 项）与夹具口径**已经重合**，
+# 所以现在这条闸报的两个数会一样。这不是闸失效了——相反，它说明采集面终于
+# 追上了判定面：`collection_gap()` 为空就是这件事的机械证明。
+# 若将来有人在引擎里加字段而没加表单口，缺口会重新出现，双口径会再次分叉，
+# 而 test_profile_fields_are_all_collectable 会先红。
+#
+# LEGACY_FORM_FIELDS 与 REAL_PROFILE_NULLED_FIELDS 必须覆盖 SAMPLES 的全部字段键，
+# 两侧一起改才不漏；漏一个字段的后果是那个字段仍带夹具值，旧口径被悄悄放宽
+# （tests 里的 test_legacy_form_fields_cover_every_sample_field 咬住这条）。
 # --------------------------------------------------------------------------
-FORM_FIELDS = ("passport", "age", "education", "ielts", "budget_cny", "current_location")
+LEGACY_FORM_FIELDS = ("passport", "age", "education", "ielts", "budget_cny", "current_location")
 
 REAL_PROFILE_NULLED_FIELDS = (
     "dependents",
@@ -1847,20 +1916,41 @@ REAL_PROFILE_NULLED_FIELDS = (
 # 停工线以真实口径为准（裁决第二条）。夹具口径保留输出，但只作回归参照。
 STOP_LINE_CALIBER = "real"
 
-# 在案债务上限：真实口径下 HEAD 的 C 画像乙类 = 15/41 = 0.3659，已越 1/3。
-# 裁决第三条把这次越线**记为在案债务**（成因 = 表单采集面没跟上判定面），
-# 不阻塞 PR、也不许靠改阈值消掉。所以这条闸的判法是「只许降不许升」：
-# 真实口径的乙类条数不得超过这个数；往下降必须回来把这个数改小，
-# 往上升则当场红，逼下一笔先解释新增了哪几条。
-REAL_CLASS_B_DEBT_CEILING = 15
+# 在案债务上限：表单补齐**之前**，真实口径下 HEAD 的 C 画像乙类 = 15/41 = 0.3659，
+# 已越 1/3。裁决第三条把那次越线记为在案债务，不阻塞 PR、也不许靠改阈值消掉。
+#
+# **补齐字段后这个数字降下来了**（15 → 8，见 tests 的 test_debt_ceiling_tracks_actual）。
+# 裁决要求「只许降不许升、降下来必须回来把上限改小」，所以这里是 8 而不是 15：
+# 留着 15 就等于给下一次新债留了 7 条免费额度，而封顶本身不会报警。
+REAL_CLASS_B_DEBT_CEILING = 8
 
 
 def real_profile(pr: dict) -> dict:
     """把一个夹具画像压成「网页表单真能采集到的那一份」。
 
-    只把 7 个无输入口的字段置 None，其余原样——不做任何补默认值。补默认值
-    等于替用户承认一个事实（如把 dependents 默认成 none），那会把「没问过」
-    洗成「已知」，真实口径立刻偏乐观。
+    判据是**当前的** FORM_FIELDS：表单能问的字段原样保留，问不到的置 None。
+    不做任何补默认值——补默认值等于替用户承认一个事实（如把 dependents
+    默认成 none），那会把「没问过」洗成「已知」，真实口径立刻偏乐观。
+
+    2026-11-20 表单补齐后 FORM_FIELDS 已是 13 项，于是这个函数返回的就是
+    原画像，两口径重合。这不是函数失效：`collection_gap()` 为空正是它的
+    **成功状态**。将来引擎加字段而表单没跟，FORM_FIELDS 不再覆盖它，
+    这里会自动重新开始置 None，双口径重新分叉——不需要改这个函数。
+    """
+    out = dict(pr)
+    for f in out:
+        if f not in FORM_FIELDS:
+            out[f] = None
+    return out
+
+
+def legacy_profile(pr: dict) -> dict:
+    """表单补齐**之前**的口径：只留 6 项，其余 7 项置 None。
+
+    存在的唯一理由是可复算：Muse 01:58 裁决那次越线（15/41）就是按这个口径
+    量出来的，留着它才能验证「补齐字段把这 7 条债务清掉了几个」。
+    它**不随后续补字段而变**（判据是固定的 LEGACY_FORM_FIELDS），
+    所以它度量的是历史，不是现状。现状用 real_profile()。
     """
     out = dict(pr)
     for f in REAL_PROFILE_NULLED_FIELDS:
@@ -2840,6 +2930,62 @@ def judge(doc: dict, pr: dict) -> tuple[str, list[dict]]:
 RULES_VERSION = 12
 
 
+def profile_readers(doc: dict) -> dict:
+    """这条项目**读哪些画像字段**——由引擎自己算，不靠前端另抄一份。
+
+    （2026-11-20 01:56 工单：表单关键字段补齐）
+
+    为什么要在引擎里算而不是让前端按 p1b2 的布尔量自己推：
+      推法写两遍就一定会漂。本单第一版让前端按 flags 的布尔量复推，
+      两侧各有一份「dependents 读 forbid_child|forbid_other|cannot_work」，
+      改引擎的一个分支时前端不知道。变异测试当场抓到了这个洞：
+      把前端规则改错，Python 侧测试仍全绿——它验的是它自己的副本。
+
+    所以口径只留这一份：这里给出布尔量，前端只读不推。
+
+    判据是**实测**而不是读代码：把该字段从 None 换成一个可能的真值，
+    看 (dim,kind,code) 整串会不会变。变 = 这条项目读它。
+    这比按分支名匹配可靠——`edu_ok` 这种 pass code 在很多项目上都会出现，
+    按名字查会把一大堆项目误算成「读 study_months」。
+
+    代价是这个文件要跑 41 项目 × 7 字段 × 2 次 judge()。实测约 0.1 秒，
+    可接受；换了更重的判据时再看要不要缓存。
+    """
+    out = {}
+    for field, probe in PROFILE_FIELD_PROBES.items():
+        positive = False
+        for variant in (probe,):
+            pr = dict(SAMPLES["C"])
+            pr[field] = None
+            _, before = judge(doc, pr)
+            pr2 = dict(pr)
+            pr2[field] = variant
+            _, after = judge(doc, pr2)
+            if _dim_signature(before) != _dim_signature(after):
+                positive = True
+        out[field] = positive
+    return out
+
+
+def _dim_signature(dims: list[dict]) -> str:
+    return "|".join("%s:%s:%s" % (d["dim"], d["kind"], d["code"]) for d in dims)
+
+
+# 实测每个字段「在场 vs 缺席」用的代表真值。
+# 取的是夹具 C 的取值（每个字段在夹具里都有定义），所以这不是编的数字。
+# 换一个真值可能翻出别的项目（例如 dependents 填 children 会多触发 fail 分支），
+# 但那不影响「读不读」这个布尔——布尔只需要证明「换了会变」。
+PROFILE_FIELD_PROBES = {
+    "dependents": "none",
+    "enrollment_status": "enrolled",
+    "months_since_graduation": 6,
+    "prior_participation": "none",
+    "prior_same_category_visa": "none",
+    "study_months": 48,
+    "work_experience_years": 1,
+}
+
+
 def flags_of(doc: dict) -> dict:
     """把一条项目的六个维度压成前端够用的**状态量**。
 
@@ -3050,6 +3196,12 @@ def p1b2_project_flags(doc: dict) -> dict:
         "degree_completed": ENROLL_DEGREE in need,
         "either": ENROLL_EITHER in need,
         "scoring_input": SCORING_INPUT in anyv,
+        # —— 本单：这条项目读哪些画像字段（用于表单的条件显示）——
+        #
+        # 上方那些布尔量是**为什么**读（语义），这一项是**读不读**（事实）。
+        # 前端只读这一项，不按上方布尔自己推：同一条规则写两遍必然漂，
+        # 而「门悄悄关掉」在界面上看起来完全正常。
+        "reads": profile_readers(doc),
     }
 
 
@@ -3439,9 +3591,15 @@ def render_markdown(rep: dict) -> str:
         )
     L.append("")
     L.append(
-        "> 真实口径 = 表单能采集的 %s；夹具多带的 %s 网页无输入口，置 null。"
-        "差额即「用户没被问到的事实」造成的不可判，不是引擎退化。"
-        % ("、".join(rep["form_fields"]), "、".join(rep["real_nulled_fields"]))
+        "> 真实口径 = 表单能采集的 %s（%d 项，含条件显示的补充字段）；"
+        "夹具多带的 %s 在表单补齐前无输入口，那一版口径见 LEGACY_FORM_FIELDS。"
+        "两列现在相同，说明采集面已追上判定面（collection_gap 为空）；"
+        "不同则差额即「用户没被问到的事实」造成的不可判，不是引擎退化。"
+        % (
+            "、".join(rep["form_fields"]),
+            len(rep["form_fields"]),
+            "、".join(rep["real_nulled_fields"]),
+        )
     )
     L.append("")
     L.append("## 3. 逐项目缺口表")
