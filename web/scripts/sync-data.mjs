@@ -33,27 +33,31 @@ function hasDatedWindow(p) {
 }
 
 /**
- * 一条记录的复核状态。算法与 scripts/track.py 的 classify() 一一对应：
- * overdue 越过周期、due_soon 剩余不足 25%、fresh 还有余量、unknown 缺日期。
+ * 单条记录的复核**静态**字段：周期、下次复核日、提前预警阈值。
+ *
+ * 刻意不在这里算「还剩几天」「状态」——那两个天生相对今天，落进入库产物就等于
+ * 把新鲜度冻在构建那天（站点越用越错），而读 Date.now() 又会让同数据重跑产生
+ * 41 条纯日期漂移（实测 2026-11-20，HEAD 48fb859：数据零改动，三处产物共 530+ 行假 diff）。
+ *
+ * 切法：与日期无关的写进 index.json，相对今天的那两个量由 src/lib/review.ts
+ * 在渲染时算。判据（overdue / due_soon 边界）在那边与 scripts/track.py 的
+ * classify() 逐字对应，周期仍只来自 data/review-policy.json。
  */
-function reviewState(p, today) {
+function reviewStatic(p) {
   const interval = hasDatedWindow(p)
     ? POLICY.interval_dated_window_days
     : POLICY.interval_default_days;
+  const soonAt = Math.max(1, Math.floor(interval * POLICY.due_soon_ratio));
   const lv = p.last_verified ? Date.parse(p.last_verified) : NaN;
   if (Number.isNaN(lv)) {
-    return { review_interval: interval, review_due: null, review_days_left: null, review_state: 'unknown' };
+    return { review_interval: interval, review_due: null, review_soon_at: soonAt };
   }
-  const ageDays = Math.floor((today - lv) / 86400000);
-  const daysLeft = interval - ageDays;
-  const soonAt = Math.max(1, Math.floor(interval * POLICY.due_soon_ratio));
-  const state = daysLeft < 0 ? 'overdue' : daysLeft <= soonAt ? 'due_soon' : 'fresh';
   const due = new Date(lv + interval * 86400000).toISOString().slice(0, 10);
-  return { review_interval: interval, review_due: due, review_days_left: daysLeft, review_state: state };
+  return { review_interval: interval, review_due: due, review_soon_at: soonAt };
 }
 
 /** 从单条 program 里抽出列表页需要的字段，避免把整份 97KB 数据塞进首屏。 */
-function toIndexEntry(p, today) {
+function toIndexEntry(p) {
   const el = p.eligibility ?? {};
   const age = el.age ?? {};
   const funds = el.funds ?? {};
@@ -161,7 +165,10 @@ function toIndexEntry(p, today) {
     lead_time_days: p.timeline?.schedule?.lead_time_days ?? null,
     last_verified: p.last_verified ?? null,
     // 复核状态在索引层就算好，前端不用再各算一遍 90 天。
-    ...reviewState(p, today),
+    // 复核状态在索引层只落与日期无关的部分（周期 / 下次复核日 / 预警阈值），
+    // 「还剩几天」与状态由前端渲染时算 —— 见本文件 reviewStatic() 的说明，
+    // 以及 src/lib/review.ts 与 scripts/track.py 判据的一一对应关系。
+    ...reviewStatic(p),
     // 列表卡片也要能看出「这条有几条官方主源」——核来源是核心路径的一环，
     // 藏在详情页里等于没有。只放计数，不放 URL，索引体积几乎不变。
     source_count: (p.sources ?? []).length,
@@ -225,8 +232,9 @@ async function main() {
 
   await mkdir(OUT_DIR, { recursive: true });
   const full = JSON.stringify(programs, null, 0);
-  const today = Date.now();
-  const index = JSON.stringify(programs.map((p) => toIndexEntry(p, today)), null, 0);
+  // 索引条目里不再有任何读时钟的量：同数据重跑，index.json 字节相同。
+  // （原先这里 `const today = Date.now()`，是 review_days_left 随运行日期漂移的病灶。）
+  const index = JSON.stringify(programs.map((p) => toIndexEntry(p)), null, 0);
   const i18n = JSON.stringify(dict, null, 0);
   await writeFile(join(OUT_DIR, 'programs.json'), full, 'utf8');
   await writeFile(join(OUT_DIR, 'index.json'), index, 'utf8');

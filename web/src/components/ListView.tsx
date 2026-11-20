@@ -13,6 +13,7 @@ import {
   type SortMode,
 } from '../lib/filters';
 import { useDocumentTitle } from '../lib/useTitle';
+import { reviewOf } from '../lib/review';
 import type { UiKey } from '../i18n/ui';
 import type { ProgramIndexEntry } from '../types';
 import { Card } from './Card';
@@ -161,9 +162,10 @@ export function ListView({ savedIds, onToggleSave }: Props) {
   // 这三个数直接从数据算，不硬编码；数据变化时自动跟着变。
   const stats = useMemo(() => {
     if (!all) return null;
-    // 复核状态由 sync-data.mjs 按 data/review-policy.json 算好写进索引，
-    // 前端不再自己拍一个 90 天常数 —— 否则列表页说「0 条超期」，
-    // 仓库里的 data/FRESHNESS.md 可能同时列着 3 条该核，两个数字对着说。
+    // 复核状态由 src/lib/review.ts 在渲染时按当天算（索引里只落与日期无关的
+    // 周期/下次复核日/预警阈值）。判据与 scripts/track.py 的 classify() 一致，
+    // 周期来自 data/review-policy.json —— 前端不再自己拍一个 90 天常数。
+    const rv = all.map((p) => reviewOf(p));
     return {
       eligible: all.filter((p) => p.status === 'eligible').length,
       notEligible: all.filter((p) => p.status === 'not_eligible').length,
@@ -173,8 +175,8 @@ export function ListView({ savedIds, onToggleSave }: Props) {
         (p) => p.status === 'eligible' && p.enrollment_scope === 'none',
       ).length,
       sources: all.reduce((n, p) => n + (p.source_count ?? 0), 0),
-      stale: all.filter((p) => p.review_state === 'overdue' || p.review_state === 'unknown').length,
-      dueSoon: all.filter((p) => p.review_state === 'due_soon').length,
+      stale: rv.filter((r) => r.state === 'overdue' || r.state === 'unknown').length,
+      dueSoon: rv.filter((r) => r.state === 'due_soon').length,
     };
   }, [all]);
 
