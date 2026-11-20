@@ -35,6 +35,9 @@ REPO = os.path.dirname(HERE)
 PROGRAMS_DIR = os.path.join(REPO, "data", "programs")
 CALENDAR_PATH = os.path.join(REPO, "data", "calendar.json")
 
+sys.path.insert(0, HERE)
+import review_baseline  # noqa: E402  （基准日口径的唯一说明处）
+
 CONFIDENCE_LABEL = {
     "confirmed": "官方已公布日期",
     "inferred": "按往年规律推断（非官方日期）",
@@ -55,6 +58,15 @@ def parse_date(s):
         return datetime.strptime(s, "%Y-%m-%d").date()
     except ValueError:
         return None
+
+
+def load_docs():
+    """按文件名排序读出全部 program 文档（build() 也走同一顺序）。"""
+    out = []
+    for path in sorted(glob.glob(os.path.join(PROGRAMS_DIR, "*.json"))):
+        with open(path, encoding="utf-8") as fh:
+            out.append(json.load(fh))
+    return out
 
 
 def build(today):
@@ -203,9 +215,17 @@ def render_md(cal):
 
 
 def main():
-    today = date.today()
-    if len(sys.argv) > 1 and sys.argv[1] == "--today":
-        today = parse_date(sys.argv[2]) or today
+    # 默认基准日取自数据（见 scripts/review_baseline.py），不读系统时钟：
+    # data/calendar.json 是入库产物，同数据重跑必须字节相同。
+    # `--today` 显式指定时以它为准（测试与复盘用）。
+    today = None
+    if len(sys.argv) > 2 and sys.argv[1] == "--today":
+        today = parse_date(sys.argv[2])
+        if today is None:
+            print(f"基准日格式不对：{sys.argv[2]}", file=sys.stderr)
+            return 2
+    if today is None:
+        today = review_baseline.baseline_for_artifacts(load_docs())
     cal = build(today)
     with open(CALENDAR_PATH, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(cal, fh, ensure_ascii=False, indent=2)

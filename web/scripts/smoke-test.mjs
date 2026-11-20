@@ -98,6 +98,23 @@ await build({
 const { judgeOne, judgeAll, countByState, STATE_ORDER, RULES_VERSION, EMPTY_VERDICT_PROFILE } =
   await import(`file://${outVerdict.replace(/\\/g, '/')}`);
 
+// 复核状态在渲染时算（src/lib/review.ts）——与 track.py 同口径，见 [17]。
+const outReview = join(WEB, '.tmp-review.mjs');
+await build({
+  entryPoints: [join(WEB, 'src/lib/review.ts')],
+  bundle: true,
+  format: 'esm',
+  outfile: outReview,
+  platform: 'neutral',
+});
+const { reviewOf } = await import(`file://${outReview.replace(/\\/g, '/')}`);
+
+// 预警比例从策略文件读，不在测试里另写一个 0.25——
+// 否则策略改了而这里没跟，测试会替错误的数字背书。
+const RATIO = JSON.parse(
+  await readFile(join(WEB, '..', 'data', 'review-policy.json'), 'utf8'),
+).due_soon_ratio;
+
 const index = JSON.parse(await readFile(join(WEB, 'public/data/index.json'), 'utf8'));
 const dict = JSON.parse(await readFile(join(WEB, 'public/data/i18n.json'), 'utf8'));
 const programs = JSON.parse(await readFile(join(WEB, 'public/data/programs.json'), 'utf8'));
@@ -985,6 +1002,70 @@ ok(
   reasonCodes.every((c) => MATCH_TEXT.zh[c] && MATCH_TEXT.en[c]),
 );
 
+console.log('\n[17] 复核产物确定性（数据内基准日，不读时钟）');
+{
+  // 病灶与修法见 scripts/review_baseline.py 顶部与 src/lib/review.ts 顶部。
+  // 两条不变量：
+  //   1. index.json 里不含任何「相对今天」的量——否则同数据重跑就产生假 diff；
+  //   2. review.ts 的判据与 track.py 的 classify() 完全一致——
+  //      两边各写一套的话，页面说「0 条超期」而台账列着 3 条该核，没人能判断谁对。
+  ok(
+    'index.json 不含 review_days_left',
+    index.every((p) => !('review_days_left' in p)),
+    '构建期落这个字段会让产物随运行日期漂移',
+  );
+  ok(
+    'index.json 不含 review_state',
+    index.every((p) => !('review_state' in p)),
+    '状态必须渲染时算，不能冻进入库产物',
+  );
+  ok(
+    'index.json 每条都带 review_interval / review_due / review_soon_at',
+    index.every(
+      (p) =>
+        typeof p.review_interval === 'number' &&
+        typeof p.review_soon_at === 'number' &&
+        (p.review_due === null || typeof p.review_due === 'string'),
+    ),
+  );
+  ok(
+    'review_soon_at = max(1, floor(interval * ratio))，周期只来自 review-policy.json',
+    index.every((p) => p.review_soon_at === Math.max(1, Math.floor(p.review_interval * RATIO))),
+    `ratio=${RATIO}`,
+  );
+  ok(
+    '周期只有 90 / 180 两个取值（策略唯一来源）',
+    index.every((p) => p.review_interval === 90 || p.review_interval === 180),
+  );
+
+  // 与 Python 侧逐条对账：用 tracking.json 的基准日当「今天」，
+  // review.ts 算出的 state/days_left/due 必须与 track.py 完全相同。
+  const tracking = JSON.parse(await readFile(join(WEB, '..', 'data', 'tracking.json'), 'utf8'));
+  const pyById = new Map(tracking.programs.map((r) => [r.id, r]));
+  const base = Date.parse(`${tracking.generated_for}T00:00:00`);
+  const diff = index.filter((e) => {
+    const p = pyById.get(e.id);
+    if (!p) return true;
+    const v = reviewOf(e, base);
+    return v.state !== p.state || v.daysLeft !== p.days_left || v.due !== p.due;
+  });
+  ok(
+    `review.ts 与 track.py 逐条同口径（${index.length} 条）`,
+    diff.length === 0,
+    diff.map((e) => e.id).join(','),
+  );
+
+  // 边界：到期当天是 due_soon，超一天才是 overdue（与 classify() 的差一天不翻转）。
+  const mk = (due, soon, iv) => ({ review_due: due, review_soon_at: soon, review_interval: iv });
+  const at = (e, iso) => reviewOf(e, Date.parse(`${iso}T00:00:00`));
+  const e180 = mk('2027-05-08', 45, 180);
+  ok('到期当天 = due_soon（不提前闪红）', at(e180, '2027-05-08').state === 'due_soon');
+  ok('到期次日 = overdue', at(e180, '2027-05-09').state === 'overdue');
+  ok('预警线当天 = due_soon', at(e180, '2027-03-24').state === 'due_soon');
+  ok('预警线前一天 = fresh', at(e180, '2027-03-23').state === 'fresh');
+  ok('缺 review_due = unknown 且不显示天数', reviewOf({ review_due: null }).daysLeft === null);
+}
+
 await import('node:fs/promises').then((fs) =>
   Promise.all([
     fs.rm(outfile, { force: true }),
@@ -993,6 +1074,7 @@ await import('node:fs/promises').then((fs) =>
     fs.rm(outOnboard, { force: true }),
     fs.rm(outNext, { force: true }),
     fs.rm(outVerdict, { force: true }),
+    fs.rm(outReview, { force: true }),
   ]),
 );
 

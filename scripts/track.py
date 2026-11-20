@@ -18,11 +18,27 @@
     窗口写死到具体日期的项目，一年一换窗口、错过就得等下一年，按 90 天核一次；
     其余按 180 天。评级依据是「错了会让人白等一年」的代价，不是项目热度。
 
+基准日从哪来（这是本脚本唯一容易被改坏的地方）：
+    写进仓库的两份产物必须**同输入数据 → 同字节**，否则改完数据跑一次脚本，
+    git diff 里就混进几百行纯日期漂移，真正的改动被淹掉，而「忘了重跑」这类
+    真问题反而看不出来。实测 2026-11-20（HEAD 48fb859）：数据零改动，
+    跑一次 sync-data + track 产生 FRESHNESS.md 92 行 + tracking.json 438 行的假 diff。
+
+    所以两档基准日，各有各的用途，不许混用：
+      · **产物**（默认）基准日 = 数据内最新一次核实日（见 scripts/review_baseline.py）。
+        台账因此是「数据自身状态」的快照：同数据重跑，字节级相同。
+      · **判定**（--check / --live / --json）基准日 = 现实今天。
+        「这条该重核了」是现实问题，只能拿现实日历量；冻结它就等于把闸门关掉。
+
+    换句话说：`--check` 该红的时候照样红（CI 定时任务靠它变红、靠它开 issue），
+    只是这份红不再被写进仓库产物。复核周期、25% 预警线、overdue 边界一个都没动。
+
 用法：
-    python scripts/track.py                      # 生成两份产物
+    python scripts/track.py                      # 生成两份产物（基准日取自数据）
     python scripts/track.py --check              # 只判定，不写文件（CI 定时任务用）
+    python scripts/track.py --live               # 产物按现实今天生成（CI 开 issue 前用）
     python scripts/track.py --today 2026-12-01   # 指定基准日，便于测试与复盘
-    python scripts/track.py --json               # 打印 tracking.json 到标准输出
+    python scripts/track.py --json               # 打印 tracking.json 到标准输出（按现实今天）
 
 退出码：0 = 全部在周期内；1 = 有记录已过期。
 """
@@ -41,6 +57,8 @@ sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
+sys.path.insert(0, HERE)
+import review_baseline  # noqa: E402  （见文件头「基准日从哪来」）
 PROGRAMS_DIR = os.path.join(REPO, "data", "programs")
 TRACKING_PATH = os.path.join(REPO, "data", "tracking.json")
 FRESHNESS_PATH = os.path.join(REPO, "data", "FRESHNESS.md")
@@ -345,21 +363,31 @@ def render_md(tracking):
 def main():
     ap = argparse.ArgumentParser(description="生成并检查数据集复核台账")
     ap.add_argument("--check", action="store_true", help="只判定，不写文件；有过期则退出码 1")
-    ap.add_argument("--today", help="基准日 YYYY-MM-DD（默认今天）")
+    ap.add_argument("--today", help="基准日 YYYY-MM-DD（默认：写文件取数据最新核实日，判定取现实今天）")
+    ap.add_argument("--live", action="store_true",
+                    help="写文件时也按现实今天算（CI 开 issue 前用；仓库产物不要用这个）")
     ap.add_argument("--json", action="store_true", help="把 tracking.json 打印到标准输出")
     ap.add_argument("--stale-limit", type=int, default=0,
                     help="允许的过期条数上限（默认 0，即不允许）")
     args = ap.parse_args()
 
-    today = parse_date(args.today) if args.today else date.today()
-    if today is None:
-        print(f"基准日格式不对：{args.today}", file=sys.stderr)
-        return 2
-
     programs = load_programs()
     if not programs:
         print(f"{PROGRAMS_DIR} 下没有找到任何记录", file=sys.stderr)
         return 2
+
+    # 基准日的两种来源，见文件头「基准日从哪来」。显式 --today 永远优先级最高。
+    if args.today:
+        today = parse_date(args.today)
+        if today is None:
+            print(f"基准日格式不对：{args.today}", file=sys.stderr)
+            return 2
+    elif args.check or args.json or args.live:
+        # 判定类调用：只能拿现实日历量「该不该重核了」。
+        today = date.today()
+    else:
+        # 写仓库产物：基准日取自数据本身，同数据重跑字节相同。
+        today = review_baseline.baseline_for_artifacts([doc for _, doc in programs])
 
     tracking = build(programs, today)
 

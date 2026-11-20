@@ -1,5 +1,5 @@
 {
-  "generated_for": "2026-11-12",
+  "generated_for": "2026-11-11",
   "note": "本文件由 scripts/build_calendar.py 从 data/programs/*.json 的 timeline.schedule 派生，请勿手工编辑。三档 date_confidence （confirmed/inferred/unknown）是硬分区：推断出来的日期永不与官方日期混排。",
   "summary": {
     "total": 41,
@@ -23,7 +23,7 @@
       "close_date": null,
       "lead_time_days": 45,
       "remind_on": "2026-09-17",
-      "days_to_open": -11,
+      "days_to_open": -10,
       "days_to_deadline": null,
       "next_window_hint": "2027 年度已开放（自 2026-11-01 起），无名额即止的明确截止日，前 400 份即满。",
       "cycle_note": "2027 年度自 2026-11-01 09:00（台北时间）起接受申请，按收件先后受理，前 400 份合格申请在 2027 年初签发。",
@@ -41,8 +41,8 @@
       "close_date": "2026-07-16",
       "lead_time_days": 30,
       "remind_on": "2026-06-14",
-      "days_to_open": -121,
-      "days_to_deadline": -119,
+      "days_to_open": -120,
+      "days_to_deadline": -118,
       "next_window_hint": "2027 年抽签日程未公布，官方说会在同一页面发布。",
       "cycle_note": "2026 年两轮抽签：2 月一轮、7 月一轮（07-14 起 48 小时），全部名额已分配完毕；官方明确 2026 年不再有第三轮。",
       "missing": null
@@ -59,8 +59,8 @@
       "close_date": "2026-06-25",
       "lead_time_days": 60,
       "remind_on": "2026-04-05",
-      "days_to_open": -161,
-      "days_to_deadline": -140,
+      "days_to_open": -160,
+      "days_to_deadline": -139,
       "next_window_hint": "2027-28 财年的注册窗口官方尚未公布。参照 2026-27 安排在 6 月上旬开放、为期约 3 周，但这是参照而非承诺。",
       "cycle_note": "2026-27 财年的注册窗口为 2026-06-04 至 2026-06-25（约 3 周），中签后 28 天内须递交正式申请；抽签选择期持续到 2027-04-30。",
       "missing": null

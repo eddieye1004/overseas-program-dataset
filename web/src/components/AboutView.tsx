@@ -8,6 +8,7 @@ import { loadIndex, loadPrograms } from '../lib/data';
 import { requestReplay } from '../lib/onboarding';
 import { navigate } from '../lib/router';
 import { useDocumentTitle } from '../lib/useTitle';
+import { reviewOf, type ReviewView } from '../lib/review';
 import type { ProgramIndexEntry, ProgramRecord } from '../types';
 
 /** 距今多少天。缺日期返回 null，不当作 0 处理。 */
@@ -46,8 +47,10 @@ export function AboutView() {
   }, []);
 
   const reviewById = useMemo(() => {
-    const m = new Map<string, ProgramIndexEntry>();
-    for (const e of idx ?? []) m.set(e.id, e);
+    // 复核状态在渲染时算（原因见 src/lib/review.ts 顶部）：索引里只有周期、
+    // 下次复核日与预警阈值，这两个相对今天的量必须跟着访客的当天走。
+    const m = new Map<string, ReviewView>();
+    for (const e of idx ?? []) m.set(e.id, reviewOf(e));
     return m;
   }, [idx]);
 
@@ -60,27 +63,24 @@ export function AboutView() {
       (n, r) => n + (r.sources ?? []).filter((s) => s.type === 'primary').length,
       0,
     );
-    const entries = idx ?? [];
-    const overdue = entries.filter(
-      (e) => e.review_state === 'overdue' || e.review_state === 'unknown',
-    ).length;
-    const dueSoon = entries.filter((e) => e.review_state === 'due_soon').length;
+    const views = [...reviewById.values()];
+    const overdue = views.filter((v) => v.state === 'overdue' || v.state === 'unknown').length;
+    const dueSoon = views.filter((v) => v.state === 'due_soon').length;
     return { total, verified, sources, primary, overdue, dueSoon };
-  }, [recs, idx]);
+  }, [recs, reviewById]);
 
   // 到期该核的那几条单独列出来。这一页的目标不是夸数据全，
   // 而是让人能在一分钟内判断「我要用的那条是不是刚核过」。
   const pending = useMemo(() => {
     const entries = idx ?? [];
     return entries
+      .map((e) => ({ e, v: reviewById.get(e.id) }))
       .filter(
-        (e) =>
-          e.review_state === 'overdue' ||
-          e.review_state === 'due_soon' ||
-          e.review_state === 'unknown',
+        ({ v }) => v && (v.state === 'overdue' || v.state === 'due_soon' || v.state === 'unknown'),
       )
-      .sort((a, b) => (a.review_days_left ?? 1e9) - (b.review_days_left ?? 1e9));
-  }, [idx]);
+      .sort((a, b) => (a.v!.daysLeft ?? 1e9) - (b.v!.daysLeft ?? 1e9))
+      .map(({ e, v }) => ({ ...e, state: v!.state, daysLeft: v!.daysLeft, due: v!.due }));
+  }, [idx, reviewById]);
 
   if (!recs || !idx) return <p className="state">{t('searchHint')}…</p>;
 
@@ -129,8 +129,8 @@ export function AboutView() {
           {recs.map((r) => {
             const d = daysSince(r.last_verified);
             const rv = reviewById.get(r.program.id);
-            const overdue = rv?.review_state === 'overdue' || rv?.review_state === 'unknown';
-            const soon = rv?.review_state === 'due_soon';
+            const overdue = rv?.state === 'overdue' || rv?.state === 'unknown';
+            const soon = rv?.state === 'due_soon';
             return (
               <tr key={r.program.id}>
                 <td>
@@ -149,11 +149,11 @@ export function AboutView() {
                   {d != null ? ` (${d}d)` : ''}
                 </td>
                 <td className={overdue || soon ? 'dtable__stale' : undefined}>
-                  {rv?.review_due ?? '—'}
-                  {rv?.review_days_left != null
-                    ? rv.review_days_left < 0
-                      ? ` (${t('dataOverdueBy').replace('{n}', String(-rv.review_days_left))})`
-                      : ` (${rv.review_days_left}d)`
+                  {rv?.due ?? '—'}
+                  {rv?.daysLeft != null
+                    ? rv.daysLeft < 0
+                      ? ` (${t('dataOverdueBy').replace('{n}', String(-rv.daysLeft))})`
+                      : ` (${rv.daysLeft}d)`
                     : ''}
                 </td>
               </tr>
@@ -175,11 +175,11 @@ export function AboutView() {
                   {lang === 'en' ? e.name_en || e.name : e.name}
                 </a>
                 {' · '}
-                {e.review_state === 'overdue'
-                  ? t('dataOverdueBy').replace('{n}', String(Math.abs(e.review_days_left ?? 0)))
-                  : e.review_state === 'unknown'
+                {e.state === 'overdue'
+                  ? t('dataOverdueBy').replace('{n}', String(Math.abs(e.daysLeft ?? 0)))
+                  : e.state === 'unknown'
                     ? t('dataNoDate')
-                    : t('dataDueIn').replace('{n}', String(e.review_days_left ?? 0))}
+                    : t('dataDueIn').replace('{n}', String(e.daysLeft ?? 0))}
               </li>
             ))}
           </ul>

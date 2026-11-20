@@ -243,5 +243,72 @@ class TrackingArtifactTest(unittest.TestCase):
         self.assertEqual(md, track.render_md(t), "FRESHNESS.md 与 tracking.json 不同步")
 
 
+class DeterminismTest(unittest.TestCase):
+    """同输入数据 → 同字节输出。这是本脚本在 2026-11-20 之后的核心不变量。
+
+    病灶：产物基准日曾取 `date.today()`，于是数据零改动、跑一次脚本就产生
+    FRESHNESS.md 92 行 + tracking.json 438 行纯日期漂移（实测 HEAD 48fb859），
+    真改动被假 diff 淹掉。修法见 scripts/review_baseline.py 与 track.py 文件头。
+    """
+
+    def test_artifact_baseline_comes_from_data_not_clock(self):
+        """产物基准日必须等于数据内最新核实日，而不是现实今天。"""
+        programs = track.load_programs()
+        expect = track.review_baseline.newest_verified([d for _, d in programs])
+        self.assertIsNotNone(expect, "数据里一条核实日期都没有，测试假设失效")
+        today = track.review_baseline.baseline_for_artifacts([d for _, d in programs])
+        self.assertEqual(today.isoformat(), expect)
+
+    def test_rebuild_twice_is_byte_identical(self):
+        """连跑两次渲染，字节相同。'' 这一条就是工单要的验收线的脚本形态。"""
+        programs = track.load_programs()
+        today = track.review_baseline.baseline_for_artifacts([d for _, d in programs])
+        a = track.render_md(track.build(programs, today))
+        b = track.render_md(track.build(programs, today))
+        self.assertEqual(a, b)
+        ja = json.dumps(track.build(programs, today), ensure_ascii=False, indent=2)
+        jb = json.dumps(track.build(programs, today), ensure_ascii=False, indent=2)
+        self.assertEqual(ja, jb)
+
+    def test_committed_generated_for_is_the_data_baseline(self):
+        """仓库那份 tracking.json 的基准日必须就是数据最新核实日。
+
+        改错基准日会让上面两条确定性测试依然绿（它们自己算基准日），
+        所以这一条单独钉住「仓库里那份到底用了什么基准」。
+        """
+        with io.open(os.path.join(ROOT, "data", "tracking.json"), encoding="utf-8") as fh:
+            committed = json.load(fh)
+        programs = track.load_programs()
+        expect = track.review_baseline.newest_verified([d for _, d in programs])
+        self.assertEqual(
+            committed["generated_for"],
+            expect,
+            "tracking.json 的基准日不是数据最新核实日，请重跑 python scripts/track.py",
+        )
+
+    def test_check_uses_real_today_not_frozen_baseline(self):
+        """验收线要求「不许冻结真实新鲜度语义」：--check 必须仍按现实日历判定。
+
+        反证：若 --check 也改用数据基准日，2030 年的判定就不会红了——
+        那正是把闸门关掉。这里用远期 --today 复现，同时断言不带 --today 时
+        仍取 date.today()（通过 module 级常量对比，不依赖跑的那天是几号）。
+        """
+        r = run_track("--check", "--today", "2030-01-01")
+        self.assertEqual(r.returncode, 1, "远期基准日必须判过期")
+        with io.open(SCRIPT, encoding="utf-8") as fh:
+            src = fh.read()
+        # 判定分支必须还在用 date.today()，而不是被产物基准日顶掉
+        self.assertRegex(
+            src,
+            r"args\.check or args\.json or args\.live[\s\S]{0,200}?date\.today\(\)",
+            "--check/--live/--json 分支必须取现实今天",
+        )
+
+    def test_live_flag_writes_with_real_today(self):
+        """--live 供 CI 开 issue 前用：产物按现实今天，语义与冻结前一致。"""
+        r = run_track("--json", "--live")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()

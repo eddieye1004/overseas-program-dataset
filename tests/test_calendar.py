@@ -233,5 +233,22 @@ class CalendarArtifactTest(unittest.TestCase):
                 self.assertIsNone(r["open_date"], f"{r['id']} 不是已确认却带了开放日")
 
 
+    def test_calendar_baseline_comes_from_data_not_clock(self):
+        """calendar.json 的基准日必须是数据最新核实日。
+
+        与 track.py 同一条不变量（说明见 scripts/review_baseline.py）：
+        data/calendar.json 是入库产物，读系统时钟就会让同数据重跑产生假 diff。
+        """
+        with io.open(CALENDAR, encoding="utf-8") as fh:
+            committed = json.load(fh)
+        newest = build_calendar.review_baseline.newest_verified(build_calendar.load_docs())
+        self.assertIsNotNone(newest, "数据里一条核实日期都没有，测试假设失效")
+        self.assertEqual(
+            committed["generated_for"],
+            newest,
+            "calendar.json 的基准日不是数据最新核实日，请重跑 python scripts/build_calendar.py",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

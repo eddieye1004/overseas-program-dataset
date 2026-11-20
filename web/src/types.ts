@@ -89,16 +89,26 @@ export interface ProgramIndexEntry {
   lead_time_days: number | null;
   last_verified: string | null;
   /**
-   * 复核状态，由 sync-data.mjs 按 data/review-policy.json 算好。
-   * 前端不许自己拍一个「90 天」常数：仓库里的 data/FRESHNESS.md 用的是同一份策略，
-   * 两处各写一份，页面说「0 条超期」而台账列着 3 条该核时没人能判断谁对。
+   * 复核状态。
+   *
+   * **不在构建期定型**：index.json 是入库产物，必须同数据→同字节，而「还剩几天」
+   * 天生相对今天。所以构建时只落与日期无关的三件（review_interval / review_due /
+   * review_soon_at），状态与剩余天数由 src/lib/review.ts 在渲染时算。
+   * 判据与 scripts/track.py 的 classify() 一一对应，周期来自 data/review-policy.json
+   * ——前端不许自己拍一个「90 天」常数，否则页面说「0 条超期」而台账列着 3 条该核。
    */
-  review_state: 'overdue' | 'due_soon' | 'fresh' | 'unknown';
+  review_state: ReviewState;
   /** 该记录的复核周期（天）：写死窗口的 90，其余 180 */
   review_interval: number;
   /** 下次该复核的日期（YYYY-MM-DD），缺核实日期时为 null */
   review_due: string | null;
-  /** 距下次复核还有几天，已过期为负 */
+  /**
+   * 提前预警阈值（天）：剩余天数 ≤ 这个值即「即将到期」。
+   * 落进索引而不是在渲染时用 0.25 重算，是为了让策略仍只有 data/review-policy.json
+   * 一处来源——阈值改了而前端没跟，页面就会与台账各说一套。
+   */
+  review_soon_at: number;
+  /** 距下次复核还有几天，已过期为负。由 review.ts 在渲染时填，不是构建产物字段 */
   review_days_left: number | null;
   /** 来源条数（事实性元数据，列表卡片据此显示可信度） */
   source_count: number;
@@ -186,6 +196,9 @@ export interface Fee {
  * 与 data/schema.json 的 timeline.quota_status 一一对应。
  */
 export type QuotaStatus = 'capped' | 'no_quota' | 'not_published' | 'unverified';
+
+/** 复核状态四档：越过周期 / 剩余不足预警线 / 还有余量 / 缺核实日期 */
+export type ReviewState = 'overdue' | 'due_soon' | 'fresh' | 'unknown';
 
 export interface Timeline {
   mechanism?: string;

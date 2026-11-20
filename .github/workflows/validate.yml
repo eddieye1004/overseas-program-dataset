@@ -91,11 +91,16 @@ jobs:
         # 定时任务（schema 里的 cron）跑 --check，有记录越过周期就退出码 1；
         # push / PR 不阻断 —— 一次文档修改不该因为数据该复核了而失败。
         #
-        # 顺带把台账写进 artifact：人不再需要自己算「哪条最久没核」。
+        # 为什么这里显式加 --live：
+        #   写进**仓库**的那份 tracking.json 用「数据内最新核实日」当基准
+        #   （见 scripts/review_baseline.py），好让同数据重跑字节相同、不产生假 diff。
+        #   但下面开 issue 那一步读的就是这个文件，而「哪条该重核了」必须按现实日历判：
+        #   若这里也落数据基准日，issue 会永远显示「全部在周期内」，闸门等于被关掉。
+        #   CI 不提交产物，所以这里用 --live 不会污染仓库，语义与冻结基准日之前完全一致。
         env:
           IS_SCHEDULE: ${{ github.event_name == 'schedule' }}
         run: |
-          python scripts/track.py
+          python scripts/track.py --live
           if [ "$IS_SCHEDULE" = "true" ]; then
             python scripts/track.py --check
           fi
