@@ -829,8 +829,10 @@ console.log('\n[15b] 条件显示的补充字段（门）');
   });
   const {
     EXTRA_FIELDS,
+    DIM_SCOPED_FIELDS,
     MAX_VISIBLE_EXTRA,
     readersOf,
+    readsDimsOf,
     shouldAsk,
     visibleExtraFields,
     primaryExtraFields,
@@ -840,24 +842,37 @@ console.log('\n[15b] 条件显示的补充字段（门）');
 
   // 门要的是「这条项目在该用户基线（补充字段全空）下判不出结论」。
   // smoke-test 跑在 node 里、没有 React，但它有 judgeAll——同一份判定，
-  // 所以这里能用真实结论构出门输入，与组件里的算法一致。
+  // 所以这里能用真实结论构出门输入，与组件里的算法一致（含 silentDims /
+  // readsDims 两项——不填它们，门就退化成只看项目状态，等于没测本单的改动）。
   const baselinePrograms = (pr) => {
     const base = { ...EMPTY_VERDICT_PROFILE, ...pr };
     for (const f of EXTRA_FIELDS) base[f] = null;
     const ids = index.map((p) => p.id);
+    const verdicts = judgeAll(flags, ids, base);
     const undecided = new Set(
-      judgeAll(flags, ids, base)
-        .filter((v) => v.verdict.state === 'unknown')
-        .map((v) => v.id),
+      verdicts.filter((v) => v.verdict.state === 'unknown').map((v) => v.id),
     );
+    const silentBy = new Map();
+    for (const v of verdicts) {
+      const dims = [...new Set(v.verdict.dims.filter((d) => d.kind === 'silent').map((d) => d.dim))];
+      if (dims.length) silentBy.set(v.id, dims);
+    }
     return Object.entries(flags.programs).map(([id, f]) => ({
       id,
       reads: readersOf(f),
       undecided: undecided.has(id),
+      silentDims: silentBy.get(id) ?? [],
+      readsDims: readsDimsOf(f),
     }));
   };
 
   ok('七个补充字段都在 EXTRA_FIELDS 里', EXTRA_FIELDS.length === 7, EXTRA_FIELDS.join(','));
+  ok(
+    '维级判据只点名两个字段（其余五项保持项目级，不把表单拉长）',
+    JSON.stringify([...DIM_SCOPED_FIELDS].sort()) ===
+      JSON.stringify(['months_since_graduation', 'work_experience_years']),
+    DIM_SCOPED_FIELDS.join(','),
+  );
 
   // 0) reads 缺失时必须退化成「全关」——这是安全方向。
   //    门在没有任何依据时开着的后果，是凭一个猜出来的规则去问用户。
@@ -944,21 +959,91 @@ console.log('\n[15b] 条件显示的补充字段（门）');
     ),
   );
 
-  // 4) 门只认「当前不可判的项目读不读它」，不认「全库有没有人读」。
+  // 4) 门只认「当前该字段真的还缺信息」，不认「全库有没有人读」。
   //    这条把本单初版的错误钉死：初版按全库开门，七项对所有人永远全开。
+  //
+  //    2026-11-21 可达性工单收窄口径：原来的断言是「没有项目不可判时门全关」，
+  //    它把门的判据**写死成项目级 unknown**。而本单修的正是这条判据本身——
+  //    months / years 的读者项目（us-j1-intern / us-j1-trainee）恒有 gap 压着、
+  //    永不 unknown，若坚持「只有 unknown 才开」，这两字段就永远开不出来。
+  //    所以这两条按新判据分两层收紧，而不是放宽：
+  //      · 五项项目级字段：性质不变，没有不可判项目时必须全关；
+  //      · 两项维级字段：改验「必须有读它的项目、且那一维真的闷着 silent」。
+  //    后者比原来的断言更严（原来只要 unknown，不看维）。
   {
     const pr = asProfile({ age: 45, education: 'bachelor_completed' });
     const gate = baselinePrograms(pr);
     const decidableOnly = gate.map((p) => ({ ...p, undecided: false }));
-    ok(
-      '没有项目不可判时门全关（不是「全库有人读就开」）',
-      visibleExtraFields({ profile: pr, programs: decidableOnly }).length === 0,
-      visibleExtraFields({ profile: pr, programs: decidableOnly }).join(','),
+    const projScoped = EXTRA_FIELDS.filter((f) => !DIM_SCOPED_FIELDS.includes(f));
+    const projOnly = visibleExtraFields({ profile: pr, programs: decidableOnly }).filter(
+      (f) => projScoped.includes(f),
     );
     ok(
-      '同一画像下门开着的每一项都至少有一条不可判项目读它',
-      visibleExtraFields({ profile: pr, programs: gate }).every((f) =>
-        gate.some((p) => p.undecided && p.reads[f]),
+      `没有项目不可判时，五项项目级字段门全关（不是「全库有人读就开」）`,
+      projOnly.length === 0,
+      projOnly.join(','),
+    );
+    ok(
+      '五项项目级字段：门开着的每一项都至少有一条不可判项目读它',
+      visibleExtraFields({ profile: pr, programs: gate })
+        .filter((f) => projScoped.includes(f))
+        .every((f) => gate.some((p) => p.undecided && p.reads[f])),
+    );
+    // 两项维级字段：门开着 ⇔ 有一条读它的项目、且 reads_dims 命中了该项目的 silent 维
+    ok(
+      '两项维级字段：门开着的必须是「读它的项目那一维真的闷着 silent」',
+      visibleExtraFields({ profile: pr, programs: gate })
+        .filter((f) => DIM_SCOPED_FIELDS.includes(f))
+        .every((f) =>
+          gate.some(
+            (p) =>
+              p.reads[f] &&
+              (p.readsDims?.[f] ?? []).some((d) => (p.silentDims ?? []).includes(d)),
+          ),
+        ),
+    );
+  }
+
+  // 5) 判据 ② 真的在起作用（2026-11-21 可达性工单）。
+  //
+  //    这一条是整块里最要紧的：没有它，把 ② 整段删掉、门退化成只看 ①，
+  //    上面 0)-4) 全部照绿——那正是本单开工时的状态（两字段恒关，测试全绿）。
+  //    判据 = 拿真实数据构出来的门输入下，两字段必须都在可见集里；
+  //    而且必须**只**靠 ② 才可见（把 undecided 全设 false 后仍然可见）。
+  {
+    const pr = asProfile({ age: 22, education: 'bachelor_in_progress' });
+    const gate = baselinePrograms(pr);
+    const dimOnly = gate.map((p) => ({ ...p, undecided: false }));
+    const visDimOnly = visibleExtraFields({ profile: pr, programs: dimOnly });
+    for (const f of DIM_SCOPED_FIELDS) {
+      ok(
+        `判据 ② 单独就能打开 ${f}（去掉项目级 unknown 后仍可见）`,
+        visDimOnly.includes(f),
+        `visible=${visDimOnly.join(',')}`,
+      );
+    }
+    // 反向：把 silentDims 清空，② 必须失效——否则可见不是维级判据带来的
+    {
+      const noSilent = gate.map((p) => ({ ...p, undecided: false, silentDims: [] }));
+      const visNoSilent = visibleExtraFields({ profile: pr, programs: noSilent });
+      ok(
+        '维级判据依赖 silentDims：清空后这两项不再因 ② 而开',
+        DIM_SCOPED_FIELDS.every((f) => !visNoSilent.includes(f)),
+        `visible=${visNoSilent.join(',')}`,
+      );
+    }
+    // reads_dims 缺失（老产物）时 ② 也必须失效，门退回只看项目状态
+    {
+      const noDims = gate.map((p) => ({ ...p, undecided: false, readsDims: {} }));
+      ok(
+        'reads_dims 缺失时 ② 退化失效（老产物行为不变，门不会全开）',
+        DIM_SCOPED_FIELDS.every((f) => !visibleExtraFields({ profile: pr, programs: noDims }).includes(f)),
+      );
+    }
+    ok(
+      'readsDimsOf 对缺 reads_dims 的老产物返回空数组而不是抛异常',
+      Object.values(readsDimsOf({ precondition: { p1b2: {} } })).every(
+        (v) => Array.isArray(v) && v.length === 0,
       ),
     );
   }

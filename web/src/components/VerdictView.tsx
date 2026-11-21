@@ -30,6 +30,7 @@ import {
   MAX_VISIBLE_EXTRA,
   primaryExtraFields,
   readersOf,
+  readsDimsOf,
   secondaryExtraFields,
   visibleExtraFields,
   type ExtraField,
@@ -182,10 +183,26 @@ export function VerdictView({
     const undecided = new Set(
       verdicts.filter((v) => v.verdict.state === 'unknown').map((v) => v.id),
     );
+    /**
+     * 每条项目此刻闷着 silent 的维。
+     *
+     * 项目整体状态是 fail > gap > silent 压出来的，一维 gap 就能把另一维的
+     * silent 盖住（us-j1-intern 的 pre_job_placement 就是这样）。门要问的是
+     * 「这一维还缺着信息」，所以这里按维收集，不按项目状态收。
+     */
+    const silentBy = new Map<string, string[]>();
+    for (const v of verdicts) {
+      const dims = [
+        ...new Set(v.verdict.dims.filter((d) => d.kind === 'silent').map((d) => d.dim as string)),
+      ];
+      if (dims.length) silentBy.set(v.id, dims);
+    }
     return Object.entries(flags.programs).map(([id, f]) => ({
       id,
       reads: readersOf(f),
       undecided: undecided.has(id),
+      silentDims: silentBy.get(id) ?? [],
+      readsDims: readsDimsOf(f),
     }));
   }, [flags, index, profile]);
 
