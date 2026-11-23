@@ -10,29 +10,34 @@
 
 ---
 
-## In English (for Devpost judges)
+## Overview (English)
 
-An open dataset of 41 youth-mobility programs — working-holiday, internship and post-study work visas — where every eligibility claim is traced to an official government page and stamped with the date it was last checked.
-Chinese-language guides routinely list reciprocal working-holiday visas (Canada IEC, UK YMS, Japan, Korea, Ireland) as open to "Chinese citizens" when they are in fact open only to Taiwan / Hong Kong passports — this dataset records what a mainland-China passport can and cannot actually apply for.
+An open dataset of **41 youth-mobility programs** — working-holiday, internship, post-study work and job-search visas — where every eligibility claim cites a first-party official source (a government or immigration page, or the program's own international body) and carries the date it was last verified.
+It exists to fix one specific, widespread error: Chinese-language guides list reciprocal working-holiday schemes (Canada IEC, UK YMS, Japan, Korea, Ireland) as open to "Chinese citizens" when they are open only to Taiwan / Hong Kong passports. This dataset records what a **mainland-China** passport can and cannot actually apply for.
 
-**What's inside** (counts verified from `data/`, as of 2026-11-11):
+### What's inside
 
-| | |
+Counts verified from `data/` on 2026-11-11:
+
+| Item | Detail |
 |---|---|
-| **41 programs** | 9 working-holiday, 22 short-term work, 7 internship / training (J-1, §16e, IAESTE), 3 cultural exchange — across 21 countries plus 2 worldwide programs |
-| **34 mainland-eligible** | 34 of 41 accept a mainland-China passport; the other 7 are recorded as explicitly not eligible, not omitted |
-| **136 cited sources** | 125 grade A (government / immigration / embassy), 6 grade B (IAESTE, AIESEC), 5 grade C (supporting only) — 130 primary, 6 secondary |
-| **One JSON per program** | `data/programs/<id>.json`; field definitions in [`data/schema.json`](data/schema.json); generated read-only source list in [`data/sources.md`](data/sources.md) |
+| **Programs** | **41** — 9 working-holiday · 22 short-term work · 7 internship / training (J-1 intern & trainee, §16e, 407, IAESTE, AIESEC) · 3 cultural exchange |
+| **Mainland-eligible** | **34 of 41** — the other 7 are recorded as explicitly *not eligible*, not omitted |
+| **Cited sources** | **136** — 125 grade A (government / immigration / embassy), 6 grade B (IAESTE, AIESEC), 5 grade C (supporting only) · 130 primary, 6 secondary |
+| **Scope** | 21 countries + 2 worldwide programs (IAESTE, AIESEC) |
+| **Format** | One JSON per program in `data/programs/` — fields defined in [`data/schema.json`](data/schema.json), generated source index in [`data/sources.md`](data/sources.md) |
 | **Live site** | <https://eddieye1004.github.io/overseas-program-dataset/> — bilingual, filterable on mobile |
 
-**How to verify a record** — each record is built to be checked against its source in under a minute:
+### How to verify a record
 
-1. **Open the record.** In `data/programs/<program-id>.json`, every `sources[]` entry carries `url`, `publisher`, `last_verified`, and `claim` — `claim` quotes the passage on that page which backs the eligibility statement, so you can search the official page for it verbatim. The same citations are rendered as tables in [`data/sources.md`](data/sources.md).
+Every record is built to be checked against its source in under a minute:
+
+1. **Open one record** — e.g. [`data/programs/au-462-work-holiday.json`](data/programs/au-462-work-holiday.json). Each `sources[]` entry carries `url`, `publisher`, `last_verified`, `verified_by` and a `claim`; the `claim` quotes the passage on that page that backs the eligibility statement, so you can search the official page for the quote verbatim. The same citations are rendered per program in [`data/sources.md`](data/sources.md).
 2. **Check the source grade.** A = government / immigration / embassy, B = the program's own international body (IAESTE, AIESEC), C = supporting only, D = encyclopedia / blog / agency (fails CI). Every program has at least one A- or B-grade source; `scripts/validate.py` rejects a file without one.
-3. **Run the same gates CI runs.** `python scripts/validate.py` re-checks structure, required fields and grades; `python scripts/gen_sources.py --check` fails if `data/sources.md` drifts from the JSONs; `python scripts/track.py --check` fails if any record is past its review window (90 days for fixed-window programs, 180 otherwise, per `data/review-policy.json`).
-4. **Or watch CI.** `.github/workflows/validate.yml` runs on pushes and PRs that touch data, scripts, docs or this README, and weekly on a schedule; the weekly run also opens one tracked issue naming the records due for re-verification.
+3. **Run the same gates CI runs.** `python scripts/validate.py` re-checks structure, required fields and grades; `python scripts/gen_sources.py --check` fails if `data/sources.md` has drifted from the JSONs; `python scripts/track.py --check` fails if any record is past its review window (90 days for fixed-window programs, 180 otherwise, per `data/review-policy.json`).
+4. **Or watch CI.** [`.github/workflows/validate.yml`](.github/workflows/validate.yml) runs on pushes and PRs that touch data, scripts, docs or this README, plus a weekly job that also opens one idempotent issue naming the records due for re-verification.
 
-The rest of this README is in Chinese; it documents the data model, field rules and review process in full.
+The rest of this README is in Chinese and documents the data model, field rules and review process in full.
 
 ---
 
