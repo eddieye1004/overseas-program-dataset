@@ -8,6 +8,34 @@
 
 **在线浏览：<https://eddieye1004.github.io/overseas-program-dataset/>** —— 中英双语，手机上能直接筛。不想读 JSON 就从这里进。
 
+---
+
+## In English (for Devpost judges)
+
+An open dataset of 41 youth-mobility programs — working-holiday, internship and post-study work visas — where every eligibility claim is traced to an official government page and stamped with the date it was last checked.
+Chinese-language guides routinely list reciprocal working-holiday visas (Canada IEC, UK YMS, Japan, Korea, Ireland) as open to "Chinese citizens" when they are in fact open only to Taiwan / Hong Kong passports — this dataset records what a mainland-China passport can and cannot actually apply for.
+
+**What's inside** (counts verified from `data/`, as of 2026-11-11):
+
+| | |
+|---|---|
+| **41 programs** | 9 working-holiday, 22 short-term work, 7 internship / training (J-1, §16e, IAESTE), 3 cultural exchange — across 21 countries plus 2 worldwide programs |
+| **34 mainland-eligible** | 34 of 41 accept a mainland-China passport; the other 7 are recorded as explicitly not eligible, not omitted |
+| **136 cited sources** | 125 grade A (government / immigration / embassy), 6 grade B (IAESTE, AIESEC), 5 grade C (supporting only) — 130 primary, 6 secondary |
+| **One JSON per program** | `data/programs/<id>.json`; field definitions in [`data/schema.json`](data/schema.json); generated read-only source list in [`data/sources.md`](data/sources.md) |
+| **Live site** | <https://eddieye1004.github.io/overseas-program-dataset/> — bilingual, filterable on mobile |
+
+**How to verify a record** — each record is built to be checked against its source in under a minute:
+
+1. **Open the record.** In `data/programs/<program-id>.json`, every `sources[]` entry carries `url`, `publisher`, `last_verified`, and `claim` — `claim` quotes the passage on that page which backs the eligibility statement, so you can search the official page for it verbatim. The same citations are rendered as tables in [`data/sources.md`](data/sources.md).
+2. **Check the source grade.** A = government / immigration / embassy, B = the program's own international body (IAESTE, AIESEC), C = supporting only, D = encyclopedia / blog / agency (fails CI). Every program has at least one A- or B-grade source; `scripts/validate.py` rejects a file without one.
+3. **Run the same gates CI runs.** `python scripts/validate.py` re-checks structure, required fields and grades; `python scripts/gen_sources.py --check` fails if `data/sources.md` drifts from the JSONs; `python scripts/track.py --check` fails if any record is past its review window (90 days for fixed-window programs, 180 otherwise, per `data/review-policy.json`).
+4. **Or watch CI.** `.github/workflows/validate.yml` runs on pushes and PRs that touch data, scripts, docs or this README, and weekly on a schedule; the weekly run also opens one tracked issue naming the records due for re-verification.
+
+The rest of this README is in Chinese; it documents the data model, field rules and review process in full.
+
+---
+
 | | |
 |---|---|
 | **收录规模** | 41 个项目 / 136 条官方来源。大陆护照可申 34，不可申 7（不可申也是收录内容，不是缺口） |
