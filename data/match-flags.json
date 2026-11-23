@@ -82,6 +82,17 @@
       "prior_same_category_visa": false,
       "study_months": true,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [
+       "education"
+      ],
+      "work_experience_years": []
      }
     }
    },
@@ -175,6 +186,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -269,6 +289,19 @@
       "prior_same_category_visa": true,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [
+       "precondition"
+      ],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [
+       "precondition"
+      ],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -362,6 +395,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -455,6 +497,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -546,6 +597,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -637,6 +697,17 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [
+       "precondition"
+      ],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -731,6 +802,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -825,6 +905,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -916,6 +1005,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1009,6 +1107,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1102,6 +1209,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1195,6 +1311,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1288,6 +1413,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1379,6 +1513,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1470,6 +1613,17 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [
+       "precondition"
+      ],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1563,6 +1717,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1654,6 +1817,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1747,6 +1919,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1843,6 +2024,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -1936,6 +2126,19 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [
+       "precondition"
+      ],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [
+       "precondition"
+      ],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2027,6 +2230,19 @@
       "prior_same_category_visa": true,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [
+       "precondition"
+      ],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [
+       "precondition"
+      ],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2120,6 +2336,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2211,6 +2436,17 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [
+       "precondition"
+      ],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2302,6 +2538,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2395,6 +2640,19 @@
       "prior_same_category_visa": true,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [
+       "precondition"
+      ],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [
+       "precondition"
+      ],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2486,6 +2744,17 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [
+       "precondition"
+      ],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2579,6 +2848,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2670,6 +2948,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2761,6 +3048,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2852,6 +3148,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -2945,6 +3250,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -3039,6 +3353,19 @@
       "prior_same_category_visa": true,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [
+       "precondition"
+      ],
+      "prior_same_category_visa": [
+       "precondition"
+      ],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -3130,6 +3457,17 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [
+       "precondition"
+      ],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -3221,6 +3559,19 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [
+       "precondition"
+      ],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [
+       "precondition"
+      ],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -3318,6 +3669,21 @@
       "prior_same_category_visa": false,
       "study_months": true,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [
+       "precondition"
+      ],
+      "enrollment_status": [
+       "education"
+      ],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [
+       "education"
+      ],
+      "work_experience_years": []
      }
     }
    },
@@ -3409,6 +3775,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -3508,6 +3883,19 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [
+       "education"
+      ],
+      "months_since_graduation": [
+       "education"
+      ],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -3602,6 +3990,15 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": []
      }
     }
    },
@@ -3693,6 +4090,20 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": false
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [
+       "education",
+       "precondition"
+      ],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [
+       "education"
+      ],
+      "work_experience_years": []
      }
     }
    },
@@ -3792,6 +4203,17 @@
       "prior_same_category_visa": false,
       "study_months": false,
       "work_experience_years": true
+     },
+     "reads_dims": {
+      "dependents": [],
+      "enrollment_status": [],
+      "months_since_graduation": [],
+      "prior_participation": [],
+      "prior_same_category_visa": [],
+      "study_months": [],
+      "work_experience_years": [
+       "education"
+      ]
      }
     }
    },

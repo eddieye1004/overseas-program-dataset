@@ -19,6 +19,7 @@
 """
 
 import io
+import itertools
 import json
 import os
 import re
@@ -2837,6 +2838,189 @@ class FormKeyFields(unittest.TestCase):
                 n, 0,
                 "字段 %s 没有任何项目读它 —— 不该进表单" % field,
             )
+
+    # —— ②b 门必须真的能开（2026-11-21 可达性工单） ——
+    #
+    # 这一组钉的是「字段真的能露出来」，不是「字段登记在册」。上一单七项全
+    # 登记、口径读数全对、测试全绿，而 months_since_graduation /
+    # work_experience_years 在任何画像下一次也露不出来 —— 因为门问的是
+    # 「项目整体是否 unknown」，而读它们的两条项目（us-j1-intern /
+    # us-j1-trainee）被 precondition 的 gap 压着，永远不是 unknown。
+    #
+    # 判据：拿基线画像跑真实判定，然后照前端 fieldMoves 的两条规则算可见集。
+    # **不调前端代码**（那是 smoke-test 的活，两边各验一遍才叫同源），这里验
+    # 的是引擎给的数据够不够开出这个门。
+
+    # 表单主字段的取值空间：六项，取真实枚举而非随机数（与工单同一套）
+    BASELINE_SPACE = {
+        "passport": ["china_mainland", "taiwan_china", "india", "brazil",
+                     "philippines", "japan"],
+        "age": [18, 20, 22, 25, 28, 30, 35],
+        "education": ["high_school", "bachelor_in_progress", "bachelor_completed",
+                      "master_completed", "doctorate"],
+        "ielts": [None, 4.5, 5.5, 6.0, 6.5, 7.5],
+        "budget_cny": [0, 20000, 50000, 100000, 300000],
+        "current_location": ["CN", "TW", "IN", "BR", "US", "GB"],
+    }
+
+    # 工单点名的两项：走维级判据。其余五项保持项目级，避免把表单拉长。
+    DIM_SCOPED = ("months_since_graduation", "work_experience_years")
+
+    @staticmethod
+    def _field_moves(pid, state, silent_dims, reads, reads_dims, field):
+        """前端 fieldMoves 的逐字复刻（web/src/lib/profileFields.ts）。
+
+        ① 项目整体 unknown 且该项目读它 → 开（原判据）
+        ② field 在 DIM_SCOPED 里、读它、且 reads_dims[field] 命中了此刻的
+           silent 维 → 开（本单新判据）
+
+        抄一遍是有意的：这条断言要能在**前端改坏时仍然红**，所以它不能 import
+        前端代码（Python 这边也没有 TS 运行时）。两边同源靠的是数据
+        （reads / reads_dims 都由引擎产出），判据只有这两行。
+        """
+        if state == "unknown" and reads[field]:
+            return True
+        if field not in FormKeyFields.DIM_SCOPED:
+            return False
+        if not reads[field]:
+            return False
+        dims = reads_dims[field]
+        return bool(set(dims) & set(silent_dims))
+
+    def test_gate_reaches_dim_scoped_fields(self):
+        """两字段在基线画像下必须能被门打开（>0 次），否则它们等于没进表单。
+
+        为什么不能只看 `state == 'unknown'`：项目的状态是 fail > gap > silent
+        压出来的。intern 恒定带一条 precondition/gap（缺 job_placement），
+        trainee 亦然，于是项目永不 unknown，而它教育维的 silent 一直没人看。
+        实测：37,800 组基线画像里这两条项目 `state == 'unknown'` 命中 0 次
+        （本单开工时的病灶证据，见 .legs 的 pin_current_gate.out.txt）。
+
+        所以这条同时断言两件事：**旧判据确实命中 0**（病灶还在，不是碰巧），
+        而**新判据的可见集里两项都在**（修好的是显示条件，不是判定）。
+        """
+        probes = mr.PROFILE_FIELD_PROBES
+        base = {k: None for k in probes}
+        # reads / reads_dims 与画像无关（只看项目数据），提在循环外算一次。
+        # 放进循环会变成 37,800 × 2 次 profile_field_dims，实测 130 秒。
+        facts = {}
+        for pid in ("us-j1-intern", "us-j1-trainee"):
+            doc = self._doc(pid)
+            facts[pid] = (mr.profile_readers(doc), mr.profile_field_dims(doc))
+        n = 0
+        proj_unknown = 0
+        opened = {f: 0 for f in self.DIM_SCOPED}
+        for vals in itertools.product(*self.BASELINE_SPACE.values()):
+            pr = dict(zip(self.BASELINE_SPACE.keys(), vals))
+            pr.update(base)
+            n += 1
+            for pid, field in (("us-j1-intern", "months_since_graduation"),
+                               ("us-j1-trainee", "work_experience_years")):
+                state, dims = mr.judge(self._doc(pid), dict(pr))
+                if state == "unknown":
+                    proj_unknown += 1
+                silent = {x["dim"] for x in dims if x["kind"] == "silent"}
+                reads, reads_dims = facts[pid]
+                if self._field_moves(pid, state, silent, reads, reads_dims, field):
+                    opened[field] += 1
+
+        self.assertEqual(n, 37800, "基线画像空间变了（应为 6 主字段的笛卡尔积）")
+        self.assertEqual(
+            proj_unknown, 0,
+            "病灶变了：这两条项目在本基线下出现了 %d 次 state=='unknown'。"
+            "若真变了，说明项目数据或判定改过，本单的修法前提要重新核对。" % proj_unknown,
+        )
+        for field, cnt in opened.items():
+            self.assertGreater(
+                cnt, 0,
+                "字段 %s 在 %d 组基线画像下一次也没被门打开 —— 它进了表单却"
+                "永远露不出来，等于没进。" % (field, n),
+            )
+
+    def test_dim_mapping_matches_exhaustive_truth(self):
+        """`profile_field_dims()` 必须等于**穷举真值**，不是两条基线的近似。
+
+        真值的定义（不含任何实现细节）：遍历七项补充字段的全部取值组合，对每个
+        组合、每个字段，把该字段单独置回 None，(dim,kind,code) 三元组变了的维
+        就是「该字段在这条项目上读的维」。全部组合取并集即为真值。
+
+        为什么必须真穷举而不是信实现里的两条基线：这两条基线是**算法**，穷举是
+        **定义**。用算法验算法只能证明自洽——上一单正是这样全绿而字段恒关。取
+        值域闭合（每字段只取几个代表值 + None），单条项目约 8,600 组组合、
+        约 1.7 万次 judge，实测 1 秒内，可以进测试。
+
+        为什么值得单列：门现在就靠这份映射。多一维 → 门开大、表单变长；少一维
+        → 门开小、用户白填。两种都不报错，只在界面上悄悄错。
+        """
+        dom = {
+            "dependents": ["none", "spouse", "children", "other"],
+            "enrollment_status": ["enrolled", "completed"],
+            "prior_participation": ["none", "used"],
+            "prior_same_category_visa": ["none", "used"],
+            "study_months": [3, 48, 60],
+            "months_since_graduation": [2, 6, 36],
+            "work_experience_years": [0, 1, 5],
+        }
+        fields = list(dom)
+        known_dims = {"passport", "age", "education", "language", "funds", "precondition"}
+
+        # 只对「读这两项」的项目做全空间：门只可能由它们打开，其余项目与结论无关
+        def by_dim(dims):
+            out = {}
+            for d in dims:
+                out.setdefault(d["dim"], []).append((d["kind"], d["code"]))
+            return {k: sorted(v) for k, v in out.items()}
+
+        for pid in ("us-j1-intern", "us-j1-trainee"):
+            doc = self._doc(pid)
+            truth = {f: set() for f in fields}
+            for combo in itertools.product(*[[None] + dom[f] for f in fields]):
+                pr = dict(mr.SAMPLES["C"])
+                pr.update(dict(zip(fields, combo)))
+                base_dims = by_dim(mr.judge(doc, pr)[1])
+                for i, f in enumerate(fields):
+                    if combo[i] is None:
+                        continue
+                    pr2 = dict(pr)
+                    pr2[f] = None
+                    other = by_dim(mr.judge(doc, pr2)[1])
+                    for dim in set(base_dims) | set(other):
+                        if base_dims.get(dim) != other.get(dim):
+                            truth[f].add(dim)
+            got = mr.profile_field_dims(doc)
+            for f in fields:
+                self.assertEqual(
+                    set(got[f]), truth[f],
+                    "%s 的 %s：profile_field_dims 给 %s，穷举真值 %s"
+                    % (pid, f, sorted(got[f]), sorted(truth[f])),
+                )
+                for name in got[f]:
+                    self.assertIn(name, known_dims, "映射出了未知维 %r" % name)
+
+    def test_dim_mapping_only_for_dim_scoped_fields(self):
+        """其余五项必须**没有**维级特例：只有点名两项走判据 ②。
+
+        这条挡的是「顺手推广」：把 ② 套到全部七项会让它们更常开（其余五项本来
+        在项目级判据下就开得出来），表单变长，与「只在与用户已填信息相关时
+        出现」反向。判据 = 前端源码里的 DIM_SCOPED_FIELDS 必须恰好是这两项。
+        """
+        with io.open(
+            os.path.join(ROOT, "web", "src", "lib", "profileFields.ts"), encoding="utf-8"
+        ) as fh:
+            src = fh.read()
+        body = src.split("DIM_SCOPED_FIELDS: readonly ExtraField[] = [", 1)
+        self.assertEqual(len(body), 2, "前端没有声明 DIM_SCOPED_FIELDS")
+        listed = re.findall(r"'([a-z_]+)'", body[1].split("];", 1)[0])
+        self.assertEqual(
+            sorted(listed), sorted(self.DIM_SCOPED),
+            "DIM_SCOPED_FIELDS 只应包含工单点名的两项，实际：%s" % listed,
+        )
+
+    def _doc(self, pid):
+        for d in self.docs:
+            if d["program"]["id"] == pid:
+                return d
+        raise AssertionError("找不到项目 %s" % pid)
 
     # —— ③ 条件显示不许变成死锁 ——
     def test_gate_never_locks_out_relevant_field(self):

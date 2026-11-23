@@ -218,6 +218,22 @@ export interface ProgramFlags {
        * 属于安全方向（宁可不问，也不凭猜出来的规则去问）。
        */
       reads?: Record<string, boolean>;
+      /**
+       * 每个补充字段**读在哪一维**（2026-11-21 门可达性工单）。
+       *
+       * 为什么 `reads` 不够：`reads` 只回答「读不读」，门拿它配「项目整体
+       * 是否 unknown」判，而项目状态是 fail > gap > silent 压出来的。一条
+       * 项目只要另有一维在 gap，整条就是 gap，即使缺信息的正是它教育维那条
+       * silent —— us-j1-intern / us-j1-trainee 因此恒关，两个字段永不出现
+       * （37,800 组基线画像实测 state=='unknown' 命中 0 次）。
+       *
+       * 有了维明细，门才能问「读它的那一维此刻是不是还闷着 silent」。
+       * 由引擎 profile_field_dims() 产出，前端只读不推。
+       *
+       * 可选：老产物没有这一项，readsDimsOf() 返回空数组，门退化成只看项目
+       * 状态（即改动前行为），不是改成全关。
+       */
+      reads_dims?: Record<string, string[]>;
     };
   };
   window: {

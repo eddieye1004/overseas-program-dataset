@@ -8,9 +8,10 @@
 //   一次性拉出十三个输入口，多数人看到第三行就退了；而退掉的人拿到的是
 //   「不可判」，比不问更糟。
 //
-// **判据不在这里算。** 「这条项目读不读这个字段」由
-// scripts/match_readiness.py 的 profile_readers() 实测得出，随
-// data/match-flags.json 一起发下来（precondition.p1b2.reads）。
+// **判据不在这里算。** 「这条项目读不读这个字段」「读在哪一维」都由
+// scripts/match_readiness.py 的 profile_readers() / profile_field_dims()
+// 实测得出，随 data/match-flags.json 一起发下来
+// （precondition.p1b2.reads 与 .reads_dims）。
 //
 // 为什么不在前端重推一遍：本单第一版就是这么做的（按 p1b2 的布尔量推），
 // 变异测试当场证明它不能自我保护——把前端规则改错，Python 侧测试仍然全绿，
@@ -48,6 +49,23 @@ export interface GateProgram {
   reads: FieldReads;
   /** 当前画像下这条项目判不出结论（unknown） */
   undecided: boolean;
+  /**
+   * 当前画像下**正闷着 silent** 的维（`kind === 'silent'`）。
+   *
+   * 为什么门需要它，而不是只看 `undecided`：
+   *   `undecided` 是**项目整体**状态，判序是 fail > gap > silent。一条项目
+   *   只要另有一维在 gap，整条就是 gap，即使缺信息的正是它教育维那条
+   *   silent。us-j1-intern / us-j1-trainee 就是这种：`pre_job_placement`
+   *   的 gap 常年压在头上，于是「项目是否 unknown」这两个字段永远等不到
+   *   （37,800 组基线画像实测命中 0 次）。silent 维本身就是「这里缺信息」
+   *   的权威表达，门的判据必须落到维上。
+   *
+   * 可选：老构造点（只填 undecided）传省略值，等价于「没有 silent 维」，
+   * 门退化成只看 ①，不改变任何既有行为。
+   */
+  silentDims?: string[];
+  /** 每个补充字段读在哪一维（来自引擎 reads_dims）；缺省 = 空，门走 ① */
+  readsDims?: Partial<Record<ExtraField, string[]>>;
 }
 
 /**
@@ -74,18 +92,69 @@ export interface GateInput {
 }
 
 /**
+ * 从 match-flags 的一条记录里取「每个字段读在哪一维」。
+ *
+ * 与 `readersOf` 的分工：那个是项目级布尔（读不读），这个是维级明细（读在
+ * 哪一维）。两者同源、同一次实测（引擎的 `profile_field_dims()`），前端只读不推。
+ *
+ * 产物缺失（老产物）时返回空数组 —— 门退化成只看 ①，与本次改动前行为一致。
+ * 这是**不倒退**的方向：新产物没到之前，旧行为照旧。
+ */
+export function readsDimsOf(flags: ProgramFlags): Partial<Record<ExtraField, string[]>> {
+  const raw = flags.precondition?.p1b2?.reads_dims;
+  const out: Partial<Record<ExtraField, string[]>> = {};
+  for (const f of EXTRA_FIELDS) {
+    const v = raw?.[f];
+    out[f] = Array.isArray(v) ? v : [];
+  }
+  return out;
+}
+
+/**
+ * 只有这两个字段走「维级」判据（2026-11-21 工单点名的那两个）。
+ *
+ * 为什么不把判据 ② 推广到全部七项：其余五项在项目级判据下本来就开得出来
+ * （37,800 组基线实测：dependents / prior_participation 等每次都开），再叠一条
+ * 维级规则只会让它们更常开 —— 那是把表单**拉长**，与「只在与用户已填信息
+ * 相关时出现」反向。这条规则存在的唯一理由是修那两处恒关，范围就钉死。
+ */
+export const DIM_SCOPED_FIELDS: readonly ExtraField[] = [
+  'months_since_graduation',
+  'work_experience_years',
+];
+
+/**
+ * 这条项目的这个字段「填了能改结论」吗——①或②任一成立。
+ *
+ * 为什么抽成函数：门的判据与排序的命中数必须同源。门开了、排序却按旧判据
+ * 数命中（恒 0），字段会排到最后，被 MAX_VISIBLE_EXTRA 挤进「继续细化」——
+ * 门开到底、字却藏在二级里，等于没开。
+ */
+export function fieldMoves(p: GateProgram, field: ExtraField): boolean {
+  // ① 项目整体不可判，且这条项目读它 —— 原判据，抓「整条卡住」的项目
+  if (p.undecided && p.reads[field]) return true;
+  // ② 只对点名的两项生效：读的那一维此刻正闷着 silent
+  if (!DIM_SCOPED_FIELDS.includes(field)) return false;
+  if (!p.reads[field]) return false;
+  const dims = p.readsDims?.[field] ?? [];
+  if (dims.length === 0) return false;
+  const silent = new Set(p.silentDims ?? []);
+  return dims.some((d) => silent.has(d));
+}
+
+/**
  * 某个补充字段该不该出现。
  *
  * **判据是「能不能改变你眼前的结论」，不是「这个字段有没有用」**：
- * 至少有一条**当前判不出结论**的项目读它，才问。这是工单第 3 条
- * 「只在与用户已填信息相关时出现」的可执行定义。
+ * 至少有一条项目在这个字段上「填了能改结论」（见 `fieldMoves`），才问。
+ * 这是工单第 3 条「只在与用户已填信息相关时出现」的可执行定义。
  *
  * 反例（本单初版犯过）：按「全库有项目读它」开门，于是七项对所有人
  * 永远全开——一个已经能判完 40 条项目的人，仍被问家属、问签证史，
  * 而那些项目对他早已给出结论。那不是条件显示，只是把表单拉长了。
  */
 export function shouldAsk(field: ExtraField, input: GateInput): boolean {
-  return input.programs.some((p) => p.undecided && p.reads[field]);
+  return input.programs.some((p) => fieldMoves(p, field));
 }
 
 /** 该显示的补充字段（保持 EXTRA_FIELDS 顺序，表单不会跳来跳去） */
@@ -114,7 +183,9 @@ export const MAX_VISIBLE_EXTRA = 3;
  * 而精确收益要前端重跑 41 条判定，那是把判定口径搬进前端——M1 明令禁止。
  */
 export function payoffRank(field: ExtraField, input: GateInput): number {
-  const hits = input.programs.filter((p) => p.undecided && p.reads[field]).length;
+  // 命中数必须与门的判据同源（见 fieldMoves）：门开了、排序却按旧判据数命中
+  // （恒 0），字段会被 MAX_VISIBLE_EXTRA 挤进「继续细化」，等于没开。
+  const hits = input.programs.filter((p) => fieldMoves(p, field)).length;
   const pr = input.profile;
   let affinity = 0;
 

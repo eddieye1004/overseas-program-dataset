@@ -2971,6 +2971,89 @@ def _dim_signature(dims: list[dict]) -> str:
     return "|".join("%s:%s:%s" % (d["dim"], d["kind"], d["code"]) for d in dims)
 
 
+def profile_field_dims(doc: dict) -> dict:
+    """这条项目**在哪一维**上读某个画像字段——只给门的显示条件用。
+
+    为什么 `profile_readers()` 那一个布尔不够（2026-11-21 工单）：
+      门原来问的是「有没有一条**项目整体**判不出结论、且读这个字段」。
+      这条判据在 us-j1-intern / us-j1-trainee 上恒假——不是因为没人读它们，
+      而是这两条项目在基线画像下**永不整体 unknown**：intern 恒有
+      `precondition/gap`（缺 job_placement）压着，trainee 恒 gap；即使教育维
+      正闷着一条 silent。而 `judge()` 尾部的折算是 fail > gap > silent，一维
+      gap 就把另一维的 silent 盖掉。实测 37,800 组基线画像里这两条项目
+      `state == 'unknown'` 命中 0 次，于是两个字段一次也露不出来。
+
+      所以判据下沉到维：「有一个**正闷着 silent** 的维读这个字段」。项目整体
+      是什么状态与它无关——silent 维本身就是「这里缺信息」的权威表达。
+
+    返回值 {field: [dim, ...]}：把该字段从 None 换成探针值后，(dim,kind,code)
+    三元组变了的那些维。空列表 = 这条项目不读它。
+
+    **两条基线取并集，不是冗余**：单条基线会漏，且各自漏各自的——取「其余全
+    null」会漏 3 对，取「其余全填反向真值」会漏 2 对（41 项目 × 7 字段全空间
+    扫过，见工单实测）。机理是掩蔽：别的字段为 null 时先触发的分支把本字段那
+    一维的差异盖住，换成另一组真值掩蔽方向反过来。两条并集与全空间真值
+    **0/287 对不一致**，即这既是廉价算法又恰好等于真值。
+
+    不参与任何判定：只读 judge() 的产物，不改它。
+    """
+    out = {field: set() for field in PROFILE_FIELD_PROBES}
+    for fill in (None, PROFILE_FIELD_ALT):
+        base = dict(SAMPLES["C"])
+        for field in PROFILE_FIELD_PROBES:
+            base[field] = None if fill is None else fill[field]
+        for field, probe in PROFILE_FIELD_PROBES.items():
+            pr = dict(base)
+            pr[field] = None
+            _, before = judge(doc, pr)
+            pr2 = dict(pr)
+            pr2[field] = probe
+            _, after = judge(doc, pr2)
+            out[field] |= _changed_dims(before, after)
+    return {field: sorted(dims) for field, dims in out.items()}
+
+
+def _changed_dims(before: list[dict], after: list[dict]) -> set[str]:
+    """两次判定之间，哪些**维**的结论变了。
+
+    按维分组比较 (kind, code) 多重集，不按下标对齐：
+      · 下标对齐假设两次判定的 dims 顺序相同，而顺序本身是分支决定的——某条
+        分支多吐一维就会把后面全部错位，把「没变」读成「变了」（整条项目的
+        每一维都算读），门于是一路开大。
+      · 多重集比较只问「这一维的结论集合变没变」，与顺序、与别的维多吐少吐
+        都无关。
+
+    用多重集而不是集合：同一维可能合法地吐两条同 code（不同路径各一条），
+    集合会把它压成一条而看不见差异。
+    """
+    def by_dim(dims):
+        out: dict[str, list] = {}
+        for d in dims:
+            out.setdefault(d["dim"], []).append((d["kind"], d["code"]))
+        return {k: sorted(v) for k, v in out.items()}
+
+    a, b = by_dim(before), by_dim(after)
+    return {dim for dim in set(a) | set(b) if a.get(dim) != b.get(dim)}
+
+
+# 第二组真值，只服务于 profile_field_dims() 的第二条基线。
+#
+# 与 PROFILE_FIELD_PROBES 的取值方向**故意相反**：探针取「满足型」（enrolled /
+# none / 6 个月），这一组取「踩线型」（completed / 用过 / 36 个月 / 0 年经验）。
+# 同一组值跑两遍没有意义；方向相反才能让两条基线的掩蔽互补（见
+# profile_field_dims 的 docstring）。这组值不参与 profile_readers()，那一条
+# 仍然只有一组探针——它验的是「换了一定会变」，方向无所谓。
+PROFILE_FIELD_ALT = {
+    "dependents": "children",
+    "enrollment_status": "completed",
+    "months_since_graduation": 36,
+    "prior_participation": "used",
+    "prior_same_category_visa": "used",
+    "study_months": 12,
+    "work_experience_years": 0,
+}
+
+
 # 实测每个字段「在场 vs 缺席」用的代表真值。
 # 取的是夹具 C 的取值（每个字段在夹具里都有定义），所以这不是编的数字。
 # 换一个真值可能翻出别的项目（例如 dependents 填 children 会多触发 fail 分支），
@@ -3202,6 +3285,17 @@ def p1b2_project_flags(doc: dict) -> dict:
         # 前端只读这一项，不按上方布尔自己推：同一条规则写两遍必然漂，
         # 而「门悄悄关掉」在界面上看起来完全正常。
         "reads": profile_readers(doc),
+        # —— 2026-11-21 工单：读在哪一维 ——
+        #
+        # `reads` 只说「读不读」，门拿它配「项目整体是否 unknown」判，于是在
+        # us-j1-intern / us-j1-trainee 上恒关（一条 gap 压着，项目永不整体
+        # unknown）。这一项把判据下沉到维：{字段: [维, ...]}，门可以问
+        # 「读它的那一维此刻是不是还闷着 silent」。
+        #
+        # 与 reads 不是重复：reads 是项目级布尔（smoke-test 与
+        # test_gate_rules_match_engine_readers 钉的对象），这里是维级明细。
+        # 两者同源、同一次实测，不存在各写一份。
+        "reads_dims": profile_field_dims(doc),
     }
 
 
